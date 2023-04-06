@@ -14,6 +14,11 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+
+/**
+ * A class holding an abstract {@link NoteButton note} grid for {@link AbstractInstrumentScreen}.
+ * All fields are described in there.
+ */
 @OnlyIn(Dist.CLIENT)
 public class NoteGrid implements Iterable<NoteButton> {
     public static final int PADDING_HORZ = 9, PADDING_VERT = 7;
@@ -38,7 +43,7 @@ public class NoteGrid implements Iterable<NoteButton> {
         }
     }
     
-    NoteButton createNote(int row, int column, SoundEvent[] sounds,
+    protected NoteButton createNote(int row, int column, SoundEvent[] sounds,
       ResourceLocation noteResourceLocation, Supplier<Integer> colorThemeSupplier, Supplier<Integer> pressedThemeSupplier) {
         return new NoteButton(row, column, sounds[row + column * AbstractInstrumentScreen.ROWS],
             //TODO: Add option in lyre settings screen
@@ -47,7 +52,14 @@ public class NoteGrid implements Iterable<NoteButton> {
         );
     }
 
-    AbstractWidget genNoteGridWidget(final float vertAlignment, final int screenWidth, final int screenHeight) {
+    /**
+     * Constructs a new grid of notes as described in this object.
+     * @param vertAlignment A percentage determining the vertical offset of the grid
+     * @param screenWidth The width of the screen
+     * @param screenHeight The height of the screen
+     * @return A new {@link NoteButton} grid
+     */
+    protected AbstractWidget genNoteGridWidget(final float vertAlignment, final int screenWidth, final int screenHeight) {
         final GridWidget grid = new GridWidget();
         grid.defaultCellSetting().padding(PADDING_HORZ, PADDING_VERT);
 
@@ -66,10 +78,10 @@ public class NoteGrid implements Iterable<NoteButton> {
     }
 
 
-
     public NoteButton getNote(final int row, final int column) {
         return notes[column][row];
     }
+
 
 
     @Override

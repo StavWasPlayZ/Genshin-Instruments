@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument.item;
 
 import com.cstav.genshinstrument.capability.lyreOpen.LyreOpenProvider;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.lyre.OpenInstrumentPacket;
 
@@ -12,9 +13,17 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
+/**
+ * An item responsible for opening an {@link AbstractInstrumentScreen}.
+ */
 public class InstrumentItem extends Item {
 
     protected final ServerPlayerRunnable onOpenRequest;
+    /**
+     * @param onOpenRequest A server-side event fired when the player has requested to interact
+     * with the instrument.
+     * It should should send a packet to the given player for opening this instrument's screen.
+     */
     public InstrumentItem(final ServerPlayerRunnable onOpenRequest) {
         super(new Properties()
             .stacksTo(1)

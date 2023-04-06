@@ -29,6 +29,10 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     
     // Abstract implementations
+    /**
+     * Initializes a new Note Grid to be paired with this instrument
+     * @return The new Note Grid
+     */
     public NoteGrid initNoteGrid() {
         return new NoteGrid(
             ROWS, COLUMNS, getSounds(),
@@ -37,6 +41,15 @@ public abstract class AbstractInstrumentScreen extends Screen {
             () -> getThemeLoader().getPressedNoteTheme().getNumeric()
         );
     }
+    /**
+     * <p>Gets the root directory of this instrument's resources.</p>
+     * Such directory is made of:
+     * <ul>
+        * <li><b>instrument_style.json - as described in {@link InstrumentThemeLoader}</b></li>
+        * <li><b>note</b> - contains note_bg.png and note.png</li>
+     * </ul>
+     * @return The resource location of this instrument
+     */
     protected abstract ResourceLocation getInstrumentResourcesLocation();
     protected InstrumentOptionsScreen initInstrumentOptionsScreen() {
         return new InstrumentOptionsScreen(title, true, this);
@@ -44,11 +57,22 @@ public abstract class AbstractInstrumentScreen extends Screen {
     // Any subclass must make their own LyreThemeLoader
     protected abstract InstrumentThemeLoader getThemeLoader();
 
+    /**
+     * <p>Gets the sound array used by this instrument.
+     * Its length must be equal to this Note Grid's {@code row*column}.</p>
+     * Each sound is used on press by the their index on the grid.
+     * @return The array of sounds used by this instruments.
+     */
     public abstract SoundEvent[] getSounds();
     protected SoundEvent[] getSoundsFromObjectArr(final RegistryObject<SoundEvent>[] sounds) {
         return Stream.of(sounds).map((sound) -> sound.get()).toArray(SoundEvent[]::new);
     }
     
+    /**
+     * @param path The desired path to obtain from the root directory
+     * @return The resource contained in this instrument's root directory
+     * @see {@link AbstractInstrumentScreen#getInstrumentResourcesLocation()}
+     */
     protected ResourceLocation getResourceFromRoot(final String path) {
         return new ResourceLocation(
             getInstrumentResourcesLocation().getNamespace(),
@@ -74,6 +98,12 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
         optionsScreen.init(minecraft, width, height);
     }
+    /**
+     * Initializes a new button responsible for popping up the customize menu for this instrument.
+     * Called during {@link Screen#init}.
+     * @param vertOffset The vertical offset at which this button will be rendered.
+     * @return A new Customize button
+     */
     protected AbstractWidget initCustomizeButton(final int vertOffset) {
         final Button button = Button.builder(
             Component.translatable("button.genshinstrument.instrumentOptions").append("..."), (btn) -> onOptionsOpen()
@@ -121,6 +151,11 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
 
+    /**
+     * Recursively sets all buttons' {@link Button#active active} field in {@code container} to be the given state.
+     * @param container The container to apply this method to
+     * @param active The state of the button's active field
+     */
     protected static void setChildrenActive(final ContainerEventHandler container, final boolean active) {
         for (final GuiEventListener child : container.children())
             if (child instanceof Button)
@@ -159,6 +194,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
             onOptionsClose();
 
         return result;
+        
     }
     @Override
     public boolean keyReleased(int pKeyCode, int pScanCode, int pModifiers) {

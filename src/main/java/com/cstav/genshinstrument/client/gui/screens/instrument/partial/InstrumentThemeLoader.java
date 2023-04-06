@@ -20,6 +20,16 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
+/**
+ * <p>Responsible for loading and processing the instrument style JSON object
+ * (commonly used as {@code instrument_style.json}).</p>
+ * It contains:
+ * <ul>
+ * <li><b>note_theme</b> - An array representing RGB values. Used for the Note Grid's text.</li>
+ * <li><b>note_pressed_theme</b> - An array representing RGB values. Used for the Note Grid's text when pressed.</li>
+ * </ul>
+ * This class must be initialized during the Mod even bus to load at game startup.
+ */
 @OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(modid = Main.MODID, bus = Bus.MOD, value = Dist.CLIENT)
 public class InstrumentThemeLoader {
@@ -30,8 +40,14 @@ public class InstrumentThemeLoader {
     private RGBColor noteTheme, pressedNoteTheme;
     private LyreThemeLoadedEvent onThemeChanged;
     
-    public InstrumentThemeLoader(ResourceLocation lyreStyleLocation, RGBColor defNoteTheme, RGBColor defPressedNoteTheme) {
-        this.lyreStyleLocation = lyreStyleLocation;
+    /**
+     * Initializes a new Instrument Theme Loader and subsribes it to the resource load event.
+     * @param instrumentStyleLocation The location of the instrument's JSON styler
+     * @param defNoteTheme The default note theme
+     * @param defPressedNoteTheme The default note theme for when the note is pressed
+     */
+    public InstrumentThemeLoader(ResourceLocation instrumentStyleLocation, RGBColor defNoteTheme, RGBColor defPressedNoteTheme) {
+        this.lyreStyleLocation = instrumentStyleLocation;
         noteTheme = this.defNoteTheme = defNoteTheme;
         pressedNoteTheme = this.defPressedNoteTheme = defPressedNoteTheme;
 

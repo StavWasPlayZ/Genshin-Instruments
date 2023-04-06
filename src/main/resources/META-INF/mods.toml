@@ -29,7 +29,10 @@ displayName="Genshin Instruments" #mandatory
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="genshinstrument.png" #optional
 # A text field displayed in the mod UI
-# credits="Thanks for this example mod goes to Java" #optional
+credits='''
+All sounds and most ideas were derived and taken from Genshin Impact
+and Specy's AMAZING music website - https://specy.github.io/genshinMusic
+''' #optional
 # A text field displayed in the mod UI
 authors="Stav (IGN StavWasPlayZ)" #optional
 # Display Test controls the display for your mod in the server connection screen
@@ -42,9 +45,9 @@ authors="Stav (IGN StavWasPlayZ)" #optional
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-A mod that brings the best Genshin instruments to Minecraft!
+A mod that brings Genshin Impact's instruments to Minecraft!
 
-This is my, StavWasPlayZ's first ever published mod, and I am quite proud of it :')
+This is my first ever published mod, and I am quite proud of it :')
 Hope you enjoy it as much as I do!!
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
