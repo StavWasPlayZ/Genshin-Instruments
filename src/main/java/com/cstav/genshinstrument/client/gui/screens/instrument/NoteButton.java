@@ -2,7 +2,6 @@ package com.cstav.genshinstrument.client.gui.screens.instrument;
 
 import java.util.function.Supplier;
 
-import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.client.gui.screens.instrument.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.lyre.InstrumentPacket;
@@ -24,19 +23,10 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class NoteButton extends Button {
-    public static final ResourceLocation NOTE_BG_LOCATION = new ResourceLocation(Main.MODID, "textures/gui/lyre/note/note_bg.png"),
-        NOTE_LOCATION = new ResourceLocation(Main.MODID, "textures/gui/lyre/note/note.png");
-
+    public static final String NOTE_FILENAME = "note.png", NOTE_BG_FILENAME = "note_bg.png";
     private static final float PRESS_ANIM_SECS = .15f;
     private static final int TARGET_SCALE_AMOUNT = 8;
     
-
-    public static ResourceLocation getNoteLocation() {
-        return NOTE_LOCATION;
-    }
-    public static ResourceLocation getNoteBgLocation() {
-        return NOTE_BG_LOCATION;
-    }
     public static int getNoteTextureWidth() {
         return 56;
     }
@@ -55,15 +45,16 @@ public class NoteButton extends Button {
     }
     
 
-    final Minecraft minecraft = Minecraft.getInstance();
+    protected final Minecraft minecraft = Minecraft.getInstance();
 
-    final SoundEvent sound;
-    final int row, column;
-    float pitch;
-    final Supplier<Integer> colorThemeSupplier, pressedColorThemeSupplier;
+    protected final SoundEvent sound;
+    protected final int row, column;
+    protected float pitch;
+    protected final Supplier<Integer> colorThemeSupplier, pressedColorThemeSupplier;
+    protected final ResourceLocation noteLocation, noteBgLocation;
     
     public NoteButton(int row, int column, SoundEvent sound, NoteLabelSupplier labelSupplier,
-      Supplier<Integer> colorTheme, Supplier<Integer> pressedThemeColor) {
+      ResourceLocation noteResourcesLocation, Supplier<Integer> colorTheme, Supplier<Integer> pressedThemeColor) {
         super(Button.builder(labelSupplier.get(row, column), (iAmADissapointmentAndAFailureToMyParents) -> {})
             .size(getSize(), getSize())
         );
@@ -72,8 +63,13 @@ public class NoteButton extends Button {
         this.column = column;
         this.colorThemeSupplier = colorTheme;
         this.sound = sound;
-        // note = row + column * AbstractInstrumentScreen.ROWS;
+
         this.pressedColorThemeSupplier = pressedThemeColor;
+        this.noteLocation = new ResourceLocation(noteResourcesLocation.getNamespace(),
+            noteResourcesLocation.getPath()+"/"+NOTE_FILENAME);
+        this.noteBgLocation = new ResourceLocation(noteResourcesLocation.getNamespace(),
+            noteResourcesLocation.getPath()+"/"+NOTE_BG_FILENAME);
+
         //TODO: Load pitch from preferences
         pitch = 1;
     }
@@ -97,7 +93,7 @@ public class NoteButton extends Button {
     @Override
     public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
         // Button
-        displaySprite(getNoteBgLocation());
+        displaySprite(noteBgLocation);
 
         pressAnimationFrame();
 
@@ -109,7 +105,7 @@ public class NoteButton extends Button {
         );
 
         // Note
-        displaySprite(getNoteLocation());
+        displaySprite(noteLocation);
         final int noteWidth = width/2, noteHeight = height/2;
 
         GuiComponent.blit(pPoseStack,

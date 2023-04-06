@@ -20,14 +20,17 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 //NOTE: There just to make it load on mod startup
 @EventBusSubscriber(bus = Bus.MOD, value = Dist.CLIENT)
 public class LyreScreen extends AbstractInstrumentScreen {
+    @Override
+    protected ResourceLocation getInstrumentResourcesLocation() {
+        return new ResourceLocation(Main.MODID, "textures/gui/instrument/lyre");
+    }
+    
     private static final InstrumentThemeLoader THEME_LOADER = new InstrumentThemeLoader(
-        new ResourceLocation(Main.MODID, "textures/gui/lyre/lyre_style.json"),
+        new ResourceLocation(Main.MODID, "textures/gui/instrument/lyre/instrument_style.json"),
         new RGBColor(255, 249, 239), new RGBColor(154, 228, 212)
     );
-
-
     @Override
-    public InstrumentThemeLoader getThemeLoader() {
+    protected InstrumentThemeLoader getThemeLoader() {
         return THEME_LOADER;
     }
 
@@ -35,6 +38,7 @@ public class LyreScreen extends AbstractInstrumentScreen {
     public SoundEvent[] getSounds() {
         return Stream.of(ModSounds.LYRE_NOTE_SOUNDS).map((sound) -> sound.get()).toArray(SoundEvent[]::new);
     }
+
 
 
     public static void open() {

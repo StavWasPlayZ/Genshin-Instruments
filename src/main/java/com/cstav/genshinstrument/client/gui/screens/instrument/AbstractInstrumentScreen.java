@@ -14,29 +14,40 @@ import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractInstrumentScreen extends Screen {
+    public static final String NOTE_DIR = "note";
     public static final int ROWS = 7, COLUMNS = 3;
 
-
+    
     // Abstract implementations
     public NoteGrid initNoteGrid() {
         return new NoteGrid(
             ROWS, COLUMNS, getSounds(),
+            getResourceFromRoot(NOTE_DIR),
             () -> getThemeLoader().getNoteTheme().getNumeric(),
             () -> getThemeLoader().getPressedNoteTheme().getNumeric()
         );
     }
-    public InstrumentOptionsScreen initInstrumentOptionsScreen() {
+    protected abstract ResourceLocation getInstrumentResourcesLocation();
+    protected InstrumentOptionsScreen initInstrumentOptionsScreen() {
         return new InstrumentOptionsScreen(title, true, this);
     }
     public abstract SoundEvent[] getSounds();
     // Any subclass must make their own LyreThemeLoader
-    public abstract InstrumentThemeLoader getThemeLoader();
+    protected abstract InstrumentThemeLoader getThemeLoader();
+
+    protected ResourceLocation getResourceFromRoot(final String path) {
+        return new ResourceLocation(
+            getInstrumentResourcesLocation().getNamespace(),
+            getInstrumentResourcesLocation().getPath() + "/" + path
+        );
+    }
 
 
     public AbstractInstrumentScreen() {
@@ -45,7 +56,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
 
     public final NoteGrid noteGrid = initNoteGrid();
-    final InstrumentOptionsScreen optionsScreen = initInstrumentOptionsScreen();
+    protected final InstrumentOptionsScreen optionsScreen = initInstrumentOptionsScreen();
 
     @Override
     protected void init() {
@@ -56,7 +67,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
         optionsScreen.init(minecraft, width, height);
     }
-    AbstractWidget initCustomizeButton(final int vertOffset) {
+    protected AbstractWidget initCustomizeButton(final int vertOffset) {
         final Button button = Button.builder(
             Component.translatable("button.genshinstrument.instrumentOptions").append("..."), (btn) -> onOptionsOpen()
         )
@@ -75,10 +86,10 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
 
-    void onOptionsOpen() {
+    protected void onOptionsOpen() {
         setSettingsOpen(true);
     }
-    void onOptionsClose() {
+    protected void onOptionsClose() {
         setSettingsOpen(false);
     }
     private void setSettingsOpen(final boolean open) {
@@ -103,7 +114,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
 
-    static void setChildrenActive(final ContainerEventHandler container, final boolean active) {
+    protected static void setChildrenActive(final ContainerEventHandler container, final boolean active) {
         for (final GuiEventListener child : container.children())
             if (child instanceof Button)
                 ((Button)child).active = active;
@@ -162,17 +173,5 @@ public abstract class AbstractInstrumentScreen extends Screen {
     public boolean isPauseScreen() {
         return false;
     }
-
-
-    // public static void open(final Class<? extends AbstractInstrumentScreen> instrumentScreen) {
-    //     try {
-    //         Minecraft.getInstance().setScreen(instrumentScreen.getDeclaredConstructor().newInstance());
-    //     } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-    //             | NoSuchMethodException | SecurityException e) {
-    //         LOGGER.error(
-    //             "Tried to open instrument screen " + instrumentScreen.getSimpleName() + ", but met with failure"
-    //         , e);
-    //     }
-    // }
 
 }

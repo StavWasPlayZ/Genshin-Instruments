@@ -9,6 +9,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.FrameWidget;
 import net.minecraft.client.gui.components.GridWidget;
 import net.minecraft.client.gui.components.GridWidget.RowHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -21,8 +22,8 @@ public class NoteGrid implements Iterable<NoteButton> {
     private final NoteButton[][] notes;
     public final int rows, columns;
 
-    public NoteGrid(final int rows, final int columns, final SoundEvent[] sounds,
-      final Supplier<Integer> colorThemeSupplier, final Supplier<Integer> pressedThemeSupplier) {
+    public NoteGrid(int rows, int columns, SoundEvent[] sounds,
+      ResourceLocation noteResourcesLocation, Supplier<Integer> colorThemeSupplier, Supplier<Integer> pressedThemeSupplier) {
         this.rows = rows;
         this.columns = columns;
 
@@ -31,18 +32,18 @@ public class NoteGrid implements Iterable<NoteButton> {
             final NoteButton[] buttonRow = new NoteButton[rows];
 
             for (int j = 0; j < rows; j++)
-                buttonRow[j] = createNote(j, i, sounds, colorThemeSupplier, pressedThemeSupplier);
+                buttonRow[j] = createNote(j, i, sounds, noteResourcesLocation, colorThemeSupplier, pressedThemeSupplier);
 
             notes[i] = buttonRow;
         }
     }
     
-    NoteButton createNote(final int row, final int column, final SoundEvent[] sounds,
-      final Supplier<Integer> colorThemeSupplier, final Supplier<Integer> pressedThemeSupplier) {
+    NoteButton createNote(int row, int column, SoundEvent[] sounds,
+      ResourceLocation noteResourceLocation, Supplier<Integer> colorThemeSupplier, Supplier<Integer> pressedThemeSupplier) {
         return new NoteButton(row, column, sounds[row + column * AbstractInstrumentScreen.ROWS],
             //TODO: Add option in lyre settings screen
             Enum.valueOf(NoteLabel.class, "KEYBOARD_LAYOUT").getLabelSupplier(),
-            colorThemeSupplier, pressedThemeSupplier
+            noteResourceLocation, colorThemeSupplier, pressedThemeSupplier
         );
     }
 
