@@ -1,0 +1,30 @@
+{
+    "genshinstrument.itemGroup.instruments": "Instruments",
+
+    "item.genshinstrument.lyre": "Lyre",
+
+    "soundCategory.record": "Instruments",
+
+
+    
+    "button.genshinstrument.instrumentOptions": "Instrument Options",
+
+    
+    "button.genshinstrument.label": "Note label",
+
+    "button.genshinstrument.label.do_re_mi": "Do Re Mi",
+
+    "genshinstrument.lyre.label.do": "Do",
+    "genshinstrument.lyre.label.re": "Re",
+    "genshinstrument.lyre.label.mi": "Mi",
+    "genshinstrument.lyre.label.fa": "Fa",
+    "genshinstrument.lyre.label.so": "So",
+    "genshinstrument.lyre.label.la": "La",
+    "genshinstrument.lyre.label.ti": "Ti",
+
+
+    "button.genshinstrument.label.keyboard_layout": "Keyboard",
+    "button.genshinstrument.label.abc": "ABC",
+    "button.genshinstrument.label.none": "No Label"
+
+}

@@ -1,0 +1,86 @@
+{
+    "lyre_note_0": {
+        "catrgory": "player",
+        "sounds": ["genshinstrument:lyre/0"]
+    },
+    "lyre_note_1": {
+        "category": "player",
+        "sounds": ["genshinstrument:lyre/1"]
+    },
+    "lyre_note_2": {
+        "category": "player",
+        "sounds": ["genshinstrument:lyre/2"]
+    },
+    "lyre_note_3": {
+        "category": "player",
+        "sounds": ["genshinstrument:lyre/3"]
+    },
+    "lyre_note_4": {
+        "category": "player",
+        "sounds": ["genshinstrument:lyre/4"]
+    },
+    "lyre_note_5": {
+        "category": "player",
+        "sounds": ["genshinstrument:lyre/5"]
+    },
+    "lyre_note_6": {
+        "category": "player",
+        "sounds": ["genshinstrument:lyre/6"]
+    },
+    "lyre_note_7": {
+        "category": "player",
+        "sounds": ["genshinstrument:lyre/7"]
+    },
+    "lyre_note_8": {
+        "category": "player",
+        "sounds": ["genshinstrument:lyre/8"]
+    },
+    "lyre_note_9": {
+        "category": "player",
+        "sounds": ["genshinstrument:lyre/9"]
+    },
+    "lyre_note_10": {
+        "category": "player",
+        "sounds": ["genshinstrument:lyre/10"]
+    },
+    "lyre_note_11": {
+        "category": "player",
+        "sounds": ["genshinstrument:lyre/11"]
+    },
+    "lyre_note_12": {
+        "category": "player",
+        "sounds": ["genshinstrument:lyre/12"]
+    },
+    "lyre_note_13": {
+        "category": "player",
+        "sounds": ["genshinstrument:lyre/13"]
+    },
+    "lyre_note_14": {
+        "category": "player",
+        "sounds": ["genshinstrument:lyre/14"]
+    },
+    "lyre_note_15": {
+        "category": "player",
+        "sounds": ["genshinstrument:lyre/15"]
+    },
+    "lyre_note_16": {
+        "category": "player",
+        "sounds": ["genshinstrument:lyre/16"]
+    },
+    "lyre_note_17": {
+        "category": "player",
+        "sounds": ["genshinstrument:lyre/17"]
+    },
+    "lyre_note_18": {
+        "category": "player",
+        "sounds": ["genshinstrument:lyre/18"]
+    },
+    "lyre_note_19": {
+        "category": "player",
+        "sounds": ["genshinstrument:lyre/19"]
+    },
+    "lyre_note_20": {
+        "category": "player",
+        "sounds": ["genshinstrument:lyre/20"]
+    }
+}
