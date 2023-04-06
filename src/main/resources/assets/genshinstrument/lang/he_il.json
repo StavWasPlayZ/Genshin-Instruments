@@ -1,0 +1,23 @@
+{
+    "genshinstrument.itemGroup.instruments": "כלי נגינה",
+
+    "item.genshinstrument.lyre": "נבל",
+    "item.genshinstrument.zither": "ציטר",
+
+    "soundCategory.record": "כלי נגינה",
+
+
+    
+    "button.genshinstrument.instrumentOptions": "אפשרויות כלי נגינה",
+
+    
+    "button.genshinstrument.label": "תגיות תווים",
+    "button.genshinstrument.pitch": "גובה צליל",
+
+    "button.genshinstrument.label.do_re_mi": "דו רה מי",
+
+
+    "button.genshinstrument.label.keyboard_layout": "מקלדת",
+    "button.genshinstrument.label.none": "ללא תגית"
+
+}

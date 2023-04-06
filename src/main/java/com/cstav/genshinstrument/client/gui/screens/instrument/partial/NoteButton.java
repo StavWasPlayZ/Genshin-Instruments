@@ -1,8 +1,8 @@
-package com.cstav.genshinstrument.client.gui.screens.instrument;
+package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
 
 import java.util.function.Supplier;
 
-import com.cstav.genshinstrument.client.gui.screens.instrument.label.NoteLabelSupplier;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.lyre.InstrumentPacket;
 import com.mojang.blaze3d.systems.RenderSystem;

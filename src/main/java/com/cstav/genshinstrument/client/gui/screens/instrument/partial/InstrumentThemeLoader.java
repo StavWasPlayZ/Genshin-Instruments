@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.client.gui.screens.instrument;
+package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
 
 import java.io.IOException;
 import java.util.ArrayList;

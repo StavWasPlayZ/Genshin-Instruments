@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.client.gui.screens.instrument.lyre;
+package com.cstav.genshinstrument.client.gui.screens.instrument.zither;
 
 import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
@@ -17,15 +17,15 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @OnlyIn(Dist.CLIENT)
 //NOTE: There just to make it load on mod startup
 @EventBusSubscriber(bus = Bus.MOD, value = Dist.CLIENT)
-public class LyreScreen extends AbstractInstrumentScreen {
+public class ZitherScreen extends AbstractInstrumentScreen {
     @Override
     protected ResourceLocation getInstrumentResourcesLocation() {
-        return new ResourceLocation(Main.MODID, "textures/gui/instrument/lyre");
+        return new ResourceLocation(Main.MODID, "textures/gui/instrument/zither");
     }
     
     private static final InstrumentThemeLoader THEME_LOADER = new InstrumentThemeLoader(
-        new ResourceLocation(Main.MODID, "textures/gui/instrument/lyre/instrument_style.json"),
-        new RGBColor(255, 249, 239), new RGBColor(154, 228, 212)
+        new ResourceLocation(Main.MODID, "textures/gui/instrument/zither/instrument_style.json"),
+        new RGBColor(255, 249, 239), new RGBColor(255, 249, 239)
     );
     @Override
     protected InstrumentThemeLoader getThemeLoader() {
@@ -34,13 +34,13 @@ public class LyreScreen extends AbstractInstrumentScreen {
 
     @Override
     public SoundEvent[] getSounds() {
-        return getSoundsFromObjectArr(ModSounds.LYRE_NOTE_SOUNDS);
+        return getSoundsFromObjectArr(ModSounds.ZITHER_NEW_SOUNDS);
     }
 
 
 
     public static void open() {
-        Minecraft.getInstance().setScreen(new LyreScreen());
+        Minecraft.getInstance().setScreen(new ZitherScreen());
     }
     
 }

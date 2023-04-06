@@ -1,9 +1,9 @@
-package com.cstav.genshinstrument.client.gui.screens.instrument;
+package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
 
 import java.util.Iterator;
 import java.util.function.Supplier;
 
-import com.cstav.genshinstrument.client.gui.screens.instrument.label.NoteLabel;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteLabel;
 
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.FrameWidget;

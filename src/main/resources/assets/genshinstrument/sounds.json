@@ -82,5 +82,91 @@
     "lyre_note_20": {
         "category": "player",
         "sounds": ["genshinstrument:lyre/20"]
+    },
+
+
+    "zither_new_note_0": {
+        "catrgory": "player",
+        "sounds": ["genshinstrument:zither_new/0"]
+    },
+    "zither_new_note_1": {
+        "category": "player",
+        "sounds": ["genshinstrument:zither_new/1"]
+    },
+    "zither_new_note_2": {
+        "category": "player",
+        "sounds": ["genshinstrument:zither_new/2"]
+    },
+    "zither_new_note_3": {
+        "category": "player",
+        "sounds": ["genshinstrument:zither_new/3"]
+    },
+    "zither_new_note_4": {
+        "category": "player",
+        "sounds": ["genshinstrument:zither_new/4"]
+    },
+    "zither_new_note_5": {
+        "category": "player",
+        "sounds": ["genshinstrument:zither_new/5"]
+    },
+    "zither_new_note_6": {
+        "category": "player",
+        "sounds": ["genshinstrument:zither_new/6"]
+    },
+    "zither_new_note_7": {
+        "category": "player",
+        "sounds": ["genshinstrument:zither_new/7"]
+    },
+    "zither_new_note_8": {
+        "category": "player",
+        "sounds": ["genshinstrument:zither_new/8"]
+    },
+    "zither_new_note_9": {
+        "category": "player",
+        "sounds": ["genshinstrument:zither_new/9"]
+    },
+    "zither_new_note_10": {
+        "category": "player",
+        "sounds": ["genshinstrument:zither_new/10"]
+    },
+    "zither_new_note_11": {
+        "category": "player",
+        "sounds": ["genshinstrument:zither_new/11"]
+    },
+    "zither_new_note_12": {
+        "category": "player",
+        "sounds": ["genshinstrument:zither_new/12"]
+    },
+    "zither_new_note_13": {
+        "category": "player",
+        "sounds": ["genshinstrument:zither_new/13"]
+    },
+    "zither_new_note_14": {
+        "category": "player",
+        "sounds": ["genshinstrument:zither_new/14"]
+    },
+    "zither_new_note_15": {
+        "category": "player",
+        "sounds": ["genshinstrument:zither_new/15"]
+    },
+    "zither_new_note_16": {
+        "category": "player",
+        "sounds": ["genshinstrument:zither_new/16"]
+    },
+    "zither_new_note_17": {
+        "category": "player",
+        "sounds": ["genshinstrument:zither_new/17"]
+    },
+    "zither_new_note_18": {
+        "category": "player",
+        "sounds": ["genshinstrument:zither_new/18"]
+    },
+    "zither_new_note_19": {
+        "category": "player",
+        "sounds": ["genshinstrument:zither_new/19"]
+    },
+    "zither_new_note_20": {
+        "category": "player",
+        "sounds": ["genshinstrument:zither_new/20"]
     }
 }

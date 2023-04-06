@@ -1,4 +1,6 @@
-package com.cstav.genshinstrument.client.gui.screens.instrument;
+package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
+
+import java.util.stream.Stream;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -18,6 +20,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.RegistryObject;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractInstrumentScreen extends Screen {
@@ -38,10 +41,14 @@ public abstract class AbstractInstrumentScreen extends Screen {
     protected InstrumentOptionsScreen initInstrumentOptionsScreen() {
         return new InstrumentOptionsScreen(title, true, this);
     }
-    public abstract SoundEvent[] getSounds();
     // Any subclass must make their own LyreThemeLoader
     protected abstract InstrumentThemeLoader getThemeLoader();
 
+    public abstract SoundEvent[] getSounds();
+    protected SoundEvent[] getSoundsFromObjectArr(final RegistryObject<SoundEvent>[] sounds) {
+        return Stream.of(sounds).map((sound) -> sound.get()).toArray(SoundEvent[]::new);
+    }
+    
     protected ResourceLocation getResourceFromRoot(final String path) {
         return new ResourceLocation(
             getInstrumentResourcesLocation().getNamespace(),

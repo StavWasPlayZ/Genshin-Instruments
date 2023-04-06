@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.client.gui.screens.instrument.label;
+package com.cstav.genshinstrument.client.gui.screens.instrument.partial.label;
 
 import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
 

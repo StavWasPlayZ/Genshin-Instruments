@@ -2,8 +2,8 @@ package com.cstav.genshinstrument.client.gui.screens.options;
 
 import javax.annotation.Nullable;
 
-import com.cstav.genshinstrument.client.gui.screens.instrument.AbstractInstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screens.instrument.label.NoteLabel;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteLabel;
 import com.cstav.genshinstrument.networking.packets.lyre.InstrumentPacket;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -73,7 +73,7 @@ public class InstrumentOptionsScreen extends Screen {
 
         public PitchSlider() {
             super(0, 0, getButtonWidth(),
-                23, Component.translatable("Pitch: "), Component.empty(),
+                23, Component.translatable("button.genshinstrument.pitch").append(": "), Component.empty(),
                 InstrumentPacket.MIN_PITCH, InstrumentPacket.MAX_PITCH,
                 //TODO: Read from file
                 1,

@@ -1,11 +1,9 @@
 package com.cstav.genshinstrument.item;
 
 import com.cstav.genshinstrument.Main;
-import com.cstav.genshinstrument.item.partials.LyreItem;
 
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Item.Properties;
 import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -25,9 +23,11 @@ public class ModItems {
 
     public static final RegistryObject<Item>
         LYRE = ITEMS.register("lyre", () ->
-            new LyreItem(new Properties()
-                .stacksTo(1))
-            )
+            new InstrumentItem((player) -> InstrumentItem.sendOpenRequest(player, "lyre"))
+        ),
+        ZITHER = ITEMS.register("zither", () ->
+            new InstrumentItem((player) -> InstrumentItem.sendOpenRequest(player, "zither"))
+        )
     ;
 
 

@@ -1,7 +1,7 @@
 package com.cstav.genshinstrument.sounds;
 
 import com.cstav.genshinstrument.Main;
-import com.cstav.genshinstrument.client.gui.screens.instrument.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -17,20 +17,23 @@ public class ModSounds {
         SOUNDS.register(bus);
     }
 
-    public static RegistryObject<SoundEvent> register(final String name, final String locPrefix) {
+    public static RegistryObject<SoundEvent> register(final String name) {
         return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Main.MODID, name)));
     }
 
-    private static final String LYRE_NOTES_NAME_PREFIX = "lyre_note_";
-    public static final RegistryObject<SoundEvent>[] LYRE_NOTE_SOUNDS = lyreNotes();
+
+    public static final RegistryObject<SoundEvent>[]
+        LYRE_NOTE_SOUNDS = createInstrumentNotes("lyre"),
+        ZITHER_NEW_SOUNDS = createInstrumentNotes("zither_new")
+    ;
 
 
     @SuppressWarnings("unchecked")
-    private static RegistryObject<SoundEvent>[] lyreNotes() {
+    public static RegistryObject<SoundEvent>[] createInstrumentNotes(final String namePrefix) {
         final RegistryObject<SoundEvent>[] sounds = new RegistryObject[AbstractInstrumentScreen.ROWS * AbstractInstrumentScreen.COLUMNS];
 
         for (int i = 0; i < sounds.length; i++)
-            sounds[i] = register(LYRE_NOTES_NAME_PREFIX+i, "lyre");
+            sounds[i] = register(namePrefix+"_note_"+i);
 
         return sounds;
     }

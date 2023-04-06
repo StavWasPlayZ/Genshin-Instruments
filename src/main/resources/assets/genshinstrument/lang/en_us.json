@@ -2,6 +2,7 @@
     "genshinstrument.itemGroup.instruments": "Instruments",
 
     "item.genshinstrument.lyre": "Lyre",
+    "item.genshinstrument.zither": "Zither",
 
     "soundCategory.record": "Instruments",
 
@@ -11,6 +12,8 @@
 
     
     "button.genshinstrument.label": "Note labels",
+    "button.genshinstrument.pitch": "Pitch",
+
 
     "button.genshinstrument.label.do_re_mi": "Do Re Mi",
 
