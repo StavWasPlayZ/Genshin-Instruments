@@ -2,9 +2,9 @@ package com.cstav.genshinstrument.client.gui.screens.options;
 
 import javax.annotation.Nullable;
 
-import com.cstav.genshinstrument.client.gui.screens.lyre.LyreScreen;
-import com.cstav.genshinstrument.client.gui.screens.lyre.label.NoteLabel;
-import com.cstav.genshinstrument.networking.packets.lyre.LyrePacket;
+import com.cstav.genshinstrument.client.gui.screens.instrument.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.label.NoteLabel;
+import com.cstav.genshinstrument.networking.packets.lyre.InstrumentPacket;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.gui.components.CycleButton;
@@ -31,9 +31,9 @@ public class InstrumentOptionsScreen extends Screen {
 
     final boolean isOverlay;
     public boolean active;
-    @Nullable LyreScreen screen;
+    @Nullable AbstractInstrumentScreen screen;
 
-    public InstrumentOptionsScreen(Component pTitle, final boolean isOverlay, @Nullable LyreScreen screen) {
+    public InstrumentOptionsScreen(Component pTitle, final boolean isOverlay, @Nullable AbstractInstrumentScreen screen) {
         super(pTitle);
         this.isOverlay = isOverlay;
         active = !isOverlay;
@@ -74,7 +74,7 @@ public class InstrumentOptionsScreen extends Screen {
         public PitchSlider() {
             super(0, 0, getButtonWidth(),
                 23, Component.translatable("Pitch: "), Component.empty(),
-                LyrePacket.MIN_PITCH, LyrePacket.MAX_PITCH,
+                InstrumentPacket.MIN_PITCH, InstrumentPacket.MAX_PITCH,
                 //TODO: Read from file
                 1,
                 0.1, 0,
@@ -82,7 +82,6 @@ public class InstrumentOptionsScreen extends Screen {
             );
         }
 
-        @SuppressWarnings("null")
         @Override
         protected void applyValue() {
             if (screen != null)

@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.client.gui.screens.lyre;
+package com.cstav.genshinstrument.client.gui.screens.instrument;
 
 import java.io.IOException;
 import java.util.ArrayList;

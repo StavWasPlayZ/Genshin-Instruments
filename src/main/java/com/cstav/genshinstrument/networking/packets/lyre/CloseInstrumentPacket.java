@@ -9,11 +9,11 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class CloseLyrePacket implements ModPacket {
+public class CloseInstrumentPacket implements ModPacket {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_SERVER;
 
-    public CloseLyrePacket() {}
-    public CloseLyrePacket(FriendlyByteBuf buf) {}
+    public CloseInstrumentPacket() {}
+    public CloseInstrumentPacket(FriendlyByteBuf buf) {}
 
 
     @Override

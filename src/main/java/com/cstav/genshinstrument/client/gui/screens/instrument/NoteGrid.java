@@ -1,14 +1,15 @@
-package com.cstav.genshinstrument.client.gui.screens.lyre;
+package com.cstav.genshinstrument.client.gui.screens.instrument;
 
 import java.util.Iterator;
 import java.util.function.Supplier;
 
-import com.cstav.genshinstrument.client.gui.screens.lyre.label.NoteLabel;
+import com.cstav.genshinstrument.client.gui.screens.instrument.label.NoteLabel;
 
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.FrameWidget;
 import net.minecraft.client.gui.components.GridWidget;
 import net.minecraft.client.gui.components.GridWidget.RowHelper;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -20,7 +21,7 @@ public class NoteGrid implements Iterable<NoteButton> {
     private final NoteButton[][] notes;
     public final int rows, columns;
 
-    public NoteGrid(final int rows, final int columns,
+    public NoteGrid(final int rows, final int columns, final SoundEvent[] sounds,
       final Supplier<Integer> colorThemeSupplier, final Supplier<Integer> pressedThemeSupplier) {
         this.rows = rows;
         this.columns = columns;
@@ -30,15 +31,15 @@ public class NoteGrid implements Iterable<NoteButton> {
             final NoteButton[] buttonRow = new NoteButton[rows];
 
             for (int j = 0; j < rows; j++)
-                buttonRow[j] = createNote(j, i, colorThemeSupplier, pressedThemeSupplier);
+                buttonRow[j] = createNote(j, i, sounds, colorThemeSupplier, pressedThemeSupplier);
 
             notes[i] = buttonRow;
         }
     }
     
-    NoteButton createNote(final int row, final int column,
+    NoteButton createNote(final int row, final int column, final SoundEvent[] sounds,
       final Supplier<Integer> colorThemeSupplier, final Supplier<Integer> pressedThemeSupplier) {
-        return new NoteButton(row, column,
+        return new NoteButton(row, column, sounds[row + column * AbstractInstrumentScreen.ROWS],
             //TODO: Add option in lyre settings screen
             Enum.valueOf(NoteLabel.class, "KEYBOARD_LAYOUT").getLabelSupplier(),
             colorThemeSupplier, pressedThemeSupplier

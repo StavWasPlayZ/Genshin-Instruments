@@ -3,7 +3,7 @@ package com.cstav.genshinstrument.item.partials;
 import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.capability.lyreOpen.LyreOpenProvider;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
-import com.cstav.genshinstrument.networking.packets.lyre.OpenLyrePacket;
+import com.cstav.genshinstrument.networking.packets.lyre.OpenInstrumentPacket;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -29,9 +29,9 @@ public class LyreItem extends Item {
             pPlayer.getCapability(LyreOpenProvider.LYRE_OPEN).ifPresent((lyreOpen) ->
                 lyreOpen.setOpen(true)
             );
-            ModPacketHandler.sendToClient(new OpenLyrePacket(), (ServerPlayer)pPlayer);
+            ModPacketHandler.sendToClient(new OpenInstrumentPacket("lyre"), (ServerPlayer)pPlayer);
         }
-
+        
         return InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand));
     }
     

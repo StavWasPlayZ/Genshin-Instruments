@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.networking.packets.StopMusicPacket;
-import com.cstav.genshinstrument.networking.packets.lyre.CloseLyrePacket;
-import com.cstav.genshinstrument.networking.packets.lyre.LyrePacket;
-import com.cstav.genshinstrument.networking.packets.lyre.OpenLyrePacket;
+import com.cstav.genshinstrument.networking.packets.lyre.CloseInstrumentPacket;
+import com.cstav.genshinstrument.networking.packets.lyre.InstrumentPacket;
+import com.cstav.genshinstrument.networking.packets.lyre.OpenInstrumentPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -24,7 +24,7 @@ import net.minecraftforge.network.simple.SimpleChannel;
 public class ModPacketHandler {
     @SuppressWarnings("unchecked")
     private static final List<Class<ModPacket>> ACCEPTABLE_PACKETS = List.of(new Class[] {
-        LyrePacket.class, OpenLyrePacket.class, CloseLyrePacket.class,
+        InstrumentPacket.class, OpenInstrumentPacket.class, CloseInstrumentPacket.class,
         StopMusicPacket.class
     });
 

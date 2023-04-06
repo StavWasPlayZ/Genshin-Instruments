@@ -1,57 +1,51 @@
-package com.cstav.genshinstrument.client.gui.screens.lyre;
+package com.cstav.genshinstrument.client.gui.screens.instrument;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.client.gui.screens.options.InstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
-import com.cstav.genshinstrument.networking.packets.lyre.CloseLyrePacket;
-import com.cstav.genshinstrument.util.RGBColor;
+import com.cstav.genshinstrument.networking.packets.lyre.CloseInstrumentPacket;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @OnlyIn(Dist.CLIENT)
-//NOTE: There just to make it load on mod startup
-@EventBusSubscriber(bus = Bus.MOD)
-public class LyreScreen extends Screen {
+public abstract class AbstractInstrumentScreen extends Screen {
     public static final int ROWS = 7, COLUMNS = 3;
 
-    //TODO abstract
-    public InstrumentThemeLoader getThemeLoader() {
-        return THEME_LOADER;
+
+    // Abstract implementations
+    public NoteGrid initNoteGrid() {
+        return new NoteGrid(
+            ROWS, COLUMNS, getSounds(),
+            () -> getThemeLoader().getNoteTheme().getNumeric(),
+            () -> getThemeLoader().getPressedNoteTheme().getNumeric()
+        );
     }
+    public InstrumentOptionsScreen initInstrumentOptionsScreen() {
+        return new InstrumentOptionsScreen(title, true, this);
+    }
+    public abstract SoundEvent[] getSounds();
     // Any subclass must make their own LyreThemeLoader
-    private static final InstrumentThemeLoader THEME_LOADER = new InstrumentThemeLoader(
-        new ResourceLocation(Main.MODID, "textures/gui/lyre/lyre_style.json"),
-        new RGBColor(255, 249, 239), new RGBColor(154, 228, 212)
-    );
+    public abstract InstrumentThemeLoader getThemeLoader();
 
 
-
-    public LyreScreen() {
+    public AbstractInstrumentScreen() {
         super(Component.empty());
     }
 
 
-    public final NoteGrid noteGrid = new NoteGrid(
-        ROWS, COLUMNS,
-        () -> getThemeLoader().getNoteTheme().getNumeric(),
-        () -> getThemeLoader().getPressedNoteTheme().getNumeric()
-    );
-    final InstrumentOptionsScreen optionsScreen = new InstrumentOptionsScreen(title, true, this);
+    public final NoteGrid noteGrid = initNoteGrid();
+    final InstrumentOptionsScreen optionsScreen = initInstrumentOptionsScreen();
 
     @Override
     protected void init() {
@@ -60,10 +54,8 @@ public class LyreScreen extends Screen {
         addRenderableWidget(grid);
         addRenderableWidget(initCustomizeButton(grid.getY() - 15));
 
-        assert minecraft != null;
         optionsScreen.init(minecraft, width, height);
     }
-    // Generalizing in case of override
     AbstractWidget initCustomizeButton(final int vertOffset) {
         final Button button = Button.builder(
             Component.translatable("button.genshinstrument.instrumentOptions").append("..."), (btn) -> onOptionsOpen()
@@ -125,7 +117,7 @@ public class LyreScreen extends Screen {
         if (optionsScreen.active)
             return;
 
-        ModPacketHandler.sendToServer(new CloseLyrePacket());
+        ModPacketHandler.sendToServer(new CloseInstrumentPacket());
         super.onClose();
     }
     
@@ -172,8 +164,15 @@ public class LyreScreen extends Screen {
     }
 
 
-    public static void open() {
-        Minecraft.getInstance().setScreen(new LyreScreen());
-    }
+    // public static void open(final Class<? extends AbstractInstrumentScreen> instrumentScreen) {
+    //     try {
+    //         Minecraft.getInstance().setScreen(instrumentScreen.getDeclaredConstructor().newInstance());
+    //     } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+    //             | NoSuchMethodException | SecurityException e) {
+    //         LOGGER.error(
+    //             "Tried to open instrument screen " + instrumentScreen.getSimpleName() + ", but met with failure"
+    //         , e);
+    //     }
+    // }
 
 }

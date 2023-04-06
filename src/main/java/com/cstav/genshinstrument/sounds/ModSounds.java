@@ -1,7 +1,7 @@
 package com.cstav.genshinstrument.sounds;
 
 import com.cstav.genshinstrument.Main;
-import com.cstav.genshinstrument.client.gui.screens.lyre.LyreScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.AbstractInstrumentScreen;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -27,7 +27,7 @@ public class ModSounds {
 
     @SuppressWarnings("unchecked")
     private static RegistryObject<SoundEvent>[] lyreNotes() {
-        final RegistryObject<SoundEvent>[] sounds = new RegistryObject[LyreScreen.ROWS * LyreScreen.COLUMNS];
+        final RegistryObject<SoundEvent>[] sounds = new RegistryObject[AbstractInstrumentScreen.ROWS * AbstractInstrumentScreen.COLUMNS];
 
         for (int i = 0; i < sounds.length; i++)
             sounds[i] = register(LYRE_NOTES_NAME_PREFIX+i, "lyre");

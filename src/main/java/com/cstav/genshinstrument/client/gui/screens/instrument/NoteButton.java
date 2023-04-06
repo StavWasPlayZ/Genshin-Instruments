@@ -1,12 +1,11 @@
-package com.cstav.genshinstrument.client.gui.screens.lyre;
+package com.cstav.genshinstrument.client.gui.screens.instrument;
 
 import java.util.function.Supplier;
 
 import com.cstav.genshinstrument.Main;
-import com.cstav.genshinstrument.client.gui.screens.lyre.label.NoteLabelSupplier;
+import com.cstav.genshinstrument.client.gui.screens.instrument.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
-import com.cstav.genshinstrument.networking.packets.lyre.LyrePacket;
-import com.cstav.genshinstrument.sounds.ModSounds;
+import com.cstav.genshinstrument.networking.packets.lyre.InstrumentPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -18,6 +17,7 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -57,12 +57,13 @@ public class NoteButton extends Button {
 
     final Minecraft minecraft = Minecraft.getInstance();
 
-    final int row, column, note;
+    final SoundEvent sound;
+    final int row, column;
     float pitch;
     final Supplier<Integer> colorThemeSupplier, pressedColorThemeSupplier;
     
-    public NoteButton(final int row, final int column, final NoteLabelSupplier labelSupplier,
-      final Supplier<Integer> colorTheme, final Supplier<Integer> pressedThemeColor) {
+    public NoteButton(int row, int column, SoundEvent sound, NoteLabelSupplier labelSupplier,
+      Supplier<Integer> colorTheme, Supplier<Integer> pressedThemeColor) {
         super(Button.builder(labelSupplier.get(row, column), (iAmADissapointmentAndAFailureToMyParents) -> {})
             .size(getSize(), getSize())
         );
@@ -70,7 +71,8 @@ public class NoteButton extends Button {
         this.row = row;
         this.column = column;
         this.colorThemeSupplier = colorTheme;
-        note = row + column * LyreScreen.ROWS;
+        this.sound = sound;
+        // note = row + column * AbstractInstrumentScreen.ROWS;
         this.pressedColorThemeSupplier = pressedThemeColor;
         //TODO: Load pitch from preferences
         pitch = 1;
@@ -114,9 +116,9 @@ public class NoteButton extends Button {
             this.getX() + noteWidth/2, this.getY() + noteHeight/2,
             //NOTE: I have no clue whatsoever how on earth these 1.025 and .9 multipliers actually work.
             // Like seriously wtf why fkuaherjgaeorg i hate maths
-            noteWidth * (note % LyreScreen.ROWS) * 1.025f, (animState == NoteAnimationState.IDLE) ? 0 : noteHeight,
+            noteWidth * row * 1.025f, (animState == NoteAnimationState.IDLE) ? 0 : noteHeight,
             noteWidth, noteHeight,
-            (int)(noteWidth * (getNoteTextureWidth() / LyreScreen.ROWS) * .9f), height
+            (int)(noteWidth * (getNoteTextureWidth() / AbstractInstrumentScreen.ROWS) * .9f), height
         );
         //NOTE: No idea how to go about mapping textures.
         // Possibility to map a background and ring color for note, and theme color for
@@ -188,7 +190,7 @@ public class NoteButton extends Button {
         if (playLocally)
             playDownSound(minecraft.getSoundManager());
         
-        ModPacketHandler.sendToServer(new LyrePacket(note, pitch));
+        ModPacketHandler.sendToServer(new InstrumentPacket(sound, pitch));
         
         locked = true;
 
@@ -202,7 +204,7 @@ public class NoteButton extends Button {
     @Override
     public void playDownSound(SoundManager pHandler) {
         pHandler.play(new SimpleSoundInstance(
-            ModSounds.LYRE_NOTE_SOUNDS[note].get().getLocation(), SoundSource.RECORDS,
+            sound.getLocation(), SoundSource.RECORDS,
             1, pitch, SoundInstance.createUnseededRandom(),
             false, 0, SoundInstance.Attenuation.NONE,
             0, 0, 0, true

@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.client.gui.screens.lyre.label;
+package com.cstav.genshinstrument.client.gui.screens.instrument.label;
 
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
