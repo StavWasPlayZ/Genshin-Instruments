@@ -23,7 +23,7 @@ import net.minecraftforge.network.NetworkEvent.Context;
 
 public class InstrumentPacket implements ModPacket {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_SERVER;
-    private static final int STOP_SOUND_DISTANCE = 5;
+    private static final int STOP_SOUND_DISTANCE = 10, SOUND_DISTANCE = 23;
     public static final float MIN_PITCH = .5f, MAX_PITCH = 1.9f;
 
 
@@ -43,7 +43,7 @@ public class InstrumentPacket implements ModPacket {
     public void toBytes(final FriendlyByteBuf buf) {
         buf.writeResourceLocation(sound.getLocation());
         buf.writeBoolean(true);
-        buf.writeFloat(STOP_SOUND_DISTANCE);
+        buf.writeFloat(SOUND_DISTANCE);
         buf.writeFloat(pitch);
     }
 
@@ -68,7 +68,7 @@ public class InstrumentPacket implements ModPacket {
 
             // Play the sound to all nearby players
             level.playSound(player.self(), new BlockPos(player.position()),
-                sound, SoundSource.RECORDS, 3, pitch
+                sound, SoundSource.RECORDS, SOUND_DISTANCE, pitch
             );
 
             // Stop all nearby players' background music

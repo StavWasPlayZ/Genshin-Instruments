@@ -42,7 +42,7 @@ public class NoteButton extends Button {
             case 2 -> 46;
             case 3 -> 48;
             case 4 -> 43;
-            default -> (guiScale == 0) ? 40 : guiScale * 18;
+            default -> (guiScale == 0) ? 40 : (guiScale * 18);
         };
     }
     
