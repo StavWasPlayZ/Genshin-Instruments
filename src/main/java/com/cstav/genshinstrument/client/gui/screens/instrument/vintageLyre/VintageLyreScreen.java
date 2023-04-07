@@ -1,8 +1,9 @@
-package com.cstav.genshinstrument.client.gui.screens.instrument.zither;
+package com.cstav.genshinstrument.client.gui.screens.instrument.vintageLyre;
 
 import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.NoteGrid;
 import com.cstav.genshinstrument.sounds.ModSounds;
 import com.cstav.genshinstrument.util.RGBColor;
 
@@ -17,15 +18,15 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @OnlyIn(Dist.CLIENT)
 //NOTE: There just to make it load on mod startup
 @EventBusSubscriber(bus = Bus.MOD, value = Dist.CLIENT)
-public class ZitherScreen extends AbstractInstrumentScreen {
+public class VintageLyreScreen extends AbstractInstrumentScreen {
     @Override
     protected ResourceLocation getInstrumentResourcesLocation() {
-        return new ResourceLocation(Main.MODID, "textures/gui/instrument/zither");
+        return new ResourceLocation(Main.MODID, "textures/gui/instrument/vintage_lyre");
     }
     
     private static final InstrumentThemeLoader THEME_LOADER = new InstrumentThemeLoader(
-        new ResourceLocation(Main.MODID, "textures/gui/instrument/zither/instrument_style.json"),
-        new RGBColor(215, 195, 160), new RGBColor(255, 249, 239)
+        new ResourceLocation(Main.MODID, "textures/gui/instrument/vintage_lyre/instrument_style.json"),
+        new RGBColor(127, 179, 99), new RGBColor(255, 249, 239)
     );
     @Override
     protected InstrumentThemeLoader getThemeLoader() {
@@ -34,13 +35,25 @@ public class ZitherScreen extends AbstractInstrumentScreen {
 
     @Override
     public SoundEvent[] getSounds() {
-        return getSoundsFromObjectArr(ModSounds.ZITHER_NEW_NOTE_SOUNDS);
+        return getSoundsFromObjectArr(ModSounds.VINTAGE_LYRE_NOTE_SOUNDS);
+    }
+
+
+    
+    @Override
+    public NoteGrid initNoteGrid() {
+        return new VintageNoteGrid(
+            ROWS, COLUMNS, getSounds(),
+            getResourceFromRoot(NOTE_DIR),
+            () -> getThemeLoader().getNoteTheme().getNumeric(),
+            () -> getThemeLoader().getPressedNoteTheme().getNumeric()
+        );
     }
 
 
 
     public static void open() {
-        Minecraft.getInstance().setScreen(new ZitherScreen());
+        Minecraft.getInstance().setScreen(new VintageLyreScreen());
     }
     
 }

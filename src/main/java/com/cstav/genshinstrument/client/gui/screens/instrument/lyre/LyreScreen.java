@@ -25,7 +25,7 @@ public class LyreScreen extends AbstractInstrumentScreen {
     
     private static final InstrumentThemeLoader THEME_LOADER = new InstrumentThemeLoader(
         new ResourceLocation(Main.MODID, "textures/gui/instrument/lyre/instrument_style.json"),
-        new RGBColor(255, 249, 239), new RGBColor(154, 228, 212)
+        new RGBColor(154, 228, 212), new RGBColor(255, 249, 239)
     );
     @Override
     protected InstrumentThemeLoader getThemeLoader() {

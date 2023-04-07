@@ -168,5 +168,91 @@
     "zither_new_note_20": {
         "category": "player",
         "sounds": ["genshinstrument:zither_new/20"]
+    },
+
+
+    "vintage_lyre_note_0": {
+        "catrgory": "player",
+        "sounds": ["genshinstrument:vintage_lyre/0"]
+    },
+    "vintage_lyre_note_1": {
+        "category": "player",
+        "sounds": ["genshinstrument:vintage_lyre/1"]
+    },
+    "vintage_lyre_note_2": {
+        "category": "player",
+        "sounds": ["genshinstrument:vintage_lyre/2"]
+    },
+    "vintage_lyre_note_3": {
+        "category": "player",
+        "sounds": ["genshinstrument:vintage_lyre/3"]
+    },
+    "vintage_lyre_note_4": {
+        "category": "player",
+        "sounds": ["genshinstrument:vintage_lyre/4"]
+    },
+    "vintage_lyre_note_5": {
+        "category": "player",
+        "sounds": ["genshinstrument:vintage_lyre/5"]
+    },
+    "vintage_lyre_note_6": {
+        "category": "player",
+        "sounds": ["genshinstrument:vintage_lyre/6"]
+    },
+    "vintage_lyre_note_7": {
+        "category": "player",
+        "sounds": ["genshinstrument:vintage_lyre/7"]
+    },
+    "vintage_lyre_note_8": {
+        "category": "player",
+        "sounds": ["genshinstrument:vintage_lyre/8"]
+    },
+    "vintage_lyre_note_9": {
+        "category": "player",
+        "sounds": ["genshinstrument:vintage_lyre/9"]
+    },
+    "vintage_lyre_note_10": {
+        "category": "player",
+        "sounds": ["genshinstrument:vintage_lyre/10"]
+    },
+    "vintage_lyre_note_11": {
+        "category": "player",
+        "sounds": ["genshinstrument:vintage_lyre/11"]
+    },
+    "vintage_lyre_note_12": {
+        "category": "player",
+        "sounds": ["genshinstrument:vintage_lyre/12"]
+    },
+    "vintage_lyre_note_13": {
+        "category": "player",
+        "sounds": ["genshinstrument:vintage_lyre/13"]
+    },
+    "vintage_lyre_note_14": {
+        "category": "player",
+        "sounds": ["genshinstrument:vintage_lyre/14"]
+    },
+    "vintage_lyre_note_15": {
+        "category": "player",
+        "sounds": ["genshinstrument:vintage_lyre/15"]
+    },
+    "vintage_lyre_note_16": {
+        "category": "player",
+        "sounds": ["genshinstrument:vintage_lyre/16"]
+    },
+    "vintage_lyre_note_17": {
+        "category": "player",
+        "sounds": ["genshinstrument:vintage_lyre/17"]
+    },
+    "vintage_lyre_note_18": {
+        "category": "player",
+        "sounds": ["genshinstrument:vintage_lyre/18"]
+    },
+    "vintage_lyre_note_19": {
+        "category": "player",
+        "sounds": ["genshinstrument:vintage_lyre/19"]
+    },
+    "vintage_lyre_note_20": {
+        "category": "player",
+        "sounds": ["genshinstrument:vintage_lyre/20"]
     }
 }

@@ -24,7 +24,8 @@ public class ModSounds {
 
     public static final RegistryObject<SoundEvent>[]
         LYRE_NOTE_SOUNDS = createInstrumentNotes("lyre"),
-        ZITHER_NEW_SOUNDS = createInstrumentNotes("zither_new")
+        ZITHER_NEW_NOTE_SOUNDS = createInstrumentNotes("zither_new"),
+        VINTAGE_LYRE_NOTE_SOUNDS = createInstrumentNotes("vintage_lyre")
     ;
 
 

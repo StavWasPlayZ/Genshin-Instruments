@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.function.Supplier;
 
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteLabel;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteLabelSupplier;
 
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.FrameWidget;
@@ -45,11 +46,26 @@ public class NoteGrid implements Iterable<NoteButton> {
     
     protected NoteButton createNote(int row, int column, SoundEvent[] sounds,
       ResourceLocation noteResourceLocation, Supplier<Integer> colorThemeSupplier, Supplier<Integer> pressedThemeSupplier) {
-        return new NoteButton(row, column, sounds[row + column * AbstractInstrumentScreen.ROWS],
-            //TODO: Add option in lyre settings screen
-            Enum.valueOf(NoteLabel.class, "KEYBOARD_LAYOUT").getLabelSupplier(),
+        return new NoteButton(row, column,
+            getSoundAt(sounds, row, column), getLabelSupplier(),
             noteResourceLocation, colorThemeSupplier, pressedThemeSupplier
         );
+    }
+    /**
+     * Evaulates the sound at the given indexes, and returns it
+     * @param sounds The sound array of this instrument
+     * @param row The row of the note
+     * @param column The column of the note
+     */
+    protected static SoundEvent getSoundAt(final SoundEvent[] sounds, final int row, final int column) {
+        return sounds[row + column * AbstractInstrumentScreen.ROWS];
+    }
+    /**
+     * @return The perferred label supplier specified in this mod's configs
+     */
+    protected static NoteLabelSupplier getLabelSupplier() {
+        //TODO: Actually load from preferences
+        return Enum.valueOf(NoteLabel.class, "KEYBOARD_LAYOUT").getLabelSupplier();
     }
 
     /**

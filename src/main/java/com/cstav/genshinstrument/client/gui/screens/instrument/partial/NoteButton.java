@@ -51,7 +51,7 @@ public class NoteButton extends Button {
     protected final int row, column;
     protected float pitch;
     protected final Supplier<Integer> colorThemeSupplier, pressedColorThemeSupplier;
-    protected final ResourceLocation noteLocation, noteBgLocation;
+    protected final ResourceLocation rootLocation, noteLocation, noteBgLocation;
     
     public NoteButton(int row, int column, SoundEvent sound, NoteLabelSupplier labelSupplier,
       ResourceLocation noteResourcesLocation, Supplier<Integer> colorTheme, Supplier<Integer> pressedThemeColor) {
@@ -65,10 +65,9 @@ public class NoteButton extends Button {
         this.sound = sound;
 
         this.pressedColorThemeSupplier = pressedThemeColor;
-        this.noteLocation = new ResourceLocation(noteResourcesLocation.getNamespace(),
-            noteResourcesLocation.getPath()+"/"+NOTE_FILENAME);
-        this.noteBgLocation = new ResourceLocation(noteResourcesLocation.getNamespace(),
-            noteResourcesLocation.getPath()+"/"+NOTE_BG_FILENAME);
+        rootLocation = noteResourcesLocation;
+        this.noteLocation = getResourceFromRoot(NOTE_FILENAME);
+        this.noteBgLocation = getResourceFromRoot(NOTE_BG_FILENAME);
 
         //TODO: Load pitch from preferences
         pitch = 1;
@@ -78,6 +77,14 @@ public class NoteButton extends Button {
     }
     public void setPitch(float pitch) {
         this.pitch = pitch;
+    }
+
+    /**
+     * @param path The resource to obtain from this note's directory
+     * @see {@link AbstractInstrumentScreen#getResourceFrom(ResourceLocation, String)}
+     */
+    protected ResourceLocation getResourceFromRoot(final String path) {
+        return AbstractInstrumentScreen.getResourceFrom(rootLocation, path);
     }
 
     private int initX, initY;
@@ -99,7 +106,7 @@ public class NoteButton extends Button {
 
         GuiComponent.blit(pPoseStack,
             this.getX(), this.getY(),
-            (animState == NoteAnimationState.IDLE) ? 0 : width, 0,
+            isPlaying() ? width : 0, 0,
             width, height,
             width*2, height
         );
@@ -112,7 +119,7 @@ public class NoteButton extends Button {
             this.getX() + noteWidth/2, this.getY() + noteHeight/2,
             //NOTE: I have no clue whatsoever how on earth these 1.025 and .9 multipliers actually work.
             // Like seriously wtf why fkuaherjgaeorg i hate maths
-            noteWidth * row * 1.025f, (animState == NoteAnimationState.IDLE) ? 0 : noteHeight,
+            noteWidth * row * 1.025f, isPlaying() ? noteHeight : 0,
             noteWidth, noteHeight,
             (int)(noteWidth * (getNoteTextureWidth() / AbstractInstrumentScreen.ROWS) * .9f), height
         );
@@ -124,12 +131,12 @@ public class NoteButton extends Button {
         drawCenteredString(
             pPoseStack, minecraft.font, getMessage(),
             getX() + width/2, getY() + height/2 + 7,
-            (animState == NoteAnimationState.IDLE) ? colorThemeSupplier.get() : pressedColorThemeSupplier.get()
+            (isPlaying() ? pressedColorThemeSupplier : colorThemeSupplier).get()
         );
 
         RenderSystem.disableBlend();
     }
-    private static void displaySprite(final ResourceLocation location) {
+    protected static void displaySprite(final ResourceLocation location) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, location);
 
@@ -137,9 +144,12 @@ public class NoteButton extends Button {
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableDepthTest();
     }
+    protected boolean isPlaying() {
+        return animState != NoteAnimationState.IDLE;
+    }
 
     private void pressAnimationFrame() {
-        if (animState == NoteAnimationState.IDLE)
+        if (!isPlaying())
             return;
 
         final int fps = minecraft.getFps();

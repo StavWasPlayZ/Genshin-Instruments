@@ -72,6 +72,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * @param path The desired path to obtain from the root directory
      * @return The resource contained in this instrument's root directory
      * @see {@link AbstractInstrumentScreen#getInstrumentResourcesLocation()}
+     * @see {@link AbstractInstrumentScreen#getResourceFrom(ResourceLocation, String)}
      */
     protected ResourceLocation getResourceFromRoot(final String path) {
         return new ResourceLocation(
@@ -215,6 +216,21 @@ public abstract class AbstractInstrumentScreen extends Screen {
     @Override
     public boolean isPauseScreen() {
         return false;
+    }
+
+
+
+    //TODO: Move to general utils
+    /**
+     * @param dir The directory location at which to grab the specified resource
+     * @param path The desired path to obtain from the {@code dir}
+     * @return The resource contained in teh specified directory
+     */
+    public static ResourceLocation getResourceFrom(final ResourceLocation dir, final String path) {
+        return new ResourceLocation(
+            dir.getNamespace(),
+            dir.getPath() + "/" + path
+        );
     }
 
 }
