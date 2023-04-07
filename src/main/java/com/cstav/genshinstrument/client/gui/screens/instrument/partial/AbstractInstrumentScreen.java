@@ -65,7 +65,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
      */
     public abstract SoundEvent[] getSounds();
     protected SoundEvent[] getSoundsFromObjectArr(final RegistryObject<SoundEvent>[] sounds) {
-        return Stream.of(sounds).map((sound) -> sound.get()).toArray(SoundEvent[]::new);
+        return Stream.of(sounds).map(RegistryObject::get).toArray(SoundEvent[]::new);
     }
     
     /**

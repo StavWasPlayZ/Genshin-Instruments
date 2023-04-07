@@ -2,7 +2,7 @@ package com.cstav.genshinstrument.networking.packets.lyre;
 
 import java.util.function.Supplier;
 
-import com.cstav.genshinstrument.capability.lyreOpen.LyreOpenProvider;
+import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.networking.ModPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -21,7 +21,7 @@ public class CloseInstrumentPacket implements ModPacket {
         final Context context = supplier.get();
 
         context.enqueueWork(() ->
-            context.getSender().getCapability(LyreOpenProvider.LYRE_OPEN).ifPresent((lyreOpen) ->
+            context.getSender().getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((lyreOpen) ->
                 lyreOpen.setOpen(false)
             )
         );

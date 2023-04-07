@@ -1,11 +1,11 @@
-package com.cstav.genshinstrument.capability.lyreOpen;
+package com.cstav.genshinstrument.capability.instrumentOpen;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.capabilities.AutoRegisterCapability;
 
 @AutoRegisterCapability
-public class LyreOpen {
-    public static final String NBT_KEY = "lyreOpen";
+public class InstrumentOpen {
+    public static final String NBT_KEY = "instrumentOpen";
     private boolean isOpen = false;
 
     public boolean isOpen() {

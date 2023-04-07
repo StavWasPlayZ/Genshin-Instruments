@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import com.cstav.genshinstrument.capability.lyreOpen.LyreOpen;
-import com.cstav.genshinstrument.capability.lyreOpen.LyreOpenProvider;
+import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpen;
+import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.networking.ModPacket;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.StopMusicPacket;
@@ -57,7 +57,7 @@ public class InstrumentPacket implements ModPacket {
 
             // The player could forcibly be trying to play a sound.
             // Dunno how but ig it could happen, but we handle it here
-            final Optional<LyreOpen> lyreOpen = player.getCapability(LyreOpenProvider.LYRE_OPEN).resolve();
+            final Optional<InstrumentOpen> lyreOpen = player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).resolve();
             if (!lyreOpen.isPresent())
                 return;
             if (!lyreOpen.get().isOpen())

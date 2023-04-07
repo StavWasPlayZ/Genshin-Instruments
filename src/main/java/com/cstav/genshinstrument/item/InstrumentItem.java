@@ -1,6 +1,6 @@
 package com.cstav.genshinstrument.item;
 
-import com.cstav.genshinstrument.capability.lyreOpen.LyreOpenProvider;
+import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.lyre.OpenInstrumentPacket;
@@ -39,7 +39,7 @@ public class InstrumentItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         if (!pLevel.isClientSide) {
-            pPlayer.getCapability(LyreOpenProvider.LYRE_OPEN).ifPresent((lyreOpen) ->
+            pPlayer.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((lyreOpen) ->
                 lyreOpen.setOpen(true)
             );
             

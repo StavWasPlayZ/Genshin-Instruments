@@ -1,7 +1,7 @@
 package com.cstav.genshinstrument.capability;
 
 import com.cstav.genshinstrument.Main;
-import com.cstav.genshinstrument.capability.lyreOpen.LyreOpenProvider;
+import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -18,8 +18,8 @@ public class ModCapabilities {
     public static void registerCapabilities(final AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player) {
 
-            if (!event.getObject().getCapability(LyreOpenProvider.LYRE_OPEN).isPresent())
-                event.addCapability(new ResourceLocation(Main.MODID, "lyre_caps"), new LyreOpenProvider());
+            if (!event.getObject().getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).isPresent())
+                event.addCapability(new ResourceLocation(Main.MODID, "instrument_caps"), new InstrumentOpenProvider());
 
         }
     }
