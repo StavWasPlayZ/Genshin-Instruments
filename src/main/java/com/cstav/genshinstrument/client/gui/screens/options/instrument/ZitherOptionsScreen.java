@@ -1,5 +1,8 @@
 package com.cstav.genshinstrument.client.gui.screens.options.instrument;
 
+import java.util.function.Supplier;
+
+import com.cstav.genshinstrument.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.zither.ZitherScreen;
 import com.cstav.genshinstrument.sounds.ModSounds;
@@ -21,13 +24,9 @@ public class ZitherOptionsScreen extends InstrumentOptionsScreen {
         super(pTitle, isOverlay, screen);
     }
 
-    protected static ZitherSoundType perferredSoundType = ZitherSoundType.NEW;
-    public static ZitherSoundType getPerferredSoundType() {
+    private ZitherSoundType perferredSoundType = ModClientConfigs.ZITHER_TYPE.get();
+    public ZitherSoundType getPerferredSoundType() {
         return perferredSoundType;
-    }
-    //TODO: Call on perfer loading
-    public static void setPerferredSoundType(final ZitherSoundType perferredSoundType) {
-        ZitherOptionsScreen.perferredSoundType = perferredSoundType;
     }
 
 
@@ -45,26 +44,36 @@ public class ZitherOptionsScreen extends InstrumentOptionsScreen {
                 getButtonWidth()*2 + exposed.paddingLeft + exposed.paddingRight, getButtonHeight()
             , Component.translatable(SOUND_TYPE_KEY), this::onSoundTypeChange);
 
-        rowHelper.addChild(soundTypeButton, 2, grid.defaultCellSetting().paddingTop(9));
+        rowHelper.addChild(soundTypeButton, 2, rowHelper.newCellSettings().paddingTop(5));
     }
-    protected void onSoundTypeChange(final CycleButton<ZitherSoundType> btn, final ZitherSoundType soundType) {
+
+    private ZitherSoundType newSoundType = null;
+    private void onSoundTypeChange(final CycleButton<ZitherSoundType> btn, final ZitherSoundType soundType) {
+        newSoundType = soundType;
         if ((screen != null) && (screen instanceof ZitherScreen))
-            ((ZitherScreen)screen).noteGrid.setSoundArr(soundType.getSoundArr());
-
-        //TODO: Save to preferences
+            ((ZitherScreen)screen).noteGrid.setSoundArr(soundType.soundArr().get());
     }
 
-    
-    public static enum ZitherSoundType {
-        OLD(ModSounds.getSoundsFromArr(ModSounds.ZITHER_OLD_NOTE_SOUNDS)),
-        NEW(ModSounds.getSoundsFromArr(ModSounds.ZITHER_NEW_NOTE_SOUNDS));
+    @Override
+    protected void onSave() {
+        super.onSave();
 
-        private SoundEvent[] soundArr;
-        private ZitherSoundType(final SoundEvent[] soundType) {
+        if (newSoundType != null)
+            ModClientConfigs.ZITHER_TYPE.set(newSoundType);
+    }
+
+
+    // Loaded by Configs too, not client-only
+    public static enum ZitherSoundType {
+        OLD(() -> ModSounds.getSoundsFromArr(ModSounds.ZITHER_OLD_NOTE_SOUNDS)),
+        NEW(() -> ModSounds.getSoundsFromArr(ModSounds.ZITHER_NEW_NOTE_SOUNDS));
+    
+        private Supplier<SoundEvent[]> soundArr;
+        private ZitherSoundType(final Supplier<SoundEvent[]> soundType) {
             this.soundArr = soundType;
         }
-
-        public SoundEvent[] getSoundArr() {
+    
+        public Supplier<SoundEvent[]> soundArr() {
             return soundArr;
         }
     }

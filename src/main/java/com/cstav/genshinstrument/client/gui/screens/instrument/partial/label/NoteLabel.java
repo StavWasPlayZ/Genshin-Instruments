@@ -3,10 +3,7 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial.label;
 import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
 
 import net.minecraft.network.chat.Component;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public enum NoteLabel {
     KEYBOARD_LAYOUT((row, column) -> Component.literal(
         KeyMappings.LYRE_MAPPINGS[column][row].getDisplayName().getString().toUpperCase()

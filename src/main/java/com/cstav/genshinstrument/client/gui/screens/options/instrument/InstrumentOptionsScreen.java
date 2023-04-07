@@ -2,16 +2,19 @@ package com.cstav.genshinstrument.client.gui.screens.options.instrument;
 
 import javax.annotation.Nullable;
 
+import com.cstav.genshinstrument.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteLabel;
 import com.cstav.genshinstrument.networking.packets.lyre.InstrumentPacket;
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.FrameWidget;
 import net.minecraft.client.gui.components.GridWidget;
 import net.minecraft.client.gui.components.GridWidget.RowHelper;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -52,6 +55,11 @@ public class InstrumentOptionsScreen extends Screen {
         final RowHelper rowHelper = grid.createRowHelper(2);
 
         initOptionsGrid(grid, rowHelper);
+        rowHelper.addChild(
+            Button.builder(CommonComponents.GUI_DONE, (btn) -> onClose())
+                .width(getButtonWidth())
+                .build()
+        , 2, rowHelper.newCellSettings().paddingTop(64));
 
         grid.pack();
         FrameWidget.alignInRectangle(grid, 0, 0, width, height, 0.5f, .1f);
@@ -64,8 +72,7 @@ public class InstrumentOptionsScreen extends Screen {
         
         final CycleButton<NoteLabel> labelType = CycleButton.<NoteLabel>builder((label) -> Component.translatable(label.getKey()))
             .withValues(NoteLabel.values())
-            //TODO: Read from file
-            .withInitialValue(NoteLabel.KEYBOARD_LAYOUT)
+            .withInitialValue(ModClientConfigs.LABEL_TYPE.get())
             .create(
                 0, 0, getButtonWidth(), getButtonHeight(),
                 Component.translatable("button.genshinstrument.label"), this::onLabelChanged
@@ -80,9 +87,7 @@ public class InstrumentOptionsScreen extends Screen {
         public PitchSlider() {
             super(0, 0, getButtonWidth(),
                 23, Component.translatable("button.genshinstrument.pitch").append(": "), Component.empty(),
-                InstrumentPacket.MIN_PITCH, InstrumentPacket.MAX_PITCH,
-                //TODO: Read from file
-                1,
+                InstrumentPacket.MIN_PITCH, InstrumentPacket.MAX_PITCH, ModClientConfigs.PITCH.get(),
                 0.1, 0,
                 true
             );
@@ -90,16 +95,22 @@ public class InstrumentOptionsScreen extends Screen {
 
         @Override
         protected void applyValue() {
-            if (screen != null)
-                screen.noteGrid.forEach((note) ->
-                    note.setPitch((float)getValue())
-                );
+            onPitchChanged(this, getValue());
         }
 
     }
-    void onLabelChanged(final CycleButton<NoteLabel> button, final NoteLabel label) {
+    protected NoteLabel newLabel = null;
+    protected void onLabelChanged(final CycleButton<NoteLabel> button, final NoteLabel label) {
+        newLabel = label;
         if (screen != null)
             screen.noteGrid.forEach((note) -> note.setLabel(label.getLabelSupplier()));
+    }
+
+    protected double newPitch = -1;
+    protected void onPitchChanged(final ForgeSlider slider, final double pitch) {
+        newPitch = pitch;
+        if (screen != null)
+            screen.noteGrid.forEach((note) -> note.setPitch((float)pitch));
     }
 
 
@@ -114,6 +125,7 @@ public class InstrumentOptionsScreen extends Screen {
     }
 
 
+    //#region registration stuff
     @Override
     public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
         if (!active)
@@ -135,6 +147,7 @@ public class InstrumentOptionsScreen extends Screen {
         
         return super.mouseReleased(pMouseX, pMouseY, pButton);
     }
+    //#endregion
 
 
     @Override
@@ -143,8 +156,20 @@ public class InstrumentOptionsScreen extends Screen {
             active = false;
         else
             super.onClose();
+        
+        onSave();
+        onCloseRunnable.run();
+    }
+    private Runnable onCloseRunnable;
+    public void setOnCloseRunnable(Runnable onCloseRunnable) {
+        this.onCloseRunnable = onCloseRunnable;
+    }
 
-        //TODO: Save preferences to file
+    protected void onSave() {
+        if (newLabel != null)
+            ModClientConfigs.LABEL_TYPE.set(newLabel);
+        if (newPitch != -1)
+            ModClientConfigs.PITCH.set(newPitch);
     }
     
 }

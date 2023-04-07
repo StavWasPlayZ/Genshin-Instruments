@@ -1,7 +1,5 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
 
-import java.util.stream.Stream;
-
 import org.jetbrains.annotations.NotNull;
 
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.InstrumentOptionsScreen;
@@ -20,7 +18,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.registries.RegistryObject;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractInstrumentScreen extends Screen {
@@ -79,13 +76,19 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
 
+    protected final InstrumentOptionsScreen optionsScreen;
+    public final NoteGrid noteGrid;
+    
     public AbstractInstrumentScreen() {
         super(Component.empty());
+
+
+        optionsScreen = initInstrumentOptionsScreen();
+        optionsScreen.setOnCloseRunnable(this::onOptionsClose);
+
+        noteGrid = initNoteGrid();
     }
 
-
-    public final NoteGrid noteGrid = initNoteGrid();
-    protected final InstrumentOptionsScreen optionsScreen = initInstrumentOptionsScreen();
 
     @Override
     protected void init() {
@@ -123,6 +126,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     protected void onOptionsOpen() {
         setSettingsOpen(true);
+        closeThisTime = false;
     }
     protected void onOptionsClose() {
         setSettingsOpen(false);
@@ -163,10 +167,13 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
 
+    private boolean closeThisTime = true;
     @Override
     public void onClose() {
-        if (optionsScreen.active)
+        if (!closeThisTime) {
+            closeThisTime = true;
             return;
+        }
 
         ModPacketHandler.sendToServer(new CloseInstrumentPacket());
         super.onClose();
@@ -184,14 +191,10 @@ public abstract class AbstractInstrumentScreen extends Screen {
                 }
             
 
-        final boolean result = super.keyPressed(pKeyCode, pScanCode, pModifiers);
-
         if (optionsScreen.active)
             optionsScreen.keyPressed(pKeyCode, pScanCode, pModifiers);
-        if (!optionsScreen.active)
-            onOptionsClose();
 
-        return result;
+        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
         
     }
     @Override
@@ -213,21 +216,6 @@ public abstract class AbstractInstrumentScreen extends Screen {
     @Override
     public boolean isPauseScreen() {
         return false;
-    }
-
-
-
-    //TODO: Move to general utils
-    /**
-     * @param dir The directory location at which to grab the specified resource
-     * @param path The desired path to obtain from the {@code dir}
-     * @return The resource contained in teh specified directory
-     */
-    public static ResourceLocation getResourceFrom(final ResourceLocation dir, final String path) {
-        return new ResourceLocation(
-            dir.getNamespace(),
-            dir.getPath() + "/" + path
-        );
     }
 
 }

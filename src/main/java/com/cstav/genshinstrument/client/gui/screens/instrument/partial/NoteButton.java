@@ -2,9 +2,11 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
 
 import java.util.function.Supplier;
 
+import com.cstav.genshinstrument.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.lyre.InstrumentPacket;
+import com.cstav.genshinstrument.util.Util;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -69,8 +71,7 @@ public class NoteButton extends Button {
         this.noteLocation = getResourceFromRoot(NOTE_FILENAME);
         this.noteBgLocation = getResourceFromRoot(NOTE_BG_FILENAME);
 
-        //TODO: Load pitch from preferences
-        pitch = 1;
+        pitch = ModClientConfigs.PITCH.get().floatValue();
     }
     public void setLabel(final NoteLabelSupplier labelSupplier) {
         setMessage(labelSupplier.get(row, column));
@@ -87,7 +88,7 @@ public class NoteButton extends Button {
      * @see {@link AbstractInstrumentScreen#getResourceFrom(ResourceLocation, String)}
      */
     protected ResourceLocation getResourceFromRoot(final String path) {
-        return AbstractInstrumentScreen.getResourceFrom(rootLocation, path);
+        return Util.getResourceFrom(rootLocation, path);
     }
 
     private int initX, initY;
