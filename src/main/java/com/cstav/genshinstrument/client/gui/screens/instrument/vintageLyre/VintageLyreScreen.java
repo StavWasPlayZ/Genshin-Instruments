@@ -35,7 +35,7 @@ public class VintageLyreScreen extends AbstractInstrumentScreen {
 
     @Override
     public SoundEvent[] getSounds() {
-        return getSoundsFromObjectArr(ModSounds.VINTAGE_LYRE_NOTE_SOUNDS);
+        return ModSounds.getSoundsFromArr(ModSounds.VINTAGE_LYRE_NOTE_SOUNDS);
     }
 
 

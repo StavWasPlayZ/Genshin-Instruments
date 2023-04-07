@@ -25,11 +25,11 @@ public class ModItems {
         LYRE = ITEMS.register("lyre", () ->
             new InstrumentItem((player) -> InstrumentItem.sendOpenRequest(player, "lyre"))
         ),
-        ZITHER = ITEMS.register("zither", () ->
-            new InstrumentItem((player) -> InstrumentItem.sendOpenRequest(player, "zither"))
-        ),
         VINTAGE_LYRE = ITEMS.register("vintage_lyre", () ->
             new InstrumentItem((player) -> InstrumentItem.sendOpenRequest(player, "vintage_lyre"))
+        ),
+        ZITHER = ITEMS.register("zither", () ->
+            new InstrumentItem((player) -> InstrumentItem.sendOpenRequest(player, "zither"))
         )
     ;
 

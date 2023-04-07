@@ -1,5 +1,7 @@
 package com.cstav.genshinstrument.sounds;
 
+import java.util.stream.Stream;
+
 import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 
@@ -24,9 +26,15 @@ public class ModSounds {
 
     public static final RegistryObject<SoundEvent>[]
         LYRE_NOTE_SOUNDS = createInstrumentNotes("lyre"),
+        VINTAGE_LYRE_NOTE_SOUNDS = createInstrumentNotes("vintage_lyre"),
+
         ZITHER_NEW_NOTE_SOUNDS = createInstrumentNotes("zither_new"),
-        VINTAGE_LYRE_NOTE_SOUNDS = createInstrumentNotes("vintage_lyre")
+        ZITHER_OLD_NOTE_SOUNDS = createInstrumentNotes("zither_old")
     ;
+
+    public static SoundEvent[] getSoundsFromArr(final RegistryObject<SoundEvent>[] sounds) {
+        return Stream.of(sounds).map(RegistryObject::get).toArray(SoundEvent[]::new);
+    }
 
 
     @SuppressWarnings("unchecked")

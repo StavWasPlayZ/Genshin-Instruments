@@ -68,6 +68,12 @@ public class NoteGrid implements Iterable<NoteButton> {
         return Enum.valueOf(NoteLabel.class, "KEYBOARD_LAYOUT").getLabelSupplier();
     }
 
+    public void setSoundArr(final SoundEvent[] soundArr) {
+        for (int i = 0; i < columns; i++)
+            for (int j = 0; j < rows; j++)
+                notes[i][j].setSound(getSoundAt(soundArr, j, i));
+    }
+
     /**
      * Constructs a new grid of notes as described in this object.
      * @param vertAlignment A percentage determining the vertical offset of the grid

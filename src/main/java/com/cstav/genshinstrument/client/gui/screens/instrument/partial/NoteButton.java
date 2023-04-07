@@ -47,7 +47,7 @@ public class NoteButton extends Button {
 
     protected final Minecraft minecraft = Minecraft.getInstance();
 
-    protected final SoundEvent sound;
+    protected SoundEvent sound;
     protected final int row, column;
     protected float pitch;
     protected final Supplier<Integer> colorThemeSupplier, pressedColorThemeSupplier;
@@ -77,6 +77,9 @@ public class NoteButton extends Button {
     }
     public void setPitch(float pitch) {
         this.pitch = pitch;
+    }
+    public void setSound(final SoundEvent sound) {
+        this.sound = sound;
     }
 
     /**

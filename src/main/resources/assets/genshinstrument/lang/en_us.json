@@ -15,6 +15,10 @@
     "button.genshinstrument.label": "Note labels",
     "button.genshinstrument.pitch": "Pitch",
 
+    "button.genshinstrument.zither.soundType": "Sound Type",
+    "button.genshinstrument.zither.soundType.old": "Old",
+    "button.genshinstrument.zither.soundType.new": "New",
+
 
     "button.genshinstrument.label.do_re_mi": "Do Re Mi",
 

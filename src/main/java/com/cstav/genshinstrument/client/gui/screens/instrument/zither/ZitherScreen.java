@@ -3,6 +3,8 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.zither;
 import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
+import com.cstav.genshinstrument.client.gui.screens.options.instrument.InstrumentOptionsScreen;
+import com.cstav.genshinstrument.client.gui.screens.options.instrument.ZitherOptionsScreen;
 import com.cstav.genshinstrument.sounds.ModSounds;
 import com.cstav.genshinstrument.util.RGBColor;
 
@@ -34,7 +36,12 @@ public class ZitherScreen extends AbstractInstrumentScreen {
 
     @Override
     public SoundEvent[] getSounds() {
-        return getSoundsFromObjectArr(ModSounds.ZITHER_NEW_NOTE_SOUNDS);
+        return ZitherOptionsScreen.getPerferredSoundType().getSoundArr();
+    }
+
+    @Override
+    protected InstrumentOptionsScreen initInstrumentOptionsScreen() {
+        return new ZitherOptionsScreen(title, true, this);
     }
 
 

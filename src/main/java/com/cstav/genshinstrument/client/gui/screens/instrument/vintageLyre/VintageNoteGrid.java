@@ -7,7 +7,10 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.NoteGrid;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class VintageNoteGrid extends NoteGrid {
 
     public VintageNoteGrid(int rows, int columns, SoundEvent[] sounds, ResourceLocation noteResourcesLocation,

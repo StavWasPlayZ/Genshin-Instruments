@@ -4,7 +4,7 @@ import java.util.stream.Stream;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.cstav.genshinstrument.client.gui.screens.options.InstrumentOptionsScreen;
+import com.cstav.genshinstrument.client.gui.screens.options.instrument.InstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.lyre.CloseInstrumentPacket;
@@ -64,9 +64,6 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * @return The array of sounds used by this instruments.
      */
     public abstract SoundEvent[] getSounds();
-    protected SoundEvent[] getSoundsFromObjectArr(final RegistryObject<SoundEvent>[] sounds) {
-        return Stream.of(sounds).map(RegistryObject::get).toArray(SoundEvent[]::new);
-    }
     
     /**
      * @param path The desired path to obtain from the root directory

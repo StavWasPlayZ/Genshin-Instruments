@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.client.gui.screens.options;
+package com.cstav.genshinstrument.client.gui.screens.options.instrument;
 
 import javax.annotation.Nullable;
 
@@ -44,10 +44,21 @@ public class InstrumentOptionsScreen extends Screen {
     protected void init() {
 
         final GridWidget grid = new GridWidget();
-        grid.defaultCellSetting().padding(4).alignVertically(.5f);
+        grid.defaultCellSetting()
+            .padding(4)
+            .alignVertically(.5f)
+            .alignHorizontallyCenter();
+            
         final RowHelper rowHelper = grid.createRowHelper(2);
 
+        initOptionsGrid(grid, rowHelper);
 
+        grid.pack();
+        FrameWidget.alignInRectangle(grid, 0, 0, width, height, 0.5f, .1f);
+        addRenderableWidget(grid);
+
+    }
+    protected void initOptionsGrid(final GridWidget grid, final RowHelper rowHelper) {
         final ForgeSlider pitchSlider = new PitchSlider();
         rowHelper.addChild(pitchSlider);
         
@@ -59,17 +70,12 @@ public class InstrumentOptionsScreen extends Screen {
                 0, 0, getButtonWidth(), getButtonHeight(),
                 Component.translatable("button.genshinstrument.label"), this::onLabelChanged
             );
+        
         rowHelper.addChild(labelType);
-
-
-        grid.pack();
-        FrameWidget.alignInRectangle(grid, 0, 0, width, height, 0.5f, .1f);
-        addRenderableWidget(grid);
-
     }
 
     // Option handlers
-    class PitchSlider extends ForgeSlider {
+    protected class PitchSlider extends ForgeSlider {
 
         public PitchSlider() {
             super(0, 0, getButtonWidth(),
@@ -91,7 +97,6 @@ public class InstrumentOptionsScreen extends Screen {
         }
 
     }
-    @SuppressWarnings("null")
     void onLabelChanged(final CycleButton<NoteLabel> button, final NoteLabel label) {
         if (screen != null)
             screen.noteGrid.forEach((note) -> note.setLabel(label.getLabelSupplier()));
