@@ -27,7 +27,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class NoteButton extends Button {
     public static final String NOTE_FILENAME = "note.png", NOTE_BG_FILENAME = "note_bg.png";
     private static final float PRESS_ANIM_SECS = .15f;
-    private static final int TARGET_SCALE_AMOUNT = 8;
+    private static final int TARGET_SCALE_AMOUNT = 9;
     
     public static int getNoteTextureWidth() {
         return 56;
@@ -91,10 +91,14 @@ public class NoteButton extends Button {
         return Util.getResourceFrom(rootLocation, path);
     }
 
-    private int initX, initY;
+    protected int initX, initY;
+    private int  textX, textY;
     public void initPos() {
         initX = getX();
         initY = getY();
+
+        textX = getX() + width/2;
+        textY = getY() + height/2 + 7;
     }
 
 
@@ -134,7 +138,7 @@ public class NoteButton extends Button {
         // Label
         drawCenteredString(
             pPoseStack, minecraft.font, getMessage(),
-            getX() + width/2, getY() + height/2 + 7,
+            textX, textY,
             (isPlaying() ? pressedColorThemeSupplier : colorThemeSupplier).get()
         );
 
@@ -152,14 +156,15 @@ public class NoteButton extends Button {
         return animState != NoteAnimationState.IDLE;
     }
 
+    private double dSize;
     private void pressAnimationFrame() {
         if (!isPlaying())
             return;
 
         final int fps = minecraft.getFps();
-        final float targetTime = fps * PRESS_ANIM_SECS/2;
+        final float targetTime = fps * PRESS_ANIM_SECS;
             
-        if (animTime++ >= targetTime) {
+        if (animTime++ >= targetTime/2) {
             animTime = 0;
 
             if (animState == NoteAnimationState.UP) {
@@ -175,11 +180,12 @@ public class NoteButton extends Button {
 
             // Assuming the shape will always be a square
             if (animState == NoteAnimationState.UP)
-                width = height += scaleReduction * 2;
+                dSize = dSize += scaleReduction * 1.5;
             else
-                width = height -= scaleReduction;
+                dSize = dSize -= scaleReduction * 1.5;
         }
         
+        width = height = (int)dSize;
         setPosition(
             (getSize() - width) / 2 + initX,
             (getSize() - width) / 2 + initY
@@ -187,7 +193,7 @@ public class NoteButton extends Button {
     }
     private void resetAnimVars() {
         animTime = 0;
-        width = height = getSize();
+        dSize = width = height = getSize();
         setPosition(initX, initY);
     }
 

@@ -2,22 +2,28 @@ package com.cstav.genshinstrument.client.gui.screens.options.instrument;
 
 import javax.annotation.Nullable;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.cstav.genshinstrument.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteLabel;
 import com.cstav.genshinstrument.networking.packets.lyre.InstrumentPacket;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.FrameWidget;
 import net.minecraft.client.gui.components.GridWidget;
 import net.minecraft.client.gui.components.GridWidget.RowHelper;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.gui.ScreenUtils;
 import net.minecraftforge.client.gui.widget.ForgeSlider;
 
 @OnlyIn(Dist.CLIENT)
@@ -96,6 +102,39 @@ public class InstrumentOptionsScreen extends Screen {
         @Override
         protected void applyValue() {
             onPitchChanged(this, getValue());
+        }
+        // Forge's very, very clever overflow implementation makes clients
+        // (primarily Optifine clients) crash
+        // For some reason the ellipsize method is undefined
+        // Beats me idk
+        @Override
+        public void renderButton(@NotNull PoseStack poseStack, int mouseX, int mouseY, float partialTick)
+        {
+            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
+
+            final Minecraft mc = Minecraft.getInstance();
+            final int bgYImage = this.getYImage(this.isHoveredOrFocused());
+            ScreenUtils.blitWithBorder(poseStack,
+                this.getX(), this.getY(),
+                0, 46 + bgYImage * 20,
+                this.width, this.height,
+                200, 20,
+                2, 3,
+                2, 2
+            , this.getBlitOffset());
+
+            final int sliderYImage = (this.isHoveredOrFocused() ? 2 : 1) * 20;
+            ScreenUtils.blitWithBorder(poseStack,
+                this.getX() + (int)(this.value * (double)(this.width - 8)), this.getY(),
+                0, 46 + sliderYImage,
+                8, this.height,
+                200, 20,
+                2, 3, 2, 2
+            , this.getBlitOffset());
+
+            // final FormattedText message = mc.font.ellipsize(getMessage(), this.width - 6);
+            drawCenteredString(poseStack, mc.font, getMessage(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, getFGColor());
         }
 
     }
