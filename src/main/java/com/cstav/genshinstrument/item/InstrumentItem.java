@@ -1,7 +1,10 @@
 package com.cstav.genshinstrument.item;
 
+import java.util.function.Consumer;
+
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.item.clientExtensions.ClientInstrumentItem;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.lyre.OpenInstrumentPacket;
 
@@ -11,7 +14,9 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 /**
  * An item responsible for opening an {@link AbstractInstrumentScreen}.
@@ -38,16 +43,25 @@ public class InstrumentItem extends Item {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
-        if (!pLevel.isClientSide) {
-            pPlayer.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((lyreOpen) ->
-                lyreOpen.setOpen(true)
-            );
-            
+        pPlayer.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((lyreOpen) ->
+            lyreOpen.setOpen(true)
+        );
+
+        if (!pLevel.isClientSide)  
             onOpenRequest.run((ServerPlayer)pPlayer);
-        }
         
         return InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand));
     }
+
+    @Override
+    public UseAnim getUseAnimation(ItemStack pStack) {
+        return UseAnim.CUSTOM;
+    }
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new ClientInstrumentItem());
+    }
+    
     
 
     @FunctionalInterface

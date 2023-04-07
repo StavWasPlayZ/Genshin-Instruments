@@ -1,5 +1,5 @@
 {
-    "parent": "minecraft:item/generated",
+    "parent": "genshinstrument:item/instrument",
     "textures": {
         "layer0": "genshinstrument:item/lyre"
     }

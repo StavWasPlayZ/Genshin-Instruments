@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.InstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
@@ -175,6 +176,9 @@ public abstract class AbstractInstrumentScreen extends Screen {
             return;
         }
 
+        minecraft.player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((lyreOpen) ->
+            lyreOpen.setOpen(false)
+        );
         ModPacketHandler.sendToServer(new CloseInstrumentPacket());
         super.onClose();
     }
