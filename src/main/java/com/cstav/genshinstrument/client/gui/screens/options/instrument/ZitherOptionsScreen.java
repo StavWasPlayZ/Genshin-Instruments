@@ -1,22 +1,22 @@
 package com.cstav.genshinstrument.client.gui.screens.options.instrument;
 
-import com.cstav.genshinstrument.Main;
+import java.util.function.Supplier;
+
 import com.cstav.genshinstrument.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.zither.ZitherScreen;
+import com.cstav.genshinstrument.sounds.ModSounds;
 
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.GridWidget;
 import net.minecraft.client.gui.components.GridWidget.RowHelper;
 import net.minecraft.client.gui.components.LayoutSettings.LayoutSettingsImpl;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(bus = Bus.MOD, modid = Main.MODID)
 public class ZitherOptionsScreen extends InstrumentOptionsScreen {
     private static final String SOUND_TYPE_KEY = "button.genshinstrument.zither.soundType";
 
@@ -60,5 +60,21 @@ public class ZitherOptionsScreen extends InstrumentOptionsScreen {
 
         if (newSoundType != null)
             ModClientConfigs.ZITHER_TYPE.set(newSoundType);
+    }
+
+
+    // Loaded by Configs too, not client-only
+    public static enum ZitherSoundType {
+        OLD(() -> ModSounds.getSoundsFromArr(ModSounds.ZITHER_OLD_NOTE_SOUNDS)),
+        NEW(() -> ModSounds.getSoundsFromArr(ModSounds.ZITHER_NEW_NOTE_SOUNDS));
+    
+        private Supplier<SoundEvent[]> soundArr;
+        private ZitherSoundType(final Supplier<SoundEvent[]> soundType) {
+            this.soundArr = soundType;
+        }
+    
+        public Supplier<SoundEvent[]> soundArr() {
+            return soundArr;
+        }
     }
 }

@@ -1,7 +1,7 @@
 package com.cstav.genshinstrument;
 
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteLabel;
-import com.cstav.genshinstrument.client.gui.screens.options.instrument.ZitherSoundType;
+import com.cstav.genshinstrument.client.gui.screens.options.instrument.ZitherOptionsScreen.ZitherSoundType;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
@@ -15,7 +15,6 @@ public class ModClientConfigs {
     public static final EnumValue<NoteLabel> LABEL_TYPE;
     public static final EnumValue<ZitherSoundType> ZITHER_TYPE;
 
-
     static {
         final ForgeConfigSpec.Builder configBuilder = new Builder();
     
@@ -25,6 +24,5 @@ public class ModClientConfigs {
 
         CONFIGS = configBuilder.build();
     }
-
 
 }
