@@ -1,7 +1,7 @@
 package com.cstav.genshinstrument;
 
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteLabel;
-import com.cstav.genshinstrument.client.gui.screens.options.instrument.ZitherOptionsScreen.ZitherSoundType;
+import com.cstav.genshinstrument.client.gui.screens.options.instrument.ZitherSoundType;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
