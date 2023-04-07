@@ -3,7 +3,7 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
 import java.util.Iterator;
 import java.util.function.Supplier;
 
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteLabel;
+import com.cstav.genshinstrument.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteLabelSupplier;
 
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -64,8 +64,7 @@ public class NoteGrid implements Iterable<NoteButton> {
      * @return The perferred label supplier specified in this mod's configs
      */
     protected static NoteLabelSupplier getLabelSupplier() {
-        //TODO: Actually load from preferences
-        return Enum.valueOf(NoteLabel.class, "KEYBOARD_LAYOUT").getLabelSupplier();
+        return ModClientConfigs.LABEL_TYPE.get().getLabelSupplier();
     }
 
     public void setSoundArr(final SoundEvent[] soundArr) {

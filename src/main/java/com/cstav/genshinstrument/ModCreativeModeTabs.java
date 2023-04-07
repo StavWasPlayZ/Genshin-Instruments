@@ -24,7 +24,7 @@ public class ModCreativeModeTabs {
         
         instrumentsTab = event.registerCreativeModeTab(new ResourceLocation(Main.MODID, "instruments_tab"), (builder) -> builder
                 .title(Component.translatable("genshinstrument.itemGroup.instruments"))
-                .icon(() -> new ItemStack(ModItems.LYRE.get()))
+                .icon(() -> new ItemStack(ModItems.ZITHER.get()))
                 .noScrollBar()
                 
                 .displayItems((features, output, opTabEnabled) ->

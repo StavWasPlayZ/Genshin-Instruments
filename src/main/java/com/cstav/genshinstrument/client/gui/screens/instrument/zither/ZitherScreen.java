@@ -5,7 +5,6 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractI
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.InstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.ZitherOptionsScreen;
-import com.cstav.genshinstrument.sounds.ModSounds;
 import com.cstav.genshinstrument.util.RGBColor;
 
 import net.minecraft.client.Minecraft;
@@ -36,7 +35,7 @@ public class ZitherScreen extends AbstractInstrumentScreen {
 
     @Override
     public SoundEvent[] getSounds() {
-        return ZitherOptionsScreen.getPerferredSoundType().getSoundArr();
+        return ((ZitherOptionsScreen)optionsScreen).getPerferredSoundType().soundArr().get();
     }
 
     @Override
