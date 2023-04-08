@@ -10,11 +10,11 @@
 
     "button.genshinstrument.audioChannels": "Instrument Audio Channel Type",
     "button.genshinstrument.audioChannels.mono": "Mono",
-    "button.genshinstrument.audioChannels.stereo": "Stero",
+    "button.genshinstrument.audioChannels.stereo": "Stereo",
     "button.genshinstrument.audioChannels.stereo.tooltip":
-        "NOTICE: Because of some annoying specification by OpenAL, all sounds produced on Stereo will be stuck on 100%. This includes some instruments.",
+        "NOTICE: Because of some annoying specification by OpenAL, all sounds produced on Stereo will be stuck on 100%.\nThis includes some instruments.",
     "button.genshinstrument.audioChannels.mixed.tooltip":
-        "On Multiplyer, if the Instruments sound category is set to 100% - you will hear intruments on Stereo within %s blocks of range. Otherwise, you will hear Stereo, as well as when you play yourself.",
+        "On Multiplyer, if the Instruments sound category is set to 100% - you will hear intruments on Stereo within %s blocks of range.\nOtherwise, you will hear Stereo, as well as when you play yourself.",
     "button.genshinstrument.audioChannels.mixed": "Mixed",
 
 

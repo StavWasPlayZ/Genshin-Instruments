@@ -6,6 +6,7 @@ import com.cstav.genshinstrument.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.lyre.InstrumentPacket;
+import com.cstav.genshinstrument.sounds.NoteSound;
 import com.cstav.genshinstrument.util.Util;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -17,8 +18,8 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.SoundManager;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -49,13 +50,13 @@ public class NoteButton extends Button {
 
     protected final Minecraft minecraft = Minecraft.getInstance();
 
-    protected SoundEvent sound;
+    protected NoteSound sound;
     protected final int row, column;
     protected float pitch;
     protected final Supplier<Integer> colorThemeSupplier, pressedColorThemeSupplier;
     protected final ResourceLocation rootLocation, noteLocation, noteBgLocation;
     
-    public NoteButton(int row, int column, SoundEvent sound, NoteLabelSupplier labelSupplier,
+    public NoteButton(int row, int column, NoteSound sound, NoteLabelSupplier labelSupplier,
       ResourceLocation noteResourcesLocation, Supplier<Integer> colorTheme, Supplier<Integer> pressedThemeColor) {
         super(Button.builder(labelSupplier.get(row, column), (iAmADissapointmentAndAFailureToMyParents) -> {})
             .size(getSize(), getSize())
@@ -79,7 +80,7 @@ public class NoteButton extends Button {
     public void setPitch(float pitch) {
         this.pitch = pitch;
     }
-    public void setSound(final SoundEvent sound) {
+    public void setSound(final NoteSound sound) {
         this.sound = sound;
     }
 
@@ -217,15 +218,25 @@ public class NoteButton extends Button {
     public void onClick(double pMouseX, double pMouseY) {
         play(false);
     }
+
     @Override
     public void playDownSound(SoundManager pHandler) {
+        minecraft.getMusicManager().stopPlaying();
+
         pHandler.play(new SimpleSoundInstance(
-            sound.getLocation(), SoundSource.RECORDS,
+            sound.getByPreference().getLocation(), SoundSource.RECORDS,
             1, pitch, SoundInstance.createUnseededRandom(),
             false, 0, SoundInstance.Attenuation.NONE,
             0, 0, 0, true
         ));
     }
+
+    public static void playNoteAtPos(final BlockPos pos, final NoteSound sound, final double distanceFromPlayer) {
+        Minecraft.getInstance().getSoundManager().play(
+            SimpleSoundInstance.forRecord(sound.getByPreference(distanceFromPlayer), pos.getCenter())
+        );
+    }
+    
 
     @Override
     public boolean mouseReleased(double pMouseX, double pMouseY, int pButton) {

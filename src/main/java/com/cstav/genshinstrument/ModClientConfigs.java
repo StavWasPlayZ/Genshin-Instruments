@@ -22,13 +22,17 @@ public class ModClientConfigs {
         final ForgeConfigSpec.Builder configBuilder = new Builder();
     
         PITCH = configBuilder.defineInRange("instrument_pitch",
-            1d, InstrumentPacket.MIN_PITCH, InstrumentPacket.MAX_PITCH
+            1, doubleMe(InstrumentPacket.MIN_PITCH), doubleMe(InstrumentPacket.MAX_PITCH)
         );
         LABEL_TYPE = configBuilder.defineEnum("label_type", NoteLabel.KEYBOARD_LAYOUT);
         CHANNEL_TYPE = configBuilder.defineEnum("channel_type", InstrumentChannelType.MIXED);
         ZITHER_TYPE = configBuilder.defineEnum("zither_type", ZitherSoundType.NEW);
 
         CONFIGS = configBuilder.build();
+    }
+
+    private static double doubleMe(final float num) {
+        return Double.valueOf(Float.toString(num));
     }
 
 }

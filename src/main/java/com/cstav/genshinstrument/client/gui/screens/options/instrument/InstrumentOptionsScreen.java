@@ -10,6 +10,7 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractI
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteLabel;
 import com.cstav.genshinstrument.client.gui.screens.options.widget.BetterSlider;
 import com.cstav.genshinstrument.networking.packets.lyre.InstrumentPacket;
+import com.cstav.genshinstrument.sounds.NoteSound;
 import com.cstav.genshinstrument.util.RGBColor;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
@@ -124,7 +125,7 @@ public class InstrumentOptionsScreen extends Screen {
             .withInitialValue(ModClientConfigs.CHANNEL_TYPE.get())
 
             .withTooltip((soundType) -> Tooltip.create(switch (soundType) {
-                case MIXED -> translatableArgs(SOUND_CHANNEL_KEY+".mixed.tooltip", InstrumentPacket.MIXED_RANGE);
+                case MIXED -> translatableArgs(SOUND_CHANNEL_KEY+".mixed.tooltip", NoteSound.STEREO_RANGE);
                 case STEREO -> Component.translatable(SOUND_CHANNEL_KEY+".stereo.tooltip");
                 default -> Component.empty();
             }))
@@ -157,10 +158,8 @@ public class InstrumentOptionsScreen extends Screen {
         if (screen != null)
             screen.noteGrid.forEach((note) -> note.setLabel(label.getLabelSupplier()));
     }
-    protected InstrumentChannelType newChannelType = null;
     protected void onChannelTypeChanged(CycleButton<InstrumentChannelType> button, InstrumentChannelType type) {
-        newChannelType = type;
-        //TODO: Update instruments to use the type
+        ModClientConfigs.CHANNEL_TYPE.set(type);
     }
         
     protected double newPitch = -1;
@@ -227,8 +226,6 @@ public class InstrumentOptionsScreen extends Screen {
     protected void onSave() {
         if (newLabel != null)
             ModClientConfigs.LABEL_TYPE.set(newLabel);
-        if (newChannelType != null)
-            ModClientConfigs.CHANNEL_TYPE.set(newChannelType);
         if (newPitch != -1)
             ModClientConfigs.PITCH.set(newPitch);
     }

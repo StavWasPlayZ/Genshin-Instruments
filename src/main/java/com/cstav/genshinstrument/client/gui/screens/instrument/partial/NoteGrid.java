@@ -5,13 +5,13 @@ import java.util.function.Supplier;
 
 import com.cstav.genshinstrument.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteLabelSupplier;
+import com.cstav.genshinstrument.sounds.NoteSound;
 
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.FrameWidget;
 import net.minecraft.client.gui.components.GridWidget;
 import net.minecraft.client.gui.components.GridWidget.RowHelper;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -28,7 +28,7 @@ public class NoteGrid implements Iterable<NoteButton> {
     private final NoteButton[][] notes;
     public final int rows, columns;
 
-    public NoteGrid(int rows, int columns, SoundEvent[] sounds,
+    public NoteGrid(int rows, int columns, NoteSound[] sounds,
       ResourceLocation noteResourcesLocation, Supplier<Integer> colorThemeSupplier, Supplier<Integer> pressedThemeSupplier) {
         this.rows = rows;
         this.columns = columns;
@@ -44,7 +44,7 @@ public class NoteGrid implements Iterable<NoteButton> {
         }
     }
     
-    protected NoteButton createNote(int row, int column, SoundEvent[] sounds,
+    protected NoteButton createNote(int row, int column, NoteSound[] sounds,
       ResourceLocation noteResourceLocation, Supplier<Integer> colorThemeSupplier, Supplier<Integer> pressedThemeSupplier) {
         return new NoteButton(row, column,
             getSoundAt(sounds, row, column), getLabelSupplier(),
@@ -57,7 +57,7 @@ public class NoteGrid implements Iterable<NoteButton> {
      * @param row The row of the note
      * @param column The column of the note
      */
-    protected static SoundEvent getSoundAt(final SoundEvent[] sounds, final int row, final int column) {
+    protected static NoteSound getSoundAt(final NoteSound[] sounds, final int row, final int column) {
         return sounds[row + column * AbstractInstrumentScreen.ROWS];
     }
     /**
@@ -67,7 +67,7 @@ public class NoteGrid implements Iterable<NoteButton> {
         return ModClientConfigs.LABEL_TYPE.get().getLabelSupplier();
     }
 
-    public void setSoundArr(final SoundEvent[] soundArr) {
+    public void setSoundArr(final NoteSound[] soundArr) {
         for (int i = 0; i < columns; i++)
             for (int j = 0; j < rows; j++)
                 notes[i][j].setSound(getSoundAt(soundArr, j, i));
