@@ -16,8 +16,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ZitherOptionsScreen extends InstrumentOptionsScreen {
     private static final String SOUND_TYPE_KEY = "button.genshinstrument.zither.soundType";
 
-    public ZitherOptionsScreen(final Component pTitle, final boolean isOverlay, final AbstractInstrumentScreen screen) {
-        super(pTitle, isOverlay, screen);
+    public ZitherOptionsScreen(final AbstractInstrumentScreen screen) {
+        super(screen);
     }
 
     private ZitherSoundType perferredSoundType = ModClientConfigs.ZITHER_TYPE.get();
@@ -29,7 +29,6 @@ public class ZitherOptionsScreen extends InstrumentOptionsScreen {
     @Override
     protected void initOptionsGrid(GridWidget grid, RowHelper rowHelper) {
         super.initOptionsGrid(grid, rowHelper);
-        final LayoutSettingsImpl exposed = grid.defaultCellSetting().getExposed();
 
         final CycleButton<ZitherSoundType> soundTypeButton = CycleButton.<ZitherSoundType>builder((type) ->
             Component.translatable(SOUND_TYPE_KEY+"."+type.toString().toLowerCase())
@@ -37,7 +36,7 @@ public class ZitherOptionsScreen extends InstrumentOptionsScreen {
             .withValues(ZitherSoundType.values())
             .withInitialValue(getPerferredSoundType())
             .create(0, 0,
-                getButtonWidth()*2 + exposed.paddingLeft + exposed.paddingRight, getButtonHeight()
+                getBigButtonWidth(), getButtonHeight()
             , Component.translatable(SOUND_TYPE_KEY), this::onSoundTypeChange);
 
         rowHelper.addChild(soundTypeButton, 2, rowHelper.newCellSettings().paddingTop(5));

@@ -40,7 +40,7 @@ public class ZitherScreen extends AbstractInstrumentScreen {
 
     @Override
     protected InstrumentOptionsScreen initInstrumentOptionsScreen() {
-        return new ZitherOptionsScreen(title, true, this);
+        return new ZitherOptionsScreen(this);
     }
 
 

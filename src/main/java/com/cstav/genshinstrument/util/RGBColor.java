@@ -2,6 +2,9 @@ package com.cstav.genshinstrument.util;
 
 public class RGBColor {
     
+    public static final RGBColor WHITE = new RGBColor(255, 255, 255);
+
+    
     private int red, green, blue;
     public RGBColor(int red, int green, int blue) {
         this.red = red;

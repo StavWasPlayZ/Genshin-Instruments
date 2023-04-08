@@ -27,8 +27,8 @@ public class InstrumentPacket implements ModPacket {
      * The range at which playuers with Mixed instrument sound type will start to hear Mono.
      */
     public static final int MIXED_RANGE = 5;
-    
-    private static final int STOP_SOUND_DISTANCE = 10, SOUND_DISTANCE = 23;
+
+    private static final int STOP_SOUND_DISTANCE = 10, SOUND_DISTANCE = 16;
     public static final float MIN_PITCH = .5f, MAX_PITCH = 1.9f;
 
 
@@ -73,7 +73,7 @@ public class InstrumentPacket implements ModPacket {
 
             // Play the sound to all nearby players
             level.playSound(player.self(), new BlockPos(player.position()),
-                sound, SoundSource.RECORDS, SOUND_DISTANCE, pitch
+                sound, SoundSource.RECORDS, 1f, pitch
             );
 
             // Stop all nearby players' background music

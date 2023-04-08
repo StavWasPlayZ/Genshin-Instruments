@@ -50,7 +50,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
      */
     protected abstract ResourceLocation getInstrumentResourcesLocation();
     protected InstrumentOptionsScreen initInstrumentOptionsScreen() {
-        return new InstrumentOptionsScreen(title, true, this);
+        return new InstrumentOptionsScreen(this);
     }
     // Any subclass must make their own LyreThemeLoader
     protected abstract InstrumentThemeLoader getThemeLoader();
