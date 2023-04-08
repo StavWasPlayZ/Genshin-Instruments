@@ -116,19 +116,20 @@ public class InstrumentOptionsScreen extends Screen {
         grid.setY(40);
     }
     protected void initOptionsGrid(final GridWidget grid, final RowHelper rowHelper) {
+
         final CycleButton<InstrumentChannelType> instrumentChannel = CycleButton.<InstrumentChannelType>builder((soundType) ->
             Component.translatable(SOUND_CHANNEL_KEY +"."+ soundType.toString().toLowerCase())
         )
             .withValues(InstrumentChannelType.values())
-            //TODO: from configs
-            .withInitialValue(InstrumentChannelType.MIXED)
+            .withInitialValue(ModClientConfigs.CHANNEL_TYPE.get())
 
             .withTooltip((soundType) -> Tooltip.create(switch (soundType) {
                 case MIXED -> translatableArgs(SOUND_CHANNEL_KEY+".mixed.tooltip", InstrumentPacket.MIXED_RANGE);
                 case STEREO -> Component.translatable(SOUND_CHANNEL_KEY+".stereo.tooltip");
                 default -> Component.empty();
             }))
-            .create(0, 0, getBigButtonWidth(), 20, Component.translatable(SOUND_CHANNEL_KEY));
+            .create(0, 0,
+                getBigButtonWidth(), 20, Component.translatable(SOUND_CHANNEL_KEY), this::onChannelTypeChanged);
         rowHelper.addChild(instrumentChannel, 2);
 
         final BetterSlider pitchSlider = new BetterSlider(0, 0, getSmallButtonWidth(), 23,
@@ -146,6 +147,7 @@ public class InstrumentOptionsScreen extends Screen {
                 Component.translatable("button.genshinstrument.label"), this::onLabelChanged
             );
         rowHelper.addChild(labelType);
+
     }
 
     // Option handlers
@@ -155,13 +157,19 @@ public class InstrumentOptionsScreen extends Screen {
         if (screen != null)
             screen.noteGrid.forEach((note) -> note.setLabel(label.getLabelSupplier()));
     }
-
+    protected InstrumentChannelType newChannelType = null;
+    protected void onChannelTypeChanged(CycleButton<InstrumentChannelType> button, InstrumentChannelType type) {
+        newChannelType = type;
+        //TODO: Update instruments to use the type
+    }
+        
     protected double newPitch = -1;
     protected void onPitchChanged(final ForgeSlider slider, final double pitch) {
         newPitch = pitch;
         if (screen != null)
             screen.noteGrid.forEach((note) -> note.setPitch((float)pitch));
     }
+
 
 
     @Override
@@ -215,9 +223,12 @@ public class InstrumentOptionsScreen extends Screen {
         if (onCloseRunnable != null)
             onCloseRunnable.run();
     }
+    //TODO: Better implementation
     protected void onSave() {
         if (newLabel != null)
             ModClientConfigs.LABEL_TYPE.set(newLabel);
+        if (newChannelType != null)
+            ModClientConfigs.CHANNEL_TYPE.set(newChannelType);
         if (newPitch != -1)
             ModClientConfigs.PITCH.set(newPitch);
     }

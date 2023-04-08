@@ -35,10 +35,10 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class InstrumentThemeLoader {
     private static final ArrayList<InstrumentThemeLoader> LOADERS = new ArrayList<>();
 
-    private final ResourceLocation lyreStyleLocation;
+    private final ResourceLocation InstrumentStyleLocation;
     private final RGBColor defNoteTheme, defPressedNoteTheme;
     private RGBColor noteTheme, pressedNoteTheme;
-    private LyreThemeLoadedEvent onThemeChanged;
+    private InstrumentThemeLoadedEvent onThemeChanged;
     
     /**
      * Initializes a new Instrument Theme Loader and subsribes it to the resource load event.
@@ -47,7 +47,7 @@ public class InstrumentThemeLoader {
      * @param defPressedNoteTheme The default note theme for when the note is pressed
      */
     public InstrumentThemeLoader(ResourceLocation instrumentStyleLocation, RGBColor defNoteTheme, RGBColor defPressedNoteTheme) {
-        this.lyreStyleLocation = instrumentStyleLocation;
+        this.InstrumentStyleLocation = instrumentStyleLocation;
         noteTheme = this.defNoteTheme = defNoteTheme;
         pressedNoteTheme = this.defPressedNoteTheme = defPressedNoteTheme;
 
@@ -56,7 +56,7 @@ public class InstrumentThemeLoader {
 
 
     @SubscribeEvent
-    public static void reloadLyreTheme(final RegisterClientReloadListenersEvent event) {
+    public static void registerRloadEvent(final RegisterClientReloadListenersEvent event) {
         event.registerReloadListener(new ResourceManagerReloadListener() {
 
             @Override
@@ -65,7 +65,7 @@ public class InstrumentThemeLoader {
                     JsonObject style;
                     try {
                         style = JsonParser.parseReader(
-                            resourceManager.getResource(lyreLoader.getLyreStyleLocation()).get().openAsReader()
+                            resourceManager.getResource(lyreLoader.getInstrumentStyleLocation()).get().openAsReader()
                         ).getAsJsonObject();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -103,8 +103,8 @@ public class InstrumentThemeLoader {
     public RGBColor getDefPressedNoteTheme() {
         return defPressedNoteTheme;
     }
-    public ResourceLocation getLyreStyleLocation() {
-        return lyreStyleLocation;
+    public ResourceLocation getInstrumentStyleLocation() {
+        return InstrumentStyleLocation;
     }
 
     public RGBColor getNoteTheme() {
@@ -121,13 +121,13 @@ public class InstrumentThemeLoader {
         onThemeChanged.run(noteTheme, this.pressedNoteTheme = pressedNoteTheme);
     }
 
-    public void setOnThemeChanged(LyreThemeLoadedEvent onThemeChanged) {
+    public void setOnThemeChanged(InstrumentThemeLoadedEvent onThemeChanged) {
         this.onThemeChanged = onThemeChanged;
     }
 
 
     @FunctionalInterface
-    public static interface LyreThemeLoadedEvent {
+    public static interface InstrumentThemeLoadedEvent {
         void run(final RGBColor noteTheme, final RGBColor pressedNoteTheme);
     }
 

@@ -11,9 +11,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class KeyMappings {
     
     // Literally only doing this for key translations
-    public static final Key[][] LYRE_MAPPINGS = createLyreMaps();
+    public static final Key[][] INSTRUMENT_MAPPINGS = createInstrumentMaps();
 
-    private static Key[][] createLyreMaps() {
+    private static Key[][] createInstrumentMaps() {
         final int[][] QWERTY = {
             {81, 87, 69, 82, 84, 89, 85},
             {65, 83, 68, 70, 71, 72, 74},
@@ -28,15 +28,5 @@ public class KeyMappings {
 
         return result;
     }
-    
-
-    // Due to Mojang complaining that "gUi keY ModIfIErs ConFlIcT iN gaME keYs",
-    // I cannot make this happen.
-    // @SubscribeEvent
-    // public static void registerMappings(final RegisterKeyMappingsEvent event) {
-    //     for (int i = 0; i < LYRE_MAPPINGS.length; i++)
-    //         for (int j = 0; j < LYRE_MAPPINGS[0].length; j++)
-    //             event.register(LYRE_MAPPINGS[i][j].get());
-    // }
 
 }

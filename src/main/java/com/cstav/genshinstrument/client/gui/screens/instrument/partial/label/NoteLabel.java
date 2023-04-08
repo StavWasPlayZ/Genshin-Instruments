@@ -6,7 +6,7 @@ import net.minecraft.network.chat.Component;
 
 public enum NoteLabel {
     KEYBOARD_LAYOUT((row, column) -> Component.literal(
-        KeyMappings.LYRE_MAPPINGS[column][row].getDisplayName().getString().toUpperCase()
+        KeyMappings.INSTRUMENT_MAPPINGS[column][row].getDisplayName().getString().toUpperCase()
     )),
     DO_RE_MI((row, column) -> Component.translatable(
         AbstractNoteLabels.TRANSLATABLE_PATH + AbstractNoteLabels.DO_RE_MI[row % 7]

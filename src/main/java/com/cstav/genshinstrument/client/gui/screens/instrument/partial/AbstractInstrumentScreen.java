@@ -52,7 +52,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
     protected InstrumentOptionsScreen initInstrumentOptionsScreen() {
         return new InstrumentOptionsScreen(this);
     }
-    // Any subclass must make their own LyreThemeLoader
+    // Any subclass must make their own InstrumentThemeLoader
     protected abstract InstrumentThemeLoader getThemeLoader();
 
     /**
@@ -213,7 +213,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
         return super.keyReleased(pKeyCode, pScanCode, pModifiers);
     }
     public static boolean lyreKeyPressed(final int row, final int column, final int keyCode) {
-        return KeyMappings.LYRE_MAPPINGS[column][row].getValue() == keyCode;
+        return KeyMappings.INSTRUMENT_MAPPINGS[column][row].getValue() == keyCode;
     }
     
 

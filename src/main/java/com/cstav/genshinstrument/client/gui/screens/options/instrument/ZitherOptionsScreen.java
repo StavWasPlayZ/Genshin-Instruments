@@ -7,7 +7,6 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.zither.ZitherScre
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.GridWidget;
 import net.minecraft.client.gui.components.GridWidget.RowHelper;
-import net.minecraft.client.gui.components.LayoutSettings.LayoutSettingsImpl;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
