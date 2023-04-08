@@ -5,7 +5,13 @@
     "item.genshinstrument.zither": "ציטר",
     "item.genshinstrument.vintage_lyre": "נבל הבציר",
 
+
     "soundCategory.record": "כלי נגינה",
+
+    "button.genshinstrument.audioChannels": "סוג אאודיו לכלי נגינה",
+    "button.genshinstrument.audioChannels.stereo": "סטריאו",
+    "button.genshinstrument.audioChannels.mono": "מונו",
+    "button.genshinstrument.audioChannels.mixed": "מעורב",
 
 
     

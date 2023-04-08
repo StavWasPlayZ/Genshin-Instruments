@@ -23,6 +23,11 @@ import net.minecraftforge.network.NetworkEvent.Context;
 
 public class InstrumentPacket implements ModPacket {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_SERVER;
+    /**
+     * The range at which playuers with Mixed instrument sound type will start to hear Mono.
+     */
+    public static final int MIXED_RANGE = 5;
+    
     private static final int STOP_SOUND_DISTANCE = 10, SOUND_DISTANCE = 23;
     public static final float MIN_PITCH = .5f, MAX_PITCH = 1.9f;
 
