@@ -5,11 +5,11 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractI
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.InstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.ZitherOptionsScreen;
+import com.cstav.genshinstrument.sounds.NoteSound;
 import com.cstav.genshinstrument.util.RGBColor;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -34,7 +34,7 @@ public class ZitherScreen extends AbstractInstrumentScreen {
     }
 
     @Override
-    public SoundEvent[] getSounds() {
+    public NoteSound[] getSounds() {
         return ((ZitherOptionsScreen)optionsScreen).getPerferredSoundType().soundArr().get();
     }
 

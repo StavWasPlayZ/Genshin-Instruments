@@ -7,6 +7,7 @@ import com.cstav.genshinstrument.client.gui.screens.options.instrument.Instrumen
 import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.lyre.CloseInstrumentPacket;
+import com.cstav.genshinstrument.sounds.NoteSound;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -16,7 +17,6 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -61,7 +61,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * Each sound is used on press by the their index on the grid.
      * @return The array of sounds used by this instruments.
      */
-    public abstract SoundEvent[] getSounds();
+    public abstract NoteSound[] getSounds();
     
     /**
      * @param path The desired path to obtain from the root directory
@@ -93,7 +93,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     @Override
     protected void init() {
-        final AbstractWidget grid = noteGrid.genNoteGridWidget(.9f, width, height);
+        final AbstractWidget grid = noteGrid.initNoteGridWidget(.9f, width, height);
 
         addRenderableWidget(grid);
         addRenderableWidget(initCustomizeButton(grid.getY() - 15));

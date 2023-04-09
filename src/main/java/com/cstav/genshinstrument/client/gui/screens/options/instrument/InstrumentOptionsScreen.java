@@ -9,7 +9,7 @@ import com.cstav.genshinstrument.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteLabel;
 import com.cstav.genshinstrument.client.gui.screens.options.widget.BetterSlider;
-import com.cstav.genshinstrument.networking.packets.lyre.InstrumentPacket;
+import com.cstav.genshinstrument.sounds.NoteSound;
 import com.cstav.genshinstrument.util.RGBColor;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
@@ -40,7 +40,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class InstrumentOptionsScreen extends Screen {
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    private static final String SOUND_CHANNEL_KEY = "button.genshinstrument.audioChannels";
+    private static final String SOUND_CHANNEL_KEY = "button.genshinstrument.audioChannels",
+        STOP_MUSIC_KEY = "button.genshinstrument.stop_music_on_play";
     
 
     protected int getHorzPadding() {
@@ -101,19 +102,18 @@ public class InstrumentOptionsScreen extends Screen {
 
         initOptionsGrid(grid, rowHelper);
 
-        rowHelper.addChild(
-            Button.builder(CommonComponents.GUI_DONE, (btn) -> onClose())
-                .width(getSmallButtonWidth())
-                .build()
-        , 2, rowHelper.newCellSettings().paddingTop(64));
-
-
-        grid.pack();
-        
         FrameWidget.alignInRectangle(grid, 0, 0, width, height, 0.5f, 0);
         addRenderableWidget(grid);
         
         grid.setY(40);
+
+
+        final Button doneBtn = Button.builder(CommonComponents.GUI_DONE, (btn) -> onClose())
+            .width(getSmallButtonWidth())
+            .pos((width - getSmallButtonWidth())/2, Math.min(grid.getY() + grid.getHeight() + 60, height - getButtonHeight() - 15))
+            .build();
+        addRenderableWidget(doneBtn);
+        
     }
     protected void initOptionsGrid(final GridWidget grid, final RowHelper rowHelper) {
 
@@ -124,7 +124,7 @@ public class InstrumentOptionsScreen extends Screen {
             .withInitialValue(ModClientConfigs.CHANNEL_TYPE.get())
 
             .withTooltip((soundType) -> Tooltip.create(switch (soundType) {
-                case MIXED -> translatableArgs(SOUND_CHANNEL_KEY+".mixed.tooltip", InstrumentPacket.MIXED_RANGE);
+                case MIXED -> translatableArgs(SOUND_CHANNEL_KEY+".mixed.tooltip", NoteSound.STEREO_RANGE);
                 case STEREO -> Component.translatable(SOUND_CHANNEL_KEY+".stereo.tooltip");
                 default -> Component.empty();
             }))
@@ -134,7 +134,7 @@ public class InstrumentOptionsScreen extends Screen {
 
         final BetterSlider pitchSlider = new BetterSlider(0, 0, getSmallButtonWidth(), 23,
             Component.translatable("button.genshinstrument.pitch").append(": "), Component.empty(),
-            InstrumentPacket.MIN_PITCH, InstrumentPacket.MAX_PITCH, ModClientConfigs.PITCH.get(), 0.1,
+            NoteSound.MIN_PITCH, NoteSound.MAX_PITCH, ModClientConfigs.PITCH.get(), 0.1,
             this::onPitchChanged
         );
         rowHelper.addChild(pitchSlider);
@@ -142,12 +142,22 @@ public class InstrumentOptionsScreen extends Screen {
         final CycleButton<NoteLabel> labelType = CycleButton.<NoteLabel>builder((label) -> Component.translatable(label.getKey()))
             .withValues(NoteLabel.values())
             .withInitialValue(ModClientConfigs.LABEL_TYPE.get())
-            .create(
-                0, 0, getSmallButtonWidth(), getButtonHeight(),
+            .create(0, 0,
+                getSmallButtonWidth(), getButtonHeight(),
                 Component.translatable("button.genshinstrument.label"), this::onLabelChanged
             );
         rowHelper.addChild(labelType);
 
+        final CycleButton<Boolean> stopMusic = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
+            .withInitialValue(ModClientConfigs.STOP_MUSIC_ON_PLAY.get())
+            .withTooltip((value) -> Tooltip.create(Component.translatable(STOP_MUSIC_KEY+".tooltip", NoteSound.STOP_SOUND_DISTANCE)))
+            .create(0, 0,
+                getBigButtonWidth(), getButtonHeight(),
+                Component.translatable(STOP_MUSIC_KEY), this::onMusicStopChanged
+            );
+        rowHelper.addChild(stopMusic, 2, rowHelper.newCellSettings().paddingTop(15));
+
+        grid.pack();
     }
 
     // Option handlers
@@ -157,17 +167,20 @@ public class InstrumentOptionsScreen extends Screen {
         if (screen != null)
             screen.noteGrid.forEach((note) -> note.setLabel(label.getLabelSupplier()));
     }
-    protected InstrumentChannelType newChannelType = null;
-    protected void onChannelTypeChanged(CycleButton<InstrumentChannelType> button, InstrumentChannelType type) {
-        newChannelType = type;
-        //TODO: Update instruments to use the type
-    }
-        
+
     protected double newPitch = -1;
     protected void onPitchChanged(final ForgeSlider slider, final double pitch) {
         newPitch = pitch;
         if (screen != null)
-            screen.noteGrid.forEach((note) -> note.setPitch((float)pitch));
+            screen.noteGrid.forEach((note) -> note.getSound().setPitch((float)pitch));
+    }
+
+    // These values derive from the config directly, so update them on-spot
+    protected void onChannelTypeChanged(CycleButton<InstrumentChannelType> button, InstrumentChannelType type) {
+        ModClientConfigs.CHANNEL_TYPE.set(type);
+    }
+    protected void onMusicStopChanged(final CycleButton<Boolean> button, final boolean value) {
+        ModClientConfigs.STOP_MUSIC_ON_PLAY.set(value);
     }
 
 
@@ -179,7 +192,7 @@ public class InstrumentOptionsScreen extends Screen {
         
         renderBackground(pPoseStack);
         drawCenteredString(pPoseStack, font, title, width/2, 20, RGBColor.WHITE.getNumeric());
-        // list.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+        
         super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
     }
 
@@ -227,8 +240,6 @@ public class InstrumentOptionsScreen extends Screen {
     protected void onSave() {
         if (newLabel != null)
             ModClientConfigs.LABEL_TYPE.set(newLabel);
-        if (newChannelType != null)
-            ModClientConfigs.CHANNEL_TYPE.set(newChannelType);
         if (newPitch != -1)
             ModClientConfigs.PITCH.set(newPitch);
     }

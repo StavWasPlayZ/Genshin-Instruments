@@ -4,12 +4,12 @@ import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.NoteGrid;
+import com.cstav.genshinstrument.sounds.NoteSound;
 import com.cstav.genshinstrument.sounds.ModSounds;
 import com.cstav.genshinstrument.util.RGBColor;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -34,8 +34,8 @@ public class VintageLyreScreen extends AbstractInstrumentScreen {
     }
 
     @Override
-    public SoundEvent[] getSounds() {
-        return ModSounds.getSoundsFromArr(ModSounds.VINTAGE_LYRE_NOTE_SOUNDS);
+    public NoteSound[] getSounds() {
+        return ModSounds.VINTAGE_LYRE_NOTE_SOUNDS;
     }
 
 

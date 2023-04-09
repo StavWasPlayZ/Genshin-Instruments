@@ -4,11 +4,11 @@ import java.util.function.Supplier;
 
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteLabelSupplier;
+import com.cstav.genshinstrument.sounds.NoteSound;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -18,7 +18,7 @@ public class VintageNoteButton extends NoteButton {
 
     private final ResourceLocation thingyLocation = getResourceFromRoot("thing.png");
 
-    public VintageNoteButton(int row, int column, SoundEvent sound, NoteLabelSupplier labelSupplier,
+    public VintageNoteButton(int row, int column, NoteSound sound, NoteLabelSupplier labelSupplier,
             ResourceLocation noteResourcesLocation, Supplier<Integer> colorTheme, Supplier<Integer> pressedThemeColor) {
         super(row, column, sound, labelSupplier, noteResourcesLocation, colorTheme, pressedThemeColor);
     }
