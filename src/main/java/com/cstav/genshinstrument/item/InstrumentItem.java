@@ -6,6 +6,7 @@ import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvide
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.item.clientExtensions.ClientInstrumentItem;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
+import com.cstav.genshinstrument.networking.packets.lyre.NotifyInstrumentOpenPacket;
 import com.cstav.genshinstrument.networking.packets.lyre.OpenInstrumentPacket;
 
 import net.minecraft.server.level.ServerPlayer;
@@ -43,12 +44,19 @@ public class InstrumentItem extends Item {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
-        pPlayer.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((lyreOpen) ->
-            lyreOpen.setOpen(true)
-        );
-
-        if (!pLevel.isClientSide)  
+        if (!pLevel.isClientSide) {
             onOpenRequest.run((ServerPlayer)pPlayer);
+
+            // Update the the capabilty on server
+            InstrumentOpenProvider.setOpen(pPlayer, true);
+            // And clients
+            pLevel.players().forEach((player) ->
+                ModPacketHandler.sendToClient(
+                    new NotifyInstrumentOpenPacket(pPlayer.getUUID(), true),
+                    (ServerPlayer)player
+                )
+            );
+        }
         
         return InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand));
     }

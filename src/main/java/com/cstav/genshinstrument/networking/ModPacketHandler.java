@@ -6,6 +6,7 @@ import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.networking.packets.PlayNotePacket;
 import com.cstav.genshinstrument.networking.packets.lyre.CloseInstrumentPacket;
 import com.cstav.genshinstrument.networking.packets.lyre.InstrumentPacket;
+import com.cstav.genshinstrument.networking.packets.lyre.NotifyInstrumentOpenPacket;
 import com.cstav.genshinstrument.networking.packets.lyre.OpenInstrumentPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -24,7 +25,8 @@ import net.minecraftforge.network.simple.SimpleChannel;
 public class ModPacketHandler {
     @SuppressWarnings("unchecked")
     private static final List<Class<ModPacket>> ACCEPTABLE_PACKETS = List.of(new Class[] {
-        InstrumentPacket.class, PlayNotePacket.class, OpenInstrumentPacket.class, CloseInstrumentPacket.class
+        InstrumentPacket.class, PlayNotePacket.class, OpenInstrumentPacket.class, CloseInstrumentPacket.class,
+        NotifyInstrumentOpenPacket.class
     });
 
 

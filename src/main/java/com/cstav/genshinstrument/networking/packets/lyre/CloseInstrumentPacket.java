@@ -4,8 +4,11 @@ import java.util.function.Supplier;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.networking.ModPacket;
+import com.cstav.genshinstrument.networking.ModPacketHandler;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent.Context;
 
@@ -20,11 +23,13 @@ public class CloseInstrumentPacket implements ModPacket {
     public boolean handle(final Supplier<Context> supplier) {
         final Context context = supplier.get();
 
-        context.enqueueWork(() ->
-            context.getSender().getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((lyreOpen) ->
-                lyreOpen.setOpen(false)
-            )
-        );
+        context.enqueueWork(() -> {
+            final ServerPlayer player = context.getSender();
+            InstrumentOpenProvider.setOpen(player, false);
+
+            for (final Player oPlayer : player.level.players())
+                ModPacketHandler.sendToClient(new NotifyInstrumentOpenPacket(player.getUUID(), false), (ServerPlayer)oPlayer);
+        });
 
         return true;
     }
