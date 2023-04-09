@@ -3,6 +3,7 @@ package com.cstav.genshinstrument.networking.packets;
 import java.util.UUID;
 import java.util.function.Supplier;
 
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.NoteButton;
 import com.cstav.genshinstrument.networking.ModPacket;
 import com.cstav.genshinstrument.sounds.NoteSound;
 
@@ -40,7 +41,7 @@ public class PlayNotePacket implements ModPacket {
     @Override
     public boolean handle(final Supplier<Context> supplier) {
         supplier.get().enqueueWork(() ->
-            sound.playNoteAtPos(playerUUID, blockPos)
+            NoteButton.playNoteAtPos(sound, playerUUID, blockPos)
         );
 
         return true;

@@ -1,7 +1,9 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
 
+import java.util.UUID;
 import java.util.function.Supplier;
 
+import com.cstav.genshinstrument.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.lyre.InstrumentPacket;
@@ -17,8 +19,12 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.SoundManager;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Position;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -227,6 +233,32 @@ public class NoteButton extends Button {
             false, 0, SoundInstance.Attenuation.NONE,
             0, 0, 0, true
         ));
+    }
+        /**
+     * A method for packets to use for playing this note on the client's end.
+     * If {@link Minecraft#player this player} is the same as the gives player,
+     * the method will only stop the client's background music per preference.
+     * @param playerUUID The UUID of the player who initiated the sound
+     * @param pos The position at which the sound was fired from
+     */
+    public static void playNoteAtPos(final NoteSound sound, final UUID playerUUID, final BlockPos pos) {
+        final Minecraft minecraft = Minecraft.getInstance();
+        final Player player = minecraft.player;
+
+        final double distanceFromPlayer = Math.sqrt(pos.distToCenterSqr((Position)player.position()));
+        
+        if (ModClientConfigs.STOP_MUSIC_ON_PLAY.get() && (distanceFromPlayer < NoteSound.STOP_SOUND_DISTANCE))
+            minecraft.getMusicManager().stopPlaying();
+        
+
+        if (player.getUUID().equals(playerUUID))
+            return;
+            
+        final Level level = minecraft.level;
+        level.playLocalSound(pos,
+            sound.getByPreference(distanceFromPlayer), SoundSource.RECORDS,
+            1, sound.getPitch()
+        , false);
     }
     
 

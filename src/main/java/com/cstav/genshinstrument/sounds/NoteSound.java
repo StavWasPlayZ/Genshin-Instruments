@@ -1,20 +1,14 @@
 package com.cstav.genshinstrument.sounds;
 
-import java.util.UUID;
-
 import javax.annotation.Nullable;
 
 import com.cstav.genshinstrument.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.InstrumentChannelType;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Position;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -91,33 +85,6 @@ public class NoteSound {
             case MIXED, STEREO -> stereo;
             case MONO -> mono;
         };
-    }
-
-    /**
-     * A method for packets to use for playing this note on the client's end.
-     * If {@link Minecraft#player this player} is the same as the gives player,
-     * the method will only stop the client's background music per preference.
-     * @param playerUUID The UUID of the player who initiated the sound
-     * @param pos The position at which the sound was fired from
-     */
-    public void playNoteAtPos(final UUID playerUUID, final BlockPos pos) {
-        final Minecraft minecraft = Minecraft.getInstance();
-        final Player player = minecraft.player;
-
-        final double distanceFromPlayer = Math.sqrt(pos.distToCenterSqr((Position)player.position()));
-        
-        if (ModClientConfigs.STOP_MUSIC_ON_PLAY.get() && (distanceFromPlayer < STOP_SOUND_DISTANCE))
-            minecraft.getMusicManager().stopPlaying();
-        
-
-        if (player.getUUID().equals(playerUUID))
-            return;
-            
-        final Level level = minecraft.level;
-        level.playLocalSound(pos,
-            getByPreference(distanceFromPlayer), SoundSource.RECORDS,
-            1, getPitch()
-        , false);
     }
 
 
