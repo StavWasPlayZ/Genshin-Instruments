@@ -93,7 +93,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     @Override
     protected void init() {
-        final AbstractWidget grid = noteGrid.genNoteGridWidget(.9f, width, height);
+        final AbstractWidget grid = noteGrid.initNoteGridWidget(.9f, width, height);
 
         addRenderableWidget(grid);
         addRenderableWidget(initCustomizeButton(grid.getY() - 15));

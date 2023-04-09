@@ -9,9 +9,15 @@
     "soundCategory.record": "כלי נגינה",
 
     "button.genshinstrument.audioChannels": "סוג אאודיו לכלי נגינה",
+    "button.genshinstrument.audioChannels.stereo.tooltip":
+        "בגלל ספציפיקציות מפגרות של OpenAL, כל צליל שנשמע בסטריאו יהיה תקוע על 100%.\nזה כולל חלק מכלי הנגינה.",
     "button.genshinstrument.audioChannels.stereo": "סטריאו",
     "button.genshinstrument.audioChannels.mono": "מונו",
+    "button.genshinstrument.audioChannels.mixed.tooltip":
+        "במצב מרובה משתתפים, אם קטגוריית הסאונד \"כלי נגינה\" מכוון על 100% - תשמע.י כלי נגינה על סטריאו במרחק של עד %s בלוקים.\nאחרת, ישמעו במונו, כנ\"ל אם את.ה מנגנ.ת בעצמך.",
     "button.genshinstrument.audioChannels.mixed": "מעורב",
+    "button.genshinstrument.stop_music_on_play.tooltip": "כאשר את.ה או שחקנים אחרים בטווח של %s בלוקים מנגנים בכלי נגינה, מוזיקת הרקע תחדול לנגן.",
+    "button.genshinstrument.stop_music_on_play": "הפסק מוזיקה בזמן נגינה",
 
 
     

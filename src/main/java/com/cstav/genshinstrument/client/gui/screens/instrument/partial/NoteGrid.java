@@ -33,6 +33,12 @@ public class NoteGrid implements Iterable<NoteButton> {
         this.rows = rows;
         this.columns = columns;
 
+        // Apply the pitch set by the configs
+        final float pitch = ModClientConfigs.PITCH.get().floatValue();
+        for (int i = 0; i < sounds.length; i++)
+            sounds[i].setPitch(pitch);
+
+        // Construct the note grid
         notes = new NoteButton[columns][rows];
         for (int i = 0; i < columns; i++) {
             final NoteButton[] buttonRow = new NoteButton[rows];
@@ -80,7 +86,7 @@ public class NoteGrid implements Iterable<NoteButton> {
      * @param screenHeight The height of the screen
      * @return A new {@link NoteButton} grid
      */
-    protected AbstractWidget genNoteGridWidget(final float vertAlignment, final int screenWidth, final int screenHeight) {
+    protected AbstractWidget initNoteGridWidget(final float vertAlignment, final int screenWidth, final int screenHeight) {
         final GridWidget grid = new GridWidget();
         grid.defaultCellSetting().padding(PADDING_HORZ, PADDING_VERT);
 

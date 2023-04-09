@@ -2,7 +2,6 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
 
 import java.util.function.Supplier;
 
-import com.cstav.genshinstrument.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.lyre.InstrumentPacket;
@@ -18,7 +17,6 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.SoundManager;
-import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraftforge.api.distmarker.Dist;
@@ -52,7 +50,6 @@ public class NoteButton extends Button {
 
     protected NoteSound sound;
     protected final int row, column;
-    protected float pitch;
     protected final Supplier<Integer> colorThemeSupplier, pressedColorThemeSupplier;
     protected final ResourceLocation rootLocation, noteLocation, noteBgLocation;
     
@@ -71,17 +68,16 @@ public class NoteButton extends Button {
         rootLocation = noteResourcesLocation;
         this.noteLocation = getResourceFromRoot(NOTE_FILENAME);
         this.noteBgLocation = getResourceFromRoot(NOTE_BG_FILENAME);
-
-        pitch = ModClientConfigs.PITCH.get().floatValue();
     }
     public void setLabel(final NoteLabelSupplier labelSupplier) {
         setMessage(labelSupplier.get(row, column));
     }
-    public void setPitch(float pitch) {
-        this.pitch = pitch;
-    }
+
     public void setSound(final NoteSound sound) {
         this.sound = sound;
+    }
+    public NoteSound getSound() {
+        return sound;
     }
 
     /**
@@ -137,6 +133,8 @@ public class NoteButton extends Button {
         // text and note.
 
         // Label
+        //FIXME: All text rendered this way are making their way to the top of
+        // the render stack, for some reason
         drawCenteredString(
             pPoseStack, minecraft.font, getMessage(),
             textX, textY,
@@ -207,7 +205,7 @@ public class NoteButton extends Button {
         if (playLocally)
             playDownSound(minecraft.getSoundManager());
         
-        ModPacketHandler.sendToServer(new InstrumentPacket(sound, pitch));
+        ModPacketHandler.sendToServer(new InstrumentPacket(sound));
         
         locked = true;
 
@@ -225,16 +223,10 @@ public class NoteButton extends Button {
 
         pHandler.play(new SimpleSoundInstance(
             sound.getByPreference().getLocation(), SoundSource.RECORDS,
-            1, pitch, SoundInstance.createUnseededRandom(),
+            1, sound.getPitch(), SoundInstance.createUnseededRandom(),
             false, 0, SoundInstance.Attenuation.NONE,
             0, 0, 0, true
         ));
-    }
-
-    public static void playNoteAtPos(final BlockPos pos, final NoteSound sound, final double distanceFromPlayer) {
-        Minecraft.getInstance().getSoundManager().play(
-            SimpleSoundInstance.forRecord(sound.getByPreference(distanceFromPlayer), pos.getCenter())
-        );
     }
     
 

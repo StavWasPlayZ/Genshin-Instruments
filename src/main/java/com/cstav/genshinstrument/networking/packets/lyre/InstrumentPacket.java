@@ -22,24 +22,19 @@ public class InstrumentPacket implements ModPacket {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_SERVER;
     
     public static final int PLAY_DISTANCE = 16;
-    public static final float MIN_PITCH = .5f, MAX_PITCH = 1.9f;
 
 
     private final NoteSound sound;
-    private final float pitch;
-    public InstrumentPacket(final NoteSound sound, final float pitch) {
+    public InstrumentPacket(final NoteSound sound) {
         this.sound = sound;
-        this.pitch = pitch;
     }
     public InstrumentPacket(FriendlyByteBuf buf) {
         sound = NoteSound.readFromNetwork(buf);
-        pitch = Math.min(Math.max(buf.readFloat(), MIN_PITCH), MAX_PITCH);
     }
 
     @Override
     public void toBytes(final FriendlyByteBuf buf) {
         sound.writeToNetwork(buf);
-        buf.writeFloat(pitch);
     }
 
 
