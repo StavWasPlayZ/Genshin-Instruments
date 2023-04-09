@@ -39,7 +39,7 @@ public class PlayNotePacket implements ModPacket {
     @Override
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeBlockPos(blockPos);
-        NoteSound.readFromNetwork(buf);
+        sound.writeToNetwork(buf);
         buf.writeUUID(playerUUID);
     }
 
@@ -55,12 +55,12 @@ public class PlayNotePacket implements ModPacket {
             
             final double distanceFromPlayer = blockPos.distToCenterSqr((Position)player.position());
 
-            if (distanceFromPlayer > STOP_SOUND_DISTANCE)
+            if (distanceFromPlayer < STOP_SOUND_DISTANCE)
                 minecraft.getMusicManager().stopPlaying();
 
-            DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () ->
-                NoteButton.playNoteAtPos(blockPos, sound, distanceFromPlayer)
-            );
+            // DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () ->
+            NoteButton.playNoteAtPos(blockPos, sound, distanceFromPlayer);
+            // );
 
         });
 

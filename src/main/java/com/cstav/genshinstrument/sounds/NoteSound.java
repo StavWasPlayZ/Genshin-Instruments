@@ -5,8 +5,10 @@ import javax.annotation.Nullable;
 import com.cstav.genshinstrument.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.InstrumentChannelType;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -36,15 +38,17 @@ public class NoteSound {
      * @return Either the Mono or Stereo sound, based on the client's preference.
      * This method assumes that the request was made by a server.
      */
+    @SuppressWarnings("resource")
     @OnlyIn(Dist.CLIENT)
     public SoundEvent getByPreference(final double distanceFromPlayer) {
         if (!hasStereo())
             return mono;
         
         final InstrumentChannelType preference = ModClientConfigs.CHANNEL_TYPE.get();
+        final float insrtumentVol = Minecraft.getInstance().options.getSoundSourceVolume(SoundSource.RECORDS);
 
         return switch(preference) {
-            case MIXED -> (distanceFromPlayer > STEREO_RANGE) ? mono : stereo;
+            case MIXED -> ((insrtumentVol < 1) || (distanceFromPlayer > STEREO_RANGE)) ? mono : stereo;
 
             case STEREO -> stereo;
             case MONO -> mono;
