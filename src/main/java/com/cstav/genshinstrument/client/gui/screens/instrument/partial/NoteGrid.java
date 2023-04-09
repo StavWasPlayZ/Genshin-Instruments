@@ -33,11 +33,6 @@ public class NoteGrid implements Iterable<NoteButton> {
         this.rows = rows;
         this.columns = columns;
 
-        // Apply the pitch set by the configs
-        final float pitch = ModClientConfigs.PITCH.get().floatValue();
-        for (int i = 0; i < sounds.length; i++)
-            sounds[i].setPitch(pitch);
-
         // Construct the note grid
         notes = new NoteButton[columns][rows];
         for (int i = 0; i < columns; i++) {
@@ -48,6 +43,17 @@ public class NoteGrid implements Iterable<NoteButton> {
 
             notes[i] = buttonRow;
         }
+
+        updatePitch();
+    }
+    /**
+     * Updates the grid to use the pitch stored in {@link ModClientConfigs#PITCH the configs}
+     */
+    public void updatePitch() {
+        final float pitch = ModClientConfigs.PITCH.get().floatValue();
+        forEach((note) ->
+            note.getSound().setPitch(pitch)
+        );
     }
     
     protected NoteButton createNote(int row, int column, NoteSound[] sounds,
@@ -77,6 +83,8 @@ public class NoteGrid implements Iterable<NoteButton> {
         for (int i = 0; i < columns; i++)
             for (int j = 0; j < rows; j++)
                 notes[i][j].setSound(getSoundAt(soundArr, j, i));
+
+        updatePitch();
     }
 
     /**

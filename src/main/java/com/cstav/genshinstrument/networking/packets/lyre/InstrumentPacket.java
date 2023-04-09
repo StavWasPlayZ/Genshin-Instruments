@@ -10,10 +10,10 @@ import com.cstav.genshinstrument.networking.ModPacket;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.PlayNotePacket;
 import com.cstav.genshinstrument.sounds.NoteSound;
+import com.cstav.genshinstrument.util.Util;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent.Context;
@@ -55,9 +55,8 @@ public class InstrumentPacket implements ModPacket {
 
 
             // Send a play packet to everyone in the met distance
-            final List<Player> listeners = player.getLevel().getNearbyPlayers(
-                TargetingConditions.forNonCombat().range(PLAY_DISTANCE),
-                null, player.getBoundingBox().inflate(PLAY_DISTANCE)
+            final List<Player> listeners = Util.getPlayersInArea(player.getLevel(),
+                player.getBoundingBox().inflate(PLAY_DISTANCE)
             );
             for (final Player listener : listeners)
                 ModPacketHandler.sendToClient(
