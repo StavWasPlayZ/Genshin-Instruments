@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.client.gui.screens.instrument.zither;
+package com.cstav.genshinstrument.client.gui.screens.instrument.floralZither;
 
 import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @OnlyIn(Dist.CLIENT)
 //NOTE: There just to make it load on mod startup
 @EventBusSubscriber(bus = Bus.MOD, value = Dist.CLIENT)
-public class ZitherScreen extends AbstractInstrumentScreen {
+public class FloralZitherScreen extends AbstractInstrumentScreen {
     @Override
     protected ResourceLocation getInstrumentResourcesLocation() {
         return new ResourceLocation(Main.MODID, "textures/gui/instrument/zither");
@@ -46,7 +46,7 @@ public class ZitherScreen extends AbstractInstrumentScreen {
 
 
     public static void open() {
-        Minecraft.getInstance().setScreen(new ZitherScreen());
+        Minecraft.getInstance().setScreen(new FloralZitherScreen());
     }
     
 }

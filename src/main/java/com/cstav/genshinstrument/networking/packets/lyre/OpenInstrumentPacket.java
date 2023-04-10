@@ -3,9 +3,9 @@ package com.cstav.genshinstrument.networking.packets.lyre;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import com.cstav.genshinstrument.client.gui.screens.instrument.lyre.LyreScreen;
-import com.cstav.genshinstrument.client.gui.screens.instrument.zither.ZitherScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.floralZither.FloralZitherScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.vintageLyre.VintageLyreScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.windsongLyre.WindsongLyreScreen;
 import com.cstav.genshinstrument.networking.ModPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -17,8 +17,8 @@ import net.minecraftforge.network.NetworkEvent.Context;
 public class OpenInstrumentPacket implements ModPacket {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_CLIENT;
     private static final Map<String, Runnable> OPEN_INSTRUMENT = Map.of(
-        "lyre", () -> LyreScreen.open(),
-        "zither", () -> ZitherScreen.open(),
+        "lyre", () -> WindsongLyreScreen.open(),
+        "zither", () -> FloralZitherScreen.open(),
         "vintage_lyre", () -> VintageLyreScreen.open()
     );
 

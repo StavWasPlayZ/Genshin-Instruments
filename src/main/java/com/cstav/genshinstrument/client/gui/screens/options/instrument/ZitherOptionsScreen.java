@@ -1,8 +1,8 @@
 package com.cstav.genshinstrument.client.gui.screens.options.instrument;
 
 import com.cstav.genshinstrument.ModClientConfigs;
+import com.cstav.genshinstrument.client.gui.screens.instrument.floralZither.FloralZitherScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screens.instrument.zither.ZitherScreen;
 import com.cstav.genshinstrument.util.RGBColor;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -64,8 +64,8 @@ public class ZitherOptionsScreen extends InstrumentOptionsScreen {
     private ZitherSoundType newSoundType = null;
     private void onSoundTypeChange(final CycleButton<ZitherSoundType> btn, final ZitherSoundType soundType) {
         newSoundType = soundType;
-        if ((screen != null) && (screen instanceof ZitherScreen))
-            ((ZitherScreen)screen).noteGrid.setSoundArr(soundType.soundArr().get());
+        if ((screen != null) && (screen instanceof FloralZitherScreen))
+            ((FloralZitherScreen)screen).noteGrid.setSoundArr(soundType.soundArr().get());
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.client.gui.screens.instrument.lyre;
+package com.cstav.genshinstrument.client.gui.screens.instrument.windsongLyre;
 
 import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @OnlyIn(Dist.CLIENT)
 //NOTE: There just to make it load on mod startup
 @EventBusSubscriber(bus = Bus.MOD, value = Dist.CLIENT)
-public class LyreScreen extends AbstractInstrumentScreen {
+public class WindsongLyreScreen extends AbstractInstrumentScreen {
     @Override
     protected ResourceLocation getInstrumentResourcesLocation() {
         return new ResourceLocation(Main.MODID, "textures/gui/instrument/lyre");
@@ -40,7 +40,7 @@ public class LyreScreen extends AbstractInstrumentScreen {
 
 
     public static void open() {
-        Minecraft.getInstance().setScreen(new LyreScreen());
+        Minecraft.getInstance().setScreen(new WindsongLyreScreen());
     }
     
 }

@@ -1,6 +1,6 @@
 {
     "parent": "genshinstrument:item/instrument",
     "textures": {
-        "layer0": "genshinstrument:item/lyre"
+        "layer0": "genshinstrument:item/floral_zither"
     }
 }

@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "equipment",
+
+    "key": {
+        "#": {
+            "item": "minecraft:jungle_planks"
+        },
+        "X": {
+            "item": "minecraft:string"
+        }
+    },
+
+    "pattern": [
+        "  #",
+        "## ",
+        "X# "
+    ],
+
+    "result": {
+        "item": "genshinstrument:floral_zither"
+    }
+}
