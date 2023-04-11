@@ -6,7 +6,7 @@ import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvide
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.InstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
-import com.cstav.genshinstrument.networking.packets.lyre.CloseInstrumentPacket;
+import com.cstav.genshinstrument.networking.packets.instrument.CloseInstrumentPacket;
 import com.cstav.genshinstrument.sounds.NoteSound;
 import com.mojang.blaze3d.vertex.PoseStack;
 

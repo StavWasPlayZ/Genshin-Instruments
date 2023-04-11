@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 import com.cstav.genshinstrument.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
-import com.cstav.genshinstrument.networking.packets.lyre.InstrumentPacket;
+import com.cstav.genshinstrument.networking.packets.instrument.InstrumentPacket;
 import com.cstav.genshinstrument.sounds.NoteSound;
 import com.cstav.genshinstrument.util.Util;
 import com.mojang.blaze3d.systems.RenderSystem;

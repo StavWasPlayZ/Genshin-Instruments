@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.networking.packets.lyre;
+package com.cstav.genshinstrument.networking.packets.instrument;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,7 +8,6 @@ import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpen;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.networking.ModPacket;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
-import com.cstav.genshinstrument.networking.packets.PlayNotePacket;
 import com.cstav.genshinstrument.sounds.NoteSound;
 import com.cstav.genshinstrument.util.Util;
 

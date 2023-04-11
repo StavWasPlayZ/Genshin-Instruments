@@ -6,8 +6,8 @@ import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvide
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.item.clientExtensions.ClientInstrumentItem;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
-import com.cstav.genshinstrument.networking.packets.lyre.NotifyInstrumentOpenPacket;
-import com.cstav.genshinstrument.networking.packets.lyre.OpenInstrumentPacket;
+import com.cstav.genshinstrument.networking.packets.instrument.NotifyInstrumentOpenPacket;
+import com.cstav.genshinstrument.networking.packets.instrument.OpenInstrumentPacket;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;

@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.networking.packets;
+package com.cstav.genshinstrument.networking.packets.instrument;
 
 import java.util.UUID;
 import java.util.function.Supplier;

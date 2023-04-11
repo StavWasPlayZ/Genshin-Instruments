@@ -3,11 +3,11 @@ package com.cstav.genshinstrument.networking;
 import java.util.List;
 
 import com.cstav.genshinstrument.Main;
-import com.cstav.genshinstrument.networking.packets.PlayNotePacket;
-import com.cstav.genshinstrument.networking.packets.lyre.CloseInstrumentPacket;
-import com.cstav.genshinstrument.networking.packets.lyre.InstrumentPacket;
-import com.cstav.genshinstrument.networking.packets.lyre.NotifyInstrumentOpenPacket;
-import com.cstav.genshinstrument.networking.packets.lyre.OpenInstrumentPacket;
+import com.cstav.genshinstrument.networking.packets.instrument.CloseInstrumentPacket;
+import com.cstav.genshinstrument.networking.packets.instrument.InstrumentPacket;
+import com.cstav.genshinstrument.networking.packets.instrument.NotifyInstrumentOpenPacket;
+import com.cstav.genshinstrument.networking.packets.instrument.OpenInstrumentPacket;
+import com.cstav.genshinstrument.networking.packets.instrument.PlayNotePacket;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;

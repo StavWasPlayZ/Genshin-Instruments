@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.networking.packets.lyre;
+package com.cstav.genshinstrument.networking.packets.instrument;
 
 import java.util.Map;
 import java.util.function.Supplier;
