@@ -23,7 +23,7 @@ version="${file.jarVersion}" #mandatory
  # A display name for the mod
 displayName="Genshin Instruments" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://docs.minecraftforge.net/en/latest/misc/updatechecker/
-updateJSONURL="https://change.me.example.invalid/updates.json" #optional
+updateJSONURL="https://github.com/StavWasPlayZ/Genshin-Instruments/blob/master/public/updates.json?raw=true" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
 displayURL="https://www.curseforge.com/minecraft/mc-mods/genshin-instruments" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
