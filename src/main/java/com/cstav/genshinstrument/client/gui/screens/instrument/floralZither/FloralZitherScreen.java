@@ -21,11 +21,11 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class FloralZitherScreen extends AbstractInstrumentScreen {
     @Override
     protected ResourceLocation getInstrumentResourcesLocation() {
-        return new ResourceLocation(Main.MODID, "textures/gui/instrument/zither");
+        return new ResourceLocation(Main.MODID, "textures/gui/instrument/floral_zither");
     }
     
     private static final InstrumentThemeLoader THEME_LOADER = new InstrumentThemeLoader(
-        new ResourceLocation(Main.MODID, "textures/gui/instrument/zither/instrument_style.json"),
+        new ResourceLocation(Main.MODID, "textures/gui/instrument/floral_zither/instrument_style.json"),
         new RGBColor(215, 195, 160), new RGBColor(255, 249, 239)
     );
     @Override

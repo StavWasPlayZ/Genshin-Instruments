@@ -20,11 +20,11 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class WindsongLyreScreen extends AbstractInstrumentScreen {
     @Override
     protected ResourceLocation getInstrumentResourcesLocation() {
-        return new ResourceLocation(Main.MODID, "textures/gui/instrument/lyre");
+        return new ResourceLocation(Main.MODID, "textures/gui/instrument/windsong_lyre");
     }
     
     private static final InstrumentThemeLoader THEME_LOADER = new InstrumentThemeLoader(
-        new ResourceLocation(Main.MODID, "textures/gui/instrument/lyre/instrument_style.json"),
+        new ResourceLocation(Main.MODID, "textures/gui/instrument/windsong_lyre/instrument_style.json"),
         new RGBColor(154, 228, 212), new RGBColor(255, 249, 239)
     );
     @Override
