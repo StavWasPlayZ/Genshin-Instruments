@@ -43,11 +43,12 @@ public class NoteButton extends Button {
         final int guiScale = Minecraft.getInstance().options.guiScale().get();
 
         return switch (guiScale) {
+            case 0 -> 40;
             case 1 -> 35;
             case 2 -> 46;
             case 3 -> 48;
             case 4 -> 43;
-            default -> (guiScale == 0) ? 40 : (guiScale * 18);
+            default -> guiScale * 18;
         };
     }
     

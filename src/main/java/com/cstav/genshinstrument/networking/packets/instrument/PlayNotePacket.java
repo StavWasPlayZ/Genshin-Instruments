@@ -46,5 +46,4 @@ public class PlayNotePacket implements ModPacket {
 
         return true;
     }
-    
 }
