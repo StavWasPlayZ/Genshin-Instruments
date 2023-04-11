@@ -1,4 +1,4 @@
-<img align="right" src="https://github.com/StavWasPlayZ/Genshin-Instruments/tree/master/tutorial/images/logo.png?raw=true" width="100">
+<img align="right" src="https://github.com/StavWasPlayZ/Genshin-Instruments/blob/master/tutorial/images/logo.png?raw=true" width="100">
 
 # Genshin Instruments
 
