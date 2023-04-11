@@ -1,4 +1,4 @@
-<img align="right" src=https://media.forgecdn.net/avatars/thumbnails/802/515/64/64/638167299445926874.png width=100>
+<img align="right" src=https://github.com/StavWasPlayZ/Genshin-Instruments/tutorial/images/logo.png?raw=true width="100">
 
 # Genshin Instruments
 
