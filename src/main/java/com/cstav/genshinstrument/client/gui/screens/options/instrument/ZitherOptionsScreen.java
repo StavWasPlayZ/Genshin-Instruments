@@ -65,7 +65,7 @@ public class ZitherOptionsScreen extends InstrumentOptionsScreen {
     private void onSoundTypeChange(final CycleButton<ZitherSoundType> btn, final ZitherSoundType soundType) {
         newSoundType = soundType;
         if ((screen != null) && (screen instanceof FloralZitherScreen))
-            ((FloralZitherScreen)screen).noteGrid.setSoundArr(soundType.soundArr().get());
+            ((FloralZitherScreen)screen).noteGrid.setNoteSounds(soundType.soundArr().get());
     }
 
     @Override

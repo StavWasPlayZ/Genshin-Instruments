@@ -1,7 +1,7 @@
 package com.cstav.genshinstrument.sounds;
 
 import com.cstav.genshinstrument.Main;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractGridInstrument;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -59,14 +59,18 @@ public class ModSounds {
     ;
 
 
-    public static NoteSound[] createInstrumentNotes(final String namePrefix, final boolean hasStereo) {
-        final NoteSound[] sounds = new NoteSound[AbstractInstrumentScreen.ROWS * AbstractInstrumentScreen.COLUMNS];
+    public static NoteSound[] createInstrumentNotes(String namePrefix, boolean hasStereo, int rows, int columns) {
+        final NoteSound[] sounds = new NoteSound[rows * columns];
 
         for (int i = 0; i < sounds.length; i++)
             sounds[i] = registerInstrument(namePrefix, i, hasStereo);
 
         return sounds;
     }
+    public static NoteSound[] createInstrumentNotes(String namePrefix, boolean hasStereo) {
+        return createInstrumentNotes(namePrefix, hasStereo, AbstractGridInstrument.DEF_ROWS, AbstractGridInstrument.DEF_COLUMNS);
+    }
+    
     public static NoteSound[] createInstrumentNotes(final String namePrefix) {
         return createInstrumentNotes(namePrefix, false);
     }

@@ -27,11 +27,13 @@ public class NoteGrid implements Iterable<NoteButton> {
     
     private final NoteButton[][] notes;
     public final int rows, columns;
+    private NoteSound[] noteSounds;
 
-    public NoteGrid(int rows, int columns, NoteSound[] sounds,
+    public NoteGrid(int rows, int columns, NoteSound[] noteSounds,
       ResourceLocation noteResourcesLocation, Supplier<Integer> colorThemeSupplier, Supplier<Integer> pressedThemeSupplier) {
         this.rows = rows;
         this.columns = columns;
+        this.noteSounds = noteSounds;
 
         // Construct the note grid
         notes = new NoteButton[columns][rows];
@@ -39,7 +41,7 @@ public class NoteGrid implements Iterable<NoteButton> {
             final NoteButton[] buttonRow = new NoteButton[rows];
 
             for (int j = 0; j < rows; j++)
-                buttonRow[j] = createNote(j, i, sounds, noteResourcesLocation, colorThemeSupplier, pressedThemeSupplier);
+                buttonRow[j] = createNote(j, i, noteResourcesLocation, colorThemeSupplier, pressedThemeSupplier);
 
             notes[i] = buttonRow;
         }
@@ -56,11 +58,11 @@ public class NoteGrid implements Iterable<NoteButton> {
         );
     }
     
-    protected NoteButton createNote(int row, int column, NoteSound[] sounds,
+    protected NoteButton createNote(int row, int column,
       ResourceLocation noteResourceLocation, Supplier<Integer> colorThemeSupplier, Supplier<Integer> pressedThemeSupplier) {
-        return new NoteButton(row, column,
-            getSoundAt(sounds, row, column), getLabelSupplier(),
-            noteResourceLocation, colorThemeSupplier, pressedThemeSupplier
+        return new NoteGridButton(row, column,
+            getSoundAt(noteSounds, row, column), getLabelSupplier(),
+            noteResourceLocation, rows, colorThemeSupplier, pressedThemeSupplier
         );
     }
     /**
@@ -70,7 +72,7 @@ public class NoteGrid implements Iterable<NoteButton> {
      * @param column The column of the note
      */
     protected static NoteSound getSoundAt(final NoteSound[] sounds, final int row, final int column) {
-        return sounds[row + column * AbstractInstrumentScreen.ROWS];
+        return sounds[row + column * AbstractGridInstrument.DEF_ROWS];
     }
     /**
      * @return The perferred label supplier specified in this mod's configs
@@ -79,10 +81,15 @@ public class NoteGrid implements Iterable<NoteButton> {
         return ModClientConfigs.LABEL_TYPE.get().getLabelSupplier();
     }
 
-    public void setSoundArr(final NoteSound[] soundArr) {
+    public NoteSound[] getNoteSounds() {
+        return noteSounds;
+    }
+    public void setNoteSounds(final NoteSound[] noteSounds) {
+        this.noteSounds = noteSounds;
+
         for (int i = 0; i < columns; i++)
             for (int j = 0; j < rows; j++)
-                notes[i][j].setSound(getSoundAt(soundArr, j, i));
+                notes[i][j].setSound(getSoundAt(noteSounds, j, i));
 
         updatePitch();
     }
@@ -105,9 +112,8 @@ public class NoteGrid implements Iterable<NoteButton> {
 
         FrameWidget.alignInRectangle(grid, 0, 0, screenWidth, screenHeight, 0.5f, vertAlignment);
         
-        // Update the initial position of the buttons
-        // For their animation
-        forEach((note) -> note.initPos());
+        // Initialize all the notes
+        forEach((note) -> note.init());
 
         return grid;
     }

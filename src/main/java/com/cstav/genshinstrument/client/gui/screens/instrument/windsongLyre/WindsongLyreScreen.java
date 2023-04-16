@@ -1,10 +1,10 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.windsongLyre;
 
 import com.cstav.genshinstrument.Main;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractGridInstrument;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
-import com.cstav.genshinstrument.sounds.NoteSound;
 import com.cstav.genshinstrument.sounds.ModSounds;
+import com.cstav.genshinstrument.sounds.NoteSound;
 import com.cstav.genshinstrument.util.RGBColor;
 
 import net.minecraft.client.Minecraft;
@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @OnlyIn(Dist.CLIENT)
 //NOTE: There just to make it load on mod startup
 @EventBusSubscriber(bus = Bus.MOD, value = Dist.CLIENT)
-public class WindsongLyreScreen extends AbstractInstrumentScreen {
+public class WindsongLyreScreen extends AbstractGridInstrument {
     @Override
     protected ResourceLocation getInstrumentResourcesLocation() {
         return new ResourceLocation(Main.MODID, "textures/gui/instrument/windsong_lyre");

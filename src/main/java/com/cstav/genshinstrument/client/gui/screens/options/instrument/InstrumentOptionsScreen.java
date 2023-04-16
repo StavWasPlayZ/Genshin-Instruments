@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteLabel;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteGridLabel;
 import com.cstav.genshinstrument.client.gui.screens.options.widget.BetterSlider;
 import com.cstav.genshinstrument.sounds.NoteSound;
 import com.cstav.genshinstrument.util.RGBColor;
@@ -139,8 +139,8 @@ public class InstrumentOptionsScreen extends Screen {
         );
         rowHelper.addChild(pitchSlider);
         
-        final CycleButton<NoteLabel> labelType = CycleButton.<NoteLabel>builder((label) -> Component.translatable(label.getKey()))
-            .withValues(NoteLabel.values())
+        final CycleButton<NoteGridLabel> labelType = CycleButton.<NoteGridLabel>builder((label) -> Component.translatable(label.getKey()))
+            .withValues(NoteGridLabel.values())
             .withInitialValue(ModClientConfigs.LABEL_TYPE.get())
             .create(0, 0,
                 getSmallButtonWidth(), getButtonHeight(),
@@ -161,18 +161,18 @@ public class InstrumentOptionsScreen extends Screen {
     }
 
     // Option handlers
-    protected NoteLabel newLabel = null;
-    protected void onLabelChanged(final CycleButton<NoteLabel> button, final NoteLabel label) {
+    protected NoteGridLabel newLabel = null;
+    protected void onLabelChanged(final CycleButton<NoteGridLabel> button, final NoteGridLabel label) {
         newLabel = label;
         if (screen != null)
-            screen.noteGrid.forEach((note) -> note.setLabel(label.getLabelSupplier()));
+            screen.noteIterable().forEach((note) -> note.setLabelSupplier(label.getLabelSupplier()));
     }
 
     protected double newPitch = -1;
     protected void onPitchChanged(final ForgeSlider slider, final double pitch) {
         newPitch = pitch;
         if (screen != null)
-            screen.noteGrid.forEach((note) -> note.getSound().setPitch((float)pitch));
+            screen.noteIterable().forEach((note) -> note.getSound().setPitch((float)pitch));
     }
 
     // These values derive from the config directly, so update them on-spot

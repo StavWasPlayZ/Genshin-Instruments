@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.InstrumentOptionsScreen;
-import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.instrument.CloseInstrumentPacket;
 import com.cstav.genshinstrument.sounds.NoteSound;
@@ -23,22 +22,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractInstrumentScreen extends Screen {
     public static final String NOTE_DIR = "note";
-    public static final int ROWS = 7, COLUMNS = 3;
-
     
     // Abstract implementations
-    /**
-     * Initializes a new Note Grid to be paired with this instrument
-     * @return The new Note Grid
-     */
-    public NoteGrid initNoteGrid() {
-        return new NoteGrid(
-            ROWS, COLUMNS, getSounds(),
-            getResourceFromRoot(NOTE_DIR),
-            () -> getThemeLoader().getNoteTheme().getNumeric(),
-            () -> getThemeLoader().getPressedNoteTheme().getNumeric()
-        );
-    }
     /**
      * <p>Gets the root directory of this instrument's resources.</p>
      * Such directory is made of:
@@ -52,9 +37,11 @@ public abstract class AbstractInstrumentScreen extends Screen {
     protected InstrumentOptionsScreen initInstrumentOptionsScreen() {
         return new InstrumentOptionsScreen(this);
     }
+
     // Any subclass must make their own InstrumentThemeLoader
     protected abstract InstrumentThemeLoader getThemeLoader();
 
+    // Public
     /**
      * <p>Gets the sound array used by this instrument.
      * Its length must be equal to this Note Grid's {@code row*column}.</p>
@@ -62,6 +49,9 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * @return The array of sounds used by this instruments.
      */
     public abstract NoteSound[] getSounds();
+
+    public abstract Iterable<NoteButton> noteIterable();
+
     
     /**
      * @param path The desired path to obtain from the root directory
@@ -77,36 +67,26 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
 
-    protected final InstrumentOptionsScreen optionsScreen;
-    public final NoteGrid noteGrid;
+    protected final InstrumentOptionsScreen optionsScreen = initInstrumentOptionsScreen();
     
     public AbstractInstrumentScreen() {
         super(Component.empty());
 
-
-        optionsScreen = initInstrumentOptionsScreen();
         optionsScreen.setOnCloseRunnable(this::onOptionsClose);
-
-        noteGrid = initNoteGrid();
     }
 
 
     @Override
     protected void init() {
-        final AbstractWidget grid = noteGrid.initNoteGridWidget(.9f, width, height);
-
-        addRenderableWidget(grid);
-        addRenderableWidget(initCustomizeButton(grid.getY() - 15));
-
         optionsScreen.init(minecraft, width, height);
     }
     /**
-     * Initializes a new button responsible for popping up the customize menu for this instrument.
+     * Initializes a new button responsible for popping up the options menu for this instrument.
      * Called during {@link Screen#init}.
      * @param vertOffset The vertical offset at which this button will be rendered.
-     * @return A new Customize button
+     * @return A new Instrument Options button
      */
-    protected AbstractWidget initCustomizeButton(final int vertOffset) {
+    protected AbstractWidget initOptionsButton(final int vertOffset) {
         final Button button = Button.builder(
             Component.translatable("button.genshinstrument.instrumentOptions").append("..."), (btn) -> onOptionsOpen()
         )
@@ -181,39 +161,6 @@ public abstract class AbstractInstrumentScreen extends Screen {
         );
         ModPacketHandler.sendToServer(new CloseInstrumentPacket());
         super.onClose();
-    }
-    
-
-    @Override
-    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
-        
-        for (int i = 0; i < COLUMNS; i++)
-            for (int j = 0; j < ROWS; j++)
-                if (lyreKeyPressed(j, i, pKeyCode)) {
-                    noteGrid.getNote(j, i).play(true);
-                    return true;
-                }
-            
-
-        if (optionsScreen.active)
-            optionsScreen.keyPressed(pKeyCode, pScanCode, pModifiers);
-
-        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
-        
-    }
-    @Override
-    public boolean keyReleased(int pKeyCode, int pScanCode, int pModifiers) {
-        for (int i = 0; i < COLUMNS; i++)
-            for (int j = 0; j < ROWS; j++)
-                if (lyreKeyPressed(j, i, pKeyCode)) {
-                    noteGrid.getNote(j, i).locked = false;
-                    return true;
-                }
-
-        return super.keyReleased(pKeyCode, pScanCode, pModifiers);
-    }
-    public static boolean lyreKeyPressed(final int row, final int column, final int keyCode) {
-        return KeyMappings.INSTRUMENT_MAPPINGS[column][row].getValue() == keyCode;
     }
     
 

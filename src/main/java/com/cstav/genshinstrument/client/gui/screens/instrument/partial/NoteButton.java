@@ -34,9 +34,11 @@ public class NoteButton extends Button {
     private static final float PRESS_ANIM_SECS = .15f;
     private static final int TARGET_SCALE_AMOUNT = 9;
     
-    public static int getNoteTextureWidth() {
+    // Texture fluff
+    protected int getNoteTextureWidth() {
         return 56;
     }
+
 
     @SuppressWarnings("resource")
     public static int getSize() {
@@ -54,37 +56,50 @@ public class NoteButton extends Button {
     
 
     protected final Minecraft minecraft = Minecraft.getInstance();
-
+    
     protected NoteSound sound;
-    protected final int row, column;
+    protected final int noteTextureRow, rowsInNoteTexture;
     protected final Supplier<Integer> colorThemeSupplier, pressedColorThemeSupplier;
     protected final ResourceLocation rootLocation, noteLocation, noteBgLocation;
+
+    private NoteLabelSupplier labelSupplier;
     
-    public NoteButton(int row, int column, NoteSound sound, NoteLabelSupplier labelSupplier,
-      ResourceLocation noteResourcesLocation, Supplier<Integer> colorTheme, Supplier<Integer> pressedThemeColor) {
-        super(Button.builder(labelSupplier.get(row, column), (iAmADissapointmentAndAFailureToMyParents) -> {})
+    public NoteButton(NoteSound sound, NoteLabelSupplier labelSupplier,
+      ResourceLocation noteResourcesLocation, int noteTextureRow, int rowsInNoteTexture,
+      Supplier<Integer> colorTheme, Supplier<Integer> pressedThemeColor) {
+        super(Button.builder(null, (iAmADissapointmentAndAFailureToMyParents) -> {})
             .size(getSize(), getSize())
         );
 
-        this.row = row;
-        this.column = column;
+
         this.colorThemeSupplier = colorTheme;
         this.sound = sound;
 
-        this.pressedColorThemeSupplier = pressedThemeColor;
         rootLocation = noteResourcesLocation;
+
+        this.pressedColorThemeSupplier = pressedThemeColor;
+        this.noteTextureRow = noteTextureRow;
+        this.rowsInNoteTexture = rowsInNoteTexture;
+
         this.noteLocation = getResourceFromRoot(NOTE_FILENAME);
         this.noteBgLocation = getResourceFromRoot(NOTE_BG_FILENAME);
+
+        this.labelSupplier = labelSupplier;
     }
-    public void setLabel(final NoteLabelSupplier labelSupplier) {
-        setMessage(labelSupplier.get(row, column));
+    public void setLabelSupplier(final NoteLabelSupplier labelSupplier) {
+        this.labelSupplier = labelSupplier;
+        setMessage(labelSupplier.get(this));
+    }
+    public NoteLabelSupplier getLabelSupplier() {
+        return labelSupplier;
     }
 
-    public void setSound(final NoteSound sound) {
-        this.sound = sound;
-    }
+
     public NoteSound getSound() {
         return sound;
+    }
+    public void setSound(final NoteSound sound) {
+        this.sound = sound;
     }
 
     /**
@@ -97,6 +112,10 @@ public class NoteButton extends Button {
 
     protected int initX, initY;
     private int  textX, textY;
+    /**
+     * Initializes the button's initial position.
+     * This is done for the animations to work properly - for them to stick to the same position.
+     */
     public void initPos() {
         initX = getX();
         initY = getY();
@@ -109,6 +128,10 @@ public class NoteButton extends Button {
     private NoteAnimationState animState = NoteAnimationState.IDLE;
     private int animTime;
 
+    public void init() {
+        initPos();
+        setLabelSupplier(labelSupplier);
+    }
     @Override
     public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
         // Button
@@ -131,13 +154,10 @@ public class NoteButton extends Button {
             this.getX() + noteWidth/2, this.getY() + noteHeight/2,
             //NOTE: I have no clue whatsoever how on earth these 1.025 and .9 multipliers actually work.
             // Like seriously wtf why fkuaherjgaeorg i hate maths
-            noteWidth * row * 1.025f, isPlaying() ? noteHeight : 0,
+            noteWidth * noteTextureRow * 1.025f, isPlaying() ? noteHeight : 0,
             noteWidth, noteHeight,
-            (int)(noteWidth * (getNoteTextureWidth() / AbstractInstrumentScreen.ROWS) * .9f), height
+            (int)(noteWidth * (getNoteTextureWidth() / rowsInNoteTexture) * .9f), height
         );
-        //NOTE: No idea how to go about mapping textures.
-        // Possibility to map a background and ring color for note, and theme color for
-        // text and note.
 
         // Label
         //FIXME: All text rendered this way are making their way to the top of
@@ -148,6 +168,7 @@ public class NoteButton extends Button {
             (isPlaying() ? pressedColorThemeSupplier : colorThemeSupplier).get()
         );
 
+        // dunno why or if necessary
         RenderSystem.disableBlend();
     }
     protected static void displaySprite(final ResourceLocation location) {

@@ -19,10 +19,11 @@ public class VintageNoteGrid extends NoteGrid {
     }
 
     @Override
-    protected NoteButton createNote(int row, int column, NoteSound[] sounds, ResourceLocation noteResourceLocation,
+    protected NoteButton createNote(int row, int column, ResourceLocation noteResourceLocation,
             Supplier<Integer> colorThemeSupplier, Supplier<Integer> pressedThemeSupplier) {
+        
         return new VintageNoteButton(row, column, 
-            getSoundAt(sounds, row, column), getLabelSupplier(),
+            getSoundAt(getNoteSounds(), row, column), getLabelSupplier(),
             noteResourceLocation, colorThemeSupplier, pressedThemeSupplier
         );
     }
