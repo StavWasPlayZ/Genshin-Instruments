@@ -3,7 +3,7 @@ package com.cstav.genshinstrument.networking.packets.instrument;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.NoteButton;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.networking.ModPacket;
 import com.cstav.genshinstrument.sounds.NoteSound;
 

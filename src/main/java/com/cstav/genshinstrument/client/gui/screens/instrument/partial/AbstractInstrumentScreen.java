@@ -3,6 +3,7 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
 import org.jetbrains.annotations.NotNull;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.InstrumentOptionsScreen;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.instrument.CloseInstrumentPacket;
@@ -21,8 +22,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractInstrumentScreen extends Screen {
-    public static final String NOTE_DIR = "note";
-    
+
     // Abstract implementations
     /**
      * <p>Gets the root directory of this instrument's resources.</p>
@@ -39,7 +39,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
     // Any subclass must make their own InstrumentThemeLoader
-    protected abstract InstrumentThemeLoader getThemeLoader();
+    public abstract InstrumentThemeLoader getThemeLoader();
 
     // Public
     /**
@@ -52,6 +52,19 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     public abstract Iterable<NoteButton> noteIterable();
 
+    /**
+     * Shorthand for {@code "textures/gui/instrument/" + instrumentId}
+     */
+    protected static String genPath(final String instrumentId) {
+        return "textures/gui/instrument/" + instrumentId;
+    }
+    /**
+     * Shorthand for {@code "textures/gui/instrument/" + instrumentId}
+     */
+    protected static String genStylerPath(final String instrumentId) {
+        return genPath(instrumentId) + "/instrument_style.json";
+    }
+
     
     /**
      * @param path The desired path to obtain from the root directory
@@ -59,7 +72,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * @see {@link AbstractInstrumentScreen#getInstrumentResourcesLocation()}
      * @see {@link AbstractInstrumentScreen#getResourceFrom(ResourceLocation, String)}
      */
-    protected ResourceLocation getResourceFromRoot(final String path) {
+    public ResourceLocation getResourceFromRoot(final String path) {
         return new ResourceLocation(
             getInstrumentResourcesLocation().getNamespace(),
             getInstrumentResourcesLocation().getPath() + "/" + path
@@ -94,6 +107,8 @@ public abstract class AbstractInstrumentScreen extends Screen {
         .build();
 
         button.setPosition((width - button.getWidth())/2, vertOffset - button.getHeight()/2);
+
+        addRenderableWidget(button);
         return button;
     }
 
@@ -115,6 +130,13 @@ public abstract class AbstractInstrumentScreen extends Screen {
     private void setSettingsOpen(final boolean open) {
         setChildrenActive(this, !open);
         optionsScreen.active = open;
+    }
+
+
+    @Override
+    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
+        optionsScreen.keyPressed(pKeyCode, pScanCode, pModifiers);
+        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
     }
 
     @Override

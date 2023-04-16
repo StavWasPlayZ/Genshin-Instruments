@@ -1,10 +1,12 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
 
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteGrid;
 import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
 
 import net.minecraft.client.gui.components.AbstractWidget;
 
-public abstract class AbstractGridInstrument extends AbstractInstrumentScreen {
+public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScreen {
     public static final int DEF_ROWS = 7, DEF_COLUMNS = 3;
 
     public int columns() {
@@ -22,10 +24,7 @@ public abstract class AbstractGridInstrument extends AbstractInstrumentScreen {
      */
     public NoteGrid initNoteGrid() {
         return new NoteGrid(
-            rows(), columns(), getSounds(),
-            getResourceFromRoot(NOTE_DIR),
-            () -> getThemeLoader().getNoteTheme().getNumeric(),
-            () -> getThemeLoader().getPressedNoteTheme().getNumeric()
+            rows(), columns(), getSounds(), this
         );
     }
 
@@ -39,10 +38,9 @@ public abstract class AbstractGridInstrument extends AbstractInstrumentScreen {
     @Override
     protected void init() {
         final AbstractWidget grid = noteGrid.initNoteGridWidget(.9f, width, height);
-        
         addRenderableWidget(grid);
-        addRenderableWidget(initOptionsButton(grid.getY() - 15));
-
+        
+        initOptionsButton(grid.getY() - 15);
         super.init();
     }
 
@@ -56,10 +54,6 @@ public abstract class AbstractGridInstrument extends AbstractInstrumentScreen {
                     noteGrid.getNote(j, i).play(true);
                     return true;
                 }
-            
-
-        if (optionsScreen.active)
-            optionsScreen.keyPressed(pKeyCode, pScanCode, pModifiers);
 
         return super.keyPressed(pKeyCode, pScanCode, pModifiers);
     }

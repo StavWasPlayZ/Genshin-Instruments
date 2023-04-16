@@ -1,7 +1,7 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.windsongLyre;
 
 import com.cstav.genshinstrument.Main;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractGridInstrument;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.sounds.ModSounds;
 import com.cstav.genshinstrument.sounds.NoteSound;
@@ -17,18 +17,21 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @OnlyIn(Dist.CLIENT)
 //NOTE: There just to make it load on mod startup
 @EventBusSubscriber(bus = Bus.MOD, value = Dist.CLIENT)
-public class WindsongLyreScreen extends AbstractGridInstrument {
+public class WindsongLyreScreen extends AbstractGridInstrumentScreen {
+    public static final String INSTRUMENT_ID = "windsong_lyre";
+
+
     @Override
     protected ResourceLocation getInstrumentResourcesLocation() {
-        return new ResourceLocation(Main.MODID, "textures/gui/instrument/windsong_lyre");
+        return new ResourceLocation(Main.MODID, genPath(INSTRUMENT_ID));
     }
     
     private static final InstrumentThemeLoader THEME_LOADER = new InstrumentThemeLoader(
-        new ResourceLocation(Main.MODID, "textures/gui/instrument/windsong_lyre/instrument_style.json"),
+        new ResourceLocation(Main.MODID, genStylerPath(INSTRUMENT_ID)),
         new RGBColor(154, 228, 212), new RGBColor(255, 249, 239)
     );
     @Override
-    protected InstrumentThemeLoader getThemeLoader() {
+    public InstrumentThemeLoader getThemeLoader() {
         return THEME_LOADER;
     }
 

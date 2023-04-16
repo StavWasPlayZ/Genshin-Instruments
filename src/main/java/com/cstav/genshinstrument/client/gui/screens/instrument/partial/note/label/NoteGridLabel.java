@@ -1,7 +1,7 @@
-package com.cstav.genshinstrument.client.gui.screens.instrument.partial.label;
+package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label;
 
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.NoteButton;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.NoteGridButton;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteGridButton;
 import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
 
 import net.minecraft.network.chat.Component;

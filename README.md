@@ -13,7 +13,7 @@ This is my first ever mod and API (and its README) I ever publicly do. So, just 
 I'll try my best to stay on-point, though.
 
 
-# Creating Your Own Instrument!
+# Creating Your Own Instrument! [OUTDATED (to be fixed)]
 
 Let's say you're a fellow modder who'd like to use this mod as a dependency for making a new instrument. While I heavily doubt anyone would actually do it, I still left a pretty neat API for you to use.
 In any case, this section is mostly for me to remember my stuff :P
@@ -78,7 +78,7 @@ Generally, we want the pressed theme to be the background color of the note. The
 
 #### **Note:** Loading
 The initiator for this class must be called in about the same time as of the loading of the `Mod event bus`. This is so because when you call the initiator, it automatically subscribes the given JSON for any resource load event on the client, and the first one is just about when the game fires.  
-This means that if you do not call it at that time, any resource pack that is modifying your piano will not have its effects applied until they press *F3+T* to trigger a resource load event.
+This means that if you do not call it at that time, any resource pack that is modifying your piano will not have its effects applied until a resource load event occurs (such *F3+T* being pressed).
 
 The trick I use for it is to make the theme loader a static property of the screen class, and annotate the screen class as an `EventBusSubscriber` for the mod event bus.
 This makes the FML load the class early on in search for any methods trying to subscribe to the specified event bus.  

@@ -1,13 +1,14 @@
-package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
+package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note;
 
 import java.util.UUID;
-import java.util.function.Supplier;
 
 import com.cstav.genshinstrument.ModClientConfigs;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteLabelSupplier;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.instrument.InstrumentPacket;
 import com.cstav.genshinstrument.sounds.NoteSound;
+import com.cstav.genshinstrument.util.RGBColor;
 import com.cstav.genshinstrument.util.Util;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -33,11 +34,6 @@ public class NoteButton extends Button {
     public static final String NOTE_FILENAME = "note.png", NOTE_BG_FILENAME = "note_bg.png";
     private static final float PRESS_ANIM_SECS = .15f;
     private static final int TARGET_SCALE_AMOUNT = 9;
-    
-    // Texture fluff
-    protected int getNoteTextureWidth() {
-        return 56;
-    }
 
 
     @SuppressWarnings("resource")
@@ -59,33 +55,40 @@ public class NoteButton extends Button {
     
     protected NoteSound sound;
     protected final int noteTextureRow, rowsInNoteTexture;
-    protected final Supplier<Integer> colorThemeSupplier, pressedColorThemeSupplier;
+    protected final RGBColor colorTheme, pressedColorTheme;
     protected final ResourceLocation rootLocation, noteLocation, noteBgLocation;
 
     private NoteLabelSupplier labelSupplier;
+    private int noteTextureWidth = 56;
     
-    public NoteButton(NoteSound sound, NoteLabelSupplier labelSupplier,
-      ResourceLocation noteResourcesLocation, int noteTextureRow, int rowsInNoteTexture,
-      Supplier<Integer> colorTheme, Supplier<Integer> pressedThemeColor) {
+    public NoteButton(NoteSound sound, NoteLabelSupplier labelSupplier, int noteTextureRow, int rowsInNoteTexture,
+      AbstractInstrumentScreen instrumentScreen) {
         super(Button.builder(null, (iAmADissapointmentAndAFailureToMyParents) -> {})
             .size(getSize(), getSize())
         );
 
 
-        this.colorThemeSupplier = colorTheme;
         this.sound = sound;
 
-        rootLocation = noteResourcesLocation;
-
-        this.pressedColorThemeSupplier = pressedThemeColor;
+        this.labelSupplier = labelSupplier;
+        colorTheme = instrumentScreen.getThemeLoader().getNoteTheme();
+        pressedColorTheme = instrumentScreen.getThemeLoader().getPressedNoteTheme();
+        
+        rootLocation = instrumentScreen.getResourceFromRoot("note");
         this.noteTextureRow = noteTextureRow;
         this.rowsInNoteTexture = rowsInNoteTexture;
 
         this.noteLocation = getResourceFromRoot(NOTE_FILENAME);
         this.noteBgLocation = getResourceFromRoot(NOTE_BG_FILENAME);
 
-        this.labelSupplier = labelSupplier;
     }
+    public NoteButton(NoteSound sound, NoteLabelSupplier labelSupplier, int noteTextureRow, int rowsInNoteTexture,
+      AbstractInstrumentScreen instrumentScreen, int noteTextureWidth) {
+        this(sound, labelSupplier, noteTextureRow, rowsInNoteTexture, instrumentScreen);
+
+        this.noteTextureWidth = noteTextureWidth;
+    }
+
     public void setLabelSupplier(final NoteLabelSupplier labelSupplier) {
         this.labelSupplier = labelSupplier;
         setMessage(labelSupplier.get(this));
@@ -156,7 +159,7 @@ public class NoteButton extends Button {
             // Like seriously wtf why fkuaherjgaeorg i hate maths
             noteWidth * noteTextureRow * 1.025f, isPlaying() ? noteHeight : 0,
             noteWidth, noteHeight,
-            (int)(noteWidth * (getNoteTextureWidth() / rowsInNoteTexture) * .9f), height
+            (int)(noteWidth * (noteTextureWidth / rowsInNoteTexture) * .9f), height
         );
 
         // Label
@@ -165,7 +168,7 @@ public class NoteButton extends Button {
         drawCenteredString(
             pPoseStack, minecraft.font, getMessage(),
             textX, textY,
-            (isPlaying() ? pressedColorThemeSupplier : colorThemeSupplier).get()
+            (isPlaying() ? pressedColorTheme : colorTheme).getNumeric()
         );
 
         // dunno why or if necessary

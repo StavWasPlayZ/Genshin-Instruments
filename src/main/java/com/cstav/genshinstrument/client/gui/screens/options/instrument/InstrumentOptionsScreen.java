@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteGridLabel;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteGridLabel;
 import com.cstav.genshinstrument.client.gui.screens.options.widget.BetterSlider;
 import com.cstav.genshinstrument.sounds.NoteSound;
 import com.cstav.genshinstrument.util.RGBColor;
@@ -202,22 +202,25 @@ public class InstrumentOptionsScreen extends Screen {
     public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
         if (!active)
             return false;
-        
         return super.mouseClicked(pMouseX, pMouseY, pButton);
     }
     @Override
     public boolean mouseDragged(double pMouseX, double pMouseY, int pButton, double pDragX, double pDragY) {
         if (!active)
             return false;
-        
         return super.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
     }
     @Override
     public boolean mouseReleased(double pMouseX, double pMouseY, int pButton) {
         if (!active)
             return false;
-        
         return super.mouseReleased(pMouseX, pMouseY, pButton);
+    }
+    @Override
+    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
+        if (!active)
+            return false;
+        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
     }
     //#endregion
 

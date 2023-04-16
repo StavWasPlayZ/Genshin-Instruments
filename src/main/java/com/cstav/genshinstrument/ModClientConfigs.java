@@ -1,6 +1,6 @@
 package com.cstav.genshinstrument;
 
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteGridLabel;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteGridLabel;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.InstrumentChannelType;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.ZitherSoundType;
 import com.cstav.genshinstrument.sounds.NoteSound;

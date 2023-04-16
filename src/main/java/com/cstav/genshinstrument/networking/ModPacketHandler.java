@@ -30,7 +30,7 @@ public class ModPacketHandler {
     });
 
 
-    private static final String PROTOCOL_VERSION = "1";
+    private static final String PROTOCOL_VERSION = "1.5";
     private static int id;
 
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
@@ -53,7 +53,7 @@ public class ModPacketHandler {
     public static void registerPackets(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
 
-            for (Class<ModPacket> packetType : ACCEPTABLE_PACKETS)
+            for (final Class<ModPacket> packetType : ACCEPTABLE_PACKETS)
                 try {
                     
                     INSTANCE.messageBuilder(packetType, id++, (NetworkDirection)packetType.getField("NETWORK_DIRECTION").get(null))

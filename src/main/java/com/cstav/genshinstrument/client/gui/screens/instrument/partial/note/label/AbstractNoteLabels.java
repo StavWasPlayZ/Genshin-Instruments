@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.client.gui.screens.instrument.partial.label;
+package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

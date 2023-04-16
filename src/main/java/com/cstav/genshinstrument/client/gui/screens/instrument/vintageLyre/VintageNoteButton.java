@@ -1,10 +1,9 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.vintageLyre;
 
-import java.util.function.Supplier;
-
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractGridInstrument;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.NoteGridButton;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteLabelSupplier;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractGridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteGridButton;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.sounds.NoteSound;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -19,11 +18,9 @@ public class VintageNoteButton extends NoteGridButton {
 
     private final ResourceLocation thingyLocation = getResourceFromRoot("thing.png");
 
-    public VintageNoteButton(int row, int column, NoteSound sound, NoteLabelSupplier labelSupplier,
-      ResourceLocation noteResourcesLocation, Supplier<Integer> colorTheme,
-      Supplier<Integer> pressedThemeColor) {
+    public VintageNoteButton(int row, int column, NoteSound sound, NoteLabelSupplier labelSupplier, AbstractInstrumentScreen instrumentScreen) {
         // We know for sure that the lyre is a 7x3
-        super(row, column, sound, labelSupplier, noteResourcesLocation, AbstractGridInstrument.DEF_ROWS, colorTheme, pressedThemeColor);
+        super(row, column, sound, labelSupplier, AbstractGridInstrumentScreen.DEF_ROWS, instrumentScreen);
     }
 
     

@@ -1,17 +1,17 @@
-package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
+package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note;
 
 import java.util.Iterator;
-import java.util.function.Supplier;
 
 import com.cstav.genshinstrument.ModClientConfigs;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.label.NoteLabelSupplier;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractGridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.sounds.NoteSound;
 
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.FrameWidget;
 import net.minecraft.client.gui.components.GridWidget;
 import net.minecraft.client.gui.components.GridWidget.RowHelper;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -29,8 +29,7 @@ public class NoteGrid implements Iterable<NoteButton> {
     public final int rows, columns;
     private NoteSound[] noteSounds;
 
-    public NoteGrid(int rows, int columns, NoteSound[] noteSounds,
-      ResourceLocation noteResourcesLocation, Supplier<Integer> colorThemeSupplier, Supplier<Integer> pressedThemeSupplier) {
+    public NoteGrid(final int rows, final int columns, NoteSound[] noteSounds, AbstractInstrumentScreen instrumentScreen) {
         this.rows = rows;
         this.columns = columns;
         this.noteSounds = noteSounds;
@@ -41,7 +40,7 @@ public class NoteGrid implements Iterable<NoteButton> {
             final NoteButton[] buttonRow = new NoteButton[rows];
 
             for (int j = 0; j < rows; j++)
-                buttonRow[j] = createNote(j, i, noteResourcesLocation, colorThemeSupplier, pressedThemeSupplier);
+                buttonRow[j] = createNote(j, i, instrumentScreen);
 
             notes[i] = buttonRow;
         }
@@ -58,12 +57,10 @@ public class NoteGrid implements Iterable<NoteButton> {
         );
     }
     
-    protected NoteButton createNote(int row, int column,
-      ResourceLocation noteResourceLocation, Supplier<Integer> colorThemeSupplier, Supplier<Integer> pressedThemeSupplier) {
+    protected NoteButton createNote(final int row, final int column, final AbstractInstrumentScreen instrumentScreen) {
         return new NoteGridButton(row, column,
-            getSoundAt(noteSounds, row, column), getLabelSupplier(),
-            noteResourceLocation, rows, colorThemeSupplier, pressedThemeSupplier
-        );
+            getSoundAt(noteSounds, row, column), getLabelSupplier(), rows
+        , instrumentScreen);
     }
     /**
      * Evaulates the sound at the given indexes, and returns it
@@ -72,7 +69,7 @@ public class NoteGrid implements Iterable<NoteButton> {
      * @param column The column of the note
      */
     protected static NoteSound getSoundAt(final NoteSound[] sounds, final int row, final int column) {
-        return sounds[row + column * AbstractGridInstrument.DEF_ROWS];
+        return sounds[row + column * AbstractGridInstrumentScreen.DEF_ROWS];
     }
     /**
      * @return The perferred label supplier specified in this mod's configs
@@ -101,7 +98,7 @@ public class NoteGrid implements Iterable<NoteButton> {
      * @param screenHeight The height of the screen
      * @return A new {@link NoteButton} grid
      */
-    protected AbstractWidget initNoteGridWidget(final float vertAlignment, final int screenWidth, final int screenHeight) {
+    public AbstractWidget initNoteGridWidget(final float vertAlignment, final int screenWidth, final int screenHeight) {
         final GridWidget grid = new GridWidget();
         grid.defaultCellSetting().padding(PADDING_HORZ, PADDING_VERT);
 
