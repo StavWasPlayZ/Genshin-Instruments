@@ -1,5 +1,6 @@
 package com.cstav.genshinstrument;
 
+import com.cstav.genshinstrument.client.gui.screens.instrument.drum.DrumNoteLabel;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteGridLabel;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.InstrumentChannelType;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.ZitherSoundType;
@@ -15,10 +16,13 @@ public class ModClientConfigs {
     public static final ForgeConfigSpec CONFIGS;
 
     public static final DoubleValue PITCH;
-    public static final EnumValue<NoteGridLabel> LABEL_TYPE;
+    public static final EnumValue<NoteGridLabel> GRID_LABEL_TYPE;
     public static final EnumValue<InstrumentChannelType> CHANNEL_TYPE;
-    public static final EnumValue<ZitherSoundType> ZITHER_TYPE;
     public static final BooleanValue STOP_MUSIC_ON_PLAY;
+
+    public static final EnumValue<ZitherSoundType> ZITHER_SOUND_TYPE;
+    public static final EnumValue<DrumNoteLabel> DRUM_LABEL_TYPE;
+
 
     static {
         final ForgeConfigSpec.Builder configBuilder = new Builder();
@@ -27,13 +31,14 @@ public class ModClientConfigs {
         PITCH = configBuilder.defineInRange("instrument_pitch",
             1, doubleMe(NoteSound.MIN_PITCH), doubleMe(NoteSound.MAX_PITCH)
         );
-        LABEL_TYPE = configBuilder.defineEnum("label_type", NoteGridLabel.KEYBOARD_LAYOUT);
+        GRID_LABEL_TYPE = configBuilder.defineEnum("label_type", NoteGridLabel.KEYBOARD_LAYOUT);
         CHANNEL_TYPE = configBuilder.defineEnum("channel_type", InstrumentChannelType.MIXED);
         STOP_MUSIC_ON_PLAY = configBuilder.comment(
             "Stops all background music when you play or someone else within "+NoteSound.STOP_SOUND_DISTANCE+" blocks of range"
         ).define("stop_music_on_play", true);
 
-        ZITHER_TYPE = configBuilder.defineEnum("zither_type", ZitherSoundType.NEW);
+        ZITHER_SOUND_TYPE = configBuilder.defineEnum("zither_sound_type", ZitherSoundType.NEW);
+        DRUM_LABEL_TYPE = configBuilder.defineEnum("drum_label_type", DrumNoteLabel.KEYBOARD_LAYOUT);
 
 
         CONFIGS = configBuilder.build();

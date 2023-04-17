@@ -75,7 +75,7 @@ public class NoteGrid implements Iterable<NoteButton> {
      * @return The perferred label supplier specified in this mod's configs
      */
     protected static NoteLabelSupplier getLabelSupplier() {
-        return ModClientConfigs.LABEL_TYPE.get().getLabelSupplier();
+        return ModClientConfigs.GRID_LABEL_TYPE.get().getLabelSupplier();
     }
 
     public NoteSound[] getNoteSounds() {

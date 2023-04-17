@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabel;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.InstrumentOptionsScreen;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.instrument.CloseInstrumentPacket;
@@ -49,6 +50,14 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * @return The array of sounds used by this instruments.
      */
     public abstract NoteSound[] getSounds();
+    /**
+     * @return All possible label values this instrument's notes can have
+     */
+    public abstract NoteLabel[] getLabels();
+    /**
+     * @return The current note label for this instrument's notes
+     */
+    public abstract NoteLabel getCurrentLabel();
 
     public abstract Iterable<NoteButton> noteIterable();
 

@@ -8,6 +8,7 @@ import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteGridLabel;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabel;
 import com.cstav.genshinstrument.client.gui.screens.options.widget.BetterSlider;
 import com.cstav.genshinstrument.sounds.NoteSound;
 import com.cstav.genshinstrument.util.RGBColor;
@@ -62,11 +63,15 @@ public class InstrumentOptionsScreen extends Screen {
     }
     
 
-    final Screen lastScreen;
-    final boolean isOverlay;
+    protected final Screen lastScreen;
+    protected final boolean isOverlay;
     public boolean active;
     private Runnable onCloseRunnable;
-    final @Nullable AbstractInstrumentScreen screen;
+
+    protected final @Nullable NoteLabel[] labels;
+    protected final @Nullable NoteLabel currLabel;
+    
+    protected final @Nullable AbstractInstrumentScreen screen;
 
     public InstrumentOptionsScreen(@Nullable AbstractInstrumentScreen screen) {
         super(Component.translatable("button.genshinstrument.instrumentOptions"));
@@ -75,6 +80,9 @@ public class InstrumentOptionsScreen extends Screen {
         active = false;
         this.screen = screen;
         lastScreen = null;
+
+        labels = screen.getLabels();
+        currLabel = screen.getCurrentLabel();
     }
     public InstrumentOptionsScreen(final Screen lastScreen) {
         super(Component.translatable("button.genshinstrument.instrumentOptions"));
@@ -83,6 +91,10 @@ public class InstrumentOptionsScreen extends Screen {
         
         this.screen = null;
         this.lastScreen = lastScreen;
+
+        // Default to NoteGridLabel's values
+        labels = NoteGridLabel.values();
+        currLabel = ModClientConfigs.GRID_LABEL_TYPE.get();
     }
 
     public void setOnCloseRunnable(Runnable onCloseRunnable) {
@@ -139,14 +151,16 @@ public class InstrumentOptionsScreen extends Screen {
         );
         rowHelper.addChild(pitchSlider);
         
-        final CycleButton<NoteGridLabel> labelType = CycleButton.<NoteGridLabel>builder((label) -> Component.translatable(label.getKey()))
-            .withValues(NoteGridLabel.values())
-            .withInitialValue(ModClientConfigs.LABEL_TYPE.get())
-            .create(0, 0,
-                getSmallButtonWidth(), getButtonHeight(),
-                Component.translatable("button.genshinstrument.label"), this::onLabelChanged
-            );
-        rowHelper.addChild(labelType);
+        if (labels != null) {
+            final CycleButton<NoteLabel> labelType = CycleButton.<NoteLabel>builder((label) -> Component.translatable(label.getKey()))
+                .withValues(labels)
+                .withInitialValue(currLabel)
+                .create(0, 0,
+                    getSmallButtonWidth(), getButtonHeight(),
+                    Component.translatable("button.genshinstrument.label"), this::onLabelChanged
+                );
+            rowHelper.addChild(labelType);
+        }
 
         final CycleButton<Boolean> stopMusic = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(ModClientConfigs.STOP_MUSIC_ON_PLAY.get())
@@ -161,8 +175,8 @@ public class InstrumentOptionsScreen extends Screen {
     }
 
     // Option handlers
-    protected NoteGridLabel newLabel = null;
-    protected void onLabelChanged(final CycleButton<NoteGridLabel> button, final NoteGridLabel label) {
+    protected NoteLabel newLabel = null;
+    protected void onLabelChanged(final CycleButton<NoteLabel> button, final NoteLabel label) {
         newLabel = label;
         if (screen != null)
             screen.noteIterable().forEach((note) -> note.setLabelSupplier(label.getLabelSupplier()));
@@ -241,8 +255,8 @@ public class InstrumentOptionsScreen extends Screen {
     }
     //TODO: Better implementation
     protected void onSave() {
-        if (newLabel != null)
-            ModClientConfigs.LABEL_TYPE.set(newLabel);
+        if ((newLabel != null) && (newLabel instanceof NoteGridLabel))
+            ModClientConfigs.GRID_LABEL_TYPE.set((NoteGridLabel)newLabel);
         if (newPitch != -1)
             ModClientConfigs.PITCH.set(newPitch);
     }

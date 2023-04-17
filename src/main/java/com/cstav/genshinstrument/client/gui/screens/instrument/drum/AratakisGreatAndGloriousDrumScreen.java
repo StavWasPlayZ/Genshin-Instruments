@@ -3,19 +3,18 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.drum;
 import java.util.HashMap;
 
 import com.cstav.genshinstrument.Main;
+import com.cstav.genshinstrument.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.AbstractNoteLabels;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.sounds.ModSounds;
 import com.cstav.genshinstrument.sounds.NoteSound;
 import com.cstav.genshinstrument.util.RGBColor;
+import com.mojang.blaze3d.platform.InputConstants.Key;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.LinearLayoutWidget;
 import net.minecraft.client.gui.components.LinearLayoutWidget.Orientation;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -35,13 +34,22 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
         return notes.values();
     }
 
+    @Override
+    public DrumNoteLabel[] getLabels() {
+        return DrumNoteLabel.values();
+    }
+    @Override
+    public DrumNoteLabel getCurrentLabel() {
+        return ModClientConfigs.DRUM_LABEL_TYPE.get();
+    }
+
 
     @Override
     protected void init() {
         initOptionsButton(height/2 + 25);
 
-        final LinearLayoutWidget layout1 = createRow(DrumButtonType.DON, 2.25f, 83, 75),
-            layout2 = createRow(DrumButtonType.KA, 1.5f, 65, 76);
+        final LinearLayoutWidget layout1 = createRow(DrumButtonType.DON, 2.25f),
+            layout2 = createRow(DrumButtonType.KA, 1.5f);
 
         // Make layout magic
         layout1.pack();
@@ -59,27 +67,23 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
         super.init();
     }
 
-    private LinearLayoutWidget createRow(DrumButtonType type, float widthPercent, int leftKeycode, int rightKeycode) {
+    private LinearLayoutWidget createRow(DrumButtonType type, float widthPercent) {
         final LinearLayoutWidget layout = new LinearLayoutWidget(
             0, 0,
             (int)(width/widthPercent), NoteButton.getSize(),
             Orientation.HORIZONTAL
         );
 
-        createButton(type, layout, leftKeycode);
-        createButton(type, layout, rightKeycode);
+        createButton(type, layout, type.getKeys().left, false);
+        createButton(type, layout, type.getKeys().right, true);
 
         return layout;
     }
-    private NoteButton createButton(final DrumButtonType btnType, final LinearLayoutWidget container, final int keycode) {
-        final NoteButton btn = new NoteButton(
-            btnType.getSound(), btnType.getLabelSupplier(),
-            btnType.getIndex(), 2,
-            this, 13, .3335f
-        );
+    private NoteButton createButton(DrumButtonType btnType, LinearLayoutWidget container, Key key, boolean isRight) {
+        final NoteButton btn = new DrumNoteButton(btnType, isRight, this);
 
         container.addChild(btn);
-        notes.put(keycode, btn);
+        notes.put(key.getValue(), btn);
 
         return btn;
     }
@@ -101,7 +105,7 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
             return true;
         }
 
-        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
+        return super.keyReleased(pKeyCode, pScanCode, pModifiers);
     }
 
 
@@ -130,33 +134,4 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
         Minecraft.getInstance().setScreen(new AratakisGreatAndGloriousDrumScreen());
     }
     
-
-    @OnlyIn(Dist.CLIENT)
-    private static enum DrumButtonType {
-        DON(0, ModSounds.GLORIOUS_DRUM[0], (note) ->
-            Component.translatable(AbstractNoteLabels.TRANSLATABLE_PATH + "glorious_drum.don")
-        ),
-        KA(1, ModSounds.GLORIOUS_DRUM[1], (note) ->
-            Component.translatable(AbstractNoteLabels.TRANSLATABLE_PATH + "glorious_drum.ka")
-        );
-
-        private final NoteSound sound;
-        private final NoteLabelSupplier labelSupplier;
-        private final int index;
-        private DrumButtonType(final int index, final NoteSound sound, final NoteLabelSupplier labelSupplier) {
-            this.sound = sound;
-            this.labelSupplier = labelSupplier;
-            this.index = index;
-        }
-
-        public NoteSound getSound() {
-            return sound;
-        }
-        public NoteLabelSupplier getLabelSupplier() {
-            return labelSupplier;
-        }
-        public int getIndex() {
-            return index;
-        }
-    }
 }

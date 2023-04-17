@@ -22,7 +22,7 @@ public class ZitherOptionsScreen extends InstrumentOptionsScreen {
         super(screen);
     }
 
-    private ZitherSoundType perferredSoundType = ModClientConfigs.ZITHER_TYPE.get();
+    private ZitherSoundType perferredSoundType = ModClientConfigs.ZITHER_SOUND_TYPE.get();
     public ZitherSoundType getPerferredSoundType() {
         return perferredSoundType;
     }
@@ -73,6 +73,6 @@ public class ZitherOptionsScreen extends InstrumentOptionsScreen {
         super.onSave();
 
         if (newSoundType != null)
-            ModClientConfigs.ZITHER_TYPE.set(newSoundType);
+            ModClientConfigs.ZITHER_SOUND_TYPE.set(newSoundType);
     }
 }

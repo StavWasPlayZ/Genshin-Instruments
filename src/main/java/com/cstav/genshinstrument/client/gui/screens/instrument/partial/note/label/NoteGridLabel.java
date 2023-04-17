@@ -11,11 +11,10 @@ import net.minecraft.network.chat.Component;
  * When getting from their respected suppliers, it is expected you pass
  * an instance of {@code NoteGridButton}.
  */
-public enum NoteGridLabel {
-    KEYBOARD_LAYOUT((note) -> Component.literal(
-        KeyMappings.INSTRUMENT_MAPPINGS[ng(note).column][ng(note).row]
-            .getDisplayName().getString().toUpperCase()
-    )),
+public enum NoteGridLabel implements NoteLabel {
+    KEYBOARD_LAYOUT((note) -> NoteLabel.upperComponent(
+        KeyMappings.GRID_INSTRUMENT_MAPPINGS[ng(note).column][ng(note).row].getDisplayName())
+    ),
     DO_RE_MI((note) -> Component.translatable(
         AbstractNoteLabels.TRANSLATABLE_PATH + AbstractNoteLabels.DO_RE_MI[ng(note).row % ng(note).maxRows]
     )),
@@ -34,13 +33,14 @@ public enum NoteGridLabel {
         this.labelSupplier = labelSupplier;
     }
 
+
+    @Override
     public NoteLabelSupplier getLabelSupplier() {
         return labelSupplier;
     }
-
-    
-    public String getKey() {
-        return "button.genshinstrument.label." + toString().toLowerCase();
+    @Override
+    public NoteGridLabel[] getValues() {
+        return values();
     }
 
 

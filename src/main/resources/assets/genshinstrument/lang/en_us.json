@@ -36,20 +36,23 @@
 
     "button.genshinstrument.label.do_re_mi": "Do Re Mi",
 
-    "genshinstrument.lyre.label.do": "Do",
-    "genshinstrument.lyre.label.re": "Re",
-    "genshinstrument.lyre.label.mi": "Mi",
-    "genshinstrument.lyre.label.fa": "Fa",
-    "genshinstrument.lyre.label.so": "So",
-    "genshinstrument.lyre.label.la": "La",
-    "genshinstrument.lyre.label.ti": "Ti",
+    "genshinstrument.label.do": "Do",
+    "genshinstrument.label.re": "Re",
+    "genshinstrument.label.mi": "Mi",
+    "genshinstrument.label.fa": "Fa",
+    "genshinstrument.label.so": "So",
+    "genshinstrument.label.la": "La",
+    "genshinstrument.label.ti": "Ti",
 
-    "genshinstrument.lyre.label.glorious_drum.ka": "Ka",
-    "genshinstrument.lyre.label.glorious_drum.don": "Don",
+    "genshinstrument.label.glorious_drum.ka": "Ka",
+    "genshinstrument.label.glorious_drum.don": "Don",
 
 
     "button.genshinstrument.label.keyboard_layout": "Keyboard",
     "button.genshinstrument.label.abc": "ABC",
-    "button.genshinstrument.label.none": "No Label"
+    "button.genshinstrument.label.none": "No Label",
+
+    "button.genshinstrument.label.don_ka": "Don-Ka"
+
 
 }
