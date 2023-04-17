@@ -1,6 +1,6 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.drum;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
@@ -29,10 +29,10 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen {
     public static final String INSTRUMENT_ID = "glorious_drum";
 
-    final ArrayList<NoteButton> notes = new ArrayList<>();
+    final HashMap<Integer, NoteButton> notes = new HashMap<>();
     @Override
     public Iterable<NoteButton> noteIterable() {
-        return notes;
+        return notes.values();
     }
 
 
@@ -40,8 +40,8 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
     protected void init() {
         initOptionsButton(height/2 + 25);
 
-        final LinearLayoutWidget layout1 = createRow(DrumButtonType.DON, 2.25f),
-            layout2 = createRow(DrumButtonType.KA, 1.5f);
+        final LinearLayoutWidget layout1 = createRow(DrumButtonType.DON, 2.25f, 83, 75),
+            layout2 = createRow(DrumButtonType.KA, 1.5f, 65, 76);
 
         // Make layout magic
         layout1.pack();
@@ -59,66 +59,46 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
         super.init();
     }
 
-    private LinearLayoutWidget createRow(final DrumButtonType type, float widthPercent) {
-        final LinearLayoutWidget layout = new LinearLayoutWidget(0, 0, (int)(width/widthPercent), NoteButton.getSize(), Orientation.HORIZONTAL);
+    private LinearLayoutWidget createRow(DrumButtonType type, float widthPercent, int leftKeycode, int rightKeycode) {
+        final LinearLayoutWidget layout = new LinearLayoutWidget(
+            0, 0,
+            (int)(width/widthPercent), NoteButton.getSize(),
+            Orientation.HORIZONTAL
+        );
 
-        final NoteButton btn1 = createButton(type);
-        layout.addChild(btn1);
-        notes.add(btn1);
-
-        final NoteButton btn2 = createButton(type);
-        layout.addChild(btn2);
-        notes.add(btn2);
+        createButton(type, layout, leftKeycode);
+        createButton(type, layout, rightKeycode);
 
         return layout;
     }
-    private NoteButton createButton(final DrumButtonType btnType) {
-        return new NoteButton(btnType.getSound(), btnType.getLabelSupplier(), btnType.getIndex(), 2, this, 13);
+    private NoteButton createButton(final DrumButtonType btnType, final LinearLayoutWidget container, final int keycode) {
+        final NoteButton btn = new NoteButton(
+            btnType.getSound(), btnType.getLabelSupplier(),
+            btnType.getIndex(), 2,
+            this, 13, .3335f
+        );
+
+        container.addChild(btn);
+        notes.put(keycode, btn);
+
+        return btn;
     }
 
 
     @Override
     public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
-        //TODO: Make better implementation
-        switch (pKeyCode) {
-            // don
-            case 65:
-                notes.get(2).play(true);
-                return true;
-            case 76:
-                notes.get(3).play(true);
-                return true;
-
-            // ka
-            case 83:
-                notes.get(0).play(true);
-                return true;
-            case 75:
-                notes.get(1).play(true);
-                return true;
+        if (notes.containsKey(pKeyCode)) {
+            notes.get(pKeyCode).play(true);
+            return true;
         }
 
         return super.keyPressed(pKeyCode, pScanCode, pModifiers);
     }
     @Override
     public boolean keyReleased(int pKeyCode, int pScanCode, int pModifiers) {
-        //TODO: Make better implementation
-        switch (pKeyCode) {
-            // don
-            case 65:
-                notes.get(2).locked = false;
-                return true;
-            case 76:
-                notes.get(3).locked = false;
-                return true;
-
-            // ka
-            case 83:
-                notes.get(0).locked = false;
-                return true;
-            case 75:
-                notes.get(1).locked = false;
-                return true;
+        if (notes.containsKey(pKeyCode)) {
+            notes.get(pKeyCode).locked = false;
+            return true;
         }
 
         return super.keyPressed(pKeyCode, pScanCode, pModifiers);

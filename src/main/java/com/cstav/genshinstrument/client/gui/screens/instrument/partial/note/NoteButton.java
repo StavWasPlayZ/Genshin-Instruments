@@ -60,6 +60,8 @@ public class NoteButton extends Button {
 
     private NoteLabelSupplier labelSupplier;
     private int noteTextureWidth = 56;
+    //FIXME Actually figure out a formula instead of guessing
+    private float randomAssMultiplier = .9f;
     
     public NoteButton(NoteSound sound, NoteLabelSupplier labelSupplier, int noteTextureRow, int rowsInNoteTexture,
       AbstractInstrumentScreen instrumentScreen) {
@@ -83,10 +85,11 @@ public class NoteButton extends Button {
 
     }
     public NoteButton(NoteSound sound, NoteLabelSupplier labelSupplier, int noteTextureRow, int rowsInNoteTexture,
-      AbstractInstrumentScreen instrumentScreen, int noteTextureWidth) {
+      AbstractInstrumentScreen instrumentScreen, int noteTextureWidth, float randomAssMultiplier) {
         this(sound, labelSupplier, noteTextureRow, rowsInNoteTexture, instrumentScreen);
 
         this.noteTextureWidth = noteTextureWidth;
+        this.randomAssMultiplier = randomAssMultiplier;
     }
 
     public void setLabelSupplier(final NoteLabelSupplier labelSupplier) {
@@ -159,7 +162,7 @@ public class NoteButton extends Button {
             // Like seriously wtf why fkuaherjgaeorg i hate maths
             noteWidth * noteTextureRow * 1.025f, isPlaying() ? noteHeight : 0,
             noteWidth, noteHeight,
-            (int)(noteWidth * (noteTextureWidth / rowsInNoteTexture) * .9f), height
+            (int)(noteWidth * (noteTextureWidth / rowsInNoteTexture) * randomAssMultiplier), height
         );
 
         // Label
