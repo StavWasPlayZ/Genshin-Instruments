@@ -4,8 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabel;
-import com.cstav.genshinstrument.client.gui.screens.options.instrument.InstrumentOptionsScreen;
+import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.instrument.CloseInstrumentPacket;
 import com.cstav.genshinstrument.sounds.NoteSound;
@@ -35,9 +34,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * @return The resource location of this instrument
      */
     protected abstract ResourceLocation getInstrumentResourcesLocation();
-    protected InstrumentOptionsScreen initInstrumentOptionsScreen() {
-        return new InstrumentOptionsScreen(this);
-    }
+    protected abstract AbstractInstrumentOptionsScreen initInstrumentOptionsScreen();
 
     // Any subclass must make their own InstrumentThemeLoader
     public abstract InstrumentThemeLoader getThemeLoader();
@@ -53,11 +50,6 @@ public abstract class AbstractInstrumentScreen extends Screen {
     /**
      * @return All possible label values this instrument's notes can have
      */
-    public abstract NoteLabel[] getLabels();
-    /**
-     * @return The current note label for this instrument's notes
-     */
-    public abstract NoteLabel getCurrentLabel();
 
     public abstract Iterable<NoteButton> noteIterable();
 
@@ -89,7 +81,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
 
-    protected final InstrumentOptionsScreen optionsScreen = initInstrumentOptionsScreen();
+    protected final AbstractInstrumentOptionsScreen optionsScreen = initInstrumentOptionsScreen();
     
     public AbstractInstrumentScreen() {
         super(Component.empty());
@@ -129,9 +121,10 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
 
+    //#region Making the options screen function
+
     protected void onOptionsOpen() {
         setSettingsOpen(true);
-        closeThisTime = false;
     }
     protected void onOptionsClose() {
         setSettingsOpen(false);
@@ -144,8 +137,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     @Override
     public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
-        optionsScreen.keyPressed(pKeyCode, pScanCode, pModifiers);
-        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
+        return optionsScreen.keyPressed(pKeyCode, pScanCode, pModifiers) || super.keyPressed(pKeyCode, pScanCode, pModifiers);
     }
 
     @Override
@@ -178,15 +170,11 @@ public abstract class AbstractInstrumentScreen extends Screen {
                 setChildrenActive((ContainerEventHandler)child, active);
     }
 
+    //#endregion
 
-    private boolean closeThisTime = true;
+
     @Override
     public void onClose() {
-        if (!closeThisTime) {
-            closeThisTime = true;
-            return;
-        }
-
         minecraft.player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((lyreOpen) ->
             lyreOpen.setOpen(false)
         );

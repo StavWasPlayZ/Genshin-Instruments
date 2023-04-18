@@ -3,8 +3,8 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.floralZither;
 import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
-import com.cstav.genshinstrument.client.gui.screens.options.instrument.InstrumentOptionsScreen;
-import com.cstav.genshinstrument.client.gui.screens.options.instrument.ZitherOptionsScreen;
+import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
+import com.cstav.genshinstrument.client.gui.screens.options.instrument.FloralZitherOptionsScreen;
 import com.cstav.genshinstrument.sounds.NoteSound;
 import com.cstav.genshinstrument.util.RGBColor;
 
@@ -38,12 +38,12 @@ public class FloralZitherScreen extends AbstractGridInstrumentScreen {
 
     @Override
     public NoteSound[] getSounds() {
-        return ((ZitherOptionsScreen)optionsScreen).getPerferredSoundType().soundArr().get();
+        return ((FloralZitherOptionsScreen)optionsScreen).getPerferredSoundType().soundArr().get();
     }
 
     @Override
-    protected InstrumentOptionsScreen initInstrumentOptionsScreen() {
-        return new ZitherOptionsScreen(this);
+    protected AbstractInstrumentOptionsScreen initInstrumentOptionsScreen() {
+        return new FloralZitherOptionsScreen(this);
     }
 
 

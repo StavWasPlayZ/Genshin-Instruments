@@ -2,23 +2,22 @@ package com.cstav.genshinstrument.client.gui.screens.options.instrument;
 
 import com.cstav.genshinstrument.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.floralZither.FloralZitherScreen;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.util.RGBColor;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.GridWidget;
-import net.minecraft.client.gui.components.SpacerWidget;
 import net.minecraft.client.gui.components.GridWidget.RowHelper;
+import net.minecraft.client.gui.components.SpacerWidget;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ZitherOptionsScreen extends InstrumentOptionsScreen {
+public class FloralZitherOptionsScreen extends GridInstrumentOptionsScreen {
     private static final String SOUND_TYPE_KEY = "button.genshinstrument.zither.soundType";
 
-    public ZitherOptionsScreen(final AbstractInstrumentScreen screen) {
+    public FloralZitherOptionsScreen(final FloralZitherScreen screen) {
         super(screen);
     }
 
@@ -61,18 +60,10 @@ public class ZitherOptionsScreen extends InstrumentOptionsScreen {
         , RGBColor.WHITE.getNumeric());
     }
 
-    private ZitherSoundType newSoundType = null;
     private void onSoundTypeChange(final CycleButton<ZitherSoundType> btn, final ZitherSoundType soundType) {
-        newSoundType = soundType;
         if ((screen != null) && (screen instanceof FloralZitherScreen))
             ((FloralZitherScreen)screen).noteGrid.setNoteSounds(soundType.soundArr().get());
-    }
 
-    @Override
-    protected void onSave() {
-        super.onSave();
-
-        if (newSoundType != null)
-            ModClientConfigs.ZITHER_SOUND_TYPE.set(newSoundType);
+        queueToSave("zither_sound_type", () -> ModClientConfigs.ZITHER_SOUND_TYPE.set(soundType));
     }
 }

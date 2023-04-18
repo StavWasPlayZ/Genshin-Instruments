@@ -1,10 +1,9 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
 
-import com.cstav.genshinstrument.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteGrid;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteGridLabel;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabel;
+import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
+import com.cstav.genshinstrument.client.gui.screens.options.instrument.GridInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
 
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -38,12 +37,8 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
     }
 
     @Override
-    public NoteGridLabel[] getLabels() {
-        return NoteGridLabel.values();
-    }
-    @Override
-    public NoteGridLabel getCurrentLabel() {
-        return ModClientConfigs.GRID_LABEL_TYPE.get();
+    protected AbstractInstrumentOptionsScreen initInstrumentOptionsScreen() {
+        return new GridInstrumentOptionsScreen(this);
     }
     
 

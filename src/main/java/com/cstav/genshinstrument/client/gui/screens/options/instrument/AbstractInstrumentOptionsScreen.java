@@ -1,10 +1,9 @@
 package com.cstav.genshinstrument.client.gui.screens.options.instrument;
 
+import java.util.HashMap;
+
 import javax.annotation.Nullable;
 
-import org.slf4j.Logger;
-
-import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteGridLabel;
@@ -13,7 +12,6 @@ import com.cstav.genshinstrument.client.gui.screens.options.widget.BetterSlider;
 import com.cstav.genshinstrument.sounds.NoteSound;
 import com.cstav.genshinstrument.util.RGBColor;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -22,27 +20,28 @@ import net.minecraft.client.gui.components.FrameWidget;
 import net.minecraft.client.gui.components.GridWidget;
 import net.minecraft.client.gui.components.GridWidget.RowHelper;
 import net.minecraft.client.gui.components.Tooltip;
-import net.minecraft.client.gui.components.events.GuiEventListener;
-import net.minecraft.client.gui.screens.OptionsScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.client.gui.widget.ForgeSlider;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(value = Dist.CLIENT, modid = Main.MODID, bus = Bus.FORGE)
-public class InstrumentOptionsScreen extends Screen {
-    private static final Logger LOGGER = LogUtils.getLogger();
+public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
     private static final String SOUND_CHANNEL_KEY = "button.genshinstrument.audioChannels",
         STOP_MUSIC_KEY = "button.genshinstrument.stop_music_on_play";
+
+    protected final HashMap<String, Runnable> APPLIED_OPTIONS = new HashMap<>();
+    protected void queueToSave(final String optionKey, final Runnable saveRunnable) {
+        if (APPLIED_OPTIONS.containsKey(optionKey))
+            APPLIED_OPTIONS.replace(optionKey, saveRunnable);
+        else
+            APPLIED_OPTIONS.put(optionKey, saveRunnable);
+    }
+
     
 
     protected int getHorzPadding() {
@@ -61,6 +60,12 @@ public class InstrumentOptionsScreen extends Screen {
     protected int getButtonHeight() {
         return 20;
     }
+
+    public abstract NoteLabel[] getLabels();
+    /**
+     * @return The current note label for this instrument's notes
+     */
+    public abstract NoteLabel getCurrentLabel();
     
 
     protected final Screen lastScreen;
@@ -73,7 +78,7 @@ public class InstrumentOptionsScreen extends Screen {
     
     protected final @Nullable AbstractInstrumentScreen screen;
 
-    public InstrumentOptionsScreen(@Nullable AbstractInstrumentScreen screen) {
+    public AbstractInstrumentOptionsScreen(@Nullable AbstractInstrumentScreen screen) {
         super(Component.translatable("button.genshinstrument.instrumentOptions"));
         
         this.isOverlay = true;
@@ -81,10 +86,10 @@ public class InstrumentOptionsScreen extends Screen {
         this.screen = screen;
         lastScreen = null;
 
-        labels = screen.getLabels();
-        currLabel = screen.getCurrentLabel();
+        labels = getLabels();
+        currLabel = getCurrentLabel();
     }
-    public InstrumentOptionsScreen(final Screen lastScreen) {
+    public AbstractInstrumentOptionsScreen(final Screen lastScreen) {
         super(Component.translatable("button.genshinstrument.instrumentOptions"));
         this.isOverlay = false;
         active = true;
@@ -175,18 +180,25 @@ public class InstrumentOptionsScreen extends Screen {
     }
 
     // Option handlers
-    protected NoteLabel newLabel = null;
     protected void onLabelChanged(final CycleButton<NoteLabel> button, final NoteLabel label) {
-        newLabel = label;
         if (screen != null)
             screen.noteIterable().forEach((note) -> note.setLabelSupplier(label.getLabelSupplier()));
+
+        queueToSave("note_label", () -> saveLabel(label));
+    }
+    protected void saveLabel(final NoteLabel newLabel) {
+        if (newLabel instanceof NoteGridLabel)
+            ModClientConfigs.GRID_LABEL_TYPE.set((NoteGridLabel)newLabel);
     }
 
-    protected double newPitch = -1;
     protected void onPitchChanged(final ForgeSlider slider, final double pitch) {
-        newPitch = pitch;
         if (screen != null)
             screen.noteIterable().forEach((note) -> note.getSound().setPitch((float)pitch));
+
+        queueToSave("pitch", () -> savePitch(pitch));
+    }
+    protected void savePitch(final double newPitch) {
+        ModClientConfigs.PITCH.set(newPitch);
     }
 
     // These values derive from the config directly, so update them on-spot
@@ -253,44 +265,9 @@ public class InstrumentOptionsScreen extends Screen {
         if (onCloseRunnable != null)
             onCloseRunnable.run();
     }
-    //TODO: Better implementation
     protected void onSave() {
-        if ((newLabel != null) && (newLabel instanceof NoteGridLabel))
-            ModClientConfigs.GRID_LABEL_TYPE.set((NoteGridLabel)newLabel);
-        if (newPitch != -1)
-            ModClientConfigs.PITCH.set(newPitch);
-    }
-    
-    // Register a button to open this GUI on the Options screen
-    @SubscribeEvent
-    public static void onScreenRendered(final ScreenEvent.Init.Post event) {
-        final Screen screen = event.getScreen();
-        if (!(screen instanceof OptionsScreen))
-            return;
-
-        GridWidget grid = null;
-        for (final GuiEventListener listener : event.getListenersList())
-            if (listener instanceof GridWidget) {
-                grid = (GridWidget)listener;
-                break;
-            }
-        if (grid == null)
-            LOGGER.info("No Grid found on Options screen, aborting button insertion");
-
-        
-        // Assuming 2 columns
-        final int size = grid.children().size(),
-            column = size % 2, row = size / 2;
-
-        final Minecraft minecraft = Minecraft.getInstance();
-        grid.addChild(
-            Button.builder(Component.translatable("button.genshinstrument.instrumentOptions"), (btn) ->
-                minecraft.setScreen(new InstrumentOptionsScreen(minecraft.screen))
-            ).build()
-        , row, column);
-
-        grid.pack();
-        
+        for (final Runnable runnable : APPLIED_OPTIONS.values())
+            runnable.run();
     }
 
 

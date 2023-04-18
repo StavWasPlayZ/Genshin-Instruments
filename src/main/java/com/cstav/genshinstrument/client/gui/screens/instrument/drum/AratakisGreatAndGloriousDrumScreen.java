@@ -3,10 +3,10 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.drum;
 import java.util.HashMap;
 
 import com.cstav.genshinstrument.Main;
-import com.cstav.genshinstrument.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
+import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
 import com.cstav.genshinstrument.sounds.ModSounds;
 import com.cstav.genshinstrument.sounds.NoteSound;
 import com.cstav.genshinstrument.util.RGBColor;
@@ -28,19 +28,18 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen {
     public static final String INSTRUMENT_ID = "glorious_drum";
 
-    final HashMap<Integer, NoteButton> notes = new HashMap<>();
+    /**
+     * Maps keycodes to their respected note button
+     */
+    private final HashMap<Integer, NoteButton> notes = new HashMap<>();
     @Override
     public Iterable<NoteButton> noteIterable() {
         return notes.values();
     }
 
     @Override
-    public DrumNoteLabel[] getLabels() {
-        return DrumNoteLabel.values();
-    }
-    @Override
-    public DrumNoteLabel getCurrentLabel() {
-        return ModClientConfigs.DRUM_LABEL_TYPE.get();
+    protected AbstractInstrumentOptionsScreen initInstrumentOptionsScreen() {
+        return new DrumOptionsScren(this);
     }
 
 
