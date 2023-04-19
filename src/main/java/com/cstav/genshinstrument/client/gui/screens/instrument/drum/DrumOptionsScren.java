@@ -1,7 +1,7 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.drum;
 
 import com.cstav.genshinstrument.ModClientConfigs;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabel;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
 
 public class DrumOptionsScren extends AbstractInstrumentOptionsScreen {
@@ -12,7 +12,7 @@ public class DrumOptionsScren extends AbstractInstrumentOptionsScreen {
     
 
     @Override
-    protected void saveLabel(NoteLabel newLabel) {
+    protected void saveLabel(INoteLabel newLabel) {
         if (newLabel instanceof DrumNoteLabel)
             ModClientConfigs.DRUM_LABEL_TYPE.set((DrumNoteLabel)newLabel);
     }

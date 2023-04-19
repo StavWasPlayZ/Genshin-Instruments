@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
-public abstract class Util {
+public abstract class CommonUtil {
     /**
      * @return What the default level shouldve returned, but without any conditions
      */

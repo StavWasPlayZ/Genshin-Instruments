@@ -3,6 +3,10 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.drum;
 import com.cstav.genshinstrument.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+@OnlyIn(Dist.CLIENT)
 public class DrumNoteButton extends NoteButton {
 
     public final DrumButtonType btnType;

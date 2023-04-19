@@ -9,7 +9,7 @@ import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.instrument.InstrumentPacket;
 import com.cstav.genshinstrument.sounds.NoteSound;
 import com.cstav.genshinstrument.util.RGBColor;
-import com.cstav.genshinstrument.util.Util;
+import com.cstav.genshinstrument.util.CommonUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -113,7 +113,7 @@ public class NoteButton extends Button {
      * @see {@link AbstractInstrumentScreen#getResourceFrom(ResourceLocation, String)}
      */
     protected ResourceLocation getResourceFromRoot(final String path) {
-        return Util.getResourceFrom(rootLocation, path);
+        return CommonUtil.getResourceFrom(rootLocation, path);
     }
 
     protected int initX, initY;

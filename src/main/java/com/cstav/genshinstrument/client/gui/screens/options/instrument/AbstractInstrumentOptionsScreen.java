@@ -6,8 +6,8 @@ import javax.annotation.Nullable;
 
 import com.cstav.genshinstrument.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteGridLabel;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabel;
 import com.cstav.genshinstrument.client.gui.screens.options.widget.BetterSlider;
 import com.cstav.genshinstrument.sounds.NoteSound;
 import com.cstav.genshinstrument.util.RGBColor;
@@ -61,11 +61,11 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         return 20;
     }
 
-    public abstract NoteLabel[] getLabels();
+    public abstract INoteLabel[] getLabels();
     /**
      * @return The current note label for this instrument's notes
      */
-    public abstract NoteLabel getCurrentLabel();
+    public abstract INoteLabel getCurrentLabel();
     
 
     protected final Screen lastScreen;
@@ -73,8 +73,8 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     public boolean active;
     private Runnable onCloseRunnable;
 
-    protected final @Nullable NoteLabel[] labels;
-    protected final @Nullable NoteLabel currLabel;
+    protected final @Nullable INoteLabel[] labels;
+    protected final @Nullable INoteLabel currLabel;
     
     protected final @Nullable AbstractInstrumentScreen screen;
 
@@ -157,7 +157,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         rowHelper.addChild(pitchSlider);
         
         if (labels != null) {
-            final CycleButton<NoteLabel> labelType = CycleButton.<NoteLabel>builder((label) -> Component.translatable(label.getKey()))
+            final CycleButton<INoteLabel> labelType = CycleButton.<INoteLabel>builder((label) -> Component.translatable(label.getKey()))
                 .withValues(labels)
                 .withInitialValue(currLabel)
                 .create(0, 0,
@@ -180,13 +180,13 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     }
 
     // Option handlers
-    protected void onLabelChanged(final CycleButton<NoteLabel> button, final NoteLabel label) {
+    protected void onLabelChanged(final CycleButton<INoteLabel> button, final INoteLabel label) {
         if (screen != null)
             screen.noteIterable().forEach((note) -> note.setLabelSupplier(label.getLabelSupplier()));
 
         queueToSave("note_label", () -> saveLabel(label));
     }
-    protected void saveLabel(final NoteLabel newLabel) {
+    protected void saveLabel(final INoteLabel newLabel) {
         if (newLabel instanceof NoteGridLabel)
             ModClientConfigs.GRID_LABEL_TYPE.set((NoteGridLabel)newLabel);
     }

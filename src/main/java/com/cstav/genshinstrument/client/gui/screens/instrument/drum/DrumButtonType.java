@@ -1,6 +1,6 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.drum;
 
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.AbstractNoteLabels;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
 import com.cstav.genshinstrument.client.keyMaps.KeyMappings.DrumKeys;
 import com.cstav.genshinstrument.sounds.ModSounds;
@@ -24,7 +24,7 @@ public enum DrumButtonType {
         this.index = index;
         this.keys = keys;
 
-        this.transKey = AbstractNoteLabels.TRANSLATABLE_PATH + transKey;
+        this.transKey = INoteLabel.TRANSLATABLE_PATH + transKey;
     }
 
     public DrumKeys getKeys() {
