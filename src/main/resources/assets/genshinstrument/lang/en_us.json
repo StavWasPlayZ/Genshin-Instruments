@@ -20,7 +20,7 @@
     "button.genshinstrument.audioChannels.stereo.tooltip":
         "NOTICE: Because of some annoying specification by OpenAL, all sounds produced on Stereo will be stuck on 100%.\nThis includes some instruments.",
     "button.genshinstrument.audioChannels.mixed.tooltip":
-        "On Multiplyer, if the Instruments sound category is set to 100% - you will hear intruments on Stereo within %s blocks of range.\nOtherwise, you will hear Stereo, as well as when you play yourself.",
+        "On Multiplayer, if the Instruments sound category is set to 100% - you will hear intruments on Stereo within %s blocks of range.\nOtherwise, you will hear Stereo, as well as when you play yourself.",
     "button.genshinstrument.audioChannels.mixed": "Mixed",
     "button.genshinstrument.stop_music_on_play.tooltip": "When you or other players within %s blocks of range play an instrument, Minecraft's background music will stop.",
     "button.genshinstrument.stop_music_on_play": "Stop Music On Play",

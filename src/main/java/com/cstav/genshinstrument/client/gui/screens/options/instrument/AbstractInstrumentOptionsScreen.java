@@ -52,7 +52,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     }
 
     protected int getSmallButtonWidth() {
-        return 150;
+        return 180;
     }
     protected int getBigButtonWidth() {
         return (getSmallButtonWidth() + getHorzPadding()) * 2;

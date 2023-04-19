@@ -255,8 +255,6 @@ public class NoteButton extends Button {
 
     @Override
     public void playDownSound(SoundManager pHandler) {
-        minecraft.getMusicManager().stopPlaying();
-
         pHandler.play(new SimpleSoundInstance(
             sound.getByPreference().getLocation(), SoundSource.RECORDS,
             1, sound.getPitch(), SoundInstance.createUnseededRandom(),

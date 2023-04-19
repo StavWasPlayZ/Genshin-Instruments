@@ -1,0 +1,52 @@
+{
+    "genshinstrument.itemGroup.instruments": "инструменты",
+
+    "item.genshinstrument.windsong_lyre": "Лира ветров",
+    "item.genshinstrument.floral_zither": "Цветочная цитра",
+    "item.genshinstrument.vintage_lyre": "Старинная лира",
+    "item.genshinstrument.glorious_drum": "Грандиозный барабан Аратаки",
+    
+
+
+    "soundCategory.record": "инструменты",
+
+    "button.genshinstrument.audioChannels": "Тип инструментального аудиоканала",
+    "button.genshinstrument.audioChannels.stereo.tooltip":
+        "ВНИМАНИЕ: Из-за некоторых раздражающих спецификаций OpenAL, все звуки, произведенные на Stereo, будут застряли на 100%.\nЭто включает некоторые инструменты.",
+    "button.genshinstrument.audioChannels.stereo": "Стерео",
+    "button.genshinstrument.audioChannels.mono": "Моно",
+    "button.genshinstrument.audioChannels.mixed.tooltip":
+        "В мультиплеере, если категория звука Instruments установлена на 100% - вы будете слышать инструменты на Stereo в пределах %s блоков диапазона.\nВ противном случае, вы будете слышать Stereo, как и когда вы играете сами.",
+    "button.genshinstrument.audioChannels.mixed": "Смешанные",
+    "button.genshinstrument.stop_music_on_play.tooltip": "Когда вы или другие игроки в радиусе %s блоков играют на инструменте, фоновая музыка Minecraft остановится.",
+    "button.genshinstrument.stop_music_on_play": "Остановка музыки при воспроизведении",
+
+
+    
+    "button.genshinstrument.instrumentOptions": "Варианты инструментов",
+    "button.genshinstrument.zither_options": "Варианты цитры",
+
+    
+    "button.genshinstrument.label": "Наклейки для заметок",
+    "button.genshinstrument.pitch": "Pitch",
+
+    "button.genshinstrument.zither.soundType": "Тип звука",
+    "button.genshinstrument.zither.soundType.old": "Старый",
+    "button.genshinstrument.zither.soundType.new": "Новый",
+
+
+    "button.genshinstrument.label.do_re_mi": "До Ре Ми",
+
+    "genshinstrument.label.do": "До",
+    "genshinstrument.label.re": "Ре",
+    "genshinstrument.label.mi": "Ми",
+    "genshinstrument.label.fa": "Фа",
+    "genshinstrument.label.so": "Со",
+    "genshinstrument.label.la": "Ла",
+    "genshinstrument.label.ti": "Ти",
+
+
+    "button.genshinstrument.label.keyboard_layout": "Клавиатура",
+    "button.genshinstrument.label.none": "Без этикетки"
+
+}
