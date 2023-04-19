@@ -16,7 +16,7 @@ public class DrumNoteButton extends NoteButton {
         super(
             btnType.getSound(), ModClientConfigs.DRUM_LABEL_TYPE.get().getLabelSupplier(),
             btnType.getIndex(), 2,
-            drumScreen, 13, .3336f
+            drumScreen, 13, .34f, 1.01f
         );
 
         this.btnType = btnType;

@@ -61,7 +61,7 @@ public class NoteButton extends Button {
     private NoteLabelSupplier labelSupplier;
     private int noteTextureWidth = 56;
     //FIXME Actually figure out a formula instead of guessing
-    private float randomAssMultiplier = .9f;
+    private float randomAssMultiplier1 = .9f, randomAssMultiplier2 = 1.025f;
     
     public NoteButton(NoteSound sound, NoteLabelSupplier labelSupplier, int noteTextureRow, int rowsInNoteTexture,
       AbstractInstrumentScreen instrumentScreen) {
@@ -85,11 +85,12 @@ public class NoteButton extends Button {
 
     }
     public NoteButton(NoteSound sound, NoteLabelSupplier labelSupplier, int noteTextureRow, int rowsInNoteTexture,
-      AbstractInstrumentScreen instrumentScreen, int noteTextureWidth, float randomAssMultiplier) {
+      AbstractInstrumentScreen instrumentScreen, int noteTextureWidth, float randomAssMultiplier1, float randomAssMultiplier2) {
         this(sound, labelSupplier, noteTextureRow, rowsInNoteTexture, instrumentScreen);
 
         this.noteTextureWidth = noteTextureWidth;
-        this.randomAssMultiplier = randomAssMultiplier;
+        this.randomAssMultiplier1 = randomAssMultiplier1;
+        this.randomAssMultiplier2 = randomAssMultiplier2;
     }
 
     public void setLabelSupplier(final NoteLabelSupplier labelSupplier) {
@@ -160,9 +161,10 @@ public class NoteButton extends Button {
             this.getX() + noteWidth/2, this.getY() + noteHeight/2,
             //NOTE: I have no clue whatsoever how on earth these 1.025 and .9 multipliers actually work.
             // Like seriously wtf why fkuaherjgaeorg i hate maths
-            noteWidth * noteTextureRow * 1.025f, isPlaying() ? noteHeight : 0,
+            //NOTE: Moved said numbers to the randomAss vars
+            noteWidth * noteTextureRow * randomAssMultiplier2, isPlaying() ? noteHeight : 0,
             noteWidth, noteHeight,
-            (int)(noteWidth * (noteTextureWidth / rowsInNoteTexture) * randomAssMultiplier), height
+            (int)(noteWidth * (noteTextureWidth / rowsInNoteTexture) * randomAssMultiplier1), height
         );
 
         // Label
