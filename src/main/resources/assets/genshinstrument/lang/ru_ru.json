@@ -47,6 +47,26 @@
 
 
     "button.genshinstrument.label.keyboard_layout": "Клавиатура",
-    "button.genshinstrument.label.none": "Без этикетки"
+    "button.genshinstrument.label.none": "Без этикетки",
+
+
+
+    "genshinstrument.advancements.main.root.title": "Путешествие барда",
+    "genshinstrument.advancements.main.root.description": "Хотя вина может не быть рядом с вами, инструменты всегда проведут вас через Игру свободы",
+
+    "genshinstrument.advancements.main.master.title": "Группа одного",
+    "genshinstrument.advancements.main.master.description": "Иметь все инструменты в инвентаре одновременно",
+    
+    "genshinstrument.advancements.main.windsong_lyre.title": "Звук ветра",
+    "genshinstrument.advancements.main.windsong_lyre.description": "Играть на лире Windsong",
+    
+    "genshinstrument.advancements.main.vintage_lyre.title": "Лес будет помнить",
+    "genshinstrument.advancements.main.vintage_lyre.description": "Играть на старинной лире",
+    
+    "genshinstrument.advancements.main.glorious_drum.title": "Абсолютно не мошенничество",
+    "genshinstrument.advancements.main.glorious_drum.description": "Играйте на славном барабане Аратаки",
+    
+    "genshinstrument.advancements.main.floral_zither.title": "Проигрыватель инкогнито",
+    "genshinstrument.advancements.main.floral_zither.description": "Играть на цветочной цитре"
 
 }

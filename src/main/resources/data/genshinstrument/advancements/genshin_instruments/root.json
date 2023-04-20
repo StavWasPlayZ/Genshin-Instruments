@@ -1,0 +1,41 @@
+{
+    "display": {
+        "icon": {
+            "item": "genshinstrument:floral_zither"
+        },
+
+        "title": {
+            "translate": "genshinstrument.advancements.main.root.title"
+        },
+        "description": {
+            "translate": "genshinstrument.advancements.main.root.description"
+        },
+
+        "background": "minecraft:textures/block/stripped_jungle_log.png",
+        "announce_to_chat": false,
+        "show_toast": false
+    },
+
+    "criteria": {
+        "has_instruments": {
+            "trigger": "inventory_changed",
+
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "genshinstrument:windsong_lyre",
+                            "genshinstrument:vintage_lyre",
+                            "genshinstrument:floral_zither",
+                            "genshinstrument:glorious_drum"
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+
+    "requirements": [
+        ["has_instruments"]
+    ]
+}

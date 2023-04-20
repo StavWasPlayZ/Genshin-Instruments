@@ -52,7 +52,26 @@
     "button.genshinstrument.label.abc": "ABC",
     "button.genshinstrument.label.none": "No Label",
 
-    "button.genshinstrument.label.don_ka": "Don-Ka"
+    "button.genshinstrument.label.don_ka": "Don-Ka",
 
+
+
+    "genshinstrument.advancements.main.root.title": "A Bard's Journey",
+    "genshinstrument.advancements.main.root.description": "Though wine may not be by your side, the instruments will always walk you through the Game of Freedom.",
+
+    "genshinstrument.advancements.main.master.title": "A Band of One",
+    "genshinstrument.advancements.main.master.description": "Have all instruments in your inventory at once",
+    
+    "genshinstrument.advancements.main.windsong_lyre.title": "The Sound of Wind",
+    "genshinstrument.advancements.main.windsong_lyre.description": "Play the Windsong Lyre",
+    
+    "genshinstrument.advancements.main.vintage_lyre.title": "The Forest Will Remeber",
+    "genshinstrument.advancements.main.vintage_lyre.description": "Play the Vintage Lyre",
+    
+    "genshinstrument.advancements.main.glorious_drum.title": "Totally Not a Scam",
+    "genshinstrument.advancements.main.glorious_drum.description": "Play Arataki's Glorious Drum",
+    
+    "genshinstrument.advancements.main.floral_zither.title": "Incognito Player",
+    "genshinstrument.advancements.main.floral_zither.description": "Play the Floral Zither"
 
 }

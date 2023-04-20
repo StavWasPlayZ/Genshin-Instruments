@@ -64,7 +64,7 @@ public class ModSounds {
 
 
     public static final NoteSound[]
-        LYRE_NOTE_SOUNDS = createInstrumentNotes("windsong_lyre", true),
+        WINDSONG_LYRE_NOTE_SOUNDS = createInstrumentNotes("windsong_lyre", true),
         VINTAGE_LYRE_NOTE_SOUNDS = createInstrumentNotes("vintage_lyre"),
 
         ZITHER_NEW_NOTE_SOUNDS = createInstrumentNotes("floral_zither_new"),

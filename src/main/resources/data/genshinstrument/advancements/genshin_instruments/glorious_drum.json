@@ -1,0 +1,32 @@
+{
+    "parent": "genshinstrument:genshin_instruments/floral_zither",
+
+    "display": {
+        "icon": {
+            "item": "genshinstrument:glorious_drum"
+        },
+
+        "title": {
+            "translate": "genshinstrument.advancements.main.glorious_drum.title"
+        },
+        "description": {
+            "translate": "genshinstrument.advancements.main.glorious_drum.description"
+        }
+    },
+
+    "criteria": {
+        "play_instrument": {
+            "trigger": "genshinstrument_play_instrument",
+
+            "conditions": {
+                "instrument": {
+                    "items": ["genshinstrument:glorious_drum"]
+                }
+            }
+        }
+    },
+
+    "requirements": [
+        ["play_instrument"]
+    ]
+}

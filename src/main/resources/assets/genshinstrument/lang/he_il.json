@@ -1,8 +1,8 @@
 {
     "genshinstrument.itemGroup.instruments": "כלי נגינה",
 
-    "item.genshinstrument.windsong_lyre": "נבל",
-    "item.genshinstrument.floral_zither": "ציטר",
+    "item.genshinstrument.windsong_lyre": "נבל הרוחות",
+    "item.genshinstrument.floral_zither": "הציטר הפרחי",
     "item.genshinstrument.vintage_lyre": "נבל הבציר",
     "item.genshinstrument.glorious_drum": "התוף הגדול והמפואר של ארטאקי",
     
@@ -39,6 +39,26 @@
 
 
     "button.genshinstrument.label.keyboard_layout": "מקלדת",
-    "button.genshinstrument.label.none": "ללא תגית"
+    "button.genshinstrument.label.none": "ללא תגית",
+
+
+
+    "genshinstrument.advancements.main.root.title": "מסעו של משורר",
+    "genshinstrument.advancements.main.root.description": "למרות ו-יין אולי לא יהיה לצידך, כלי הנגינה תמיד יובילו אותך דרך משחק החופש.",
+
+    "genshinstrument.advancements.main.master.title": "להקת יחיד",
+    "genshinstrument.advancements.main.master.description": "החזק בכל כלי הנגינה בתיקך בבת אחד",
+    
+    "genshinstrument.advancements.main.windsong_lyre.title": "צלילי הרוחות",
+    "genshinstrument.advancements.main.windsong_lyre.description": "נגן בנבל הרוחות",
+    
+    "genshinstrument.advancements.main.vintage_lyre.title": "היער יזכור",
+    "genshinstrument.advancements.main.vintage_lyre.description": "נגן בנבל הבציר",
+    
+    "genshinstrument.advancements.main.glorious_drum.title": "לגמרי לא עקיצה",
+    "genshinstrument.advancements.main.glorious_drum.description": "נגן בטוף של ארטאקי",
+    
+    "genshinstrument.advancements.main.floral_zither.title": "נגן בסתר",
+    "genshinstrument.advancements.main.floral_zither.description": "נגן בציטר הפרחי"
 
 }

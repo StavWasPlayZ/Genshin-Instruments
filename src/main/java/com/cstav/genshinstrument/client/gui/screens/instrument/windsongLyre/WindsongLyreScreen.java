@@ -37,7 +37,7 @@ public class WindsongLyreScreen extends AbstractGridInstrumentScreen {
 
     @Override
     public NoteSound[] getSounds() {
-        return ModSounds.LYRE_NOTE_SOUNDS;
+        return ModSounds.WINDSONG_LYRE_NOTE_SOUNDS;
     }
 
 

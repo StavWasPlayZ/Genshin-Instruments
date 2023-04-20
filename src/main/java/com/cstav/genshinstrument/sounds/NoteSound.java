@@ -4,11 +4,14 @@ import javax.annotation.Nullable;
 
 import com.cstav.genshinstrument.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.InstrumentChannelType;
+import com.cstav.genshinstrument.networking.packets.instrument.InstrumentPacket;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -25,10 +28,17 @@ public class NoteSound {
     public static final float MIN_PITCH = .5f, MAX_PITCH = 1.9f;
     
 
+    /**
+     * Used in {@link InstrumentPacket} to determine which instrument should trigger a criteria
+     */
+    public ItemLike instrument;
+
     public SoundEvent mono;
     @Nullable public SoundEvent stereo;
     private float pitch;
-    public NoteSound(final SoundEvent mono, final @Nullable SoundEvent stereo, final float pitch) {
+    public NoteSound(SoundEvent mono, @Nullable SoundEvent stereo, float pitch, ItemLike instrument) {
+        this.instrument = instrument;
+
         this.mono = mono;
         this.stereo = stereo;
         
@@ -39,6 +49,9 @@ public class NoteSound {
 
     public boolean hasStereo() {
         return stereo != null;
+    }
+    public ItemLike getInstrument() {
+        return instrument;
     }
 
     public float getPitch() {
@@ -52,7 +65,7 @@ public class NoteSound {
     /**
      * @param distanceFromPlayer The distance between this player and the position of the note's sound
      * @return Either the Mono or Stereo sound, based on the client's preference.
-     * This method assumes that the request was made by a server.
+     * @apiNote This method assumes that the request was sent by a server.
      */
     @SuppressWarnings("resource")
     @OnlyIn(Dist.CLIENT)
@@ -96,12 +109,16 @@ public class NoteSound {
             stereo.writeToNetwork(buf);
 
         buf.writeFloat(pitch);
+
+
+        buf.writeItem(new ItemStack(instrument.asItem()));
     }
     public static NoteSound readFromNetwork(final FriendlyByteBuf buf) {
         return new NoteSound(
             SoundEvent.readFromNetwork(buf),
             buf.readBoolean() ? SoundEvent.readFromNetwork(buf) : null,
-            buf.readFloat()
+            buf.readFloat(),
+            buf.readItem().getItem()
         );
     }
 
