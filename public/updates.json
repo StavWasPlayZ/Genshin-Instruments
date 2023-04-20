@@ -5,11 +5,12 @@
         "1.0": "Initial release",
         "1.0.1": "Fixed resources folder and package names being incorrect, implemented Forge's updates mechanism",
 
-        "2.0": "- New instrument: Arataki's Great and Glorious Drum!\nRussian language support"
+        "2.0": "- New instrument: Arataki's Great and Glorious Drum!\n- Russian language support",
+        "2.2": "- New recipes\n- New advancements"
     },
 
     "promos": {
-        "1.19.3-latest": "2.0",
-        "1.19.3-recommended": "2.0"
+        "1.19.3-latest": "2.2",
+        "1.19.3-recommended": "2.2"
     }
 }
