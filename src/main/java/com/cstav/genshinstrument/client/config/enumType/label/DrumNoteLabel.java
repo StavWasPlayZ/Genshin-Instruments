@@ -1,14 +1,18 @@
-package com.cstav.genshinstrument.client.gui.screens.instrument.drum;
+package com.cstav.genshinstrument.client.config.enumType.label;
 
 import static com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier.create;
 
+import com.cstav.genshinstrument.client.gui.screens.instrument.drum.DrumNoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.client.keyMaps.KeyMappings.DrumKeys;
 
 import net.minecraft.network.chat.Component;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public enum DrumNoteLabel implements INoteLabel {
 	DON_KA(create(() -> (note) ->
 		Component.translatable(dn(note).btnType.getTransKey())

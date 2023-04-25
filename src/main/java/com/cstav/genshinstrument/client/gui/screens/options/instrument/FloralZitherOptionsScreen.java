@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument.client.gui.screens.options.instrument;
 
-import com.cstav.genshinstrument.ModClientConfigs;
+import com.cstav.genshinstrument.client.config.ModClientConfigs;
+import com.cstav.genshinstrument.client.config.enumType.ZitherSoundType;
 import com.cstav.genshinstrument.client.gui.screens.instrument.floralZither.FloralZitherScreen;
 import com.cstav.genshinstrument.util.RGBColor;
 import com.mojang.blaze3d.vertex.PoseStack;

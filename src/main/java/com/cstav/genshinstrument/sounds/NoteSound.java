@@ -2,8 +2,8 @@ package com.cstav.genshinstrument.sounds;
 
 import javax.annotation.Nullable;
 
-import com.cstav.genshinstrument.ModClientConfigs;
-import com.cstav.genshinstrument.client.gui.screens.options.instrument.InstrumentChannelType;
+import com.cstav.genshinstrument.client.config.ModClientConfigs;
+import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.networking.packets.instrument.InstrumentPacket;
 
 import net.minecraft.client.Minecraft;

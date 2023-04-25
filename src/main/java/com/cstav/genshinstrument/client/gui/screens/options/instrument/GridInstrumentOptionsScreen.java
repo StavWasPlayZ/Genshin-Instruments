@@ -3,9 +3,9 @@ package com.cstav.genshinstrument.client.gui.screens.options.instrument;
 import org.slf4j.Logger;
 
 import com.cstav.genshinstrument.Main;
-import com.cstav.genshinstrument.ModClientConfigs;
+import com.cstav.genshinstrument.client.config.ModClientConfigs;
+import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractGridInstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteGridLabel;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.Minecraft;
@@ -16,11 +16,13 @@ import net.minecraft.client.gui.screens.OptionsScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
+@OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(value = Dist.CLIENT, modid = Main.MODID, bus = Bus.FORGE)
 public class GridInstrumentOptionsScreen extends AbstractInstrumentOptionsScreen {
     private static final Logger LOGGER = LogUtils.getLogger();

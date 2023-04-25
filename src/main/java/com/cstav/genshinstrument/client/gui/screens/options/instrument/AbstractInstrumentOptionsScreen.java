@@ -4,10 +4,11 @@ import java.util.HashMap;
 
 import javax.annotation.Nullable;
 
-import com.cstav.genshinstrument.ModClientConfigs;
+import com.cstav.genshinstrument.client.config.ModClientConfigs;
+import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
+import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteGridLabel;
 import com.cstav.genshinstrument.client.gui.screens.options.widget.BetterSlider;
 import com.cstav.genshinstrument.sounds.NoteSound;
 import com.cstav.genshinstrument.util.RGBColor;

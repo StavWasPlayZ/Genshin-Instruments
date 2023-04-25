@@ -2,7 +2,7 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note;
 
 import java.util.Iterator;
 
-import com.cstav.genshinstrument.ModClientConfigs;
+import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;

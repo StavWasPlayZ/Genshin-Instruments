@@ -6,8 +6,10 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.Note
 
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
+@OnlyIn(Dist.CLIENT)
 @FunctionalInterface
 public interface NoteLabelSupplier {
     public static final NoteLabelSupplier EMPTY = create(() -> (note) -> Component.empty());

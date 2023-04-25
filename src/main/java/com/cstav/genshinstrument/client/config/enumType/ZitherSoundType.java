@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.client.gui.screens.options.instrument;
+package com.cstav.genshinstrument.client.config.enumType;
 
 import java.util.function.Supplier;
 

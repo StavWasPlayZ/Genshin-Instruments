@@ -1,5 +1,9 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+@OnlyIn(Dist.CLIENT)
 public abstract class AbsGridLabels {
     
     public static final String[] DO_RE_MI = {

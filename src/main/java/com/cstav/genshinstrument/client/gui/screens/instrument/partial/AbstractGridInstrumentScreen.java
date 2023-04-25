@@ -7,7 +7,10 @@ import com.cstav.genshinstrument.client.gui.screens.options.instrument.GridInstr
 import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
 
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScreen {
     public static final int DEF_ROWS = 7, DEF_COLUMNS = 3;
 
