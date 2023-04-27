@@ -1,5 +1,7 @@
 package com.cstav.genshinstrument.sounds;
 
+import java.util.Optional;
+
 import javax.annotation.Nullable;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
@@ -8,6 +10,7 @@ import com.cstav.genshinstrument.networking.packets.instrument.InstrumentPacket;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
@@ -102,11 +105,11 @@ public class NoteSound {
 
 
     public void writeToNetwork(final FriendlyByteBuf buf) {
-        mono.writeToNetwork(buf);
+        buf.writeResourceLocation(mono.getLocation());
 
         buf.writeBoolean(hasStereo());
         if (hasStereo())
-            stereo.writeToNetwork(buf);
+            buf.writeResourceLocation(stereo.getLocation());
 
         buf.writeFloat(pitch);
 
@@ -115,8 +118,8 @@ public class NoteSound {
     }
     public static NoteSound readFromNetwork(final FriendlyByteBuf buf) {
         return new NoteSound(
-            SoundEvent.readFromNetwork(buf),
-            buf.readBoolean() ? SoundEvent.readFromNetwork(buf) : null,
+            new SoundEvent(buf.readResourceLocation()),
+            buf.readBoolean() ? new SoundEvent(buf.readResourceLocation()) : null,
             buf.readFloat(),
             buf.readItem().getItem()
         );

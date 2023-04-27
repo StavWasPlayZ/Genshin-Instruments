@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.item;
 
 import java.util.function.Consumer;
 
+import com.cstav.genshinstrument.ModCreativeModeTabs;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.item.clientExtensions.ClientInstrumentItem;
@@ -25,6 +26,7 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
  */
 public class InstrumentItem extends Item {
 
+    //TODO Move constructors to main branch as well
     protected final ServerPlayerRunnable onOpenRequest;
     /**
      * @param onOpenRequest A server-side event fired when the player has requested to interact
@@ -33,7 +35,16 @@ public class InstrumentItem extends Item {
      * @param noteSounds An array consisting of note sounds to update their instrument value to be this instruemnt
      */
     public InstrumentItem(final ServerPlayerRunnable onOpenRequest, final NoteSound[]... noteSounds) {
-        this(onOpenRequest);
+        this(defProps(), onOpenRequest, noteSounds);
+    }
+    /**
+     * @param onOpenRequest A server-side event fired when the player has requested to interact
+     * with the instrument.
+     * It should should send a packet to the given player for opening this instrument's screen.
+     * @param noteSounds An array consisting of note sounds to update their instrument value to be this instruemnt
+     */
+    public InstrumentItem(Properties properties, ServerPlayerRunnable onOpenRequest, NoteSound[]... noteSounds) {
+        this(properties, onOpenRequest);
 
         for (int i = 0; i < noteSounds.length; i++)
             for (int j = 0; j < noteSounds[0].length; j++)
@@ -45,12 +56,23 @@ public class InstrumentItem extends Item {
      * It should should send a packet to the given player for opening this instrument's screen.
      */
     public InstrumentItem(final ServerPlayerRunnable onOpenRequest) {
-        super(new Properties()
-            .stacksTo(1)
-        );
+        this(defProps(), onOpenRequest);
+    }
+    /**
+     * @param onOpenRequest A server-side event fired when the player has requested to interact
+     * with the instrument.
+     * It should should send a packet to the given player for opening this instrument's screen.
+     */
+    public InstrumentItem(final Properties properties, final ServerPlayerRunnable onOpenRequest) {
+        super(properties);
 
         this.onOpenRequest = onOpenRequest;
     }
+
+    private static Properties defProps() {
+        return new Properties().stacksTo(1).tab(ModCreativeModeTabs.INSTRUMENTS_TAB);
+    }
+
 
     static void sendOpenRequest(final ServerPlayer player, final String instrumentType) {
         ModPacketHandler.sendToClient(new OpenInstrumentPacket(instrumentType), player);

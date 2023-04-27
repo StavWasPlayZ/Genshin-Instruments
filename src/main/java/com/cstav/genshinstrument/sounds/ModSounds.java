@@ -58,7 +58,7 @@ public class ModSounds {
     }
 
     public static SoundEvent createSoundUnsafe(final String name) {
-        return SoundEvent.createVariableRangeEvent(new ResourceLocation(Main.MODID, name));
+        return new SoundEvent(new ResourceLocation(Main.MODID, name));
     }
 
 
