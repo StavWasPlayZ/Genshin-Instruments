@@ -12,9 +12,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 
-public class PlayInstrumentTrigger extends SimpleCriterionTrigger<PlayInstrumentTrigger.TriggerInstance> {
+// @EventBusSubscriber(modid = Main.MODID, bus = Bus.FORGE)
+public class InstrumentPlayedTrigger extends SimpleCriterionTrigger<InstrumentPlayedTrigger.TriggerInstance> {
     // It doesn't account for namespaces, so will use genshinstrument_ prefix instead
-    public static final ResourceLocation ID = new ResourceLocation("genshinstrument_play_instrument");
+    public static final ResourceLocation ID = new ResourceLocation("genshinstrument_instrument_played");
     
 
     @Override
@@ -51,4 +52,5 @@ public class PlayInstrumentTrigger extends SimpleCriterionTrigger<PlayInstrument
             return super.serializeToJson(pConditions);
         }
     }
+
 }

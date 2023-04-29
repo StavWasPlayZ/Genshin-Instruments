@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @OnlyIn(Dist.CLIENT)
-//NOTE: There just to make it load on mod startup
+//NOTE: There just to make it load on mod setup
 @EventBusSubscriber(bus = Bus.MOD, value = Dist.CLIENT)
 public class WindsongLyreScreen extends AbstractGridInstrumentScreen {
     public static final String INSTRUMENT_ID = "windsong_lyre";

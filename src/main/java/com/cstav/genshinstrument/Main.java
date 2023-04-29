@@ -1,5 +1,6 @@
 package com.cstav.genshinstrument;
 
+import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.item.ModItems;
 import com.cstav.genshinstrument.sounds.ModSounds;
 
@@ -19,6 +20,8 @@ public class Main
         
         ModItems.register(bus);
         ModSounds.register(bus);
+
+        bus.register(InstrumentPlayedEvent.class);
 
         
         MinecraftForge.EVENT_BUS.register(this);

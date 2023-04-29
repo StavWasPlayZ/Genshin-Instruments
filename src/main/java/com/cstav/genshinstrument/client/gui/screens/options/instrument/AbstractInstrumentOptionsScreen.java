@@ -152,7 +152,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
         final BetterSlider pitchSlider = new BetterSlider(0, 0, getSmallButtonWidth(), 23,
             Component.translatable("button.genshinstrument.pitch").append(": "), Component.empty(),
-            NoteSound.MIN_PITCH, NoteSound.MAX_PITCH, ModClientConfigs.PITCH.get(), 0.1,
+            NoteSound.MIN_PITCH, NoteSound.MAX_PITCH, ModClientConfigs.PITCH.get(), 0.05,
             this::onPitchChanged
         );
         rowHelper.addChild(pitchSlider);

@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpen;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
-import com.cstav.genshinstrument.criterion.ModCriteria;
+import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.networking.ModPacket;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.sounds.NoteSound;
@@ -15,9 +15,9 @@ import com.cstav.genshinstrument.util.CommonUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent.Context;
 
@@ -68,9 +68,9 @@ public class InstrumentPacket implements ModPacket {
                 );
 
             
-            // Trigger the criterion for this instrument
-            ModCriteria.PLAY_INSTRUMENT_TRIGGER.trigger(player, new ItemStack(sound.instrument));
-
+            // Fire the Forge instrument event
+            MinecraftForge.EVENT_BUS.post(new InstrumentPlayedEvent(player, sound));
+            
             // Trigger an instrument game event
             // This is done so that sculk sensors can pick up the instrument's sound
             level.gameEvent(GameEvent.INSTRUMENT_PLAY, player.blockPosition(), GameEvent.Context.of(player));

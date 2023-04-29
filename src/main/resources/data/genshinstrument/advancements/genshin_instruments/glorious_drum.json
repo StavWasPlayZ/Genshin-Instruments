@@ -15,8 +15,8 @@
     },
 
     "criteria": {
-        "play_instrument": {
-            "trigger": "genshinstrument_play_instrument",
+        "instrument_played": {
+            "trigger": "genshinstrument_instrument_played",
 
             "conditions": {
                 "instrument": {
@@ -27,6 +27,6 @@
     },
 
     "requirements": [
-        ["play_instrument"]
+        ["instrument_played"]
     ]
 }
