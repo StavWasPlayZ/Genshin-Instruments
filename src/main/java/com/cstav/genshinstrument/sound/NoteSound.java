@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.sounds;
+package com.cstav.genshinstrument.sound;
 
 import javax.annotation.Nullable;
 
@@ -15,6 +15,9 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+/**
+ * A class holding sound information for an instrument's note
+ */
 public class NoteSound {
     /**
      * The range at which playuers with Mixed instrument sound type will start to hear Mono.
@@ -65,7 +68,6 @@ public class NoteSound {
     /**
      * @param distanceFromPlayer The distance between this player and the position of the note's sound
      * @return Either the Mono or Stereo sound, based on the client's preference.
-     * @apiNote This method assumes that the request was sent by a server.
      */
     @SuppressWarnings("resource")
     @OnlyIn(Dist.CLIENT)

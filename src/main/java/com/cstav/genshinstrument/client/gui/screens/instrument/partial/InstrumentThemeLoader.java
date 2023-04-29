@@ -2,9 +2,9 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.awt.Color;
 
 import com.cstav.genshinstrument.Main;
-import com.cstav.genshinstrument.util.RGBColor;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -28,7 +28,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
  * <li><b>note_theme</b> - An array representing RGB values. Used for the Note Grid's text.</li>
  * <li><b>note_pressed_theme</b> - An array representing RGB values. Used for the Note Grid's text when pressed.</li>
  * </ul>
- * This class must be initialized during the Mod even bus to load at game startup.
+ * This class must be initialized during mod setup.
  */
 @OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(modid = Main.MODID, bus = Bus.MOD, value = Dist.CLIENT)
@@ -36,8 +36,8 @@ public class InstrumentThemeLoader {
     private static final ArrayList<InstrumentThemeLoader> LOADERS = new ArrayList<>();
 
     private final ResourceLocation InstrumentStyleLocation;
-    private final RGBColor defNoteTheme, defPressedNoteTheme;
-    private RGBColor noteTheme, pressedNoteTheme;
+    private final Color defNoteTheme, defPressedNoteTheme;
+    private Color noteTheme, pressedNoteTheme;
     private InstrumentThemeLoadedEvent onThemeChanged;
     
     /**
@@ -46,7 +46,7 @@ public class InstrumentThemeLoader {
      * @param defNoteTheme The default note theme
      * @param defPressedNoteTheme The default note theme for when the note is pressed
      */
-    public InstrumentThemeLoader(ResourceLocation instrumentStyleLocation, RGBColor defNoteTheme, RGBColor defPressedNoteTheme) {
+    public InstrumentThemeLoader(ResourceLocation instrumentStyleLocation, Color defNoteTheme, Color defPressedNoteTheme) {
         this.InstrumentStyleLocation = instrumentStyleLocation;
         noteTheme = this.defNoteTheme = defNoteTheme;
         pressedNoteTheme = this.defPressedNoteTheme = defPressedNoteTheme;
@@ -81,10 +81,10 @@ public class InstrumentThemeLoader {
                         lyreLoader.onThemeChanged.run(lyreLoader.noteTheme, lyreLoader.pressedNoteTheme);
                 }
             }
-            private static RGBColor getTheme(final JsonElement rgbArray, final RGBColor def) {
+            private static Color getTheme(final JsonElement rgbArray, final Color def) {
                 try {
                     final JsonArray rgb = rgbArray.getAsJsonArray();
-                    return new RGBColor(
+                    return new Color(
                         rgb.get(0).getAsInt(), rgb.get(1).getAsInt(), rgb.get(2).getAsInt()
                     );
                 } catch (Exception e) {
@@ -97,27 +97,27 @@ public class InstrumentThemeLoader {
     }
 
 
-    public RGBColor getDefNoteTheme() {
+    public Color getDefNoteTheme() {
         return defNoteTheme;
     }
-    public RGBColor getDefPressedNoteTheme() {
+    public Color getDefPressedNoteTheme() {
         return defPressedNoteTheme;
     }
     public ResourceLocation getInstrumentStyleLocation() {
         return InstrumentStyleLocation;
     }
 
-    public RGBColor getNoteTheme() {
+    public Color getNoteTheme() {
         return noteTheme;
     }
-    public void setNoteTheme(RGBColor noteTheme) {
+    public void setNoteTheme(Color noteTheme) {
         onThemeChanged.run(this.noteTheme = noteTheme, pressedNoteTheme);
     }
     
-    public RGBColor getPressedNoteTheme() {
+    public Color getPressedNoteTheme() {
         return pressedNoteTheme;
     }
-    public void setPressedNoteTheme(RGBColor pressedNoteTheme) {
+    public void setPressedNoteTheme(Color pressedNoteTheme) {
         onThemeChanged.run(noteTheme, this.pressedNoteTheme = pressedNoteTheme);
     }
 
@@ -126,9 +126,10 @@ public class InstrumentThemeLoader {
     }
 
 
+    @OnlyIn(Dist.CLIENT)
     @FunctionalInterface
     public static interface InstrumentThemeLoadedEvent {
-        void run(final RGBColor noteTheme, final RGBColor pressedNoteTheme);
+        void run(final Color noteTheme, final Color pressedNoteTheme);
     }
 
 }

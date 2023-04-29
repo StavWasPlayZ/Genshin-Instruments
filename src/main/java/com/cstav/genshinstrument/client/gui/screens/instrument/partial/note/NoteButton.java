@@ -1,15 +1,15 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note;
 
 import java.util.UUID;
+import java.awt.Color;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.instrument.InstrumentPacket;
-import com.cstav.genshinstrument.sounds.NoteSound;
+import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.CommonUtil;
-import com.cstav.genshinstrument.util.RGBColor;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -55,7 +55,7 @@ public class NoteButton extends Button {
     
     protected NoteSound sound;
     protected final int noteTextureRow, rowsInNoteTexture;
-    protected final RGBColor colorTheme, pressedColorTheme;
+    protected final Color colorTheme, pressedColorTheme;
     protected final ResourceLocation rootLocation, noteLocation, noteBgLocation;
 
     private NoteLabelSupplier labelSupplier;
@@ -173,7 +173,7 @@ public class NoteButton extends Button {
         drawCenteredString(
             pPoseStack, minecraft.font, getMessage(),
             textX, textY,
-            (isPlaying() ? pressedColorTheme : colorTheme).getNumeric()
+            (isPlaying() ? pressedColorTheme : colorTheme).getRGB()
         );
 
         // dunno why or if necessary

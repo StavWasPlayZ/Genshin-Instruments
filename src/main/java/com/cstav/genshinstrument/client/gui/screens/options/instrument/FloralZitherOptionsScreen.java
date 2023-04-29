@@ -1,9 +1,10 @@
 package com.cstav.genshinstrument.client.gui.screens.options.instrument;
 
+import java.awt.Color;
+
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.ZitherSoundType;
-import com.cstav.genshinstrument.client.gui.screens.instrument.floralZither.FloralZitherScreen;
-import com.cstav.genshinstrument.util.RGBColor;
+import com.cstav.genshinstrument.client.gui.screens.instrument.floralzither.FloralZitherScreen;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.gui.components.CycleButton;
@@ -58,7 +59,7 @@ public class FloralZitherOptionsScreen extends GridInstrumentOptionsScreen {
         drawCenteredString(pPoseStack, font,
             Component.translatable("button.genshinstrument.zither_options"),
             width/2, heightBefore + spaceBefore + spacerHeight
-        , RGBColor.WHITE.getNumeric());
+        , Color.WHITE.getRGB());
     }
 
     private void onSoundTypeChange(final CycleButton<ZitherSoundType> btn, final ZitherSoundType soundType) {

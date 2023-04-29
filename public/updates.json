@@ -8,11 +8,13 @@
         "2.0": "- New instrument: Arataki's Great and Glorious Drum!\n- Russian language support",
         "2.2": "- New recipes\n- New advancements",
 
-        "2.2.1": "Texture fixes"
+        "2.2.1": "Texture fixes",
+
+        "2.3": "- More texture fixes\n- Better API implementation"
     },
 
     "promos": {
-        "1.19.3-latest": "2.2.1",
-        "1.19.3-recommended": "2.2.1"
+        "1.19.3-latest": "2.3",
+        "1.19.3-recommended": "2.3"
     }
 }

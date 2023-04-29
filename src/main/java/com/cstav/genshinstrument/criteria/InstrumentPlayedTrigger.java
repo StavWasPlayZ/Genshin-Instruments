@@ -1,5 +1,6 @@
-package com.cstav.genshinstrument.criterion;
+package com.cstav.genshinstrument.criteria;
 
+import com.cstav.genshinstrument.networking.packets.instrument.InstrumentPacket;
 import com.google.gson.JsonObject;
 
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
@@ -12,9 +13,20 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 
-public class PlayInstrumentTrigger extends SimpleCriterionTrigger<PlayInstrumentTrigger.TriggerInstance> {
+/**
+ * <p>The class holding the genshinstrument_instrument_played trigger.</p>
+ * 
+ * <p>
+ * It is triggered in {@link InstrumentPacket} such that every sound
+ * produced by an instrument will trigger this criteria.
+ * It will pass the played instrument from within the {@code instrument} JSON item object.
+ * </p>
+ * 
+ * Internally, used for triggering advancements for the player.
+ */
+public class InstrumentPlayedTrigger extends SimpleCriterionTrigger<InstrumentPlayedTrigger.TriggerInstance> {
     // It doesn't account for namespaces, so will use genshinstrument_ prefix instead
-    public static final ResourceLocation ID = new ResourceLocation("genshinstrument_play_instrument");
+    public static final ResourceLocation ID = new ResourceLocation("genshinstrument_instrument_played");
     
 
     @Override
@@ -51,4 +63,5 @@ public class PlayInstrumentTrigger extends SimpleCriterionTrigger<PlayInstrument
             return super.serializeToJson(pConditions);
         }
     }
+
 }
