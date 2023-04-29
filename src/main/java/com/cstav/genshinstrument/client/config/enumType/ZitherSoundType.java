@@ -2,8 +2,8 @@ package com.cstav.genshinstrument.client.config.enumType;
 
 import java.util.function.Supplier;
 
-import com.cstav.genshinstrument.sounds.NoteSound;
-import com.cstav.genshinstrument.sounds.ModSounds;
+import com.cstav.genshinstrument.sound.ModSounds;
+import com.cstav.genshinstrument.sound.NoteSound;
 
 public enum ZitherSoundType {
     OLD(() -> ModSounds.ZITHER_OLD_NOTE_SOUNDS),

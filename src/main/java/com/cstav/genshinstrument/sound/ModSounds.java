@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.sounds;
+package com.cstav.genshinstrument.sound;
 
 import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractGridInstrumentScreen;

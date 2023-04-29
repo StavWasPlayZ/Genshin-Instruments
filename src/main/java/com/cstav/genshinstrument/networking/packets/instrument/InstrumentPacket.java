@@ -9,7 +9,7 @@ import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvide
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.networking.ModPacket;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
-import com.cstav.genshinstrument.sounds.NoteSound;
+import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.CommonUtil;
 
 import net.minecraft.network.FriendlyByteBuf;

@@ -1,5 +1,6 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.drum;
 
+import java.awt.Color;
 import java.util.HashMap;
 
 import com.cstav.genshinstrument.Main;
@@ -7,9 +8,8 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractI
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
-import com.cstav.genshinstrument.sounds.ModSounds;
-import com.cstav.genshinstrument.sounds.NoteSound;
-import com.cstav.genshinstrument.util.RGBColor;
+import com.cstav.genshinstrument.sound.ModSounds;
+import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 
 import net.minecraft.client.Minecraft;
@@ -115,7 +115,7 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
     
     private static final InstrumentThemeLoader THEME_LOADER = new InstrumentThemeLoader(
         new ResourceLocation(Main.MODID, genStylerPath(INSTRUMENT_ID)),
-        new RGBColor(197, 213, 172), new RGBColor(232, 127, 74)
+        new Color(197, 213, 172), new Color(232, 127, 74)
     );
     @Override
     public InstrumentThemeLoader getThemeLoader() {

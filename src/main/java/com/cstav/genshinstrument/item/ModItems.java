@@ -1,7 +1,7 @@
 package com.cstav.genshinstrument.item;
 
 import com.cstav.genshinstrument.Main;
-import com.cstav.genshinstrument.sounds.ModSounds;
+import com.cstav.genshinstrument.sound.ModSounds;
 
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;

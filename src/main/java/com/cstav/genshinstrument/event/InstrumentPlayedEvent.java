@@ -1,6 +1,6 @@
 package com.cstav.genshinstrument.event;
 
-import com.cstav.genshinstrument.sounds.NoteSound;
+import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.eventbus.api.Event;

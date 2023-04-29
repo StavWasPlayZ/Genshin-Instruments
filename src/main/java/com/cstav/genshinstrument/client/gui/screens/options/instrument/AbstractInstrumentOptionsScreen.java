@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument.client.gui.screens.options.instrument;
 
 import java.util.HashMap;
+import java.awt.Color;
 
 import javax.annotation.Nullable;
 
@@ -10,8 +11,7 @@ import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.client.gui.screens.options.widget.BetterSlider;
-import com.cstav.genshinstrument.sounds.NoteSound;
-import com.cstav.genshinstrument.util.RGBColor;
+import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
@@ -133,6 +133,11 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         addRenderableWidget(doneBtn);
         
     }
+    /**
+     * Fills the settings grid with all the necessary widgets, buttons and such
+     * @param grid The settings grid to add the widgets to
+     * @param rowHelper A row helper for the specified {@code grid}
+     */
     protected void initOptionsGrid(final GridWidget grid, final RowHelper rowHelper) {
 
         final CycleButton<InstrumentChannelType> instrumentChannel = CycleButton.<InstrumentChannelType>builder((soundType) ->
@@ -218,7 +223,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
             return;
         
         renderBackground(pPoseStack);
-        drawCenteredString(pPoseStack, font, title, width/2, 20, RGBColor.WHITE.getNumeric());
+        drawCenteredString(pPoseStack, font, title, width/2, 20, Color.WHITE.getRGB());
         
         super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
     }

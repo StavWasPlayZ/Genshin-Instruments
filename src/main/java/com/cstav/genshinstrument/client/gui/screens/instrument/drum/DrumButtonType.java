@@ -3,8 +3,8 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.drum;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
 import com.cstav.genshinstrument.client.keyMaps.KeyMappings.DrumKeys;
-import com.cstav.genshinstrument.sounds.ModSounds;
-import com.cstav.genshinstrument.sounds.NoteSound;
+import com.cstav.genshinstrument.sound.ModSounds;
+import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

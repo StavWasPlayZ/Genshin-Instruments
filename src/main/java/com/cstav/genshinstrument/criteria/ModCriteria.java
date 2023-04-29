@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.criterion;
+package com.cstav.genshinstrument.criteria;
 
 import static net.minecraft.advancements.CriteriaTriggers.register;
 

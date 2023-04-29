@@ -4,6 +4,9 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.lab
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
+/**
+ * An interface holding {@link NoteLabelSupplier}s for note buttons to cycle thorugh.
+ */
 public interface INoteLabel {
     // Useful stuff
     public static final String TRANSLATABLE_PATH = "genshinstrument.label.";
@@ -23,7 +26,7 @@ public interface INoteLabel {
     }
 
     /**
-     * @return All possible values of labels
+     * @return All cyclable label suppliers
      */
     public INoteLabel[] getValues();
 }

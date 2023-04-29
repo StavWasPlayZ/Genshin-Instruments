@@ -4,9 +4,9 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import com.cstav.genshinstrument.client.gui.screens.instrument.drum.AratakisGreatAndGloriousDrumScreen;
-import com.cstav.genshinstrument.client.gui.screens.instrument.floralZither.FloralZitherScreen;
-import com.cstav.genshinstrument.client.gui.screens.instrument.vintageLyre.VintageLyreScreen;
-import com.cstav.genshinstrument.client.gui.screens.instrument.windsongLyre.WindsongLyreScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.floralzither.FloralZitherScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.vintagelyre.VintageLyreScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.windsonglyre.WindsongLyreScreen;
 import com.cstav.genshinstrument.networking.ModPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
