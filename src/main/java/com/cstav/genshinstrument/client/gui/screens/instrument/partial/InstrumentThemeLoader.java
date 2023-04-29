@@ -28,7 +28,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
  * <li><b>note_theme</b> - An array representing RGB values. Used for the Note Grid's text.</li>
  * <li><b>note_pressed_theme</b> - An array representing RGB values. Used for the Note Grid's text when pressed.</li>
  * </ul>
- * This class must be initialized during the Mod even bus to load at game startup.
+ * This class must be initialized during mod setup.
  */
 @OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(modid = Main.MODID, bus = Bus.MOD, value = Dist.CLIENT)
@@ -126,6 +126,7 @@ public class InstrumentThemeLoader {
     }
 
 
+    @OnlyIn(Dist.CLIENT)
     @FunctionalInterface
     public static interface InstrumentThemeLoadedEvent {
         void run(final Color noteTheme, final Color pressedNoteTheme);
