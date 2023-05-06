@@ -8,8 +8,8 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.Instrumen
 import com.cstav.genshinstrument.sound.ModSounds;
 import com.cstav.genshinstrument.sound.NoteSound;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -20,6 +20,10 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @EventBusSubscriber(bus = Bus.MOD, value = Dist.CLIENT)
 public class WindsongLyreScreen extends AbstractGridInstrumentScreen {
     public static final String INSTRUMENT_ID = "windsong_lyre";
+
+    public WindsongLyreScreen(ItemStack instrument) {
+        super(instrument);
+    }
 
 
     @Override
@@ -39,12 +43,6 @@ public class WindsongLyreScreen extends AbstractGridInstrumentScreen {
     @Override
     public NoteSound[] getSounds() {
         return ModSounds.WINDSONG_LYRE_NOTE_SOUNDS;
-    }
-
-
-
-    public static void open() {
-        Minecraft.getInstance().setScreen(new WindsongLyreScreen());
     }
     
 }

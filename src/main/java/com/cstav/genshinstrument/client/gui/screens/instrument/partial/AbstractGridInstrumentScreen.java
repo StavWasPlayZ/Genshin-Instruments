@@ -7,12 +7,16 @@ import com.cstav.genshinstrument.client.gui.screens.options.instrument.GridInstr
 import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
 
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScreen {
     public static final int DEF_ROWS = 7, DEF_COLUMNS = 3;
+    public AbstractGridInstrumentScreen(ItemStack instrument) {
+        super(instrument);
+    }
 
     public int columns() {
         return DEF_COLUMNS;
@@ -29,7 +33,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
      */
     public NoteGrid initNoteGrid() {
         return new NoteGrid(
-            rows(), columns(), getSounds(), this
+            instrument, rows(), columns(), getSounds(), this
         );
     }
 

@@ -4,14 +4,11 @@ import javax.annotation.Nullable;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
-import com.cstav.genshinstrument.networking.packets.instrument.InstrumentPacket;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -31,17 +28,10 @@ public class NoteSound {
     public static final float MIN_PITCH = .5f, MAX_PITCH = 1.9f;
     
 
-    /**
-     * Used in {@link InstrumentPacket} to determine which instrument should trigger a criteria
-     */
-    public ItemLike instrument;
-
     public SoundEvent mono;
     @Nullable public SoundEvent stereo;
     private float pitch;
-    public NoteSound(SoundEvent mono, @Nullable SoundEvent stereo, float pitch, ItemLike instrument) {
-        this.instrument = instrument;
-
+    public NoteSound(SoundEvent mono, @Nullable SoundEvent stereo, float pitch) {
         this.mono = mono;
         this.stereo = stereo;
         
@@ -53,9 +43,6 @@ public class NoteSound {
     public boolean hasStereo() {
         return stereo != null;
     }
-    public ItemLike getInstrument() {
-        return instrument;
-    }
 
     public float getPitch() {
         return pitch;
@@ -66,6 +53,8 @@ public class NoteSound {
 
 
     /**
+     * Determines which sound type should play based on this player's distance from the instrument player.
+     * <p>This method is used by the server.</p>
      * @param distanceFromPlayer The distance between this player and the position of the note's sound
      * @return Either the Mono or Stereo sound, based on the client's preference.
      */
@@ -86,8 +75,9 @@ public class NoteSound {
         };
     }
     /**
+     * Returns the literal preference of the client. Defaults to Stereo.
+     * <p>This method is used by the client.</p>
      * @return Either the Mono or Stereo sound, based on the client's preference
-     * This method assumes that the request was made by a client.
      */
     @OnlyIn(Dist.CLIENT)
     public SoundEvent getByPreference() {
@@ -96,7 +86,7 @@ public class NoteSound {
         
         final InstrumentChannelType preference = ModClientConfigs.CHANNEL_TYPE.get();
 
-        return switch(preference) {
+        return switch (preference) {
             case MIXED, STEREO -> stereo;
             case MONO -> mono;
         };
@@ -111,16 +101,12 @@ public class NoteSound {
             stereo.writeToNetwork(buf);
 
         buf.writeFloat(pitch);
-
-
-        buf.writeItem(new ItemStack(instrument.asItem()));
     }
     public static NoteSound readFromNetwork(final FriendlyByteBuf buf) {
         return new NoteSound(
             SoundEvent.readFromNetwork(buf),
             buf.readBoolean() ? SoundEvent.readFromNetwork(buf) : null,
-            buf.readFloat(),
-            buf.readItem().getItem()
+            buf.readFloat()
         );
     }
 

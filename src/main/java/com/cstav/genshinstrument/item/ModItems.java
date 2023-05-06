@@ -1,7 +1,6 @@
 package com.cstav.genshinstrument.item;
 
 import com.cstav.genshinstrument.Main;
-import com.cstav.genshinstrument.sound.ModSounds;
 
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
@@ -25,28 +24,23 @@ public class ModItems {
     public static final RegistryObject<Item>
         WINDSONG_LYRE = ITEMS.register("windsong_lyre", () ->
             new InstrumentItem(
-                (player) -> InstrumentItem.sendOpenRequest(player, "windsong_lyre"),
-                ModSounds.WINDSONG_LYRE_NOTE_SOUNDS
+                (player, instrument) -> InstrumentItem.sendOpenRequest(player, instrument, "windsong_lyre")
             )
         ),
-        VINTAGE_LYRE = ITEMS.register("vintage_lyre", () ->
-            new InstrumentItem(
-                (player) -> InstrumentItem.sendOpenRequest(player, "vintage_lyre"),
-                ModSounds.VINTAGE_LYRE_NOTE_SOUNDS
+        VINTAGE_LYRE = ITEMS.register("vintage_lyre", () -> new InstrumentItem(
+                (player, instrument) -> InstrumentItem.sendOpenRequest(player, instrument, "vintage_lyre")
             )
         ),
 
         FLORAL_ZITHER = ITEMS.register("floral_zither", () ->
             new InstrumentItem(
-                (player) -> InstrumentItem.sendOpenRequest(player, "floral_zither"),
-                ModSounds.ZITHER_NEW_NOTE_SOUNDS, ModSounds.ZITHER_OLD_NOTE_SOUNDS
+                (player, instrument) -> InstrumentItem.sendOpenRequest(player, instrument, "floral_zither")
             )
         ),
 
         GLORIOUS_DRUM = ITEMS.register("glorious_drum", () ->
             new InstrumentItem(
-                (player) -> InstrumentItem.sendOpenRequest(player, "glorious_drum"),
-                ModSounds.GLORIOUS_DRUM
+                (player, instrument) -> InstrumentItem.sendOpenRequest(player, instrument, "glorious_drum")
             )
         )
     ;
