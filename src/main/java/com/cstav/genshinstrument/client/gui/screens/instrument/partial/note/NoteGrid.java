@@ -12,6 +12,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.FrameWidget;
 import net.minecraft.client.gui.components.GridWidget;
 import net.minecraft.client.gui.components.GridWidget.RowHelper;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -26,13 +27,16 @@ public class NoteGrid implements Iterable<NoteButton> {
 
     
     private final NoteButton[][] notes;
-    public final int rows, columns;
     private NoteSound[] noteSounds;
 
-    public NoteGrid(final int rows, final int columns, NoteSound[] noteSounds, AbstractInstrumentScreen instrumentScreen) {
+    public final int rows, columns;
+    public final ItemStack instrument;
+
+    public NoteGrid(ItemStack instrument, int rows, int columns, NoteSound[] noteSounds, AbstractInstrumentScreen instrumentScreen) {
         this.rows = rows;
         this.columns = columns;
         this.noteSounds = noteSounds;
+        this.instrument = instrument;
 
         // Construct the note grid
         notes = new NoteButton[columns][rows];
@@ -57,8 +61,8 @@ public class NoteGrid implements Iterable<NoteButton> {
         );
     }
     
-    protected NoteButton createNote(final int row, final int column, final AbstractInstrumentScreen instrumentScreen) {
-        return new NoteGridButton(row, column,
+    protected NoteButton createNote(int row, int column, AbstractInstrumentScreen instrumentScreen) {
+        return new NoteGridButton(instrument, row, column,
             getSoundAt(noteSounds, row, column), getLabelSupplier(), rows
         , instrumentScreen);
     }

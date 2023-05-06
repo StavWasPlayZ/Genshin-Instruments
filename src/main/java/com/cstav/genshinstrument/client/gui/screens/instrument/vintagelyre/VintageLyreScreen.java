@@ -9,8 +9,8 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.Note
 import com.cstav.genshinstrument.sound.ModSounds;
 import com.cstav.genshinstrument.sound.NoteSound;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -21,6 +21,10 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @EventBusSubscriber(bus = Bus.MOD, value = Dist.CLIENT)
 public class VintageLyreScreen extends AbstractGridInstrumentScreen {
     public static final String INSTRUMENT_ID = "vintage_lyre";
+
+    public VintageLyreScreen(ItemStack instrument) {
+        super(instrument);
+    }
 
 
     @Override
@@ -47,14 +51,8 @@ public class VintageLyreScreen extends AbstractGridInstrumentScreen {
     @Override
     public NoteGrid initNoteGrid() {
         return new VintageNoteGrid(
-            rows(), columns(), getSounds(), this
+            instrument, rows(), columns(), getSounds(), this
         );
-    }
-
-
-
-    public static void open() {
-        Minecraft.getInstance().setScreen(new VintageLyreScreen());
     }
     
 }

@@ -1,7 +1,7 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note;
 
-import java.util.UUID;
 import java.awt.Color;
+import java.util.UUID;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
@@ -25,6 +25,7 @@ import net.minecraft.core.Position;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -53,7 +54,9 @@ public class NoteButton extends Button {
 
     protected final Minecraft minecraft = Minecraft.getInstance();
     
-    protected NoteSound sound;
+    public NoteSound sound;
+    public final ItemStack instrument;
+
     protected final int noteTextureRow, rowsInNoteTexture;
     protected final Color colorTheme, pressedColorTheme;
     protected final ResourceLocation rootLocation, noteLocation, noteBgLocation;
@@ -63,7 +66,8 @@ public class NoteButton extends Button {
     //FIXME Actually figure out a formula instead of guessing
     private float randomAssMultiplier1 = .9f, randomAssMultiplier2 = 1.025f;
     
-    public NoteButton(NoteSound sound, NoteLabelSupplier labelSupplier, int noteTextureRow, int rowsInNoteTexture,
+    public NoteButton(ItemStack instrument, NoteSound sound,
+      NoteLabelSupplier labelSupplier, int noteTextureRow, int rowsInNoteTexture,
       AbstractInstrumentScreen instrumentScreen) {
         super(Button.builder(null, (iAmADissapointmentAndAFailureToMyParents) -> {})
             .size(getSize(), getSize())
@@ -71,6 +75,7 @@ public class NoteButton extends Button {
 
 
         this.sound = sound;
+        this.instrument = instrument;
 
         this.labelSupplier = labelSupplier;
         colorTheme = instrumentScreen.getThemeLoader().getNoteTheme();
@@ -84,9 +89,10 @@ public class NoteButton extends Button {
         this.noteBgLocation = getResourceFromRoot(NOTE_BG_FILENAME);
 
     }
-    public NoteButton(NoteSound sound, NoteLabelSupplier labelSupplier, int noteTextureRow, int rowsInNoteTexture,
+    public NoteButton(ItemStack instrument, NoteSound sound,
+      NoteLabelSupplier labelSupplier, int noteTextureRow, int rowsInNoteTexture,
       AbstractInstrumentScreen instrumentScreen, int noteTextureWidth, float randomAssMultiplier1, float randomAssMultiplier2) {
-        this(sound, labelSupplier, noteTextureRow, rowsInNoteTexture, instrumentScreen);
+        this(instrument, sound, labelSupplier, noteTextureRow, rowsInNoteTexture, instrumentScreen);
 
         this.noteTextureWidth = noteTextureWidth;
         this.randomAssMultiplier1 = randomAssMultiplier1;
@@ -241,7 +247,7 @@ public class NoteButton extends Button {
         if (playLocally)
             playDownSound(minecraft.getSoundManager());
         
-        ModPacketHandler.sendToServer(new InstrumentPacket(sound));
+        ModPacketHandler.sendToServer(new InstrumentPacket(sound, instrument));
         
         locked = true;
 

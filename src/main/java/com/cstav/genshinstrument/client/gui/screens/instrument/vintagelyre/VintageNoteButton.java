@@ -9,6 +9,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -18,9 +19,10 @@ public class VintageNoteButton extends NoteGridButton {
 
     private final ResourceLocation thingyLocation = getResourceFromRoot("thing.png");
 
-    public VintageNoteButton(int row, int column, NoteSound sound, NoteLabelSupplier labelSupplier, AbstractInstrumentScreen instrumentScreen) {
+    public VintageNoteButton(final ItemStack instrument,
+            int row, int column, NoteSound sound, NoteLabelSupplier labelSupplier, AbstractInstrumentScreen instrumentScreen) {
         // We know for sure that the lyre is a 7x3
-        super(row, column, sound, labelSupplier, AbstractGridInstrumentScreen.DEF_ROWS, instrumentScreen);
+        super(instrument, row, column, sound, labelSupplier, AbstractGridInstrumentScreen.DEF_ROWS, instrumentScreen);
     }
 
     

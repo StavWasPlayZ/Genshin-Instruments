@@ -15,6 +15,7 @@ import com.cstav.genshinstrument.util.CommonUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -28,16 +29,21 @@ public class InstrumentPacket implements ModPacket {
 
 
     private final NoteSound sound;
-    public InstrumentPacket(final NoteSound sound) {
+    private final ItemStack instrument;
+
+    public InstrumentPacket(final NoteSound sound, final ItemStack instrument) {
         this.sound = sound;
+        this.instrument = instrument;
     }
     public InstrumentPacket(FriendlyByteBuf buf) {
         sound = NoteSound.readFromNetwork(buf);
+        this.instrument = buf.readItem();
     }
 
     @Override
     public void toBytes(final FriendlyByteBuf buf) {
         sound.writeToNetwork(buf);
+        buf.writeItem(instrument);
     }
 
 
@@ -69,7 +75,7 @@ public class InstrumentPacket implements ModPacket {
 
             
             // Fire the Forge instrument event
-            MinecraftForge.EVENT_BUS.post(new InstrumentPlayedEvent(player, sound));
+            MinecraftForge.EVENT_BUS.post(new InstrumentPlayedEvent(player, sound, instrument));
             
             // Trigger an instrument game event
             // This is done so that sculk sensors can pick up the instrument's sound
