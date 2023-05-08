@@ -14,6 +14,10 @@ public class InstrumentPlayedEvent extends Event {
     
     public final NoteSound sound;
     public final ServerPlayer player;
+    //FIXME: Switch with InteractionHand. ItemStack updates like a sht
+    //TODO: Make it so that if the item does not exist anymore in the player's hand, close the instrument's menu.
+    // It will be possible when the above will be fixed
+    @Deprecated(forRemoval = true)
     public final ItemStack instrument;
 
     public InstrumentPlayedEvent(ServerPlayer player, NoteSound sound, ItemStack instrument) {
