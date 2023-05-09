@@ -3,6 +3,8 @@ package com.cstav.genshinstrument.networking.packets.instrument;
 import java.util.UUID;
 import java.util.function.Supplier;
 
+import javax.annotation.Nullable;
+
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.networking.ModPacket;
 import com.cstav.genshinstrument.sound.NoteSound;
@@ -18,8 +20,9 @@ public class PlayNotePacket implements ModPacket {
 
     private final BlockPos blockPos;
     private final NoteSound sound;
+    @Nullable
     private final UUID playerUUID;
-    public PlayNotePacket(final BlockPos pos, final NoteSound sound, final UUID playerUUID) {
+    public PlayNotePacket(final BlockPos pos, final NoteSound sound, @Nullable final UUID playerUUID) {
         this.blockPos = pos;
         this.sound = sound;
         this.playerUUID = playerUUID;
@@ -27,14 +30,17 @@ public class PlayNotePacket implements ModPacket {
     public PlayNotePacket(FriendlyByteBuf buf) {
         blockPos = buf.readBlockPos();
         sound = NoteSound.readFromNetwork(buf);
-        playerUUID = buf.readUUID();
+        playerUUID = buf.readBoolean() ? buf.readUUID() : null;
     }
 
     @Override
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeBlockPos(blockPos);
         sound.writeToNetwork(buf);
-        buf.writeUUID(playerUUID);
+
+        buf.writeBoolean(playerUUID != null);
+        if (playerUUID != null)
+            buf.writeUUID(playerUUID);
     }
 
 

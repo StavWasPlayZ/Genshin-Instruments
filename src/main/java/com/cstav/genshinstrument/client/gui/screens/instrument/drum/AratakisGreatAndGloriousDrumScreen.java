@@ -15,7 +15,7 @@ import com.mojang.blaze3d.platform.InputConstants.Key;
 import net.minecraft.client.gui.components.LinearLayoutWidget;
 import net.minecraft.client.gui.components.LinearLayoutWidget.Orientation;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -28,8 +28,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen {
     public static final String INSTRUMENT_ID = "glorious_drum";
 
-    public AratakisGreatAndGloriousDrumScreen(ItemStack instrument) {
-        super(instrument);
+    public AratakisGreatAndGloriousDrumScreen(InteractionHand hand) {
+        super(hand);
     }
     
     /**
@@ -83,7 +83,7 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
         return layout;
     }
     private NoteButton createButton(DrumButtonType btnType, LinearLayoutWidget container, Key key, boolean isRight) {
-        final NoteButton btn = new DrumNoteButton(instrument, btnType, isRight, this);
+        final NoteButton btn = new DrumNoteButton(btnType, isRight, this);
 
         container.addChild(btn);
         notes.put(key.getValue(), btn);
