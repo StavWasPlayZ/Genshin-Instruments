@@ -9,7 +9,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
 
 /**
@@ -40,9 +39,6 @@ public class InstrumentPlayedEvent extends Event {
             this.hand = hand;
     
             instrument = (hand == null) ? null : player.getItemInHand(hand);
-
-            // Also post it on the generalized event
-            MinecraftForge.EVENT_BUS.post((InstrumentPlayedEvent)this);
         }
     }
     
