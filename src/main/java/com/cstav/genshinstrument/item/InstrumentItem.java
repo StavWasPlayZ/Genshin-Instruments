@@ -38,15 +38,15 @@ public class InstrumentItem extends Item {
         this.onOpenRequest = onOpenRequest;
     }
 
-    static void sendOpenRequest(ServerPlayer player, ItemStack instrument, String instrumentType) {
-        ModPacketHandler.sendToClient(new OpenInstrumentPacket(instrumentType, instrument), player);
+    static void sendOpenRequest(ServerPlayer player, InteractionHand hand, String instrumentType) {
+        ModPacketHandler.sendToClient(new OpenInstrumentPacket(instrumentType, hand), player);
     }
     
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         if (!pLevel.isClientSide) {
-            onOpenRequest.run((ServerPlayer)pPlayer, pPlayer.getItemInHand(pUsedHand));
+            onOpenRequest.run((ServerPlayer)pPlayer, pUsedHand);
 
             // Update the the capabilty on server
             InstrumentOpenProvider.setOpen(pPlayer, true);
@@ -75,6 +75,6 @@ public class InstrumentItem extends Item {
 
     @FunctionalInterface
     public static interface ServerPlayerRunnable {
-        void run(final ServerPlayer player, final ItemStack instrument);
+        void run(final ServerPlayer player, final InteractionHand hand);
     }
 }

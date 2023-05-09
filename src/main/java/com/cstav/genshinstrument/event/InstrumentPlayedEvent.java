@@ -1,8 +1,11 @@
 package com.cstav.genshinstrument.event;
 
+import javax.annotation.Nullable;
+
 import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.eventbus.api.Event;
 
@@ -14,16 +17,26 @@ public class InstrumentPlayedEvent extends Event {
     
     public final NoteSound sound;
     public final ServerPlayer player;
-    //FIXME: Switch with InteractionHand. ItemStack updates like a sht
-    //TODO: Make it so that if the item does not exist anymore in the player's hand, close the instrument's menu.
-    // It will be possible when the above will be fixed
-    @Deprecated(forRemoval = true)
+    /**
+     * The hand where the instrument is at.
+     * Null for when the sound was not produced by a player.
+     */
+    @Nullable
+    public final InteractionHand hand;
+
+    /**
+     * The value of {@code player.getItemInHand(hand)}.
+     * Null for when the sound was not produced by a player.
+     */
+    @Nullable
     public final ItemStack instrument;
 
-    public InstrumentPlayedEvent(ServerPlayer player, NoteSound sound, ItemStack instrument) {
+    public InstrumentPlayedEvent(ServerPlayer player, NoteSound sound, @Nullable InteractionHand hand) {
         this.player = player;
         this.sound = sound;
-        this.instrument = instrument;
+        this.hand = hand;
+
+        instrument = (hand == null) ? null : player.getItemInHand(hand);
     }
     
 }

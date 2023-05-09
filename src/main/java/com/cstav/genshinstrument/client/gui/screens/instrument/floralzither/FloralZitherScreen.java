@@ -10,7 +10,7 @@ import com.cstav.genshinstrument.client.gui.screens.options.instrument.FloralZit
 import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -22,8 +22,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class FloralZitherScreen extends AbstractGridInstrumentScreen {
     public static final String INSTRUMENT_ID = "floral_zither";
 
-    public FloralZitherScreen(ItemStack instrument) {
-        super(instrument);
+    public FloralZitherScreen(InteractionHand hand) {
+        super(hand);
     }
 
 

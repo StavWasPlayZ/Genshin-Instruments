@@ -9,7 +9,7 @@ import com.cstav.genshinstrument.sound.ModSounds;
 import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -21,8 +21,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class WindsongLyreScreen extends AbstractGridInstrumentScreen {
     public static final String INSTRUMENT_ID = "windsong_lyre";
 
-    public WindsongLyreScreen(ItemStack instrument) {
-        super(instrument);
+    public WindsongLyreScreen(InteractionHand hand) {
+        super(hand);
     }
 
 

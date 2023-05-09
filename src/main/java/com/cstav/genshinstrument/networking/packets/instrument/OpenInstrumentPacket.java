@@ -13,7 +13,7 @@ import com.cstav.genshinstrument.networking.ModPacket;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkDirection;
@@ -21,7 +21,7 @@ import net.minecraftforge.network.NetworkEvent.Context;
 
 public class OpenInstrumentPacket implements ModPacket {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_CLIENT;
-    private static final Map<String, Supplier<Function<ItemStack, AbstractInstrumentScreen>>> OPEN_INSTRUMENT = Map.of(
+    private static final Map<String, Supplier<Function<InteractionHand, AbstractInstrumentScreen>>> OPEN_INSTRUMENT = Map.of(
         "windsong_lyre", () -> WindsongLyreScreen::new,
         "vintage_lyre", () -> VintageLyreScreen::new,
         "floral_zither", () -> FloralZitherScreen::new,
@@ -30,21 +30,21 @@ public class OpenInstrumentPacket implements ModPacket {
 
 
     private final String instrumentType;
-    private final ItemStack instrument;
-    public OpenInstrumentPacket(final String instrumentScreen, final ItemStack instrument) {
+    private final InteractionHand hand;
+    public OpenInstrumentPacket(final String instrumentScreen, final InteractionHand hand) {
         this.instrumentType = instrumentScreen;
-        this.instrument = instrument;
+        this.hand = hand;
     }
 
     public OpenInstrumentPacket(FriendlyByteBuf buf) {
         instrumentType = buf.readUtf();
-        instrument = buf.readItem();
+        hand = buf.readEnum(InteractionHand.class);
     }
 
     @Override
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeUtf(instrumentType);
-        buf.writeItem(instrument);
+        buf.writeEnum(hand);
     }
 
 
@@ -54,7 +54,7 @@ public class OpenInstrumentPacket implements ModPacket {
 
         context.enqueueWork(() -> {
             DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
-                Minecraft.getInstance().setScreen(OPEN_INSTRUMENT.get(instrumentType).get().apply(instrument)));
+                Minecraft.getInstance().setScreen(OPEN_INSTRUMENT.get(instrumentType).get().apply(hand)));
         });
 
         return true;

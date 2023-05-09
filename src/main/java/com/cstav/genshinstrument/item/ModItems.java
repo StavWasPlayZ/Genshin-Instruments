@@ -24,23 +24,23 @@ public class ModItems {
     public static final RegistryObject<Item>
         WINDSONG_LYRE = ITEMS.register("windsong_lyre", () ->
             new InstrumentItem(
-                (player, instrument) -> InstrumentItem.sendOpenRequest(player, instrument, "windsong_lyre")
+                (player, hand) -> InstrumentItem.sendOpenRequest(player, hand, "windsong_lyre")
             )
         ),
         VINTAGE_LYRE = ITEMS.register("vintage_lyre", () -> new InstrumentItem(
-                (player, instrument) -> InstrumentItem.sendOpenRequest(player, instrument, "vintage_lyre")
+                (player, hand) -> InstrumentItem.sendOpenRequest(player, hand, "vintage_lyre")
             )
         ),
 
         FLORAL_ZITHER = ITEMS.register("floral_zither", () ->
             new InstrumentItem(
-                (player, instrument) -> InstrumentItem.sendOpenRequest(player, instrument, "floral_zither")
+                (player, hand) -> InstrumentItem.sendOpenRequest(player, hand, "floral_zither")
             )
         ),
 
         GLORIOUS_DRUM = ITEMS.register("glorious_drum", () ->
             new InstrumentItem(
-                (player, instrument) -> InstrumentItem.sendOpenRequest(player, instrument, "glorious_drum")
+                (player, hand) -> InstrumentItem.sendOpenRequest(player, hand, "glorious_drum")
             )
         )
     ;
