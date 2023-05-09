@@ -272,7 +272,7 @@ public class NoteButton extends Button {
      * A method for packets to use for playing this note on the client's end.
      * If {@link Minecraft#player this player} is the same as the gives player,
      * the method will only stop the client's background music per preference.
-     * @param playerUUID The UUID of the player who initiated the sound
+     * @param playerUUID The UUID of the player who initiated the sound. Null for when it wasn't a player.
      * @param pos The position at which the sound was fired from
      */
     public static void playNoteAtPos(final NoteSound sound, final UUID playerUUID, final BlockPos pos) {
