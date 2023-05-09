@@ -46,7 +46,7 @@ public class InstrumentPacket implements ModPacket {
         context.enqueueWork(() -> {
             final ServerPlayer player = context.getSender();
 
-            if (InstrumentOpen.isOpen(player))
+            if (!InstrumentOpen.isOpen(player))
                 return;
 
             ServerUtil.sendPlayNotePackets(player, sound);
