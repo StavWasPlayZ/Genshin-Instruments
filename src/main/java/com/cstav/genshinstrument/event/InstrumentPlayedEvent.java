@@ -25,7 +25,7 @@ public class InstrumentPlayedEvent extends Event {
     public final InteractionHand hand;
 
     /**
-     * The value of {@code player.getItemInHand(hand)}.
+     * The value of {@link ServerPlayer#getItemInHand player.getItemInHand(hand)}.
      * Null for when the sound was not produced by a player.
      */
     @Nullable
