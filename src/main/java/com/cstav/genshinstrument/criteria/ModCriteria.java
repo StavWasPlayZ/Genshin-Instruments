@@ -16,7 +16,7 @@ public class ModCriteria {
     public static final InstrumentPlayedTrigger INSTRUMENT_PLAYED_TRIGGER = register(new InstrumentPlayedTrigger());
 
     @SubscribeEvent
-    public static void onInstrumentPlayed(final InstrumentPlayedEvent event) {
+    public static void onInstrumentPlayed(final InstrumentPlayedEvent.ByPlayer event) {
         INSTRUMENT_PLAYED_TRIGGER.trigger(event.player, event.instrument);
     }
     
