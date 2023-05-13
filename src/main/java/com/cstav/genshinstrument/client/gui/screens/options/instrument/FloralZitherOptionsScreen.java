@@ -8,9 +8,9 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.floralzither.Flor
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.gui.components.CycleButton;
-import net.minecraft.client.gui.components.GridWidget;
-import net.minecraft.client.gui.components.GridWidget.RowHelper;
-import net.minecraft.client.gui.components.SpacerWidget;
+import net.minecraft.client.gui.layouts.GridLayout;
+import net.minecraft.client.gui.layouts.GridLayout.RowHelper;
+import net.minecraft.client.gui.layouts.SpacerElement;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -32,9 +32,9 @@ public class FloralZitherOptionsScreen extends GridInstrumentOptionsScreen {
     private final int spaceBefore = 55, spacerHeight = 10;
     private int heightBefore;
     @Override
-    protected void initOptionsGrid(GridWidget grid, RowHelper rowHelper) {
+    protected void initOptionsGrid(GridLayout grid, RowHelper rowHelper) {
         super.initOptionsGrid(grid, rowHelper);
-        rowHelper.addChild(SpacerWidget.height(spacerHeight), 2);
+        rowHelper.addChild(SpacerElement.height(spacerHeight), 2);
         heightBefore = grid.getHeight();
 
         final CycleButton<ZitherSoundType> soundTypeButton = CycleButton.<ZitherSoundType>builder((type) ->
@@ -48,7 +48,7 @@ public class FloralZitherOptionsScreen extends GridInstrumentOptionsScreen {
 
         rowHelper.addChild(soundTypeButton, 2, rowHelper.newCellSettings().paddingTop(30));
 
-        grid.pack();
+        grid.arrangeElements();
     }
     @Override
     public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {

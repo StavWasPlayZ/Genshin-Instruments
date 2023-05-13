@@ -15,7 +15,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.AbstractButton;
+import net.minecraft.client.gui.narration.NarratedElementType;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
@@ -30,7 +32,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class NoteButton extends Button {
+public class NoteButton extends AbstractButton {
     public static final String NOTE_FILENAME = "note.png", NOTE_BG_FILENAME = "note_bg.png";
     private static final float PRESS_ANIM_SECS = .15f;
     private static final int TARGET_SCALE_AMOUNT = 9;
@@ -68,9 +70,10 @@ public class NoteButton extends Button {
     public NoteButton(NoteSound sound,
       NoteLabelSupplier labelSupplier, int noteTextureRow, int rowsInNoteTexture,
       AbstractInstrumentScreen instrumentScreen) {
-        super(Button.builder(null, (iAmADissapointmentAndAFailureToMyParents) -> {})
-            .size(getSize(), getSize())
-        );
+        // super(Button.builder(null, (iAmADissapointmentAndAFailureToMyParents) -> {})
+        //     .size(getSize(), getSize())
+        // );
+        super(0, 0, getSize(), getSize(), null);
 
 
         this.sound = sound;
@@ -146,7 +149,12 @@ public class NoteButton extends Button {
         setLabelSupplier(labelSupplier);
     }
     @Override
-    public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+        // TODO Auto-generated method stub
+        super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+    }
+    @Override
+    public void renderWidget(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
         // Button
         displaySprite(noteBgLocation);
 
@@ -255,7 +263,7 @@ public class NoteButton extends Button {
         resetAnimVars();
     }
     @Override
-    public void onClick(double pMouseX, double pMouseY) {
+    public void onPress() {
         play(false);
     }
 
@@ -302,14 +310,16 @@ public class NoteButton extends Button {
         return super.mouseReleased(pMouseX, pMouseY, pButton);
     }
 
-
     @Override
-    public boolean changeFocus(boolean pFocus) {
-        return false;
+    protected void updateWidgetNarration(final NarrationElementOutput neo) {
+        neo.add(NarratedElementType.TITLE, getMessage());
     }
+
 
     @OnlyIn(Dist.CLIENT)
     private static enum NoteAnimationState {
         UP, DOWN, IDLE
     }
+
+
 }

@@ -6,7 +6,7 @@ import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractI
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.GridInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
 
-import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.layouts.AbstractLayout;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -51,8 +51,8 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
 
     @Override
     protected void init() {
-        final AbstractWidget grid = noteGrid.initNoteGridWidget(.9f, width, height);
-        addRenderableWidget(grid);
+        final AbstractLayout grid = noteGrid.initNoteGridLayout(.9f, width, height);
+        grid.visitWidgets(this::addRenderableWidget);
         
         initOptionsButton(grid.getY() - 15);
         super.init();
