@@ -70,9 +70,6 @@ public class NoteButton extends AbstractButton {
     public NoteButton(NoteSound sound,
       NoteLabelSupplier labelSupplier, int noteTextureRow, int rowsInNoteTexture,
       AbstractInstrumentScreen instrumentScreen) {
-        // super(Button.builder(null, (iAmADissapointmentAndAFailureToMyParents) -> {})
-        //     .size(getSize(), getSize())
-        // );
         super(0, 0, getSize(), getSize(), null);
 
 
@@ -148,11 +145,7 @@ public class NoteButton extends AbstractButton {
         initPos();
         setLabelSupplier(labelSupplier);
     }
-    @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        // TODO Auto-generated method stub
-        super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
-    }
+
     @Override
     public void renderWidget(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
         // Button
@@ -162,9 +155,9 @@ public class NoteButton extends AbstractButton {
 
         GuiComponent.blit(pPoseStack,
             this.getX(), this.getY(),
-            isPlaying() ? width : 0, 0,
+            isPlaying() ? (width) : isHoveredOrFocused() ? (width * 2) : 0, 0,
             width, height,
-            width*2, height
+            width*3, height
         );
 
         // Note
@@ -201,9 +194,6 @@ public class NoteButton extends AbstractButton {
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableDepthTest();
     }
-    protected boolean isPlaying() {
-        return animState != NoteAnimationState.IDLE;
-    }
 
     private double dSize;
     private void pressAnimationFrame() {
@@ -229,9 +219,9 @@ public class NoteButton extends AbstractButton {
 
             // Assuming the shape will always be a square
             if (animState == NoteAnimationState.UP)
-                dSize = dSize += scaleReduction * 1.5;
+                dSize += scaleReduction * 1.5;
             else
-                dSize = dSize -= scaleReduction * 1.5;
+                dSize -= scaleReduction * 1.5;
         }
         
         width = height = (int)dSize;
@@ -245,38 +235,56 @@ public class NoteButton extends AbstractButton {
         dSize = width = height = getSize();
         setPosition(initX, initY);
     }
+    protected boolean isPlaying() {
+        return animState != NoteAnimationState.IDLE;
+    }
 
 
     public boolean locked = false;
-    public void play(final boolean playLocally) {
+    public void play() {
         if (locked)
             return;
         
-        if (playLocally)
-            playDownSound(minecraft.getSoundManager());
-        
-        ModPacketHandler.sendToServer(new InstrumentPacket(sound, instrumentScreen.interactionHand));
-        
-        locked = true;
-
-        animState = NoteAnimationState.DOWN;
-        resetAnimVars();
-    }
-    @Override
-    public void onPress() {
-        play(false);
-    }
-
-    @Override
-    public void playDownSound(SoundManager pHandler) {
-        pHandler.play(new SimpleSoundInstance(
+        // Play sound locally
+        minecraft.getSoundManager().play(new SimpleSoundInstance(
             sound.getByPreference().getLocation(), SoundSource.RECORDS,
             1, sound.getPitch(), SoundInstance.createUnseededRandom(),
             false, 0, SoundInstance.Attenuation.NONE,
             0, 0, 0, true
         ));
+
+        // Send sound packet to server
+        ModPacketHandler.sendToServer(new InstrumentPacket(sound, instrumentScreen.interactionHand));
+        
+
+        locked = true;
+        
+        animState = NoteAnimationState.DOWN;
+        resetAnimVars();
     }
-        /**
+    @Override
+    public void onPress() {
+        play();
+    }
+
+    // TODO delete the below section
+    @Override
+    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
+        // locked = false;
+        return super.mouseClicked(pMouseX, pMouseY, pButton);
+    }
+    @Override
+    public boolean keyReleased(int pKeyCode, int pScanCode, int pModifiers) {
+        // locked = false;
+        return super.keyReleased(pKeyCode, pScanCode, pModifiers);
+    }
+
+
+    @Override
+    public void playDownSound(SoundManager pHandler) {}
+
+
+    /**
      * A method for packets to use for playing this note on the client's end.
      * If {@link Minecraft#player this player} is the same as the gives player,
      * the method will only stop the client's background music per preference.
@@ -305,12 +313,6 @@ public class NoteButton extends AbstractButton {
     
 
     @Override
-    public boolean mouseReleased(double pMouseX, double pMouseY, int pButton) {
-        locked = false;
-        return super.mouseReleased(pMouseX, pMouseY, pButton);
-    }
-
-    @Override
     protected void updateWidgetNarration(final NarrationElementOutput neo) {
         neo.add(NarratedElementType.TITLE, getMessage());
     }
@@ -320,6 +322,5 @@ public class NoteButton extends AbstractButton {
     private static enum NoteAnimationState {
         UP, DOWN, IDLE
     }
-
 
 }

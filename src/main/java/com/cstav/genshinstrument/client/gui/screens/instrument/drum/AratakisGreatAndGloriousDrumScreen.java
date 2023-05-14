@@ -1,7 +1,7 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.drum;
 
-import java.awt.Color;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
@@ -35,10 +35,10 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
     /**
      * Maps keycodes to their respected note button
      */
-    private final HashMap<Integer, NoteButton> notes = new HashMap<>();
+    private final HashMap<Key, NoteButton> notes = new HashMap<>();
     @Override
-    public Iterable<NoteButton> noteIterable() {
-        return notes.values();
+    public Map<Key, NoteButton> noteMap() {
+        return notes;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
         layout2.visitWidgets(this::addRenderableWidget);
 
         // Initialize all the notes
-        noteIterable().forEach((note) -> note.init());
+        noteMap().values().forEach((note) -> note.init());
 
         super.init();
     }
@@ -86,29 +86,9 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
         final NoteButton btn = new DrumNoteButton(btnType, isRight, this);
 
         container.addChild(btn);
-        notes.put(key.getValue(), btn);
+        notes.put(key, btn);
 
         return btn;
-    }
-
-
-    @Override
-    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
-        if (notes.containsKey(pKeyCode)) {
-            notes.get(pKeyCode).play(true);
-            return true;
-        }
-
-        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
-    }
-    @Override
-    public boolean keyReleased(int pKeyCode, int pScanCode, int pModifiers) {
-        if (notes.containsKey(pKeyCode)) {
-            notes.get(pKeyCode).locked = false;
-            return true;
-        }
-
-        return super.keyReleased(pKeyCode, pScanCode, pModifiers);
     }
 
 
@@ -118,8 +98,7 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
     }
     
     private static final InstrumentThemeLoader THEME_LOADER = new InstrumentThemeLoader(
-        new ResourceLocation(Main.MODID, genStylerPath(INSTRUMENT_ID)),
-        new Color(197, 213, 172), new Color(232, 127, 74)
+        new ResourceLocation(Main.MODID, genStylerPath(INSTRUMENT_ID))
     );
     @Override
     public InstrumentThemeLoader getThemeLoader() {

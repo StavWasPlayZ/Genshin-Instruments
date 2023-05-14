@@ -1,5 +1,6 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note;
 
+import java.util.HashMap;
 import java.util.Iterator;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
@@ -7,6 +8,7 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractG
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.sound.NoteSound;
+import com.mojang.blaze3d.platform.InputConstants.Key;
 
 import net.minecraft.client.gui.layouts.AbstractLayout;
 import net.minecraft.client.gui.layouts.FrameLayout;
@@ -91,6 +93,18 @@ public class NoteGrid implements Iterable<NoteButton> {
 
         updatePitch();
     }
+
+
+    public HashMap<Key, NoteButton> genKeyboardMap(final Key[][] keyMap) {
+        final HashMap<Key, NoteButton> result = new HashMap<>(rows * columns);
+
+        for (int i = 0; i < keyMap.length; i++)
+            for (int j = 0; j < keyMap[0].length; j++)
+                result.put(keyMap[i][j], notes[i][j]);
+                
+        return result;
+    }
+    
 
     /**
      * Constructs a new grid of notes as described in this object.

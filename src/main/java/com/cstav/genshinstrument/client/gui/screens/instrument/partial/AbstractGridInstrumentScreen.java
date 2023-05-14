@@ -1,10 +1,13 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
 
+import java.util.Map;
+
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteGrid;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.GridInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
+import com.mojang.blaze3d.platform.InputConstants.Key;
 
 import net.minecraft.client.gui.layouts.AbstractLayout;
 import net.minecraft.world.InteractionHand;
@@ -38,9 +41,11 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
     }
 
     public final NoteGrid noteGrid = initNoteGrid();
+    
+    private final Map<Key, NoteButton> noteMap = noteGrid.genKeyboardMap(KeyMappings.GRID_INSTRUMENT_MAPPINGS);
     @Override
-    public Iterable<NoteButton> noteIterable() {
-        return noteGrid;
+    public Map<Key, NoteButton> noteMap() {
+        return noteMap;
     }
 
     @Override
@@ -56,35 +61,6 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
         
         initOptionsButton(grid.getY() - 15);
         super.init();
-    }
-
-    
-    // Handle pressing on keyboard
-    @Override
-    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
-        for (int i = 0; i < columns(); i++)
-            for (int j = 0; j < rows(); j++)
-                if (lyreKeyPressed(j, i, pKeyCode)) {
-                    noteGrid.getNote(j, i).play(true);
-                    return true;
-                }
-
-        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
-    }
-    @Override
-    public boolean keyReleased(int pKeyCode, int pScanCode, int pModifiers) {
-        for (int i = 0; i < columns(); i++)
-            for (int j = 0; j < rows(); j++)
-                if (lyreKeyPressed(j, i, pKeyCode)) {
-                    noteGrid.getNote(j, i).locked = false;
-                    return true;
-                }
-
-        return super.keyReleased(pKeyCode, pScanCode, pModifiers);
-    }
-
-    public static boolean lyreKeyPressed(final int row, final int column, final int keyCode) {
-        return KeyMappings.GRID_INSTRUMENT_MAPPINGS[column][row].getValue() == keyCode;
     }
     
 }

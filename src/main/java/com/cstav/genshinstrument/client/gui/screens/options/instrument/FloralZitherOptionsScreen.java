@@ -52,10 +52,8 @@ public class FloralZitherOptionsScreen extends GridInstrumentOptionsScreen {
     }
     @Override
     public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        if (!active)
-            return;
-
         super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+        
         drawCenteredString(pPoseStack, font,
             Component.translatable("button.genshinstrument.zither_options"),
             width/2, heightBefore + spaceBefore + spacerHeight

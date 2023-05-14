@@ -34,22 +34,18 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @EventBusSubscriber(modid = Main.MODID, bus = Bus.MOD, value = Dist.CLIENT)
 public class InstrumentThemeLoader {
     private static final ArrayList<InstrumentThemeLoader> LOADERS = new ArrayList<>();
+    private static final Color DEF_NOTE_THEME = Color.BLACK, DEF_PRESSED_THEME = Color.BLACK;
 
     private final ResourceLocation InstrumentStyleLocation;
-    private final Color defNoteTheme, defPressedNoteTheme;
     private Color noteTheme, pressedNoteTheme;
     private InstrumentThemeLoadedEvent onThemeChanged;
     
     /**
      * Initializes a new Instrument Theme Loader and subsribes it to the resource load event.
      * @param instrumentStyleLocation The location of the instrument's JSON styler
-     * @param defNoteTheme The default note theme
-     * @param defPressedNoteTheme The default note theme for when the note is pressed
      */
-    public InstrumentThemeLoader(ResourceLocation instrumentStyleLocation, Color defNoteTheme, Color defPressedNoteTheme) {
+    public InstrumentThemeLoader(ResourceLocation instrumentStyleLocation) {
         this.InstrumentStyleLocation = instrumentStyleLocation;
-        noteTheme = this.defNoteTheme = defNoteTheme;
-        pressedNoteTheme = this.defPressedNoteTheme = defPressedNoteTheme;
 
         LOADERS.add(this);
     }
@@ -73,9 +69,9 @@ public class InstrumentThemeLoader {
                     }
 
                     lyreLoader.noteTheme = getTheme(style.get("note_theme"),
-                        lyreLoader.defNoteTheme);
+                        DEF_NOTE_THEME);
                     lyreLoader.pressedNoteTheme = getTheme(style.get("note_pressed_theme"),
-                        lyreLoader.defPressedNoteTheme);
+                        DEF_PRESSED_THEME);
 
                     if (lyreLoader.onThemeChanged != null)
                         lyreLoader.onThemeChanged.run(lyreLoader.noteTheme, lyreLoader.pressedNoteTheme);
@@ -97,12 +93,6 @@ public class InstrumentThemeLoader {
     }
 
 
-    public Color getDefNoteTheme() {
-        return defNoteTheme;
-    }
-    public Color getDefPressedNoteTheme() {
-        return defPressedNoteTheme;
-    }
     public ResourceLocation getInstrumentStyleLocation() {
         return InstrumentStyleLocation;
     }

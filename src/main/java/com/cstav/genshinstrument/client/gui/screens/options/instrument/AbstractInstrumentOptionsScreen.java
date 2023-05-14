@@ -71,7 +71,6 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
     protected final Screen lastScreen;
     protected final boolean isOverlay;
-    public boolean active;
     private Runnable onCloseRunnable;
 
     protected final @Nullable INoteLabel[] labels;
@@ -83,7 +82,6 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         super(Component.translatable("button.genshinstrument.instrumentOptions"));
         
         this.isOverlay = true;
-        active = false;
         this.screen = screen;
         lastScreen = null;
 
@@ -93,7 +91,6 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     public AbstractInstrumentOptionsScreen(final Screen lastScreen) {
         super(Component.translatable("button.genshinstrument.instrumentOptions"));
         this.isOverlay = false;
-        active = true;
         
         this.screen = null;
         this.lastScreen = lastScreen;
@@ -188,7 +185,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     // Option handlers
     protected void onLabelChanged(final CycleButton<INoteLabel> button, final INoteLabel label) {
         if (screen != null)
-            screen.noteIterable().forEach((note) -> note.setLabelSupplier(label.getLabelSupplier()));
+            screen.noteMap().values().forEach((note) -> note.setLabelSupplier(label.getLabelSupplier()));
 
         queueToSave("note_label", () -> saveLabel(label));
     }
@@ -199,7 +196,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
     protected void onPitchChanged(final ForgeSlider slider, final double pitch) {
         if (screen != null)
-            screen.noteIterable().forEach((note) -> note.getSound().setPitch((float)pitch));
+            screen.noteMap().values().forEach((note) -> note.getSound().setPitch((float)pitch));
 
         queueToSave("pitch", () -> savePitch(pitch));
     }
@@ -219,9 +216,6 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
     @Override
     public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        if (!active)
-            return;
-        
         renderBackground(pPoseStack);
         drawCenteredString(pPoseStack, font, title, width/2, 20, Color.WHITE.getRGB());
         
@@ -229,42 +223,15 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     }
 
 
-    //#region registration stuff
-    @Override
-    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
-        if (!active)
-            return false;
-        return super.mouseClicked(pMouseX, pMouseY, pButton);
-    }
-    @Override
-    public boolean mouseDragged(double pMouseX, double pMouseY, int pButton, double pDragX, double pDragY) {
-        if (!active)
-            return false;
-        return super.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
-    }
-    @Override
-    public boolean mouseReleased(double pMouseX, double pMouseY, int pButton) {
-        if (!active)
-            return false;
-        return super.mouseReleased(pMouseX, pMouseY, pButton);
-    }
-    @Override
-    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
-        if (!active)
-            return false;
-        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
-    }
-    //#endregion
-
-
     @Override
     public void onClose() {
-        if (isOverlay)
-            active = false;
-        else if (lastScreen != null)
-            Minecraft.getInstance().setScreen(lastScreen);
-        else
-            super.onClose();
+        //NOTE if problems with options closing arrise, its here probs
+        if (!isOverlay) {
+            if (lastScreen != null)
+                Minecraft.getInstance().setScreen(lastScreen);
+            else
+                super.onClose();
+        }
         
         onSave();
 

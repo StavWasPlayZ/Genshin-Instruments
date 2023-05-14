@@ -1,5 +1,7 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
 
+import java.util.Map;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
@@ -8,12 +10,12 @@ import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractI
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.instrument.CloseInstrumentPacket;
 import com.cstav.genshinstrument.sound.NoteSound;
+import com.mojang.blaze3d.platform.InputConstants.Key;
+import com.mojang.blaze3d.platform.InputConstants.Type;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.events.ContainerEventHandler;
-import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -48,11 +50,12 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * @return The array of sounds used by this instruments.
      */
     public abstract NoteSound[] getSounds();
-    /**
-     * @return All possible label values this instrument's notes can have
-     */
 
-    public abstract Iterable<NoteButton> noteIterable();
+    /**
+     * @return A map holding an integer key as its keycode and a {@link NoteButton} as its value.
+     * All notes are to be present in this map.
+     */
+    public abstract Map<Key, NoteButton> noteMap();
 
     /**
      * Shorthand for {@code "textures/gui/instrument/" + instrumentId}
@@ -117,60 +120,103 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
 
+
     @Override
-    public void render(@NotNull PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
-        optionsScreen.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
+        final NoteButton note = getNoteByKey(pKeyCode);
+        
+        if (note != null) {
+            note.play();
+            return true;
+        }
+
+        return ioa() ? optionsScreen.keyPressed(pKeyCode, pScanCode, pModifiers)
+            : super.keyPressed(pKeyCode, pScanCode, pModifiers);
+    }
+    @Override
+    public boolean keyReleased(int pKeyCode, int pScanCode, int pModifiers) {
+        unlockFocused();
+
+        final NoteButton note = getNoteByKey(pKeyCode);
+        if (note != null)
+            note.locked = false;
+
+        return ioa() ? optionsScreen.keyReleased(pKeyCode, pScanCode, pModifiers)
+            : super.keyReleased(pKeyCode, pScanCode, pModifiers);
+    }
+
+    @Override
+    public boolean mouseReleased(double pMouseX, double pMouseY, int pButton) {
+        if (ioa())
+            return optionsScreen.mouseReleased(pMouseX, pMouseY, pButton);
+
+        unlockFocused();
+
+        return super.mouseReleased(pMouseX, pMouseY, pButton);
+    }
+
+    public NoteButton getNoteByKey(final int keyCode) {
+        final Key key = Type.KEYSYM.getOrCreate(keyCode);
+
+        return noteMap().containsKey(key) ? noteMap().get(key) : null;
+    }
+    /**
+     * Unlocks any focused {@link NoteButton}s
+     */
+    private void unlockFocused() {
+        if ((getFocused() != null) && (getFocused() instanceof NoteButton))
+            ((NoteButton)getFocused()).locked = false;
     }
 
 
     //#region Making the options screen function
-
-    protected void onOptionsOpen() {
-        setSettingsOpen(true);
-    }
-    protected void onOptionsClose() {
-        setSettingsOpen(false);
-    }
-    private void setSettingsOpen(final boolean open) {
-        setChildrenActive(this, !open);
-        optionsScreen.active = open;
-    }
-
+    private boolean isOptionsActive = false;
 
     @Override
-    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
-        return optionsScreen.keyPressed(pKeyCode, pScanCode, pModifiers) || super.keyPressed(pKeyCode, pScanCode, pModifiers);
+    public void render(@NotNull PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+        super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+        if (ioa())
+            optionsScreen.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
     }
+
+    protected void onOptionsOpen() {
+        isOptionsActive = true;
+        setFocused(null);
+    }
+    protected void onOptionsClose() {
+        isOptionsActive = false;
+    }
+
 
     @Override
     public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
-        optionsScreen.mouseClicked(pMouseX, pMouseY, pButton);
-        return super.mouseClicked(pMouseX, pMouseY, pButton);
+        return ioa() ? optionsScreen.mouseClicked(pMouseX, pMouseY, pButton)
+            : super.mouseClicked(pMouseX, pMouseY, pButton);
     }
     @Override
     public boolean mouseDragged(double pMouseX, double pMouseY, int pButton, double pDragX, double pDragY) {
-        optionsScreen.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
-        return super.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
+        return ioa() ? optionsScreen.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY)
+            : super.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
     }
     @Override
-    public boolean mouseReleased(double pMouseX, double pMouseY, int pButton) {
-        optionsScreen.mouseReleased(pMouseX, pMouseY, pButton);
-        return super.mouseReleased(pMouseX, pMouseY, pButton);
+    public void mouseMoved(double pMouseX, double pMouseY) {
+        if (ioa())
+            optionsScreen.mouseMoved(pMouseX, pMouseY);
+        else
+            super.mouseMoved(pMouseX, pMouseY);
+    }
+    @Override
+    public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
+        return ioa() ? optionsScreen.mouseScrolled(pMouseX, pMouseY, pDelta)
+            : super.mouseScrolled(pMouseX, pMouseY, pDelta);
     }
 
 
     /**
-     * Recursively sets all buttons' {@link Button#active active} field in {@code container} to be the given state.
-     * @param container The container to apply this method to
-     * @param active The state of the button's active field
+     * Shorthand for {@link AbstractInstrumentScreen#isOptionsActive isOptionsActive}.
      */
-    protected static void setChildrenActive(final ContainerEventHandler container, final boolean active) {
-        for (final GuiEventListener child : container.children())
-            if (child instanceof Button)
-                ((Button)child).active = active;
-            else if (child instanceof ContainerEventHandler)
-                setChildrenActive((ContainerEventHandler)child, active);
+    private boolean ioa() {
+        return isOptionsActive;
     }
 
     //#endregion
@@ -182,6 +228,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
             lyreOpen.setOpen(false)
         );
         ModPacketHandler.sendToServer(new CloseInstrumentPacket());
+
         super.onClose();
     }
     
