@@ -267,16 +267,10 @@ public class NoteButton extends AbstractButton {
         play();
     }
 
-    // TODO delete the below section
     @Override
-    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
-        // locked = false;
-        return super.mouseClicked(pMouseX, pMouseY, pButton);
-    }
-    @Override
-    public boolean keyReleased(int pKeyCode, int pScanCode, int pModifiers) {
-        // locked = false;
-        return super.keyReleased(pKeyCode, pScanCode, pModifiers);
+    public boolean mouseReleased(double pMouseX, double pMouseY, int pButton) {
+        setFocused(false);
+        return super.mouseReleased(pMouseX, pMouseY, pButton);
     }
 
 

@@ -13,11 +13,16 @@
         "2.3": "- More texture fixes\n- Better API implementation",
 
         "2.4": "- Minor techincal fixes",
-        "2.4.1": "- Fixed instrument screen being present after item removal\n- API tweaks & fixes"
+        "2.4.1": "- Fixed instrument screen being present after item removal\n- API tweaks & fixes",
+
+        "2.5": "- Update to version 1.19.4\n- GUI keyboard navigation"
     },
 
     "promos": {
         "1.19.3-latest": "2.4.1",
-        "1.19.3-recommended": "2.4.1"
+        "1.19.3-recommended": "2.4.1",
+
+        "1.19.4-latest": "2.5",
+        "1.19.4-recommended": "2.5"
     }
 }
