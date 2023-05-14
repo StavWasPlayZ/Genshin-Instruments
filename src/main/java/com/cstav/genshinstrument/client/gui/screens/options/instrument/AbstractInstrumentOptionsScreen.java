@@ -225,7 +225,6 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
     @Override
     public void onClose() {
-        //NOTE if problems with options closing arrise, its here probs
         if (!isOverlay) {
             if (lastScreen != null)
                 Minecraft.getInstance().setScreen(lastScreen);

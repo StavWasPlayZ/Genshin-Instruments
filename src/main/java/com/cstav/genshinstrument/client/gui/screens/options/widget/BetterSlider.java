@@ -3,6 +3,7 @@ package com.cstav.genshinstrument.client.gui.screens.options.widget;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.client.gui.widget.ForgeSlider;
 
+//NOTE: ForgeSlider is currently struggling with keyboard navigation
 public class BetterSlider extends ForgeSlider {
 
     protected final SliderEvent onSliderChanged;
