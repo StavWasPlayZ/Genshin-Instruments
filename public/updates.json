@@ -15,14 +15,15 @@
         "2.4": "- Minor techincal fixes",
         "2.4.1": "- Fixed instrument screen being present after item removal\n- API tweaks & fixes",
 
-        "2.5": "- Update to version 1.19.4\n- GUI keyboard navigation"
+        "2.5": "- Update to version 1.19.4\n- GUI keyboard navigation",
+        "2.5.1": "- Fixed pitch slider being offset and not navigation-friendly"
     },
 
     "promos": {
         "1.19.3-latest": "2.4.1",
         "1.19.3-recommended": "2.4.1",
 
-        "1.19.4-latest": "2.5",
-        "1.19.4-recommended": "2.5"
+        "1.19.4-latest": "2.5.1",
+        "1.19.4-recommended": "2.5.1"
     }
 }
