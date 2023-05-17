@@ -303,7 +303,7 @@ public class NoteButton extends AbstractButton {
         final Level level = minecraft.level;
         level.playLocalSound(pos,
             sound.getByPreference(distanceFromPlayer), SoundSource.RECORDS,
-            1, pitch
+            1, NoteSound.clampPitch(pitch)
         , false);
     }
     
