@@ -1,3 +1,5 @@
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/D1D1LE3HC)
+
 <img align="right" src="https://github.com/StavWasPlayZ/Genshin-Instruments/blob/master/src/main/resources/logo.png?raw=true" width="100">
 
 # Genshin Instruments
