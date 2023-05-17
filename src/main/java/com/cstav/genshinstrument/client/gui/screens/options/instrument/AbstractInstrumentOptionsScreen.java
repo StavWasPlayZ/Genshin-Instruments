@@ -161,9 +161,14 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         rowHelper.addChild(instrumentChannel, 2);
 
         final AbstractSliderButton pitchSlider = new AbstractSliderButton(0, 0, getSmallButtonWidth(), 20,
-            CommonComponents.EMPTY, ModClientConfigs.PITCH.get()) {
+            CommonComponents.EMPTY,
+            Mth.clampedMap(instrumentScreen.getPitch(), NoteSound.MIN_PITCH, NoteSound.MAX_PITCH, 0, 1)) {
 
             final DecimalFormat format = new DecimalFormat("0.00");
+            {
+                updateMessage();
+            }
+
 
             @Override
             protected void updateMessage() {

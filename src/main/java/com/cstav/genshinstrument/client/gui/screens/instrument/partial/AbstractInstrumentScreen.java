@@ -5,6 +5,7 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
+import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
@@ -27,6 +28,17 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractInstrumentScreen extends Screen {
 
+    /**
+     * The set pitch of all note buttons in this screen
+     */
+    private float pitch = ModClientConfigs.PITCH.get().floatValue();
+    public float getPitch() {
+        return pitch;
+    }
+    public void setPitch(float pitch) {
+        this.pitch = NoteSound.clampPitch(pitch);
+    }
+
     // Abstract implementations
     /**
      * <p>Gets the root directory of this instrument's resources.</p>
@@ -42,17 +54,6 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     // Any subclass must make their own InstrumentThemeLoader
     public abstract InstrumentThemeLoader getThemeLoader();
-
-    /**
-     * The set pitch of all note buttons in this screen
-     */
-    private float pitch;
-    public float getPitch() {
-        return pitch;
-    }
-    public void setPitch(float pitch) {
-        this.pitch = NoteSound.clampPitch(pitch);
-    }
 
     // Public
     /**
