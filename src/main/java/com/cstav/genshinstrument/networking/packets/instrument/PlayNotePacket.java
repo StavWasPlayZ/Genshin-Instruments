@@ -20,16 +20,20 @@ public class PlayNotePacket implements ModPacket {
 
     private final BlockPos blockPos;
     private final NoteSound sound;
+    private final float pitch;
     @Nullable
     private final UUID playerUUID;
-    public PlayNotePacket(final BlockPos pos, final NoteSound sound, @Nullable final UUID playerUUID) {
+
+    public PlayNotePacket(BlockPos pos, NoteSound sound, float pitch, @Nullable UUID playerUUID) {
         this.blockPos = pos;
         this.sound = sound;
+        this.pitch = pitch;
         this.playerUUID = playerUUID;
     }
     public PlayNotePacket(FriendlyByteBuf buf) {
         blockPos = buf.readBlockPos();
         sound = NoteSound.readFromNetwork(buf);
+        pitch = buf.readFloat();
         playerUUID = buf.readBoolean() ? buf.readUUID() : null;
     }
 
@@ -37,6 +41,7 @@ public class PlayNotePacket implements ModPacket {
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeBlockPos(blockPos);
         sound.writeToNetwork(buf);
+        buf.writeFloat(pitch);
 
         buf.writeBoolean(playerUUID != null);
         if (playerUUID != null)
@@ -47,7 +52,7 @@ public class PlayNotePacket implements ModPacket {
     @Override
     public boolean handle(final Supplier<Context> supplier) {
         supplier.get().enqueueWork(() ->
-            NoteButton.playNoteAtPos(sound, playerUUID, blockPos)
+            NoteButton.playNoteAtPos(sound, pitch, playerUUID, blockPos)
         );
 
         return true;

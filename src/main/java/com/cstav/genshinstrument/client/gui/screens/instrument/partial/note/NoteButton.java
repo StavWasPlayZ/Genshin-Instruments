@@ -248,13 +248,15 @@ public class NoteButton extends AbstractButton {
         // Play sound locally
         minecraft.getSoundManager().play(new SimpleSoundInstance(
             sound.getByPreference().getLocation(), SoundSource.RECORDS,
-            1, sound.getPitch(), SoundInstance.createUnseededRandom(),
+            1, instrumentScreen.getPitch(), SoundInstance.createUnseededRandom(),
             false, 0, SoundInstance.Attenuation.NONE,
             0, 0, 0, true
         ));
 
         // Send sound packet to server
-        ModPacketHandler.sendToServer(new InstrumentPacket(sound, instrumentScreen.interactionHand));
+        ModPacketHandler.sendToServer(
+            new InstrumentPacket(sound, instrumentScreen.getPitch(), instrumentScreen.interactionHand)
+        );
         
 
         locked = true;
@@ -285,7 +287,7 @@ public class NoteButton extends AbstractButton {
      * @param playerUUID The UUID of the player who initiated the sound. Null for when it wasn't a player.
      * @param pos The position at which the sound was fired from
      */
-    public static void playNoteAtPos(final NoteSound sound, final UUID playerUUID, final BlockPos pos) {
+    public static void playNoteAtPos(NoteSound sound, float pitch, UUID playerUUID, BlockPos pos) {
         final Minecraft minecraft = Minecraft.getInstance();
         final Player player = minecraft.player;
 
@@ -301,7 +303,7 @@ public class NoteButton extends AbstractButton {
         final Level level = minecraft.level;
         level.playLocalSound(pos,
             sound.getByPreference(distanceFromPlayer), SoundSource.RECORDS,
-            1, sound.getPitch()
+            1, pitch
         , false);
     }
     

@@ -30,6 +30,7 @@ public class ModPacketHandler {
     });
 
 
+    //TODO bump protocol version to 3.6
     private static final String PROTOCOL_VERSION = "3.5";
     private static int id;
 

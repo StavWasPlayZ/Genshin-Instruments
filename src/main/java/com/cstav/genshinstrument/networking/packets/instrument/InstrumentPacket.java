@@ -19,20 +19,24 @@ public class InstrumentPacket implements ModPacket {
 
     private final NoteSound sound;
     private final InteractionHand hand;
+    private final float pitch;
 
-    public InstrumentPacket(final NoteSound sound, final InteractionHand hand) {
+    public InstrumentPacket(final NoteSound sound, final float pitch, final InteractionHand hand) {
         this.sound = sound;
         this.hand = hand;
+        this.pitch = pitch;
     }
     public InstrumentPacket(FriendlyByteBuf buf) {
         sound = NoteSound.readFromNetwork(buf);
-        this.hand = buf.readEnum(InteractionHand.class);
+        hand = buf.readEnum(InteractionHand.class);
+        pitch = buf.readFloat();
     }
 
     @Override
     public void toBytes(final FriendlyByteBuf buf) {
         sound.writeToNetwork(buf);
         buf.writeEnum(hand);
+        buf.writeFloat(pitch);
     }
 
 
@@ -46,7 +50,7 @@ public class InstrumentPacket implements ModPacket {
             if (!InstrumentOpen.isOpen(player))
                 return;
 
-            ServerUtil.sendPlayNotePackets(player, hand, sound);
+            ServerUtil.sendPlayNotePackets(player, hand, sound, pitch);
         });
 
         return true;

@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.lab
 
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -12,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 @FunctionalInterface
 public interface NoteLabelSupplier {
-    public static final NoteLabelSupplier EMPTY = (note) -> Component.empty();
+    public static final NoteLabelSupplier EMPTY = (note) -> CommonComponents.EMPTY;
 
     /**
      * @param note The button to compute the label for

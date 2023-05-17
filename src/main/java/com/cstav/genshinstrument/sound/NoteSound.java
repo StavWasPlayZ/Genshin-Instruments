@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -26,29 +27,21 @@ public class NoteSound {
     public static final int STOP_SOUND_DISTANCE = 10;
 
     public static final float MIN_PITCH = .5f, MAX_PITCH = 1.9f;
-    
+
+
 
     public SoundEvent mono;
     @Nullable public SoundEvent stereo;
-    private float pitch;
-    public NoteSound(SoundEvent mono, @Nullable SoundEvent stereo, float pitch) {
+    
+    public NoteSound(SoundEvent mono, @Nullable SoundEvent stereo) {
         this.mono = mono;
         this.stereo = stereo;
-        
-        setPitch(pitch);
     }
     public NoteSound() {}
     
 
     public boolean hasStereo() {
         return stereo != null;
-    }
-
-    public float getPitch() {
-        return pitch;
-    }
-    public void setPitch(float pitch) {
-        this.pitch = Math.min(Math.max(pitch, MIN_PITCH), MAX_PITCH);
     }
 
 
@@ -93,20 +86,22 @@ public class NoteSound {
     }
 
 
+    public static float clampPitch(final float pitch) {
+        return Mth.clamp(pitch, MIN_PITCH, MAX_PITCH);
+    }
+
+
     public void writeToNetwork(final FriendlyByteBuf buf) {
         mono.writeToNetwork(buf);
 
         buf.writeBoolean(hasStereo());
         if (hasStereo())
             stereo.writeToNetwork(buf);
-
-        buf.writeFloat(pitch);
     }
     public static NoteSound readFromNetwork(final FriendlyByteBuf buf) {
         return new NoteSound(
             SoundEvent.readFromNetwork(buf),
-            buf.readBoolean() ? SoundEvent.readFromNetwork(buf) : null,
-            buf.readFloat()
+            buf.readBoolean() ? SoundEvent.readFromNetwork(buf) : null
         );
     }
 

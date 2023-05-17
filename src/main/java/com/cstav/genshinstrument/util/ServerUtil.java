@@ -22,10 +22,11 @@ public class ServerUtil {
     public static final int PLAY_DISTANCE = 16;
 
     
-    public static void sendPlayNotePackets(ServerPlayer player, InteractionHand hand, NoteSound sound) {
+    public static void sendPlayNotePackets(ServerPlayer player, InteractionHand hand, NoteSound sound, float pitch) {
         for (final Player listener : noteListeners(player.level, player.blockPosition()))
             ModPacketHandler.sendToClient(
-                new PlayNotePacket(player.blockPosition(), sound, player.getUUID()), (ServerPlayer)listener
+                new PlayNotePacket(player.blockPosition(), sound, pitch, player.getUUID()),
+                (ServerPlayer)listener
             );
 
         // Trigger an instrument game event
@@ -37,10 +38,10 @@ public class ServerUtil {
 
         MinecraftForge.EVENT_BUS.post(new InstrumentPlayedEvent.ByPlayer(sound, player, hand));
     }
-    public static void sendPlayNotePackets(final Level level, final BlockPos pos, final NoteSound sound) {
+    public static void sendPlayNotePackets(Level level, BlockPos pos, NoteSound sound, float pitch) {
         for (final Player listener : noteListeners(level, pos))
             ModPacketHandler.sendToClient(
-                new PlayNotePacket(pos, sound, null), (ServerPlayer)listener
+                new PlayNotePacket(pos, sound, pitch, null), (ServerPlayer)listener
             );
 
         final BlockState bs = level.getBlockState(pos);

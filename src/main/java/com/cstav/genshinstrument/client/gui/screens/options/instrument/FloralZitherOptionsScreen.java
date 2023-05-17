@@ -61,8 +61,8 @@ public class FloralZitherOptionsScreen extends GridInstrumentOptionsScreen {
     }
 
     private void onSoundTypeChange(final CycleButton<ZitherSoundType> btn, final ZitherSoundType soundType) {
-        if ((screen != null) && (screen instanceof FloralZitherScreen))
-            ((FloralZitherScreen)screen).noteGrid.setNoteSounds(soundType.soundArr().get());
+        if ((instrumentScreen != null) && (instrumentScreen instanceof FloralZitherScreen))
+            ((FloralZitherScreen)instrumentScreen).noteGrid.setNoteSounds(soundType.soundArr().get());
 
         queueToSave("zither_sound_type", () -> ModClientConfigs.ZITHER_SOUND_TYPE.set(soundType));
     }

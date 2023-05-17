@@ -17,6 +17,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -41,6 +42,17 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     // Any subclass must make their own InstrumentThemeLoader
     public abstract InstrumentThemeLoader getThemeLoader();
+
+    /**
+     * The set pitch of all note buttons in this screen
+     */
+    private float pitch;
+    public float getPitch() {
+        return pitch;
+    }
+    public void setPitch(float pitch) {
+        this.pitch = NoteSound.clampPitch(pitch);
+    }
 
     // Public
     /**
@@ -89,7 +101,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
     
     public final InteractionHand interactionHand;
     public AbstractInstrumentScreen(final InteractionHand hand) {
-        super(Component.empty());
+        super(CommonComponents.EMPTY);
 
         interactionHand = hand;
         optionsScreen.setOnCloseRunnable(this::onOptionsClose);

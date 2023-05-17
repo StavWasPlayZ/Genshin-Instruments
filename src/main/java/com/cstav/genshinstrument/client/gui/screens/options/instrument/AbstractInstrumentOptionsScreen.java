@@ -10,11 +10,12 @@ import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
-import com.cstav.genshinstrument.client.gui.screens.options.widget.BetterSlider;
 import com.cstav.genshinstrument.sound.NoteSound;
+import com.ibm.icu.text.DecimalFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;
@@ -25,9 +26,9 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.gui.widget.ForgeSlider;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractInstrumentOptionsScreen extends Screen {
@@ -36,6 +37,13 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         STOP_MUSIC_KEY = "button.genshinstrument.stop_music_on_play";
 
     protected final HashMap<String, Runnable> APPLIED_OPTIONS = new HashMap<>();
+    /**
+     * Queues the given option to later be saved,
+     * such that when the client closes this screen - the given runnable will run.
+     * @param optionKey A unique identifier of this option. If a duplicate entry
+     * exists, it will be overwritten.
+     * @param saveRunnable The runnable for saving the option
+     */
     protected void queueToSave(final String optionKey, final Runnable saveRunnable) {
         if (APPLIED_OPTIONS.containsKey(optionKey))
             APPLIED_OPTIONS.replace(optionKey, saveRunnable);
@@ -76,13 +84,13 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     protected final @Nullable INoteLabel[] labels;
     protected final @Nullable INoteLabel currLabel;
     
-    protected final @Nullable AbstractInstrumentScreen screen;
+    protected final @Nullable AbstractInstrumentScreen instrumentScreen;
 
     public AbstractInstrumentOptionsScreen(@Nullable AbstractInstrumentScreen screen) {
         super(Component.translatable("button.genshinstrument.instrumentOptions"));
         
         this.isOverlay = true;
-        this.screen = screen;
+        this.instrumentScreen = screen;
         lastScreen = null;
 
         labels = getLabels();
@@ -92,7 +100,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         super(Component.translatable("button.genshinstrument.instrumentOptions"));
         this.isOverlay = false;
         
-        this.screen = null;
+        this.instrumentScreen = null;
         this.lastScreen = lastScreen;
 
         // Default to NoteGridLabel's values
@@ -146,17 +154,36 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
             .withTooltip((soundType) -> Tooltip.create(switch (soundType) {
                 case MIXED -> translatableArgs(SOUND_CHANNEL_KEY+".mixed.tooltip", NoteSound.STEREO_RANGE);
                 case STEREO -> Component.translatable(SOUND_CHANNEL_KEY+".stereo.tooltip");
-                default -> Component.empty();
+                default -> CommonComponents.EMPTY;
             }))
             .create(0, 0,
                 getBigButtonWidth(), 20, Component.translatable(SOUND_CHANNEL_KEY), this::onChannelTypeChanged);
         rowHelper.addChild(instrumentChannel, 2);
 
-        final BetterSlider pitchSlider = new BetterSlider(0, 0, getSmallButtonWidth(), 23,
-            Component.translatable("button.genshinstrument.pitch").append(": "), Component.empty(),
-            NoteSound.MIN_PITCH, NoteSound.MAX_PITCH, ModClientConfigs.PITCH.get(), 0.05,
-            this::onPitchChanged
-        );
+        final AbstractSliderButton pitchSlider = new AbstractSliderButton(0, 0, getSmallButtonWidth(), 20,
+            CommonComponents.EMPTY, ModClientConfigs.PITCH.get()) {
+
+            final DecimalFormat format = new DecimalFormat("0.00");
+
+            @Override
+            protected void updateMessage() {
+                this.setMessage(
+                    Component.translatable("button.genshinstrument.pitch")
+                        .append(": " + format.format(instrumentScreen.getPitch()))
+                );
+            }
+            
+            @Override
+            protected void applyValue() {
+                onPitchChanged(this, DivisibleBy5(Mth.clampedLerp(NoteSound.MIN_PITCH, NoteSound.MAX_PITCH, value)));
+            }
+
+            private static double DivisibleBy5(double number) {
+                final double result = Math.floor(number * 20) / 20;
+                //idk why it is not percise enough but sure ig
+                return number > (NoteSound.MAX_PITCH - .001) ? NoteSound.MAX_PITCH : result;
+            }
+        };
         rowHelper.addChild(pitchSlider);
         
         if (labels != null) {
@@ -184,8 +211,8 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
     // Option handlers
     protected void onLabelChanged(final CycleButton<INoteLabel> button, final INoteLabel label) {
-        if (screen != null)
-            screen.noteMap().values().forEach((note) -> note.setLabelSupplier(label.getLabelSupplier()));
+        if (instrumentScreen != null)
+            instrumentScreen.noteMap().values().forEach((note) -> note.setLabelSupplier(label.getLabelSupplier()));
 
         queueToSave("note_label", () -> saveLabel(label));
     }
@@ -194,9 +221,9 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
             ModClientConfigs.GRID_LABEL_TYPE.set((NoteGridLabel)newLabel);
     }
 
-    protected void onPitchChanged(final ForgeSlider slider, final double pitch) {
-        if (screen != null)
-            screen.noteMap().values().forEach((note) -> note.getSound().setPitch((float)pitch));
+    protected void onPitchChanged(final AbstractSliderButton slider, final double pitch) {
+        if (instrumentScreen != null)
+            instrumentScreen.setPitch((float)pitch);
 
         queueToSave("pitch", () -> savePitch(pitch));
     }
