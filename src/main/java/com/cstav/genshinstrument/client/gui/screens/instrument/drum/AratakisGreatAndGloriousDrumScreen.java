@@ -14,7 +14,6 @@ import com.mojang.blaze3d.platform.InputConstants.Key;
 
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.layouts.LinearLayout.Orientation;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -31,6 +30,11 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
     public AratakisGreatAndGloriousDrumScreen(InteractionHand hand) {
         super(hand);
     }
+    @Override
+    public String getInstrumentId() {
+        return INSTRUMENT_ID;
+    }
+
     
     /**
      * Maps keycodes to their respected note button
@@ -93,21 +97,14 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
 
 
     @Override
-    protected ResourceLocation getInstrumentResourcesLocation() {
-        return new ResourceLocation(Main.MODID, genPath(INSTRUMENT_ID));
+    public NoteSound[] getSounds() {
+        return ModSounds.GLORIOUS_DRUM;
     }
-    
-    private static final InstrumentThemeLoader THEME_LOADER = new InstrumentThemeLoader(
-        new ResourceLocation(Main.MODID, genStylerPath(INSTRUMENT_ID))
-    );
+
+    private static final InstrumentThemeLoader THEME_LOADER = initThemeLoader(Main.MODID, INSTRUMENT_ID);
     @Override
     public InstrumentThemeLoader getThemeLoader() {
         return THEME_LOADER;
-    }
-
-    @Override
-    public NoteSound[] getSounds() {
-        return ModSounds.GLORIOUS_DRUM;
     }
     
 }

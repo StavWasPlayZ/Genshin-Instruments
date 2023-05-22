@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.networking.ModPacket;
 import com.cstav.genshinstrument.sound.NoteSound;
 
@@ -52,7 +51,7 @@ public class PlayNotePacket implements ModPacket {
     @Override
     public boolean handle(final Supplier<Context> supplier) {
         supplier.get().enqueueWork(() ->
-            NoteButton.playNoteAtPos(sound, pitch, playerUUID, blockPos)
+            sound.playAtPos(pitch, playerUUID, blockPos)
         );
 
         return true;

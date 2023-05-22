@@ -26,7 +26,7 @@ public abstract class CommonUtil {
     /**
      * @param dir The directory location at which to grab the specified resource
      * @param path The desired path to obtain from the {@code dir}
-     * @return The resource contained in teh specified directory
+     * @return The resource contained in the specified directory
      */
     public static ResourceLocation getResourceFrom(final ResourceLocation dir, final String path) {
         return new ResourceLocation(

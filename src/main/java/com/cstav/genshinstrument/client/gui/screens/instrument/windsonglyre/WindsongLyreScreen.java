@@ -6,7 +6,6 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.Instrumen
 import com.cstav.genshinstrument.sound.ModSounds;
 import com.cstav.genshinstrument.sound.NoteSound;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -22,24 +21,22 @@ public class WindsongLyreScreen extends AbstractGridInstrumentScreen {
     public WindsongLyreScreen(InteractionHand hand) {
         super(hand);
     }
-
-
     @Override
-    protected ResourceLocation getInstrumentResourcesLocation() {
-        return new ResourceLocation(Main.MODID, genPath(INSTRUMENT_ID));
+    public String getInstrumentId() {
+        return INSTRUMENT_ID;
     }
     
-    private static final InstrumentThemeLoader THEME_LOADER = new InstrumentThemeLoader(
-        new ResourceLocation(Main.MODID, genStylerPath(INSTRUMENT_ID))
-    );
-    @Override
-    public InstrumentThemeLoader getThemeLoader() {
-        return THEME_LOADER;
-    }
 
     @Override
     public NoteSound[] getSounds() {
         return ModSounds.WINDSONG_LYRE_NOTE_SOUNDS;
+    }
+
+
+    private static final InstrumentThemeLoader THEME_LOADER = initThemeLoader(Main.MODID, INSTRUMENT_ID);
+    @Override
+    public InstrumentThemeLoader getThemeLoader() {
+        return THEME_LOADER;
     }
     
 }

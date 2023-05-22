@@ -1,9 +1,7 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note;
 
 import java.awt.Color;
-import java.util.UUID;
 
-import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
@@ -22,18 +20,19 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.SoundManager;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Position;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class NoteButton extends AbstractButton {
-    public static final String NOTE_FILENAME = "note.png", NOTE_BG_FILENAME = "note_bg.png";
+    public static final String
+        // Local - in note resource directory
+        NOTE_FILENAME = "note.png", NOTE_BG_FILENAME = "note_bg.png",
+        // Global - in instrument directory
+        RING_GLOB_FILENAME = "ring.png"
+    ;
     private static final float PRESS_ANIM_SECS = .15f;
     private static final int TARGET_SCALE_AMOUNT = 9;
 
@@ -60,7 +59,8 @@ public class NoteButton extends AbstractButton {
 
     protected final int noteTextureRow, rowsInNoteTexture;
     protected final Color colorTheme, pressedColorTheme;
-    protected final ResourceLocation rootLocation, noteLocation, noteBgLocation;
+    protected final ResourceLocation rootLocation,
+        noteLocation, noteBgLocation, ringLocation;
 
     private NoteLabelSupplier labelSupplier;
     private int noteTextureWidth = 56;
@@ -80,18 +80,22 @@ public class NoteButton extends AbstractButton {
         this.instrumentScreen = instrumentScreen;
         colorTheme = instrumentScreen.getThemeLoader().getNoteTheme();
         pressedColorTheme = instrumentScreen.getThemeLoader().getPressedNoteTheme();
-        
-        rootLocation = instrumentScreen.getResourceFromRoot("note");
+
         this.noteTextureRow = noteTextureRow;
         this.rowsInNoteTexture = rowsInNoteTexture;
 
-        this.noteLocation = getResourceFromRoot(NOTE_FILENAME);
-        this.noteBgLocation = getResourceFromRoot(NOTE_BG_FILENAME);
 
+        rootLocation = instrumentScreen.getResourceFromRoot("note");
+
+        noteLocation = getResourceFromRoot(NOTE_FILENAME);
+        noteBgLocation = getResourceFromRoot(NOTE_BG_FILENAME);
+        // ringLocation = instrumentScreen.getResourceFromGlob(RING_GLOB_FILENAME);
+        ringLocation = null;
     }
     public NoteButton(NoteSound sound,
       NoteLabelSupplier labelSupplier, int noteTextureRow, int rowsInNoteTexture,
-      AbstractInstrumentScreen instrumentScreen, int noteTextureWidth, float randomAssMultiplier1, float randomAssMultiplier2) {
+      AbstractInstrumentScreen instrumentScreen, int noteTextureWidth,
+      float randomAssMultiplier1, float randomAssMultiplier2) {
         this(sound, labelSupplier, noteTextureRow, rowsInNoteTexture, instrumentScreen);
 
         this.noteTextureWidth = noteTextureWidth;
@@ -183,8 +187,19 @@ public class NoteButton extends AbstractButton {
             (isPlaying() ? pressedColorTheme : colorTheme).getRGB()
         );
 
-        // dunno why or if necessary
+
+        // Render ring
+        RenderSystem.setShaderColor(
+            colorTheme.getRed() / 255f,
+            colorTheme.getGreen() / 255f,
+            colorTheme.getBlue() / 255f,
+            1f
+        );
+        // displaySprite(noteBgLocation);
+
+        // Reset render state
         RenderSystem.disableBlend();
+        RenderSystem.setShaderColor(1, 1, 1, 1);
     }
     protected static void displaySprite(final ResourceLocation location) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -278,34 +293,6 @@ public class NoteButton extends AbstractButton {
 
     @Override
     public void playDownSound(SoundManager pHandler) {}
-
-
-    /**
-     * A method for packets to use for playing this note on the client's end.
-     * If {@link Minecraft#player this player} is the same as the gives player,
-     * the method will only stop the client's background music per preference.
-     * @param playerUUID The UUID of the player who initiated the sound. Null for when it wasn't a player.
-     * @param pos The position at which the sound was fired from
-     */
-    public static void playNoteAtPos(NoteSound sound, float pitch, UUID playerUUID, BlockPos pos) {
-        final Minecraft minecraft = Minecraft.getInstance();
-        final Player player = minecraft.player;
-
-        final double distanceFromPlayer = Math.sqrt(pos.distToCenterSqr((Position)player.position()));
-        
-        if (ModClientConfigs.STOP_MUSIC_ON_PLAY.get() && (distanceFromPlayer < NoteSound.STOP_SOUND_DISTANCE))
-            minecraft.getMusicManager().stopPlaying();
-        
-
-        if (player.getUUID().equals(playerUUID))
-            return;
-            
-        final Level level = minecraft.level;
-        level.playLocalSound(pos,
-            sound.getByPreference(distanceFromPlayer), SoundSource.RECORDS,
-            1, NoteSound.clampPitch(pitch)
-        , false);
-    }
     
 
     @Override

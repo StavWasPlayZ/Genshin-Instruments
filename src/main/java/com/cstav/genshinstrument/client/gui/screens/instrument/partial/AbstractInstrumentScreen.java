@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
@@ -11,6 +12,7 @@ import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractI
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.instrument.CloseInstrumentPacket;
 import com.cstav.genshinstrument.sound.NoteSound;
+import com.cstav.genshinstrument.util.ModId;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.platform.InputConstants.Type;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -27,7 +29,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractInstrumentScreen extends Screen {
-
+    
     /**
      * The set pitch of all note buttons in this screen
      */
@@ -39,23 +41,25 @@ public abstract class AbstractInstrumentScreen extends Screen {
         this.pitch = NoteSound.clampPitch(pitch);
     }
 
-    // Abstract implementations
-    /**
-     * <p>Gets the root directory of this instrument's resources.</p>
-     * Such directory is made of:
-     * <ul>
-        * <li><b>instrument_style.json - as described in {@link InstrumentThemeLoader}</b></li>
-        * <li><b>note</b> - contains note_bg.png and note.png</li>
-     * </ul>
-     * @return The resource location of this instrument
-     */
-    protected abstract ResourceLocation getInstrumentResourcesLocation();
-    protected abstract AbstractInstrumentOptionsScreen initInstrumentOptionsScreen();
 
-    // Any subclass must make their own InstrumentThemeLoader
+    /**
+     * A method to initialize the theme loader of this instrument.
+     * All subclasses must call this method on game loading.
+     */
+    protected static final InstrumentThemeLoader initThemeLoader(String modId, String instrumentId) {
+        return new InstrumentThemeLoader(
+            new ResourceLocation(modId,
+                getGlobalRootPath() + instrumentId + "/" + "instrument_style.json"
+            )
+        );
+    }
     public abstract InstrumentThemeLoader getThemeLoader();
 
-    // Public
+
+    public abstract String getInstrumentId();
+    protected abstract AbstractInstrumentOptionsScreen initInstrumentOptionsScreen();
+
+    
     /**
      * <p>Gets the sound array used by this instrument.
      * Its length must be equal to this Note Grid's {@code row*column}.</p>
@@ -71,16 +75,23 @@ public abstract class AbstractInstrumentScreen extends Screen {
     public abstract Map<Key, NoteButton> noteMap();
 
     /**
-     * Shorthand for {@code "textures/gui/instrument/" + instrumentId}
+     * @return The path of the root directory of all instruments
      */
-    protected static String genPath(final String instrumentId) {
-        return "textures/gui/instrument/" + instrumentId;
+    public static String getGlobalRootPath() {
+        return "textures/gui/instrument/";
+    }
+    public ResourceLocation getResourceFromGlob(final String path) {
+        return new ResourceLocation(getModId(), path);
     }
     /**
-     * Shorthand for {@code "textures/gui/instrument/" + instrumentId}
+     * Shorthand for {@code getRootPath() + getInstrumentId()}
      */
-    protected static String genStylerPath(final String instrumentId) {
-        return genPath(instrumentId) + "/instrument_style.json";
+    protected String getPath() {
+        return getGlobalRootPath() + getInstrumentId() + "/";
+    }
+
+    public String getModId() {
+        return (this instanceof ModId) ? ((ModId)this).modid() : Main.MODID;
     }
 
     
@@ -91,10 +102,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * @see {@link AbstractInstrumentScreen#getResourceFrom(ResourceLocation, String)}
      */
     public ResourceLocation getResourceFromRoot(final String path) {
-        return new ResourceLocation(
-            getInstrumentResourcesLocation().getNamespace(),
-            getInstrumentResourcesLocation().getPath() + "/" + path
-        );
+        return new ResourceLocation(getModId(), getPath() + path);
     }
 
 

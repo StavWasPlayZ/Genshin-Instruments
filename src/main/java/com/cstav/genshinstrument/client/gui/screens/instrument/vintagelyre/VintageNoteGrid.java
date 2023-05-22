@@ -1,6 +1,5 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.vintagelyre;
 
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteGrid;
 import com.cstav.genshinstrument.sound.NoteSound;
@@ -16,10 +15,10 @@ public class VintageNoteGrid extends NoteGrid {
     }
 
     @Override
-    protected NoteButton createNote(int row, int column, AbstractInstrumentScreen screen) {
+    protected NoteButton createNote(int row, int column) {
         return new VintageNoteButton(row, column, 
-            getSoundAt(getNoteSounds(), row, column), getLabelSupplier(), screen
-        );
+            getSoundAt(getNoteSounds(), row, column), getLabelSupplier()
+        , instrumentScreen);
     }
     
 }

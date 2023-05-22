@@ -27,12 +27,14 @@ public class NoteGrid implements Iterable<NoteButton> {
     public static final int PADDING_HORZ = 9, PADDING_VERT = 7;
 
     
-    private final NoteButton[][] notes;
+    public final AbstractInstrumentScreen instrumentScreen;
+    protected final NoteButton[][] notes;
     private NoteSound[] noteSounds;
 
     public final int rows, columns;
 
     public NoteGrid(int rows, int columns, NoteSound[] noteSounds, AbstractInstrumentScreen instrumentScreen) {
+        this.instrumentScreen = instrumentScreen;
         this.rows = rows;
         this.columns = columns;
         this.noteSounds = noteSounds;
@@ -43,13 +45,13 @@ public class NoteGrid implements Iterable<NoteButton> {
             final NoteButton[] buttonRow = new NoteButton[rows];
 
             for (int j = 0; j < rows; j++)
-                buttonRow[j] = createNote(j, i, instrumentScreen);
+                buttonRow[j] = createNote(j, i);
 
             notes[i] = buttonRow;
         }
     }
     
-    protected NoteButton createNote(int row, int column, AbstractInstrumentScreen instrumentScreen) {
+    protected NoteButton createNote(int row, int column) {
         return new NoteGridButton(row, column,
             getSoundAt(noteSounds, row, column), getLabelSupplier(), rows
         , instrumentScreen);
@@ -126,6 +128,7 @@ public class NoteGrid implements Iterable<NoteButton> {
 
     @Override
     public Iterator<NoteButton> iterator() {
+         // This is a basic 2x2 matrix iterator
         return new Iterator<NoteButton>() {
 
             private int i, j;

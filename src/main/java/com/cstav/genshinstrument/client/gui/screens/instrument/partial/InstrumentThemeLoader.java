@@ -1,8 +1,9 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.awt.Color;
+import java.util.function.Consumer;
 
 import com.cstav.genshinstrument.Main;
 import com.google.gson.JsonArray;
@@ -38,54 +39,68 @@ public class InstrumentThemeLoader {
 
     private final ResourceLocation InstrumentStyleLocation;
     private Color noteTheme, pressedNoteTheme;
-    private InstrumentThemeLoadedEvent onThemeChanged;
+
+    private ArrayList<Consumer<JsonObject>> listeners = new ArrayList<>();
     
     /**
      * Initializes a new Instrument Theme Loader and subsribes it to the resource load event.
      * @param instrumentStyleLocation The location of the instrument's JSON styler
      */
-    public InstrumentThemeLoader(ResourceLocation instrumentStyleLocation) {
+    public InstrumentThemeLoader(final ResourceLocation instrumentStyleLocation) {
         this.InstrumentStyleLocation = instrumentStyleLocation;
 
         LOADERS.add(this);
+        addListener(this::loadColorTheme);
+    }
+
+
+    public void addListener(final Consumer<JsonObject> themeLoader) {
+        listeners.add(themeLoader);
+    }
+
+    public void loadColorTheme(final JsonObject theme) {
+        setNoteTheme(getTheme(theme.get("note_theme"), DEF_NOTE_THEME));
+        setPressedNoteTheme(getTheme(theme.get("note_pressed_theme"), DEF_PRESSED_THEME));
+    }
+
+    /**
+     * @param rgbArray The array represenation of an RGB value
+     * @param def The default value of the theme
+     * @return The theme as specified in the RGB array, or the default if 
+     * any exception occured.
+     */
+    private static Color getTheme(final JsonElement rgbArray, final Color def) {
+        try {
+            final JsonArray rgb = rgbArray.getAsJsonArray();
+            return new Color(
+                rgb.get(0).getAsInt(), rgb.get(1).getAsInt(), rgb.get(2).getAsInt()
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            return def;
+        }
     }
 
 
     @SubscribeEvent
-    public static void registerRloadEvent(final RegisterClientReloadListenersEvent event) {
+    public static void registerReloadEvent(final RegisterClientReloadListenersEvent event) {
         event.registerReloadListener(new ResourceManagerReloadListener() {
 
             @Override
             public void onResourceManagerReload(ResourceManager resourceManager) {
-                for (final InstrumentThemeLoader lyreLoader : LOADERS) {
-                    JsonObject style;
+                for (final InstrumentThemeLoader instrumentLoader : LOADERS) {
                     try {
-                        style = JsonParser.parseReader(
-                            resourceManager.getResource(lyreLoader.getInstrumentStyleLocation()).get().openAsReader()
-                        ).getAsJsonObject();
+
+                        // Call all load listeners on the current loader
+                        for (final Consumer<JsonObject> listener : instrumentLoader.listeners)
+                            listener.accept(JsonParser.parseReader(
+                                resourceManager.getResource(instrumentLoader.getInstrumentStyleLocation()).get().openAsReader()
+                            ).getAsJsonObject());
+
                     } catch (IOException e) {
                         e.printStackTrace();
                         continue;
                     }
-
-                    lyreLoader.noteTheme = getTheme(style.get("note_theme"),
-                        DEF_NOTE_THEME);
-                    lyreLoader.pressedNoteTheme = getTheme(style.get("note_pressed_theme"),
-                        DEF_PRESSED_THEME);
-
-                    if (lyreLoader.onThemeChanged != null)
-                        lyreLoader.onThemeChanged.run(lyreLoader.noteTheme, lyreLoader.pressedNoteTheme);
-                }
-            }
-            private static Color getTheme(final JsonElement rgbArray, final Color def) {
-                try {
-                    final JsonArray rgb = rgbArray.getAsJsonArray();
-                    return new Color(
-                        rgb.get(0).getAsInt(), rgb.get(1).getAsInt(), rgb.get(2).getAsInt()
-                    );
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return def;
                 }
             }
             
@@ -101,25 +116,14 @@ public class InstrumentThemeLoader {
         return noteTheme;
     }
     public void setNoteTheme(Color noteTheme) {
-        onThemeChanged.run(this.noteTheme = noteTheme, pressedNoteTheme);
+        this.noteTheme = noteTheme;
     }
     
     public Color getPressedNoteTheme() {
         return pressedNoteTheme;
     }
     public void setPressedNoteTheme(Color pressedNoteTheme) {
-        onThemeChanged.run(noteTheme, this.pressedNoteTheme = pressedNoteTheme);
-    }
-
-    public void setOnThemeChanged(InstrumentThemeLoadedEvent onThemeChanged) {
-        this.onThemeChanged = onThemeChanged;
-    }
-
-
-    @OnlyIn(Dist.CLIENT)
-    @FunctionalInterface
-    public static interface InstrumentThemeLoadedEvent {
-        void run(final Color noteTheme, final Color pressedNoteTheme);
+        this.pressedNoteTheme = pressedNoteTheme;
     }
 
 }

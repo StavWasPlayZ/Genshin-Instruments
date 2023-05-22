@@ -7,7 +7,6 @@ import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractI
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.FloralZitherOptionsScreen;
 import com.cstav.genshinstrument.sound.NoteSound;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -19,25 +18,16 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @EventBusSubscriber(bus = Bus.MOD, value = Dist.CLIENT)
 public class FloralZitherScreen extends AbstractGridInstrumentScreen {
     public static final String INSTRUMENT_ID = "floral_zither";
-
+    
     public FloralZitherScreen(InteractionHand hand) {
         super(hand);
     }
-
-
     @Override
-    protected ResourceLocation getInstrumentResourcesLocation() {
-        return new ResourceLocation(Main.MODID, genPath(INSTRUMENT_ID));
+    public String getInstrumentId() {
+        return INSTRUMENT_ID;
     }
+
     
-    private static final InstrumentThemeLoader THEME_LOADER = new InstrumentThemeLoader(
-        new ResourceLocation(Main.MODID, genStylerPath(INSTRUMENT_ID))
-    );
-    @Override
-    public InstrumentThemeLoader getThemeLoader() {
-        return THEME_LOADER;
-    }
-
     @Override
     public NoteSound[] getSounds() {
         return ((FloralZitherOptionsScreen)optionsScreen).getPerferredSoundType().soundArr().get();
@@ -46,6 +36,13 @@ public class FloralZitherScreen extends AbstractGridInstrumentScreen {
     @Override
     protected AbstractInstrumentOptionsScreen initInstrumentOptionsScreen() {
         return new FloralZitherOptionsScreen(this);
+    }
+
+    
+    private static final InstrumentThemeLoader THEME_LOADER = initThemeLoader(Main.MODID, INSTRUMENT_ID);
+    @Override
+    public InstrumentThemeLoader getThemeLoader() {
+        return THEME_LOADER;
     }
     
 }
