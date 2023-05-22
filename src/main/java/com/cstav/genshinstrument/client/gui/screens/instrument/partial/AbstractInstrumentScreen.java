@@ -81,7 +81,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
         return "textures/gui/instrument/";
     }
     public ResourceLocation getResourceFromGlob(final String path) {
-        return new ResourceLocation(getModId(), path);
+        return new ResourceLocation(getModId(), getGlobalRootPath() + path);
     }
     /**
      * Shorthand for {@code getRootPath() + getInstrumentId()}

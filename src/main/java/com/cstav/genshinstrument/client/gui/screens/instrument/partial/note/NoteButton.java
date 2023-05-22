@@ -89,8 +89,7 @@ public class NoteButton extends AbstractButton {
 
         noteLocation = getResourceFromRoot(NOTE_FILENAME);
         noteBgLocation = getResourceFromRoot(NOTE_BG_FILENAME);
-        // ringLocation = instrumentScreen.getResourceFromGlob(RING_GLOB_FILENAME);
-        ringLocation = null;
+        ringLocation = instrumentScreen.getResourceFromGlob(RING_GLOB_FILENAME);
     }
     public NoteButton(NoteSound sound,
       NoteLabelSupplier labelSupplier, int noteTextureRow, int rowsInNoteTexture,
@@ -152,6 +151,27 @@ public class NoteButton extends AbstractButton {
 
     @Override
     public void renderWidget(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+
+        // Ring
+        RenderSystem.setShaderColor(
+            colorTheme.getRed() / 255f,
+            colorTheme.getGreen() / 255f,
+            colorTheme.getBlue() / 255f,
+            .75f
+        );
+        displaySprite(ringLocation);
+
+        GuiComponent.blit(pPoseStack,
+            initX, initY,
+            0, 0,
+            getSize(), getSize(),
+            getSize(), getSize()
+        );
+
+        // Reset render state
+        RenderSystem.setShaderColor(1, 1, 1, 1);
+
+        
         // Button
         displaySprite(noteBgLocation);
 
@@ -187,19 +207,8 @@ public class NoteButton extends AbstractButton {
             (isPlaying() ? pressedColorTheme : colorTheme).getRGB()
         );
 
-
-        // Render ring
-        RenderSystem.setShaderColor(
-            colorTheme.getRed() / 255f,
-            colorTheme.getGreen() / 255f,
-            colorTheme.getBlue() / 255f,
-            1f
-        );
-        // displaySprite(noteBgLocation);
-
         // Reset render state
         RenderSystem.disableBlend();
-        RenderSystem.setShaderColor(1, 1, 1, 1);
     }
     protected static void displaySprite(final ResourceLocation location) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
