@@ -1,13 +1,17 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note;
 
 import java.awt.Color;
+import java.awt.Point;
 
-import com.cstav.genshinstrument.client.gui.GuiAnimationController;
+import com.cstav.genshinstrument.client.AnimationController;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.animation.NoteAnimationController;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.animation.RingAnimationController;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.instrument.InstrumentPacket;
 import com.cstav.genshinstrument.sound.NoteSound;
+import com.cstav.genshinstrument.util.ClientUtil;
 import com.cstav.genshinstrument.util.CommonUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -52,7 +56,12 @@ public class NoteButton extends AbstractButton {
     
 
     protected final Minecraft minecraft = Minecraft.getInstance();
-    private final GuiAnimationController noteAnimator = new NoteButtonAnimationController(.15f, 9, this);
+
+    final NoteAnimationController noteAnimation = new NoteAnimationController(.15f, 9, this);
+    //TODO Move ring to its own object, make it so that it'll create a new instance every play
+    final RingAnimationController ringAnimation = new RingAnimationController(.5f, 30);
+    //TODO remove once the above is implemented
+    private final AnimationController[] playAnimations = {noteAnimation, ringAnimation};
     
     public NoteSound sound;
     public final AbstractInstrumentScreen instrumentScreen;
@@ -139,6 +148,7 @@ public class NoteButton extends AbstractButton {
         textX = getX() + width/2;
         textY = getY() + height/2 + 7;
     }
+
     public int getInitX() {
         return initX;
     }
@@ -146,13 +156,22 @@ public class NoteButton extends AbstractButton {
         return initY;
     }
 
+    public Point getCenter() {
+        return ClientUtil.getInitCenter(initX, initY, getSize(), width);
+    }
+    public void moveToCenter() {
+        final Point center = getCenter();
+        setPosition(center.x, center.y);
+    }
+
+
     public void init() {
         initPos();
         setLabelSupplier(labelSupplier);
     }
 
     public boolean isPlaying() {
-        return noteAnimator.isPlaying();
+        return noteAnimation.isPlaying();
     }
 
 
@@ -164,15 +183,16 @@ public class NoteButton extends AbstractButton {
             colorTheme.getRed() / 255f,
             colorTheme.getGreen() / 255f,
             colorTheme.getBlue() / 255f,
-            .75f
+            ringAnimation.getAlpha()
         );
         displaySprite(ringLocation);
 
-        GuiComponent.blit(pPoseStack,
-            initX, initY,
+        final Point ringCenter = ClientUtil.getInitCenter(initX, initY, getSize(), ringAnimation.getSize());
+        GuiComponent.blit(new PoseStack(),
+            ringCenter.x, ringCenter.y,
             0, 0,
-            getSize(), getSize(),
-            getSize(), getSize()
+            ringAnimation.getSize(), ringAnimation.getSize(),
+            ringAnimation.getSize(), ringAnimation.getSize()
         );
 
         // Reset render state
@@ -216,8 +236,8 @@ public class NoteButton extends AbstractButton {
         RenderSystem.disableBlend();
 
         // Apply animations
-        noteAnimator.update();
-        // ringAnimationFrame();
+        for (final AnimationController animation : playAnimations)
+            animation.update();
     }
     protected static void displaySprite(final ResourceLocation location) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -249,7 +269,8 @@ public class NoteButton extends AbstractButton {
         );
         
 
-        noteAnimator.start();
+        for (final AnimationController animation : playAnimations)
+            animation.play();
 
         locked = true;
     }
