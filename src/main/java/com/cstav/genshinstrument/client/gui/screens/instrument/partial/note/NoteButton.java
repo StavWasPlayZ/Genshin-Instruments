@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note;
 
 import java.awt.Color;
 
+import com.cstav.genshinstrument.client.gui.GuiAnimationController;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
@@ -33,8 +34,6 @@ public class NoteButton extends AbstractButton {
         // Global - in instrument directory
         RING_GLOB_FILENAME = "ring.png"
     ;
-    private static final float PRESS_ANIM_SECS = .15f;
-    private static final int TARGET_SCALE_AMOUNT = 9;
 
 
     @SuppressWarnings("resource")
@@ -53,6 +52,7 @@ public class NoteButton extends AbstractButton {
     
 
     protected final Minecraft minecraft = Minecraft.getInstance();
+    private final GuiAnimationController noteAnimator = new NoteButtonAnimationController(.15f, 9, this);
     
     public NoteSound sound;
     public final AbstractInstrumentScreen instrumentScreen;
@@ -126,7 +126,7 @@ public class NoteButton extends AbstractButton {
         return CommonUtil.getResourceFrom(rootLocation, path);
     }
 
-    protected int initX, initY;
+    private int initX, initY;
     private int  textX, textY;
     /**
      * Initializes the button's initial position.
@@ -139,15 +139,22 @@ public class NoteButton extends AbstractButton {
         textX = getX() + width/2;
         textY = getY() + height/2 + 7;
     }
-
-
-    private NoteAnimationState animState = NoteAnimationState.IDLE;
-    private int animTime;
+    public int getInitX() {
+        return initX;
+    }
+    public int getInitY() {
+        return initY;
+    }
 
     public void init() {
         initPos();
         setLabelSupplier(labelSupplier);
     }
+
+    public boolean isPlaying() {
+        return noteAnimator.isPlaying();
+    }
+
 
     @Override
     public void renderWidget(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
@@ -174,8 +181,6 @@ public class NoteButton extends AbstractButton {
         
         // Button
         displaySprite(noteBgLocation);
-
-        pressAnimationFrame();
 
         GuiComponent.blit(pPoseStack,
             this.getX(), this.getY(),
@@ -209,6 +214,10 @@ public class NoteButton extends AbstractButton {
 
         // Reset render state
         RenderSystem.disableBlend();
+
+        // Apply animations
+        noteAnimator.update();
+        // ringAnimationFrame();
     }
     protected static void displaySprite(final ResourceLocation location) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -219,49 +228,6 @@ public class NoteButton extends AbstractButton {
         RenderSystem.enableDepthTest();
     }
 
-    private double dSize;
-    private void pressAnimationFrame() {
-        if (!isPlaying())
-            return;
-
-        final int fps = minecraft.getFps();
-        final float targetTime = fps * PRESS_ANIM_SECS;
-            
-        if (animTime++ >= targetTime/2) {
-            animTime = 0;
-
-            if (animState == NoteAnimationState.UP) {
-                resetAnimVars();
-                animState = NoteAnimationState.IDLE;
-
-                return;
-            }
-            animState = NoteAnimationState.UP;
-        }
-        else {
-            final double scaleReduction = TARGET_SCALE_AMOUNT / targetTime;
-
-            // Assuming the shape will always be a square
-            if (animState == NoteAnimationState.UP)
-                dSize += scaleReduction * 1.5;
-            else
-                dSize -= scaleReduction * 1.5;
-        }
-        
-        width = height = (int)dSize;
-        setPosition(
-            (getSize() - width) / 2 + initX,
-            (getSize() - width) / 2 + initY
-        );
-    }
-    private void resetAnimVars() {
-        animTime = 0;
-        dSize = width = height = getSize();
-        setPosition(initX, initY);
-    }
-    protected boolean isPlaying() {
-        return animState != NoteAnimationState.IDLE;
-    }
 
 
     public boolean locked = false;
@@ -283,10 +249,9 @@ public class NoteButton extends AbstractButton {
         );
         
 
+        noteAnimator.start();
+
         locked = true;
-        
-        animState = NoteAnimationState.DOWN;
-        resetAnimVars();
     }
     @Override
     public void onPress() {
@@ -307,12 +272,6 @@ public class NoteButton extends AbstractButton {
     @Override
     protected void updateWidgetNarration(final NarrationElementOutput neo) {
         neo.add(NarratedElementType.TITLE, getMessage());
-    }
-
-
-    @OnlyIn(Dist.CLIENT)
-    private static enum NoteAnimationState {
-        UP, DOWN, IDLE
     }
 
 }
