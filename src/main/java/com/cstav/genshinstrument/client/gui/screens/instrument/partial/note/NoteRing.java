@@ -2,13 +2,19 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note;
 
 import java.awt.Point;
 
+import com.cstav.genshinstrument.Main;
+import com.cstav.genshinstrument.client.ClientUtil;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.animation.RingAnimationController;
-import com.cstav.genshinstrument.util.ClientUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class NoteRing {
     public static final String RING_GLOB_FILENAME = "ring.png";
 
@@ -37,7 +43,7 @@ public class NoteRing {
             note.colorTheme.getBlue() / 255f,
             alpha
         );
-        ClientUtil.displaySprite(note.instrumentScreen.getResourceFromGlob(RING_GLOB_FILENAME));
+        ClientUtil.displaySprite(new ResourceLocation(Main.MODID, AbstractInstrumentScreen.getGlobalRootPath() + RING_GLOB_FILENAME));
 
         final Point ringCenter = ClientUtil.getInitCenter(note.getInitX(), note.getInitY(), NoteButton.getSize(), size);
         GuiComponent.blit(new PoseStack(),

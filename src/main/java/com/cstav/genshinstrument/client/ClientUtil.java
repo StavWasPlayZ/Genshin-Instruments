@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.util;
+package com.cstav.genshinstrument.client;
 
 import java.awt.Point;
 
@@ -6,7 +6,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class ClientUtil {
     
     /**
