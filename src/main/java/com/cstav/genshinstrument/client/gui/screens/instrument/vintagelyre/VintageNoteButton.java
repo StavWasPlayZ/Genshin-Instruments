@@ -5,6 +5,7 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractI
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteGridButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.sound.NoteSound;
+import com.cstav.genshinstrument.util.ClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.gui.GuiComponent;
@@ -40,7 +41,7 @@ public class VintageNoteButton extends NoteGridButton {
         final int textureWidth = (int)(width * TEXTURE_MULTIPLIER),
             textureHeight = (int)(height * TEXTURE_MULTIPLIER);
 
-        displaySprite(thingyLocation);
+        ClientUtil.displaySprite(thingyLocation);
         GuiComponent.blit(pPoseStack,
             getX() - 1, getY() - 5,
             isPlaying() ? textureWidth/2 : 0, 0,

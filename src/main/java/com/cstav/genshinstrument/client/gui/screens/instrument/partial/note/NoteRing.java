@@ -1,0 +1,58 @@
+package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note;
+
+import java.awt.Point;
+
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.animation.RingAnimationController;
+import com.cstav.genshinstrument.util.ClientUtil;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+
+import net.minecraft.client.gui.GuiComponent;
+
+public class NoteRing {
+    public static final String RING_GLOB_FILENAME = "ring.png";
+
+    protected final RingAnimationController ringAnimation = new RingAnimationController(.3f, 40, this);
+
+    public final NoteButton note;
+    public int size;
+    public float alpha;
+
+    public NoteRing(final NoteButton note) {
+        this.note = note;
+        ringAnimation.play();
+    }
+    
+    
+    public void render() {
+        if (!ringAnimation.isPlaying())
+            return;
+
+        ringAnimation.update();
+
+
+        RenderSystem.setShaderColor(
+            note.colorTheme.getRed() / 255f,
+            note.colorTheme.getGreen() / 255f,
+            note.colorTheme.getBlue() / 255f,
+            alpha
+        );
+        ClientUtil.displaySprite(note.instrumentScreen.getResourceFromGlob(RING_GLOB_FILENAME));
+
+        final Point ringCenter = ClientUtil.getInitCenter(note.getInitX(), note.getInitY(), NoteButton.getSize(), size);
+        GuiComponent.blit(new PoseStack(),
+            ringCenter.x, ringCenter.y,
+            0, 0,
+            size, size,
+            size, size
+        );
+
+        // Reset render state
+        RenderSystem.setShaderColor(1, 1, 1, 1);
+    }
+
+    public boolean isPlaying() {
+        return ringAnimation.isPlaying();
+    }
+
+}

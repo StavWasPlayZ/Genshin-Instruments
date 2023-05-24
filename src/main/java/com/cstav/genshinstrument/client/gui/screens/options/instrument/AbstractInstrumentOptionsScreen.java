@@ -22,6 +22,7 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.layouts.FrameLayout;
 import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.layouts.GridLayout.RowHelper;
+import net.minecraft.client.gui.layouts.SpacerElement;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -108,7 +109,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         currLabel = ModClientConfigs.GRID_LABEL_TYPE.get();
     }
 
-    public void setOnCloseRunnable(Runnable onCloseRunnable) {
+    public void setOnCloseRunnable(final Runnable onCloseRunnable) {
         this.onCloseRunnable = onCloseRunnable;
     }
 
@@ -202,14 +203,24 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
             rowHelper.addChild(labelType);
         }
 
+        rowHelper.addChild(SpacerElement.height(15), 2);
+
         final CycleButton<Boolean> stopMusic = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(ModClientConfigs.STOP_MUSIC_ON_PLAY.get())
             .withTooltip((value) -> Tooltip.create(Component.translatable(STOP_MUSIC_KEY+".tooltip", NoteSound.STOP_SOUND_DISTANCE)))
             .create(0, 0,
-                getBigButtonWidth(), getButtonHeight(),
+                getSmallButtonWidth(), getButtonHeight(),
                 Component.translatable(STOP_MUSIC_KEY), this::onMusicStopChanged
             );
-        rowHelper.addChild(stopMusic, 2, rowHelper.newCellSettings().paddingTop(15));
+        rowHelper.addChild(stopMusic);
+
+        final CycleButton<Boolean> emitRing = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
+            .withInitialValue(ModClientConfigs.EMIT_RING_ANIMATION.get())
+            .create(0, 0,
+                getSmallButtonWidth(), getButtonHeight(),
+                Component.translatable("button.genshinstrument.emit_ring"), this::onEmitRingChanged
+            );
+        rowHelper.addChild(emitRing);
 
         grid.arrangeElements();
     }
@@ -242,6 +253,9 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     }
     protected void onMusicStopChanged(final CycleButton<Boolean> button, final boolean value) {
         ModClientConfigs.STOP_MUSIC_ON_PLAY.set(value);
+    }
+    protected void onEmitRingChanged(final CycleButton<Boolean> button, final boolean value) {
+        ModClientConfigs.EMIT_RING_ANIMATION.set(value);
     }
 
 

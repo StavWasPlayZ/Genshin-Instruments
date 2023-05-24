@@ -1,9 +1,9 @@
-package com.cstav.genshinstrument.client.gui.screens.instrument.drum;
+package com.cstav.genshinstrument.client.gui.screens.options.instrument;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.label.DrumNoteLabel;
+import com.cstav.genshinstrument.client.gui.screens.instrument.drum.AratakisGreatAndGloriousDrumScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
-import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

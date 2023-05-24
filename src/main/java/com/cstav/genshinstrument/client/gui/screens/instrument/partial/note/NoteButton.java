@@ -2,11 +2,11 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.util.ArrayList;
 
-import com.cstav.genshinstrument.client.AnimationController;
+import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.animation.NoteAnimationController;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.animation.RingAnimationController;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.instrument.InstrumentPacket;
@@ -21,7 +21,6 @@ import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.SoundManager;
@@ -32,12 +31,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class NoteButton extends AbstractButton {
-    public static final String
-        // Local - in note resource directory
-        NOTE_FILENAME = "note.png", NOTE_BG_FILENAME = "note_bg.png",
-        // Global - in instrument directory
-        RING_GLOB_FILENAME = "ring.png"
-    ;
+    public static final String NOTE_FILENAME = "note.png", NOTE_BG_FILENAME = "note_bg.png";
 
 
     @SuppressWarnings("resource")
@@ -57,11 +51,9 @@ public class NoteButton extends AbstractButton {
 
     protected final Minecraft minecraft = Minecraft.getInstance();
 
-    final NoteAnimationController noteAnimation = new NoteAnimationController(.15f, 9, this);
-    //TODO Move ring to its own object, make it so that it'll create a new instance every play
-    final RingAnimationController ringAnimation = new RingAnimationController(.5f, 30);
-    //TODO remove once the above is implemented
-    private final AnimationController[] playAnimations = {noteAnimation, ringAnimation};
+    protected final NoteAnimationController noteAnimation = new NoteAnimationController(.15f, 9, this);
+    protected final ArrayList<NoteRing> rings = new ArrayList<>();
+
     
     public NoteSound sound;
     public final AbstractInstrumentScreen instrumentScreen;
@@ -69,7 +61,7 @@ public class NoteButton extends AbstractButton {
     protected final int noteTextureRow, rowsInNoteTexture;
     protected final Color colorTheme, pressedColorTheme;
     protected final ResourceLocation rootLocation,
-        noteLocation, noteBgLocation, ringLocation;
+        noteLocation, noteBgLocation;
 
     private NoteLabelSupplier labelSupplier;
     private int noteTextureWidth = 56;
@@ -98,7 +90,6 @@ public class NoteButton extends AbstractButton {
 
         noteLocation = getResourceFromRoot(NOTE_FILENAME);
         noteBgLocation = getResourceFromRoot(NOTE_BG_FILENAME);
-        ringLocation = instrumentScreen.getResourceFromGlob(RING_GLOB_FILENAME);
     }
     public NoteButton(NoteSound sound,
       NoteLabelSupplier labelSupplier, int noteTextureRow, int rowsInNoteTexture,
@@ -119,7 +110,7 @@ public class NoteButton extends AbstractButton {
         return labelSupplier;
     }
 
-
+    //TODO remove, it's public already
     public NoteSound getSound() {
         return sound;
     }
@@ -177,30 +168,11 @@ public class NoteButton extends AbstractButton {
 
     @Override
     public void renderWidget(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-
-        // Ring
-        RenderSystem.setShaderColor(
-            colorTheme.getRed() / 255f,
-            colorTheme.getGreen() / 255f,
-            colorTheme.getBlue() / 255f,
-            ringAnimation.getAlpha()
-        );
-        displaySprite(ringLocation);
-
-        final Point ringCenter = ClientUtil.getInitCenter(initX, initY, getSize(), ringAnimation.getSize());
-        GuiComponent.blit(new PoseStack(),
-            ringCenter.x, ringCenter.y,
-            0, 0,
-            ringAnimation.getSize(), ringAnimation.getSize(),
-            ringAnimation.getSize(), ringAnimation.getSize()
-        );
-
-        // Reset render state
-        RenderSystem.setShaderColor(1, 1, 1, 1);
-
+        rings.removeIf((ring) -> !ring.isPlaying());
+        rings.forEach((ring) -> ring.render());
         
         // Button
-        displaySprite(noteBgLocation);
+        ClientUtil.displaySprite(noteBgLocation);
 
         GuiComponent.blit(pPoseStack,
             this.getX(), this.getY(),
@@ -210,7 +182,7 @@ public class NoteButton extends AbstractButton {
         );
 
         // Note
-        displaySprite(noteLocation);
+        ClientUtil.displaySprite(noteLocation);
         final int noteWidth = width/2, noteHeight = height/2;
 
         GuiComponent.blit(pPoseStack,
@@ -231,23 +203,11 @@ public class NoteButton extends AbstractButton {
             textX, textY,
             (isPlaying() ? pressedColorTheme : colorTheme).getRGB()
         );
+        
 
-        // Reset render state
+        noteAnimation.update();
         RenderSystem.disableBlend();
-
-        // Apply animations
-        for (final AnimationController animation : playAnimations)
-            animation.update();
     }
-    protected static void displaySprite(final ResourceLocation location) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, location);
-
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.enableDepthTest();
-    }
-
 
 
     public boolean locked = false;
@@ -269,8 +229,9 @@ public class NoteButton extends AbstractButton {
         );
         
 
-        for (final AnimationController animation : playAnimations)
-            animation.play();
+        noteAnimation.play();
+        if (ModClientConfigs.EMIT_RING_ANIMATION.get())
+            rings.add(new NoteRing(this));
 
         locked = true;
     }
