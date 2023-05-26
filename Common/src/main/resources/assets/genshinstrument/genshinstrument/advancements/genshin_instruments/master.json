@@ -1,0 +1,37 @@
+{
+    "parent": "genshinstrument:genshin_instruments/root",
+
+    "display": {
+        "icon": {
+            "item": "minecraft:ender_eye"
+        },
+
+        "title": {
+            "translate": "genshinstrument.advancements.main.master.title"
+        },
+        "description": {
+            "translate": "genshinstrument.advancements.main.master.description"
+        },
+
+        "frame": "goal"
+    },
+
+    "criteria": {
+        "gottem_all": {
+            "trigger": "inventory_changed",
+
+            "conditions": {
+                "items": [
+                    {"items": ["genshinstrument:windsong_lyre"]},
+                    {"items": ["genshinstrument:vintage_lyre"]},
+                    {"items": ["genshinstrument:floral_zither"]},
+                    {"items": ["genshinstrument:glorious_drum"]}
+                ]
+            }
+        }
+    },
+
+    "requirements": [
+        ["gottem_all"]
+    ]
+}

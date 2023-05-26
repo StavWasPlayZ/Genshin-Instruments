@@ -1,0 +1,32 @@
+{
+    "parent": "genshinstrument:genshin_instruments/glorious_drum",
+
+    "display": {
+        "icon": {
+            "item": "genshinstrument:vintage_lyre"
+        },
+
+        "title": {
+            "translate": "genshinstrument.advancements.main.vintage_lyre.title"
+        },
+        "description": {
+            "translate": "genshinstrument.advancements.main.vintage_lyre.description"
+        }
+    },
+
+    "criteria": {
+        "instrument_played": {
+            "trigger": "genshinstrument_instrument_played",
+
+            "conditions": {
+                "instrument": {
+                    "items": ["genshinstrument:vintage_lyre"]
+                }
+            }
+        }
+    },
+
+    "requirements": [
+        ["instrument_played"]
+    ]
+}

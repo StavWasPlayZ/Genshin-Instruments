@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "equipment",
+
+    "key": {
+        "#": {
+            "item": "minecraft:acacia_planks"
+        },
+        "X": {
+            "item": "minecraft:leather"
+        }
+    },
+
+    "pattern": [
+        " #X",
+        " ##",
+        "#  "
+    ],
+
+    "result": {
+        "item": "genshinstrument:glorious_drum"
+    }
+}
