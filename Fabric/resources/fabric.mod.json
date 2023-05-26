@@ -1,0 +1,34 @@
+{
+    "schemaVersion": 1,
+    "id": "genshinstrument",
+    "version": "2.7",
+  
+    "name": "Genshin Instruments",
+    "description": "This is an example description! Tell everyone what your mod is about!",
+    "authors": [
+      "Stav (IGN StavWasPlayZ)"
+    ],
+    "contact": {
+      "homepage": "https://www.curseforge.com/minecraft/mc-mods/genshin-instruments",
+      "sources": "https://github.com/StavWasPlayZ/Genshin-Instruments"
+    },
+  
+    "license": "CC-BY-NC 4.0",
+  
+    "environment": "*",
+    "entrypoints": {
+      "main": [
+        "com.cstav.genshinstrument.Main"
+      ]
+    },
+  
+    "depends": {
+      "fabricloader": ">=0.14.19",
+      "fabric-api": "*",
+      "minecraft": "~1.19.4",
+      "java": ">=17"
+    },
+    "suggests": {
+      "another-mod": "*"
+    }
+  }
