@@ -7,4 +7,4 @@
 Genshin Instruments is a Forge mod that brings in Genshin Impact's set of instruments into your Minecraft worlds!
 
 For documentation of gameplay, visit [the mod's curseforge page](https://www.curseforge.com/minecraft/mc-mods/genshin-instruments).  
-For full Mod and "in-game" API documentations, visit [this repositpry's wiki](https://github.com/StavWasPlayZ/Genshin-Instruments/wiki).
+For full Mod and "in-game" API documentations, visit [this repository's wiki](https://github.com/StavWasPlayZ/Genshin-Instruments/wiki).
