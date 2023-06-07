@@ -4,19 +4,19 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Box;
+import net.minecraft.world.World;
 
 public abstract class CommonUtil {
     /**
      * @return What the default level shouldve returned, but without any conditions
      */
-    public static List<Player> getPlayersInArea(final Level level, final AABB area) {
-        final List<Player> list = Lists.newArrayList();
+    public static List<PlayerEntity> getPlayersInArea(final World world, final Box area) {
+        final List<PlayerEntity> list = Lists.newArrayList();
 
-        for(Player player : level.players())
+        for(PlayerEntity player : world.getPlayers())
             if (area.contains(player.getX(), player.getY(), player.getZ()))
                 list.add(player);
 
@@ -28,8 +28,8 @@ public abstract class CommonUtil {
      * @param path The desired path to obtain from the {@code dir}
      * @return The resource contained in the specified directory
      */
-    public static ResourceLocation getResourceFrom(final ResourceLocation dir, final String path) {
-        return new ResourceLocation(
+    public static Identifier getResourceFrom(final Identifier dir, final String path) {
+        return new Identifier(
             dir.getNamespace(),
             dir.getPath() + "/" + path
         );

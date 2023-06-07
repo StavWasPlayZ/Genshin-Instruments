@@ -9,14 +9,15 @@ import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.instrument.NotifyInstrumentOpenPacket;
 import com.cstav.genshinstrument.networking.packets.instrument.OpenInstrumentPacket;
 
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 /**
@@ -24,13 +25,13 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
  */
 public class InstrumentItem extends Item {
 
-    protected final ServerPlayerRunnable onOpenRequest;
+    protected final ServerPlayerEntityRunnable onOpenRequest;
     /**
      * @param onOpenRequest A server-side event fired when the player has requested to interact
      * with the instrument.
      * It should should send a packet to the given player for opening this instrument's screen.
      */
-    public InstrumentItem(final ServerPlayerRunnable onOpenRequest) {
+    public InstrumentItem(final ServerPlayerEntityRunnable onOpenRequest) {
         super(new Properties()
             .stacksTo(1)
         );
@@ -38,29 +39,48 @@ public class InstrumentItem extends Item {
         this.onOpenRequest = onOpenRequest;
     }
 
-    static void sendOpenRequest(ServerPlayer player, InteractionHand hand, String instrumentType) {
+    static void sendOpenRequest(ServerPlayerEntity player, InteractionHand hand, String instrumentType) {
         ModPacketHandler.sendToClient(new OpenInstrumentPacket(instrumentType, hand), player);
     }
     
 
+    // @Override
+    // public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
+        // if (!pLevel.isClientSide) {
+        //     onOpenRequest.run((ServerPlayerEntity)pPlayer, pUsedHand);
+
+        //     // Update the the capabilty on server
+        //     InstrumentOpenProvider.setOpen(pPlayer, true);
+        //     // And clients
+        //     pLevel.players().forEach((player) ->
+        //         ModPacketHandler.sendToClient(
+        //             new NotifyInstrumentOpenPacket(pPlayer.getUUID(), true),
+        //             (ServerPlayerEntity)player
+        //         )
+        //     );
+        // }
+        
+        // return InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand));
+    // }
     @Override
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
-        if (!pLevel.isClientSide) {
-            onOpenRequest.run((ServerPlayer)pPlayer, pUsedHand);
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        if (!world.isClient) {
+            onOpenRequest.run((ServerPlayerEntity)user, hand);
 
             // Update the the capabilty on server
-            InstrumentOpenProvider.setOpen(pPlayer, true);
+            InstrumentOpenProvider.setOpen(user, true);
             // And clients
-            pLevel.players().forEach((player) ->
+            world.players().forEach((player) ->
                 ModPacketHandler.sendToClient(
                     new NotifyInstrumentOpenPacket(pPlayer.getUUID(), true),
-                    (ServerPlayer)player
+                    (ServerPlayerEntity)player
                 )
             );
         }
         
         return InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand));
     }
+    
 
     @Override
     public UseAnim getUseAnimation(ItemStack pStack) {
@@ -74,7 +94,7 @@ public class InstrumentItem extends Item {
     
 
     @FunctionalInterface
-    public static interface ServerPlayerRunnable {
-        void run(final ServerPlayer player, final InteractionHand hand);
+    public static interface ServerPlayerEntityRunnable {
+        void run(final ServerPlayerEntity player, final Hand hand);
     }
 }

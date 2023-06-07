@@ -113,7 +113,7 @@ public class NoteSound {
         if (player.getUUID().equals(playerUUID))
             return;
             
-        final Level level = minecraft.level;
+        final World world = minecraft.level;
         level.playLocalSound(pos,
             getByPreference(distanceFromPlayer), SoundSource.RECORDS,
             1, NoteSound.clampPitch(pitch)

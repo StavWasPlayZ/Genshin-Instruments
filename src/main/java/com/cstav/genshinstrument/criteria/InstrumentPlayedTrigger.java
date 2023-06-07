@@ -9,8 +9,8 @@ import net.minecraft.advancements.critereon.EntityPredicate.Composite;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerPlayerEntity;
 import net.minecraft.world.item.ItemStack;
 
 /**
@@ -26,11 +26,11 @@ import net.minecraft.world.item.ItemStack;
  */
 public class InstrumentPlayedTrigger extends SimpleCriterionTrigger<InstrumentPlayedTrigger.TriggerInstance> {
     // It doesn't account for namespaces, so will use genshinstrument_ prefix instead
-    public static final ResourceLocation ID = new ResourceLocation("genshinstrument_instrument_played");
+    public static final Identifier ID = new Identifier("genshinstrument_instrument_played");
     
 
     @Override
-    public ResourceLocation getId() {
+    public Identifier getId() {
         return ID;
     }
 
@@ -39,7 +39,7 @@ public class InstrumentPlayedTrigger extends SimpleCriterionTrigger<InstrumentPl
         return new TriggerInstance(pPlayer, ItemPredicate.fromJson(pJson.get("instrument")));
     }
 
-    public void trigger(final ServerPlayer player, final ItemStack instrument) {
+    public void trigger(final ServerPlayerEntity player, final ItemStack instrument) {
         trigger(player, (triggerInstance) ->
             triggerInstance.matches(instrument)
         );

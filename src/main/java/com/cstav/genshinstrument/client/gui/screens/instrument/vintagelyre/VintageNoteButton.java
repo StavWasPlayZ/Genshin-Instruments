@@ -9,7 +9,7 @@ import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -17,7 +17,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class VintageNoteButton extends NoteGridButton {
     private static final float TEXTURE_MULTIPLIER = 1/1.3f;
 
-    private final ResourceLocation thingyLocation = getResourceFromRoot("thing.png");
+    private final Identifier thingyLocation = getResourceFromRoot("thing.png");
 
     public VintageNoteButton(int row, int column,
             NoteSound sound, NoteLabelSupplier labelSupplier, AbstractInstrumentScreen instrumentScreen) {

@@ -10,8 +10,8 @@ import com.cstav.genshinstrument.networking.packets.instrument.OpenInstrumentPac
 import com.cstav.genshinstrument.networking.packets.instrument.PlayNotePacket;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerPlayerEntity;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -34,7 +34,7 @@ public class ModPacketHandler {
     private static int id;
 
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
-        new ResourceLocation(Main.MODID, "main"),
+        new Identifier(Main.MODID, "main"),
         () -> PROTOCOL_VERSION,
         PROTOCOL_VERSION::equals,
         PROTOCOL_VERSION::equals
@@ -44,7 +44,7 @@ public class ModPacketHandler {
     public static <T> void sendToServer(final T packet) {
         INSTANCE.sendToServer(packet);
     }
-    public static <T> void sendToClient(final T packet, final ServerPlayer player) {
+    public static <T> void sendToClient(final T packet, final ServerPlayerEntity player) {
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), packet);
     }
 

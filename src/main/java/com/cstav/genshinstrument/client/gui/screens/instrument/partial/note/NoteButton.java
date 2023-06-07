@@ -24,7 +24,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.SoundManager;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -60,7 +60,7 @@ public class NoteButton extends AbstractButton {
 
     protected final int noteTextureRow, rowsInNoteTexture;
     protected final Color colorTheme, pressedColorTheme;
-    protected final ResourceLocation rootLocation,
+    protected final Identifier rootLocation,
         noteLocation, noteBgLocation;
 
     private NoteLabelSupplier labelSupplier;
@@ -120,9 +120,9 @@ public class NoteButton extends AbstractButton {
 
     /**
      * @param path The resource to obtain from this note's directory
-     * @see {@link AbstractInstrumentScreen#getResourceFrom(ResourceLocation, String)}
+     * @see {@link AbstractInstrumentScreen#getResourceFrom(Identifier, String)}
      */
-    protected ResourceLocation getResourceFromRoot(final String path) {
+    protected Identifier getResourceFromRoot(final String path) {
         return CommonUtil.getResourceFrom(rootLocation, path);
     }
 

@@ -11,7 +11,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraftforge.api.distmarker.Dist;
@@ -37,7 +37,7 @@ public class InstrumentThemeLoader {
     private static final ArrayList<InstrumentThemeLoader> LOADERS = new ArrayList<>();
     private static final Color DEF_NOTE_THEME = Color.BLACK, DEF_PRESSED_THEME = Color.BLACK;
 
-    private final ResourceLocation InstrumentStyleLocation;
+    private final Identifier InstrumentStyleLocation;
     private Color noteTheme, pressedNoteTheme;
 
     private ArrayList<Consumer<JsonObject>> listeners = new ArrayList<>();
@@ -46,7 +46,7 @@ public class InstrumentThemeLoader {
      * Initializes a new Instrument Theme Loader and subsribes it to the resource load event.
      * @param instrumentStyleLocation The location of the instrument's JSON styler
      */
-    public InstrumentThemeLoader(final ResourceLocation instrumentStyleLocation) {
+    public InstrumentThemeLoader(final Identifier instrumentStyleLocation) {
         this.InstrumentStyleLocation = instrumentStyleLocation;
 
         LOADERS.add(this);
@@ -108,7 +108,7 @@ public class InstrumentThemeLoader {
     }
 
 
-    public ResourceLocation getInstrumentStyleLocation() {
+    public Identifier getInstrumentStyleLocation() {
         return InstrumentStyleLocation;
     }
 

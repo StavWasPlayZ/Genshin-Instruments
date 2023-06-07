@@ -5,7 +5,7 @@ import javax.annotation.Nullable;
 import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.ServerPlayerEntity;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -18,10 +18,10 @@ import net.minecraftforge.eventbus.api.Event;
 public class InstrumentPlayedEvent extends Event {
 
     public final NoteSound sound;
-    public final Level level;
+    public final World world;
     public final BlockPos pos;
 
-    public InstrumentPlayedEvent(NoteSound sound, final Level level, final BlockPos pos) {
+    public InstrumentPlayedEvent(NoteSound sound, final World world, final BlockPos pos) {
         this.sound = sound;
         this.level = level;
         this.pos = pos;
@@ -29,11 +29,11 @@ public class InstrumentPlayedEvent extends Event {
 
 
     public static final class ByPlayer extends InstrumentPlayedEvent {
-        public final ServerPlayer player;
+        public final ServerPlayerEntity player;
         public final InteractionHand hand;
         public final ItemStack instrument;
 
-        public ByPlayer(NoteSound sound, ServerPlayer player, @Nullable InteractionHand hand) {
+        public ByPlayer(NoteSound sound, ServerPlayerEntity player, @Nullable InteractionHand hand) {
             super(sound, player.level, player.blockPosition());
             this.player = player;
             this.hand = hand;

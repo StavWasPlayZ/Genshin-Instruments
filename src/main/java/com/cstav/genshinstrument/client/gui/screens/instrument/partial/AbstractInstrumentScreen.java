@@ -22,7 +22,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -48,7 +48,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
      */
     protected static final InstrumentThemeLoader initThemeLoader(String modId, String instrumentId) {
         return new InstrumentThemeLoader(
-            new ResourceLocation(modId,
+            new Identifier(modId,
                 getGlobalRootPath() + instrumentId + "/" + "instrument_style.json"
             )
         );
@@ -80,8 +80,8 @@ public abstract class AbstractInstrumentScreen extends Screen {
     public static String getGlobalRootPath() {
         return "textures/gui/instrument/";
     }
-    public ResourceLocation getResourceFromGlob(final String path) {
-        return new ResourceLocation(getModId(), getGlobalRootPath() + path);
+    public Identifier getResourceFromGlob(final String path) {
+        return new Identifier(getModId(), getGlobalRootPath() + path);
     }
     /**
      * Shorthand for {@code getRootPath() + getInstrumentId()}
@@ -99,10 +99,10 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * @param path The desired path to obtain from the root directory
      * @return The resource contained in this instrument's root directory
      * @see {@link AbstractInstrumentScreen#getInstrumentResourcesLocation()}
-     * @see {@link AbstractInstrumentScreen#getResourceFrom(ResourceLocation, String)}
+     * @see {@link AbstractInstrumentScreen#getResourceFrom(Identifier, String)}
      */
-    public ResourceLocation getResourceFromRoot(final String path) {
-        return new ResourceLocation(getModId(), getPath() + path);
+    public Identifier getResourceFromRoot(final String path) {
+        return new Identifier(getModId(), getPath() + path);
     }
 
 

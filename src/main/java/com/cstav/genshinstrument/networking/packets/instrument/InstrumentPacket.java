@@ -8,7 +8,7 @@ import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.ServerUtil;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.ServerPlayerEntity;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent.Context;
@@ -45,7 +45,7 @@ public class InstrumentPacket implements ModPacket {
         final Context context = supplier.get();
         
         context.enqueueWork(() -> {
-            final ServerPlayer player = context.getSender();
+            final ServerPlayerEntity player = context.getSender();
 
             if (!InstrumentOpen.isOpen(player))
                 return;

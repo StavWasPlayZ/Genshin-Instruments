@@ -7,7 +7,7 @@ import com.cstav.genshinstrument.networking.ModPacket;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.ServerPlayerEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent.Context;
@@ -24,11 +24,11 @@ public class CloseInstrumentPacket implements ModPacket {
         final Context context = supplier.get();
 
         context.enqueueWork(() -> {
-            final ServerPlayer player = context.getSender();
+            final ServerPlayerEntity player = context.getSender();
             InstrumentOpenProvider.setOpen(player, false);
 
             for (final Player oPlayer : player.level.players())
-                ModPacketHandler.sendToClient(new NotifyInstrumentOpenPacket(player.getUUID(), false), (ServerPlayer)oPlayer);
+                ModPacketHandler.sendToClient(new NotifyInstrumentOpenPacket(player.getUUID(), false), (ServerPlayerEntity)oPlayer);
         });
 
         return true;

@@ -3,9 +3,9 @@ package com.cstav.genshinstrument.capability.instrumentOpen;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.core.Direction;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.util.math.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
@@ -43,7 +43,7 @@ public class InstrumentOpenProvider implements ICapabilityProvider, INBTSerializ
     }
     
 
-    public static void setOpen(final Player player, final boolean isOpen) {
+    public static void setOpen(final PlayerEntity player, final boolean isOpen) {
         player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((lyreOpen) ->
             lyreOpen.setOpen(isOpen)
         );

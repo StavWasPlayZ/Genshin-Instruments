@@ -2,8 +2,8 @@ package com.cstav.genshinstrument.item;
 
 import com.cstav.genshinstrument.Main;
 
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Item;
+import net.minecraft.item.Item;
+import net.minecraft.item.CreativeModeTabs;
 import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

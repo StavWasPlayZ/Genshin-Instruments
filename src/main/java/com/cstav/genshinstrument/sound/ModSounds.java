@@ -3,7 +3,7 @@ package com.cstav.genshinstrument.sound;
 import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractGridInstrumentScreen;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -58,7 +58,7 @@ public class ModSounds {
     }
 
     public static SoundEvent createSoundUnsafe(final String name) {
-        return SoundEvent.createVariableRangeEvent(new ResourceLocation(Main.MODID, name));
+        return SoundEvent.createVariableRangeEvent(new Identifier(Main.MODID, name));
     }
 
 

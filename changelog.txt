@@ -110,7 +110,7 @@
  - 43.1.62 Check source permission level before selector permission (#9147)
            In some situations, such as execution of a function by an advancement as
            part of its reward, a command source stack may have a backing source of
-           a ServerPlayer which may lack the entity selector permission and have an
+           a ServerPlayerEntity which may lack the entity selector permission and have an
            explicit permission level that should allow the use of entity selectors,
            through CommandSourceStack#withPermission.
            We now check if the permission level of the command source stack is
@@ -211,7 +211,7 @@
            The new permission is "forge:use_entity_selectors", which is granted by
            default to players with permission level 2 (GAMEMASTERS) and above.
            The hook falls back to checking the permission level if the source of
-           the command is not a ServerPlayer, such as for command blocks and
+           the command is not a ServerPlayerEntity, such as for command blocks and
            functions.
  - 43.0.17 Allow FakePlayer to report its position (#8963)
  - 43.0.16 Add alternate version of renderEntityInInventory to allow for directly specifying the angles (#8961)

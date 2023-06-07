@@ -3,7 +3,7 @@ package com.cstav.genshinstrument.capability;
 import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -19,7 +19,7 @@ public class ModCapabilities {
         if (event.getObject() instanceof Player) {
 
             if (!event.getObject().getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).isPresent())
-                event.addCapability(new ResourceLocation(Main.MODID, "instrument_caps"), new InstrumentOpenProvider());
+                event.addCapability(new Identifier(Main.MODID, "instrument_caps"), new InstrumentOpenProvider());
 
         }
     }
