@@ -245,8 +245,8 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     @Override
     public void onClose() {
-        minecraft.player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((lyreOpen) ->
-            lyreOpen.setOpen(false)
+        minecraft.player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((instrumentOpen) ->
+            instrumentOpen.setOpen(false)
         );
         ModPacketHandler.sendToServer(new CloseInstrumentPacket());
 

@@ -13,8 +13,6 @@ public class RingAnimationController extends AnimationController {
     protected final double initSize = NoteButton.getSize() * .8, initAlpha = -.08;
     protected final NoteRing ring;
 
-    //TODO remove if float is fine
-    protected double size = initSize, alpha = initAlpha;
     protected final float ringSizeMultiplier;
 
     public RingAnimationController(float duration, final float ringSizeMultiplier, final NoteRing ring) {
