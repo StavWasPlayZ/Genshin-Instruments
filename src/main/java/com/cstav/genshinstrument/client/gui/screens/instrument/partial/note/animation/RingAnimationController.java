@@ -26,8 +26,8 @@ public class RingAnimationController extends AnimationController {
     protected void animFrame(final float targetTime, final float deltaValue) {
         ring.size += deltaValue * ringSizeMultiplier;
 
-        if (getAnimTime() < targetTime/1.75f)
-            ring.alpha += deltaValue;
+        if (getAnimTime() < targetTime / 1.75f)
+            ring.alpha += deltaValue * 1.5f;
         else
             ring.alpha -= deltaValue;
     }
