@@ -18,7 +18,9 @@
         "2.5": "- Update to version 1.19.4\n- GUI keyboard navigation",
         "2.5.1": "- Fixed pitch slider being offset and not navigation-friendly",
 
-        "2.6": "- Added the visual play ring from Genshin"
+        "2.6": "- Added the visual play ring from Genshin",
+
+        "2.7": "- Updated mod to MC v1.20"
     },
 
     "promos": {
