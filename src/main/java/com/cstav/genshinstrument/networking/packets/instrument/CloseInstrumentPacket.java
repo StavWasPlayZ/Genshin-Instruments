@@ -27,7 +27,7 @@ public class CloseInstrumentPacket implements ModPacket {
             final ServerPlayer player = context.getSender();
             InstrumentOpenProvider.setOpen(player, false);
 
-            for (final Player oPlayer : player.level.players())
+            for (final Player oPlayer : player.level().players())
                 ModPacketHandler.sendToClient(new NotifyInstrumentOpenPacket(player.getUUID(), false), (ServerPlayer)oPlayer);
         });
 

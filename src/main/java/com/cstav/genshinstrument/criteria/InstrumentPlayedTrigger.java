@@ -4,8 +4,8 @@ import com.cstav.genshinstrument.networking.packets.instrument.InstrumentPacket;
 import com.google.gson.JsonObject;
 
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
-import net.minecraft.advancements.critereon.EntityPredicate.Composite;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
@@ -35,8 +35,8 @@ public class InstrumentPlayedTrigger extends SimpleCriterionTrigger<InstrumentPl
     }
 
     @Override
-    protected TriggerInstance createInstance(JsonObject pJson, Composite pPlayer, DeserializationContext pContext) {
-        return new TriggerInstance(pPlayer, ItemPredicate.fromJson(pJson.get("instrument")));
+    protected TriggerInstance createInstance(JsonObject pJson, ContextAwarePredicate player, DeserializationContext pContext) {
+        return new TriggerInstance(player, ItemPredicate.fromJson(pJson.get("instrument")));
     }
 
     public void trigger(final ServerPlayer player, final ItemStack instrument) {
@@ -49,7 +49,7 @@ public class InstrumentPlayedTrigger extends SimpleCriterionTrigger<InstrumentPl
     public static class TriggerInstance extends AbstractCriterionTriggerInstance {
         private final ItemPredicate item;
 
-        public TriggerInstance(Composite pPlayer, ItemPredicate item) {
+        public TriggerInstance(ContextAwarePredicate pPlayer, ItemPredicate item) {
             super(ID, pPlayer);
             this.item = item;
         }

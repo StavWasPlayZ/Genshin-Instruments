@@ -13,11 +13,9 @@ import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.instrument.InstrumentPacket;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.CommonUtil;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -167,14 +165,12 @@ public class NoteButton extends AbstractButton {
 
 
     @Override
-    public void renderWidget(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+    public void renderWidget(GuiGraphics gui, int mouseX, int mouseY, float partialTick) {
         rings.removeIf((ring) -> !ring.isPlaying());
-        rings.forEach((ring) -> ring.render());
+        rings.forEach((ring) -> ring.render(gui));
         
         // Button
-        ClientUtil.displaySprite(noteBgLocation);
-
-        GuiComponent.blit(pPoseStack,
+        gui.blit(noteBgLocation,
             this.getX(), this.getY(),
             isPlaying() ? (width) : isHoveredOrFocused() ? (width * 2) : 0, 0,
             width, height,
@@ -182,10 +178,9 @@ public class NoteButton extends AbstractButton {
         );
 
         // Note
-        ClientUtil.displaySprite(noteLocation);
         final int noteWidth = width/2, noteHeight = height/2;
 
-        GuiComponent.blit(pPoseStack,
+        gui.blit(noteLocation,
             this.getX() + noteWidth/2, this.getY() + noteHeight/2,
             //NOTE: I have no clue whatsoever how on earth these 1.025 and .9 multipliers actually work.
             // Like seriously wtf why fkuaherjgaeorg i hate maths
@@ -197,16 +192,15 @@ public class NoteButton extends AbstractButton {
 
         // Label
         //FIXME: All text rendered this way are making their way to the top of
-        // the render stack, for some reason
-        drawCenteredString(
-            pPoseStack, minecraft.font, getMessage(),
+        // the render stack, for some reasonW
+        gui.drawCenteredString(
+            minecraft.font, getMessage(),
             textX, textY,
             (isPlaying() ? pressedColorTheme : colorTheme).getRGB()
         );
         
 
         noteAnimation.update();
-        RenderSystem.disableBlend();
     }
 
 

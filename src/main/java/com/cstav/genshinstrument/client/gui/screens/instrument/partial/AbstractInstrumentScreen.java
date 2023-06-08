@@ -2,8 +2,6 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
 
 import java.util.Map;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
@@ -15,8 +13,8 @@ import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.ModId;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.platform.InputConstants.Type;
-import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -194,10 +192,22 @@ public abstract class AbstractInstrumentScreen extends Screen {
     private boolean isOptionsActive = false;
 
     @Override
-    public void render(@NotNull PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+    public void render(GuiGraphics gui, int pMouseX, int pMouseY, float pPartialTick) {
+        // Test 1.20 alpha render bug
+        // It is indeed a bug
+        // Only 1st cell gets rendered with half alpha
+        
+        // RenderSystem.setShaderColor(
+        //     getThemeLoader().getNoteTheme().getRed() / 255f,
+        //     getThemeLoader().getNoteTheme().getGreen() / 255f,
+        //     getThemeLoader().getNoteTheme().getBlue() / 255f,
+        //     .5f
+        // );
+
+        
+        super.render(gui, pMouseX, pMouseY, pPartialTick);
         if (ioa())
-            optionsScreen.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+            optionsScreen.render(gui, pMouseX, pMouseY, pPartialTick);
     }
 
     protected void onOptionsOpen() {

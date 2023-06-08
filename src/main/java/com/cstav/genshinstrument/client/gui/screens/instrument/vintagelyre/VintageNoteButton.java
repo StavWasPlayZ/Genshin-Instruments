@@ -1,14 +1,12 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.vintagelyre;
 
-import com.cstav.genshinstrument.client.ClientUtil;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteGridButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.sound.NoteSound;
-import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -32,8 +30,8 @@ public class VintageNoteButton extends NoteGridButton {
     }
 
     @Override
-    public void renderWidget(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        super.renderWidget(pPoseStack, pMouseX, pMouseY, pPartialTick);
+    public void renderWidget(GuiGraphics gui, int pMouseX, int pMouseY, float pPartialTick) {
+        super.renderWidget(gui, pMouseX, pMouseY, pPartialTick);
 
         if (!shouldRenderThingy())
             return;
@@ -41,8 +39,7 @@ public class VintageNoteButton extends NoteGridButton {
         final int textureWidth = (int)(width * TEXTURE_MULTIPLIER),
             textureHeight = (int)(height * TEXTURE_MULTIPLIER);
 
-        ClientUtil.displaySprite(thingyLocation);
-        GuiComponent.blit(pPoseStack,
+        gui.blit(thingyLocation,
             getX() - 1, getY() - 5,
             isPlaying() ? textureWidth/2 : 0, 0,
             textureWidth/2,  textureHeight,

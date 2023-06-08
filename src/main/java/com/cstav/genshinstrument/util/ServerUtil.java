@@ -8,6 +8,7 @@ import com.cstav.genshinstrument.networking.packets.instrument.PlayNotePacket;
 import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -23,7 +24,7 @@ public class ServerUtil {
 
     
     public static void sendPlayNotePackets(ServerPlayer player, InteractionHand hand, NoteSound sound, float pitch) {
-        for (final Player listener : noteListeners(player.level, player.blockPosition()))
+        for (final Player listener : noteListeners(player.level(), player.blockPosition()))
             ModPacketHandler.sendToClient(
                 new PlayNotePacket(player.blockPosition(), sound, pitch, player.getUUID()),
                 (ServerPlayer)listener
@@ -31,7 +32,7 @@ public class ServerUtil {
 
         // Trigger an instrument game event
         // This is done so that sculk sensors can pick up the instrument's sound
-        player.level.gameEvent(
+        player.level().gameEvent(
             GameEvent.INSTRUMENT_PLAY, player.blockPosition(),
             GameEvent.Context.of(player)
         );
@@ -53,7 +54,7 @@ public class ServerUtil {
         else
             level.gameEvent(null, GameEvent.INSTRUMENT_PLAY, pos);
 
-        MinecraftForge.EVENT_BUS.post(new InstrumentPlayedEvent(sound, level, pos));
+        MinecraftForge.EVENT_BUS.post(new InstrumentPlayedEvent(sound, (ServerLevel)level, pos));
     }
     private static List<Player> noteListeners(Level level, BlockPos pos) {
         return CommonUtil.getPlayersInArea(level,

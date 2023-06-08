@@ -2,27 +2,29 @@ package com.cstav.genshinstrument;
 
 import com.cstav.genshinstrument.item.ModItems;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.CreativeModeTabEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 
 @EventBusSubscriber(modid = Main.MODID, bus = Bus.MOD)
 public class ModCreativeModeTabs {
-    
-    private static CreativeModeTab instrumentsTab;
-    public static CreativeModeTab getInstrumentsTab() {
-        return instrumentsTab;
+
+    private static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Main.MODID);
+
+    public static void regsiter(final IEventBus bus) {
+        TABS.register(bus);
     }
 
-    @SubscribeEvent
-    public static void registerCreativeModeTabs(final CreativeModeTabEvent.Register event) {
-        
-        instrumentsTab = event.registerCreativeModeTab(new ResourceLocation(Main.MODID, "instruments_tab"), (builder) -> builder
+    public static final RegistryObject<CreativeModeTab>
+        instrumentsTab = TABS.register("instruments_tab",
+            () -> CreativeModeTab.builder()
+
                 .title(Component.translatable("genshinstrument.itemGroup.instruments"))
                 .icon(() -> new ItemStack(ModItems.FLORAL_ZITHER.get()))
                 .noScrollBar()
@@ -32,8 +34,9 @@ public class ModCreativeModeTabs {
                         out.accept(item.get())
                     )
                 )
-        );
 
-    }
+            .build()
+        )
+    ;
 
 }
