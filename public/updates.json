@@ -20,7 +20,8 @@
 
         "2.6": "- Added the visual play ring from Genshin",
 
-        "2.7": "- Updated mod to MC v1.20"
+        "2.7": "- Updated mod to MC v1.20",
+        "2.7.1": "- Fixed play ring's alpha channel rendering incorrectly"
     },
 
     "promos": {
@@ -30,7 +31,7 @@
         "1.19.4-latest": "2.6",
         "1.19.4-recommended": "2.6",
 
-        "1.20-latest": "2.7",
-        "1.20-recommended": "2.7"
+        "1.20-latest": "2.7.1",
+        "1.20-recommended": "2.7.1"
     }
 }
