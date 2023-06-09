@@ -70,7 +70,7 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
         layout2.visitWidgets(this::addRenderableWidget);
 
         // Initialize all the notes
-        noteMap().values().forEach((note) -> note.init());
+        noteMap().values().forEach(NoteButton::init);
 
         super.init();
     }

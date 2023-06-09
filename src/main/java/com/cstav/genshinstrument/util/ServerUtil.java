@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument.util;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
@@ -23,10 +24,21 @@ public class ServerUtil {
     public static final int PLAY_DISTANCE = 16;
 
     
+    /**
+     * Sends {@link PlayNotePacket}s in the specified {@link ServerUtil#PLAY_DISTANCE}.
+     * This method treats the sound as it was produced by a player.
+     * @param player The player producing the sounds
+     * @param hand The hand of the player producing the sounds
+     * @param sound The sound tp initiate
+     * @param pitch The pitch of the sound to initiate
+     */
     public static void sendPlayNotePackets(ServerPlayer player, InteractionHand hand, NoteSound sound, float pitch) {
         for (final Player listener : noteListeners(player.level(), player.blockPosition()))
             ModPacketHandler.sendToClient(
-                new PlayNotePacket(player.blockPosition(), sound, pitch, player.getUUID()),
+                new PlayNotePacket(
+                    player.blockPosition(), sound, pitch,
+                    Optional.of(player.getUUID()), Optional.of(hand)
+                ),
                 (ServerPlayer)listener
             );
 
@@ -37,25 +49,45 @@ public class ServerUtil {
             GameEvent.Context.of(player)
         );
 
-        MinecraftForge.EVENT_BUS.post(new InstrumentPlayedEvent.ByPlayer(sound, player, hand));
+        MinecraftForge.EVENT_BUS.post(new InstrumentPlayedEvent.ByPlayer(sound, player, hand, false));
     }
+
+    /**
+     * Sends {@link PlayNotePacket}s in the specified {@link ServerUtil#PLAY_DISTANCE}.
+     * This method treats the sound as it was not produced by a player.
+     * @param level The world that the sound should initiate in
+     * @param pos The position of the sound to initiate
+     * @param sound The sound to initiate
+     * @param pitch The pitch of the sound to initiate
+     */
     public static void sendPlayNotePackets(Level level, BlockPos pos, NoteSound sound, float pitch) {
         for (final Player listener : noteListeners(level, pos))
             ModPacketHandler.sendToClient(
-                new PlayNotePacket(pos, sound, pitch, null), (ServerPlayer)listener
+                new PlayNotePacket(
+                    pos, sound, pitch,
+                    Optional.empty(), Optional.empty()
+                ),
+                (ServerPlayer)listener
             );
 
+
         final BlockState bs = level.getBlockState(pos);
+        // The sound may have been coming from a block
         if (bs != Blocks.AIR.defaultBlockState())
             level.gameEvent(
                 GameEvent.INSTRUMENT_PLAY, pos,
                 GameEvent.Context.of(bs)
             );
+        // idk what else
         else
             level.gameEvent(null, GameEvent.INSTRUMENT_PLAY, pos);
 
-        MinecraftForge.EVENT_BUS.post(new InstrumentPlayedEvent(sound, (ServerLevel)level, pos));
+
+        MinecraftForge.EVENT_BUS.post(new InstrumentPlayedEvent(sound, (ServerLevel)level, pos, false));
     }
+
+
+
     private static List<Player> noteListeners(Level level, BlockPos pos) {
         return CommonUtil.getPlayersInArea(level,
             new AABB(pos).inflate(PLAY_DISTANCE)

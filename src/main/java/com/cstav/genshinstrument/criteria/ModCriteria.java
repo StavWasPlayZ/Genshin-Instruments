@@ -5,6 +5,7 @@ import static net.minecraft.advancements.CriteriaTriggers.register;
 import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -17,7 +18,8 @@ public class ModCriteria {
 
     @SubscribeEvent
     public static void onInstrumentPlayed(final InstrumentPlayedEvent.ByPlayer event) {
-        INSTRUMENT_PLAYED_TRIGGER.trigger(event.player, event.instrument);
+        if (!event.isClientSide)
+            INSTRUMENT_PLAYED_TRIGGER.trigger((ServerPlayer)event.player, event.instrument);
     }
     
 }

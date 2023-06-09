@@ -5,10 +5,10 @@ import javax.annotation.Nullable;
 import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.Event;
 
 /**
@@ -18,23 +18,25 @@ import net.minecraftforge.eventbus.api.Event;
 public class InstrumentPlayedEvent extends Event {
 
     public final NoteSound sound;
-    public final ServerLevel level;
+    public final Level level;
     public final BlockPos pos;
+    public final boolean isClientSide;
 
-    public InstrumentPlayedEvent(NoteSound sound, final ServerLevel level, final BlockPos pos) {
+    public InstrumentPlayedEvent(NoteSound sound, Level level, BlockPos pos, boolean isClientSide) {
         this.sound = sound;
         this.level = level;
         this.pos = pos;
+        this.isClientSide = isClientSide;
     }
 
 
     public static final class ByPlayer extends InstrumentPlayedEvent {
-        public final ServerPlayer player;
-        public final InteractionHand hand;
+        public final Player player;
+        public final @Nullable InteractionHand hand;
         public final ItemStack instrument;
 
-        public ByPlayer(NoteSound sound, ServerPlayer player, @Nullable InteractionHand hand) {
-            super(sound, player.serverLevel(), player.blockPosition());
+        public ByPlayer(NoteSound sound, Player player, @Nullable InteractionHand hand, boolean isClientSide) {
+            super(sound, player.level(), player.blockPosition(), isClientSide);
             this.player = player;
             this.hand = hand;
     

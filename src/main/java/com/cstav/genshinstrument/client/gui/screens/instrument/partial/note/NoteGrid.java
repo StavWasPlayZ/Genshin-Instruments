@@ -114,7 +114,7 @@ public class NoteGrid implements Iterable<NoteButton> {
         FrameLayout.alignInRectangle(grid, 0, 0, screenWidth, screenHeight, 0.5f, vertAlignment);
         
         // Initialize all the notes
-        forEach((note) -> note.init());
+        forEach(NoteButton::init);
 
         return grid;
     }
