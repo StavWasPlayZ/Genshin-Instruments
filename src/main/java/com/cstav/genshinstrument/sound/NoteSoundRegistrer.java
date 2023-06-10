@@ -42,12 +42,15 @@ public abstract class NoteSoundRegistrer {
         soundRegistrer.register(name, () ->
             sound.mono = createSoundUnsafe(name)
         );
+
         if (hasStereo) {
             final String stereoName = name+"_stereo";
             soundRegistrer.register(stereoName, () ->
                 (sound.stereo = Optional.of(createSoundUnsafe(stereoName))).get()
             );
         }
+        else
+            sound.stereo = Optional.empty();
 
         return sound;
     }
