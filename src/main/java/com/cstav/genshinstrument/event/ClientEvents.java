@@ -61,7 +61,7 @@ public class ClientEvents {
 
         for (NoteButton note : screen.notesIterable())
             if (note.sound.equals(event.sound)) {
-                note.foreignPlay();
+                note.playNoteAnimation(true);
                 return;
             }
     }

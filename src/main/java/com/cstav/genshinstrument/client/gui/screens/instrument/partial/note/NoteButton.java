@@ -163,9 +163,6 @@ public class NoteButton extends AbstractButton {
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
 
-        if (!isPlaying())
-            foreignPlaying = false;
-
         rings.removeIf((ring) -> !ring.isPlaying());
         rings.forEach((ring) -> ring.render(gui));
 
@@ -238,9 +235,7 @@ public class NoteButton extends AbstractButton {
         );
         
 
-        noteAnimation.play();
-        if (ModClientConfigs.EMIT_RING_ANIMATION.get())
-            rings.add(new NoteRing(this, false));
+        playNoteAnimation(false);
 
         locked = true;
     }
@@ -250,15 +245,13 @@ public class NoteButton extends AbstractButton {
     }
 
     private boolean foreignPlaying = false;
-    /**
-     * Plays a note animation for a close-by player
-     */
-    public void foreignPlay() {
-        foreignPlaying = true;
 
-        noteAnimation.play(true);
+    public void playNoteAnimation(final boolean isForeign) {
+        foreignPlaying = isForeign;
+
+        noteAnimation.play(isForeign);
         if (ModClientConfigs.EMIT_RING_ANIMATION.get())
-            rings.add(new NoteRing(this, true));
+            rings.add(new NoteRing(this, isForeign));
     }
 
 

@@ -26,12 +26,12 @@ public abstract class NoteSoundRegistrer {
      * @param hasStereo If this note has a stereo version
      * 
      * @return The new instrument sound instance
-     * @see ModSounds#registerInstrument(String, boolean)
+     * @see ModSounds#registerNote(String, boolean)
      */
     public static NoteSound registerInstrument(DeferredRegister<SoundEvent> soundRegistrer,
       ResourceLocation soundLocation, int note, boolean hasStereo) {
 
-        return registerInstrument(soundRegistrer, soundLocation.withSuffix("_note_"+note), hasStereo);
+        return registerNote(soundRegistrer, soundLocation.withSuffix("_note_"+note), hasStereo);
     }
     /**
      * Creates a {@link NoteSound} with null sounds, that will get filled
@@ -40,7 +40,7 @@ public abstract class NoteSoundRegistrer {
      * @param hasStereo If this note has a stereo version
      * @return The new instrument sound instance
      */
-    public static NoteSound registerInstrument(DeferredRegister<SoundEvent> soundRegistrer,
+    public static NoteSound registerNote(DeferredRegister<SoundEvent> soundRegistrer,
       ResourceLocation soundLocation, boolean hasStereo) {
         final NoteSound sound = new NoteSound();
 
@@ -56,6 +56,9 @@ public abstract class NoteSoundRegistrer {
             sound.stereo = Optional.empty();
 
         return sound;
+    }
+    public static NoteSound registerNote(DeferredRegister<SoundEvent> soundRegistrer, ResourceLocation soundLocation) {
+        return registerNote(soundRegistrer, soundLocation, false);
     }
 
     public static SoundEvent createSoundUnsafe(final ResourceLocation location) {

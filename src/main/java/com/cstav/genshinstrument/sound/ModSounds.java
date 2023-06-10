@@ -1,7 +1,7 @@
 package com.cstav.genshinstrument.sound;
 
 import static com.cstav.genshinstrument.sound.NoteSoundRegistrer.createInstrumentNotes;
-import static com.cstav.genshinstrument.sound.NoteSoundRegistrer.registerInstrument;
+import static com.cstav.genshinstrument.sound.NoteSoundRegistrer.registerNote;
 
 import com.cstav.genshinstrument.Main;
 
@@ -27,8 +27,8 @@ public class ModSounds {
         ZITHER_OLD_NOTE_SOUNDS = createInstrumentNotes(SOUNDS, loc("floral_zither_old")),
 
         GLORIOUS_DRUM = new NoteSound[] {
-            registerInstrument(SOUNDS, loc("glorious_drum_don"), false),
-            registerInstrument(SOUNDS, loc("glorious_drum_ka"), false)
+            registerNote(SOUNDS, loc("glorious_drum_don")),
+            registerNote(SOUNDS, loc("glorious_drum_ka"))
         }
     ;
 

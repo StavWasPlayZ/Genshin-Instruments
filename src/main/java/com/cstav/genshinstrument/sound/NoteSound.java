@@ -63,21 +63,19 @@ public class NoteSound {
 
     /**
      * Determines which sound type should play based on this player's distance from the instrument player.
-     * <p>This method is used by the server.</p>
+     * <p>This method is fired from the server.</p>
      * @param distanceFromPlayer The distance between this player and the position of the note's sound
      * @return Either the Mono or Stereo sound, based on the client's preference.
      */
-    @SuppressWarnings("resource")
     @OnlyIn(Dist.CLIENT)
     public SoundEvent getByPreference(final double distanceFromPlayer) {
         if (!hasStereo())
             return mono;
         
         final InstrumentChannelType preference = ModClientConfigs.CHANNEL_TYPE.get();
-        final float insrtumentVol = Minecraft.getInstance().options.getSoundSourceVolume(SoundSource.RECORDS);
 
         return switch(preference) {
-            case MIXED -> ((insrtumentVol < 1) || (distanceFromPlayer > STEREO_RANGE)) ? mono : stereo.get();
+            case MIXED -> (metInstrumentVolume() && (distanceFromPlayer <= STEREO_RANGE)) ? stereo.get() : mono;
 
             case STEREO -> stereo.get();
             case MONO -> mono;
@@ -85,7 +83,7 @@ public class NoteSound {
     }
     /**
      * Returns the literal preference of the client. Defaults to Stereo.
-     * <p>This method is used by the client.</p>
+     * <p>This method is fired from the client.</p>
      * @return Either the Mono or Stereo sound, based on the client's preference
      */
     @OnlyIn(Dist.CLIENT)
@@ -96,9 +94,19 @@ public class NoteSound {
         final InstrumentChannelType preference = ModClientConfigs.CHANNEL_TYPE.get();
 
         return switch (preference) {
-            case MIXED, STEREO -> stereo.get();
+            case MIXED -> metInstrumentVolume() ? stereo.get() : mono;
+
+            case STEREO -> stereo.get();
             case MONO -> mono;
         };
+    }
+
+    /**
+     * @return True if the instrument volume is set to 100%
+     */
+    @SuppressWarnings("resource")
+    private static boolean metInstrumentVolume() {
+        return Minecraft.getInstance().options.getSoundSourceVolume(SoundSource.RECORDS) == 1;
     }
 
 
