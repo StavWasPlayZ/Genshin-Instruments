@@ -5,8 +5,6 @@ import java.util.HashMap;
 
 import javax.annotation.Nullable;
 
-import org.antlr.v4.Tool;
-
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
