@@ -229,7 +229,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     // Option handlers
     protected void onLabelChanged(final CycleButton<INoteLabel> button, final INoteLabel label) {
         if (instrumentScreen != null)
-            instrumentScreen.noteMap().values().forEach((note) -> note.setLabelSupplier(label.getLabelSupplier()));
+            instrumentScreen.notesIterable().forEach((note) -> note.setLabelSupplier(label.getLabelSupplier()));
 
         queueToSave("note_label", () -> saveLabel(label));
     }

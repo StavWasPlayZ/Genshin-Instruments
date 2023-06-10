@@ -15,6 +15,7 @@ import com.mojang.blaze3d.platform.InputConstants.Key;
 
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.layouts.LinearLayout.Orientation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -32,8 +33,8 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
         super(hand);
     }
     @Override
-    public String getInstrumentId() {
-        return INSTRUMENT_ID;
+    public ResourceLocation getInstrumentId() {
+        return new ResourceLocation(Main.MODID, INSTRUMENT_ID);
     }
 
     
@@ -70,7 +71,7 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
         layout2.visitWidgets(this::addRenderableWidget);
 
         // Initialize all the notes
-        noteMap().values().forEach(NoteButton::init);
+        notesIterable().forEach(NoteButton::init);
 
         super.init();
     }

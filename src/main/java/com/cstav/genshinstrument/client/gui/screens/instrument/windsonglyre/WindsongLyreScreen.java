@@ -6,6 +6,7 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.Instrumen
 import com.cstav.genshinstrument.sound.ModSounds;
 import com.cstav.genshinstrument.sound.NoteSound;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -22,8 +23,8 @@ public class WindsongLyreScreen extends AbstractGridInstrumentScreen {
         super(hand);
     }
     @Override
-    public String getInstrumentId() {
-        return INSTRUMENT_ID;
+    public ResourceLocation getInstrumentId() {
+        return new ResourceLocation(Main.MODID, INSTRUMENT_ID);
     }
     
 

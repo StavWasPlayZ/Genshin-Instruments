@@ -2,7 +2,6 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
 
 import java.util.Map;
 
-import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
@@ -10,7 +9,6 @@ import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractI
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.packets.instrument.CloseInstrumentPacket;
 import com.cstav.genshinstrument.sound.NoteSound;
-import com.cstav.genshinstrument.util.ModId;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.platform.InputConstants.Type;
 
@@ -54,7 +52,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
     public abstract InstrumentThemeLoader getThemeLoader();
 
 
-    public abstract String getInstrumentId();
+    public abstract ResourceLocation getInstrumentId();
     protected abstract AbstractInstrumentOptionsScreen initInstrumentOptionsScreen();
 
     
@@ -68,9 +66,11 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     /**
      * @return A map holding an integer key as its keycode and a {@link NoteButton} as its value.
-     * All notes are to be present in this map.
      */
     public abstract Map<Key, NoteButton> noteMap();
+    public Iterable<NoteButton> notesIterable() {
+        return noteMap().values();
+    }
 
     /**
      * @return The path of the root directory of all instruments
@@ -85,11 +85,11 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * Shorthand for {@code getRootPath() + getInstrumentId()}
      */
     protected String getPath() {
-        return getGlobalRootPath() + getInstrumentId() + "/";
+        return getGlobalRootPath() + getInstrumentId().getPath() + "/";
     }
 
     public String getModId() {
-        return (this instanceof ModId) ? ((ModId)this).modid() : Main.MODID;
+        return getInstrumentId().getNamespace();
     }
 
     

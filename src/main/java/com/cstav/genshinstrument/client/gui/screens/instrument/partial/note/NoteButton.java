@@ -109,13 +109,6 @@ public class NoteButton extends AbstractButton {
         return labelSupplier;
     }
 
-    //TODO remove, it's public already
-    public NoteSound getSound() {
-        return sound;
-    }
-    public void setSound(final NoteSound sound) {
-        this.sound = sound;
-    }
 
     /**
      * @param path The resource to obtain from this note's directory
