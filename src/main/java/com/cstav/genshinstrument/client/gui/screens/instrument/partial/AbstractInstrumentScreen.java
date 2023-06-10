@@ -55,6 +55,11 @@ public abstract class AbstractInstrumentScreen extends Screen {
     public abstract ResourceLocation getInstrumentId();
     protected abstract AbstractInstrumentOptionsScreen initInstrumentOptionsScreen();
 
+    /**
+     * @return The location of all labels present in this instrument
+     */
+    public abstract ResourceLocation getNotesLocation();
+
     
     /**
      * <p>Gets the sound array used by this instrument.

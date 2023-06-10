@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note;
 
 import java.awt.Point;
+import java.awt.Color;
 
 import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.client.ClientUtil;
@@ -39,10 +40,11 @@ public class NoteRing {
 
         ringAnimation.update();
 
+        final Color noteTheme = note.instrumentScreen.getThemeLoader().getNoteTheme();
         RenderSystem.setShaderColor(
-            note.colorTheme.getRed() / 255f,
-            note.colorTheme.getGreen() / 255f,
-            note.colorTheme.getBlue() / 255f,
+            noteTheme.getRed() / 255f,
+            noteTheme.getGreen() / 255f,
+            noteTheme.getBlue() / 255f,
             alpha
         );
 

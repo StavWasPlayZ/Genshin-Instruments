@@ -10,6 +10,7 @@ import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 
 import net.minecraft.client.gui.layouts.AbstractLayout;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -51,6 +52,11 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
     @Override
     protected AbstractInstrumentOptionsScreen initInstrumentOptionsScreen() {
         return new GridInstrumentOptionsScreen(this);
+    }
+
+    @Override
+    public ResourceLocation getNotesLocation() {
+        return getResourceFromGlob("grid_notes.png");
     }
     
 

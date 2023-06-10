@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import com.cstav.genshinstrument.client.ClientUtil;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.animation.NoteAnimationController;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
@@ -30,7 +31,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class NoteButton extends AbstractButton {
-    public static final String NOTE_FILENAME = "note.png", NOTE_BG_FILENAME = "note_bg.png";
+    public static final String NOTE_BG_FILENAME = "note_bg.png";
 
 
     @SuppressWarnings("resource")
@@ -58,7 +59,6 @@ public class NoteButton extends AbstractButton {
     public final AbstractInstrumentScreen instrumentScreen;
 
     protected final int noteTextureRow, rowsInNoteTexture;
-    protected final Color colorTheme, pressedColorTheme;
     protected final ResourceLocation rootLocation,
         noteLocation, noteBgLocation;
 
@@ -78,8 +78,6 @@ public class NoteButton extends AbstractButton {
         this.labelSupplier = labelSupplier;
 
         this.instrumentScreen = instrumentScreen;
-        colorTheme = instrumentScreen.getThemeLoader().getNoteTheme();
-        pressedColorTheme = instrumentScreen.getThemeLoader().getPressedNoteTheme();
 
         this.noteTextureRow = noteTextureRow;
         this.rowsInNoteTexture = rowsInNoteTexture;
@@ -87,7 +85,7 @@ public class NoteButton extends AbstractButton {
 
         rootLocation = instrumentScreen.getResourceFromRoot("note");
 
-        noteLocation = getResourceFromRoot(NOTE_FILENAME);
+        noteLocation = instrumentScreen.getNotesLocation();
         noteBgLocation = getResourceFromRoot(NOTE_BG_FILENAME);
     }
     public NoteButton(NoteSound sound,
@@ -166,6 +164,13 @@ public class NoteButton extends AbstractButton {
         rings.removeIf((ring) -> !ring.isPlaying());
         rings.forEach((ring) -> ring.render(gui));
 
+        final InstrumentThemeLoader theme = instrumentScreen.getThemeLoader();
+        final Color
+            noteTheme = theme.getNoteTheme(),
+            pressedNoteTheme = theme.getPressedNoteTheme(),
+            labelTheme = theme.getLabelTheme()
+        ;
+
         
         // Button
 
@@ -189,15 +194,30 @@ public class NoteButton extends AbstractButton {
         // Note
         final int noteWidth = width/2, noteHeight = height/2;
 
+        if (isPlaying() && !foreignPlaying)
+            RenderSystem.setShaderColor(
+                pressedNoteTheme.getRed() / 255f,
+                pressedNoteTheme.getGreen() / 255f,
+                pressedNoteTheme.getBlue() / 255f,
+            1);
+        else
+            RenderSystem.setShaderColor(
+                labelTheme.getRed() / 255f,
+                labelTheme.getGreen() / 255f,
+                labelTheme.getBlue() / 255f,
+            1);
+
         gui.blit(noteLocation,
             this.getX() + noteWidth/2, this.getY() + noteHeight/2,
             //NOTE: I have no clue whatsoever how on earth these 1.025 and .9 multipliers actually work.
             // Like seriously wtf why fkuaherjgaeorg i hate maths
             //NOTE: Moved said numbers to the randomAss vars
-            noteWidth * noteTextureRow * randomAssMultiplier2, (isPlaying() && !foreignPlaying) ? noteHeight : 0,
+            noteWidth * noteTextureRow * randomAssMultiplier2, 0,
             noteWidth, noteHeight,
-            (int)(noteWidth * (noteTextureWidth / rowsInNoteTexture) * randomAssMultiplier1), height
+            (int)(noteWidth * (noteTextureWidth / rowsInNoteTexture) * randomAssMultiplier1), height/2
         );
+
+        RenderSystem.setShaderColor(1, 1, 1, 1);
 
         // Label
         //FIXME: All text rendered this way are making their way to the top of
@@ -205,7 +225,7 @@ public class NoteButton extends AbstractButton {
         gui.drawCenteredString(
             minecraft.font, getMessage(),
             textX, textY,
-            ((isPlaying() && !foreignPlaying) ? pressedColorTheme : colorTheme).getRGB()
+            ((isPlaying() && !foreignPlaying) ? pressedNoteTheme : noteTheme).getRGB()
         );
         
 

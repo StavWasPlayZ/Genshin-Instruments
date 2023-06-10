@@ -35,10 +35,10 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @EventBusSubscriber(modid = Main.MODID, bus = Bus.MOD, value = Dist.CLIENT)
 public class InstrumentThemeLoader {
     private static final ArrayList<InstrumentThemeLoader> LOADERS = new ArrayList<>();
-    private static final Color DEF_NOTE_THEME = Color.BLACK, DEF_NOTE_PRESSED_THEME = new Color(255, 249, 239);
+    private static final Color DEF_NOTE_PRESSED_THEME = new Color(255, 249, 239);
 
     private final ResourceLocation InstrumentStyleLocation;
-    private Color noteTheme, pressedNoteTheme;
+    private Color noteTheme, pressedNoteTheme, labelTheme;
 
     private ArrayList<Consumer<JsonObject>> listeners = new ArrayList<>();
     
@@ -59,7 +59,8 @@ public class InstrumentThemeLoader {
     }
 
     public void loadColorTheme(final JsonObject theme) {
-        setNoteTheme(getTheme(theme.get("note_theme"), DEF_NOTE_THEME));
+        setNoteTheme(getTheme(theme.get("note_theme"), Color.BLACK));
+        setLabelTheme(getTheme(theme.get("label_theme"), Color.BLACK));
         setPressedNoteTheme(getTheme(theme.get("note_pressed_theme"), DEF_NOTE_PRESSED_THEME));
     }
 
@@ -140,6 +141,13 @@ public class InstrumentThemeLoader {
     }
     public void setPressedNoteTheme(Color pressedNoteTheme) {
         this.pressedNoteTheme = pressedNoteTheme;
+    }
+
+    public Color getLabelTheme() {
+        return labelTheme;
+    }
+    public void setLabelTheme(Color labelTheme) {
+        this.labelTheme = labelTheme;
     }
 
 }
