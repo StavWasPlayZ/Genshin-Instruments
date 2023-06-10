@@ -6,18 +6,20 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AnimationController {
+    protected final Minecraft minecraft = Minecraft.getInstance();
 
     private int animTime;
     private boolean isPlaying;
 
-    protected final Minecraft minecraft = Minecraft.getInstance();
-    protected final float duration, targetValue;
+    public final float initDuration, initTargetValue;
+    protected float duration, targetValue;
+
     /**
      * @param duration The duration of the animation in seconds
      */
     public AnimationController(final float duration, final float targetValue) {
-        this.duration = duration;
-        this.targetValue = targetValue;
+        this.duration = initDuration = duration;
+        this.targetValue = initTargetValue = targetValue;
     }
 
     public int getAnimTime() {
@@ -42,15 +44,27 @@ public abstract class AnimationController {
     
     protected abstract void animFrame(final float targetTime, final float deltaValue);
 
+
     public void stop() {
         resetAnimVars();
         isPlaying = false;
     }
+
     public void play() {
         resetAnimVars();
         isPlaying = true;
     }
+    public void play(final float duration, final float targetValue) {
+        this.duration = duration;
+        this.targetValue = targetValue;
+    }
+
+
+
     protected void resetAnimVars() {
+        duration = initDuration;
+        targetValue = initTargetValue;
+
         animTime = 0;
     }
     

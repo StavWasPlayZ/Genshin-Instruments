@@ -23,9 +23,13 @@ public class NoteRing {
     public int size;
     public float alpha;
 
-    public NoteRing(final NoteButton note) {
+    public NoteRing(final NoteButton note, final boolean isForeign) {
         this.note = note;
-        ringAnimation.play();
+
+        if (isForeign)
+            ringAnimation.play(-.4f);
+        else
+            ringAnimation.play();
     }
     
     

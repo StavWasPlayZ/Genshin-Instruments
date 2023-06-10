@@ -44,4 +44,9 @@ public class NoteAnimationController extends AnimationController {
         button.setPosition(button.getInitX(), button.getInitY());
     }
     
+    public void play(final boolean isForeign) {
+        play();
+        if (isForeign)
+            targetValue /= 1.75f;
+    }
 }

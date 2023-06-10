@@ -10,7 +10,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class RingAnimationController extends AnimationController {
 
-    protected final double initSize = NoteButton.getSize() * .8, initAlpha = -.08;
+    protected final double initSize = NoteButton.getSize() * .8;
+    protected final float initAlpha = -.08f;
     protected final NoteRing ring;
 
     protected final float ringSizeMultiplier;
@@ -22,9 +23,11 @@ public class RingAnimationController extends AnimationController {
     }
 
 
+    private double dSize;
+
     @Override
     protected void animFrame(final float targetTime, final float deltaValue) {
-        ring.size += deltaValue * ringSizeMultiplier;
+        ring.size = (int)(dSize += deltaValue * ringSizeMultiplier);
 
         if (getAnimTime() < targetTime / 1.75f)
             ring.alpha += deltaValue * 1.5f;
@@ -32,13 +35,18 @@ public class RingAnimationController extends AnimationController {
             ring.alpha -= deltaValue;
     }
 
+
     @Override
     protected void resetAnimVars() {
         super.resetAnimVars();
 
-        ring.size = (int)initSize;
-        ring.alpha = (int)initAlpha;
+        ring.size = (int)(dSize = initSize);
+        ring.alpha = initAlpha;
     }
 
+    public void play(final float initAlpha) {
+        this.play();
+        ring.alpha = initAlpha;
+    }
     
 }

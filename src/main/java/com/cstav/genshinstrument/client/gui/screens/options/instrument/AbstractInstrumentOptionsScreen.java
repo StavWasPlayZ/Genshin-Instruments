@@ -5,6 +5,8 @@ import java.util.HashMap;
 
 import javax.annotation.Nullable;
 
+import org.antlr.v4.Tool;
+
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
@@ -182,12 +184,12 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
             
             @Override
             protected void applyValue() {
-                onPitchChanged(this, DivisibleBy5(Mth.clampedLerp(NoteSound.MIN_PITCH, NoteSound.MAX_PITCH, value)));
+                onPitchChanged(this, divisibleBy5(Mth.clampedLerp(NoteSound.MIN_PITCH, NoteSound.MAX_PITCH, value)));
             }
 
-            private static double DivisibleBy5(double number) {
+            private static double divisibleBy5(double number) {
                 final double result = Math.floor(number * 20) / 20;
-                //idk why it is not percise enough but sure ig
+                // Substraction done for percision
                 return number > (NoteSound.MAX_PITCH - .001) ? NoteSound.MAX_PITCH : result;
             }
         };
@@ -204,17 +206,6 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
             rowHelper.addChild(labelType);
         }
 
-        rowHelper.addChild(SpacerElement.height(15), 2);
-
-        final CycleButton<Boolean> stopMusic = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
-            .withInitialValue(ModClientConfigs.STOP_MUSIC_ON_PLAY.get())
-            .withTooltip((value) -> Tooltip.create(Component.translatable(STOP_MUSIC_KEY+".tooltip", NoteSound.STOP_SOUND_DISTANCE)))
-            .create(0, 0,
-                getSmallButtonWidth(), getButtonHeight(),
-                Component.translatable(STOP_MUSIC_KEY), this::onMusicStopChanged
-            );
-        rowHelper.addChild(stopMusic);
-
         final CycleButton<Boolean> emitRing = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(ModClientConfigs.EMIT_RING_ANIMATION.get())
             .create(0, 0,
@@ -223,10 +214,31 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
             );
         rowHelper.addChild(emitRing);
 
+        final CycleButton<Boolean> sharedInstrument = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
+            .withInitialValue(ModClientConfigs.SHARED_INSTRUMENT.get())
+            .withTooltip((value) -> Tooltip.create(Component.translatable("button.genshinstrument.shared_instrument.tooltip")))
+            .create(0, 0,
+                getSmallButtonWidth(), getButtonHeight(),
+                Component.translatable("button.genshinstrument.shared_instrument"), this::onSharedInstrumentChanged
+            );
+        rowHelper.addChild(sharedInstrument);
+
+        rowHelper.addChild(SpacerElement.height(15), 2);
+
+        final CycleButton<Boolean> stopMusic = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
+            .withInitialValue(ModClientConfigs.STOP_MUSIC_ON_PLAY.get())
+            .withTooltip((value) -> Tooltip.create(Component.translatable(STOP_MUSIC_KEY+".tooltip", NoteSound.STOP_SOUND_DISTANCE)))
+            .create(0, 0,
+                getBigButtonWidth(), getButtonHeight(),
+                Component.translatable(STOP_MUSIC_KEY), this::onMusicStopChanged
+            );
+        rowHelper.addChild(stopMusic, 2);
+
         grid.arrangeElements();
     }
 
-    // Option handlers
+
+    // Change handlers
     protected void onLabelChanged(final CycleButton<INoteLabel> button, final INoteLabel label) {
         if (instrumentScreen != null)
             instrumentScreen.notesIterable().forEach((note) -> note.setLabelSupplier(label.getLabelSupplier()));
@@ -248,7 +260,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         ModClientConfigs.PITCH.set(newPitch);
     }
 
-    // These values derive from the config directly, so update them on-spot
+    // These values derive from the config directly, so just update them on-spot
     protected void onChannelTypeChanged(CycleButton<InstrumentChannelType> button, InstrumentChannelType type) {
         ModClientConfigs.CHANNEL_TYPE.set(type);
     }
@@ -257,6 +269,9 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     }
     protected void onEmitRingChanged(final CycleButton<Boolean> button, final boolean value) {
         ModClientConfigs.EMIT_RING_ANIMATION.set(value);
+    }
+    protected void onSharedInstrumentChanged(final CycleButton<Boolean> button, final boolean value) {
+        ModClientConfigs.SHARED_INSTRUMENT.set(value);
     }
 
 

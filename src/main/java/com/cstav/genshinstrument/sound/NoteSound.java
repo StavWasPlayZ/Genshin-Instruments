@@ -125,7 +125,7 @@ public class NoteSound {
         
         MinecraftForge.EVENT_BUS.post((playerUUID == null)
             ? new InstrumentPlayedEvent(this, level, pos, instrumentId, true)
-            : new InstrumentPlayedEvent.ByPlayer(this, player, hand, instrumentId, true)
+            : new InstrumentPlayedEvent.ByPlayer(this, level.getPlayerByUUID(playerUUID), hand, instrumentId, true)
         );
         
 
@@ -155,4 +155,14 @@ public class NoteSound {
         );
     }
 
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof NoteSound))
+            return false;
+
+        final NoteSound other = (NoteSound) obj;
+        // Mono is enough to determine if the sounds are are the same
+        return mono.getLocation().equals(other.mono.getLocation());
+    }
 }

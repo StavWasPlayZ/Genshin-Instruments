@@ -162,15 +162,29 @@ public class NoteButton extends AbstractButton {
     public void renderWidget(GuiGraphics gui, int mouseX, int mouseY, float partialTick) {
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
-        
+
+        if (!isPlaying())
+            foreignPlaying = false;
 
         rings.removeIf((ring) -> !ring.isPlaying());
         rings.forEach((ring) -> ring.render(gui));
+
         
         // Button
+
+        // width = full color, width * 2 = border, 0 = normal
+        int blitOffset =
+            isPlaying() ?
+                foreignPlaying ?
+                    (width * 2)
+                : width
+            : isHoveredOrFocused() ?
+                (width * 2)
+            : 0;
+        
         gui.blit(noteBgLocation,
             this.getX(), this.getY(),
-            isPlaying() ? (width) : isHoveredOrFocused() ? (width * 2) : 0, 0,
+            blitOffset, 0,
             width, height,
             width*3, height
         );
@@ -183,7 +197,7 @@ public class NoteButton extends AbstractButton {
             //NOTE: I have no clue whatsoever how on earth these 1.025 and .9 multipliers actually work.
             // Like seriously wtf why fkuaherjgaeorg i hate maths
             //NOTE: Moved said numbers to the randomAss vars
-            noteWidth * noteTextureRow * randomAssMultiplier2, isPlaying() ? noteHeight : 0,
+            noteWidth * noteTextureRow * randomAssMultiplier2, (isPlaying() && !foreignPlaying) ? noteHeight : 0,
             noteWidth, noteHeight,
             (int)(noteWidth * (noteTextureWidth / rowsInNoteTexture) * randomAssMultiplier1), height
         );
@@ -194,7 +208,7 @@ public class NoteButton extends AbstractButton {
         gui.drawCenteredString(
             minecraft.font, getMessage(),
             textX, textY,
-            (isPlaying() ? pressedColorTheme : colorTheme).getRGB()
+            ((isPlaying() && !foreignPlaying) ? pressedColorTheme : colorTheme).getRGB()
         );
         
 
@@ -226,7 +240,7 @@ public class NoteButton extends AbstractButton {
 
         noteAnimation.play();
         if (ModClientConfigs.EMIT_RING_ANIMATION.get())
-            rings.add(new NoteRing(this));
+            rings.add(new NoteRing(this, false));
 
         locked = true;
     }
@@ -234,6 +248,19 @@ public class NoteButton extends AbstractButton {
     public void onPress() {
         play();
     }
+
+    private boolean foreignPlaying = false;
+    /**
+     * Plays a note animation for a close-by player
+     */
+    public void foreignPlay() {
+        foreignPlaying = true;
+
+        noteAnimation.play(true);
+        if (ModClientConfigs.EMIT_RING_ANIMATION.get())
+            rings.add(new NoteRing(this, true));
+    }
+
 
     @Override
     public boolean mouseReleased(double pMouseX, double pMouseY, int pButton) {

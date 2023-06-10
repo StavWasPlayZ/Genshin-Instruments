@@ -25,6 +25,8 @@
     "button.genshinstrument.stop_music_on_play.tooltip": "When you or other players within %s blocks of range play an instrument, Minecraft's background music will stop.",
     "button.genshinstrument.stop_music_on_play": "Stop Music On Play",
     "button.genshinstrument.emit_ring": "Emit Ring Animations",
+    "button.genshinstrument.shared_instrument.tooltip": "See what other notes players nearby are playing in your instrument's screen",
+    "button.genshinstrument.shared_instrument": "Shared Instrument Screen",
 
 
     "button.genshinstrument.label": "Note labels",

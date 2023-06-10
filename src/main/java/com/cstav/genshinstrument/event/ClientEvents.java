@@ -1,7 +1,10 @@
 package com.cstav.genshinstrument.event;
 
 import com.cstav.genshinstrument.Main;
+import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
+import com.cstav.genshinstrument.event.InstrumentPlayedEvent.ByPlayer;
 import com.cstav.genshinstrument.item.InstrumentItem;
 import com.cstav.genshinstrument.util.ServerUtil;
 
@@ -33,19 +36,18 @@ public class ClientEvents {
 
     
     // Responsible for showing the notes other players play
-    @SuppressWarnings("resource")
-    @SubscribeEvent
-    public static void onInstrumentPlayed(final InstrumentPlayedEvent.ByPlayer event) {
-        // Assuming we're always on the physical client
-        if (!event.player.equals(Minecraft.getInstance().player))
-            onInstrumentPlayed((InstrumentPlayedEvent)event);
-    }
+    //TODO remove
+    @SuppressWarnings("resource") @SubscribeEvent public static void onInstrumentPlayed(final InstrumentPlayedEvent.ByPlayer event) {}
+
     @SubscribeEvent
     public static void onInstrumentPlayed(final InstrumentPlayedEvent event) {
         if (!event.isClientSide)
             return;
+        if ((event instanceof ByPlayer) && ((ByPlayer)(event)).player.equals(MINECRAFT.player))
+            return;
 
-        //TODO: Add a safeguard for client configs
+        if (!ModClientConfigs.SHARED_INSTRUMENT.get())
+            return;
 
 
         if (!(MINECRAFT.screen instanceof AbstractInstrumentScreen))
@@ -56,11 +58,15 @@ public class ClientEvents {
         if (!screen.getInstrumentId().equals(event.instrumentId))
             return;
 
-            
-        if (event.pos.closerThan(MINECRAFT.player.blockPosition(), ServerUtil.PLAY_DISTANCE / 2)) {
+        if (!event.pos.closerThan(MINECRAFT.player.blockPosition(), ServerUtil.PLAY_DISTANCE / 3))
+            return;
 
-            
-        }
+
+        for (NoteButton note : screen.notesIterable())
+            if (note.sound.equals(event.sound)) {
+                note.foreignPlay();
+                return;
+            }
     }
 
 }
