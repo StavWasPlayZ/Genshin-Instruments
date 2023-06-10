@@ -36,9 +36,6 @@ public class ClientEvents {
 
     
     // Responsible for showing the notes other players play
-    //TODO remove
-    @SuppressWarnings("resource") @SubscribeEvent public static void onInstrumentPlayed(final InstrumentPlayedEvent.ByPlayer event) {}
-
     @SubscribeEvent
     public static void onInstrumentPlayed(final InstrumentPlayedEvent event) {
         if (!event.isClientSide)
