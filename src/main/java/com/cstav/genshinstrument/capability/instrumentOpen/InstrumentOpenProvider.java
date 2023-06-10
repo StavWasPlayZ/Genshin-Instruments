@@ -16,12 +16,12 @@ import net.minecraftforge.common.util.LazyOptional;
 public class InstrumentOpenProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
     public static final Capability<InstrumentOpen> INSTRUMENT_OPEN = CapabilityManager.get(new CapabilityToken<>() {});
 
-    private InstrumentOpen lyreOpen;
+    private InstrumentOpen instrumentOpen;
     private final LazyOptional<InstrumentOpen> optional = LazyOptional.of(this::getInstance);
     private @NotNull InstrumentOpen getInstance() {
-        return (lyreOpen == null) ?
-            (lyreOpen = new InstrumentOpen()) :
-            lyreOpen;
+        return (instrumentOpen == null) ?
+            (instrumentOpen = new InstrumentOpen()) :
+            instrumentOpen;
     }
 
 
