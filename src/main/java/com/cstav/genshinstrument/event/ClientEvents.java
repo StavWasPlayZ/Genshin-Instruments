@@ -42,19 +42,21 @@ public class ClientEvents {
     }
     @SubscribeEvent
     public static void onInstrumentPlayed(final InstrumentPlayedEvent event) {
-        //TODO: Add a safeguard for client configs
         if (!event.isClientSide)
             return;
+
+        //TODO: Add a safeguard for client configs
+
 
         if (!(MINECRAFT.screen instanceof AbstractInstrumentScreen))
             return;
 
         final AbstractInstrumentScreen screen = (AbstractInstrumentScreen) MINECRAFT.screen;
 
-        //TODO Make event pass the instrument ID rather than the instrument ItemStack.
-        // Also make it so that the general event recieves it, not just ByPlayer
-        // if (screen.getInstrumentId().equals(event.))
+        if (!screen.getInstrumentId().equals(event.instrumentId))
+            return;
 
+            
         if (event.pos.closerThan(MINECRAFT.player.blockPosition(), ServerUtil.PLAY_DISTANCE / 2)) {
 
             

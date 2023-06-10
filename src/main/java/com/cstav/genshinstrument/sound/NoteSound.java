@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Position;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -110,7 +111,7 @@ public class NoteSound {
      * @param pos The position at which the sound was fired from
      */
     @OnlyIn(Dist.CLIENT)
-    public void playAtPos(float pitch, UUID playerUUID, InteractionHand hand, BlockPos pos) {
+    public void playAtPos(float pitch, UUID playerUUID, InteractionHand hand, ResourceLocation instrumentId, BlockPos pos) {
         final Minecraft minecraft = Minecraft.getInstance();
         final Player player = minecraft.player;
 
@@ -123,8 +124,8 @@ public class NoteSound {
 
         
         MinecraftForge.EVENT_BUS.post((playerUUID == null)
-            ? new InstrumentPlayedEvent(this, level, pos, true)
-            : new InstrumentPlayedEvent.ByPlayer(this, player, hand, true)
+            ? new InstrumentPlayedEvent(this, level, pos, instrumentId, true)
+            : new InstrumentPlayedEvent.ByPlayer(this, player, hand, instrumentId, true)
         );
         
 

@@ -217,7 +217,10 @@ public class NoteButton extends AbstractButton {
 
         // Send sound packet to server
         ModPacketHandler.sendToServer(
-            new InstrumentPacket(sound, instrumentScreen.getPitch(), instrumentScreen.interactionHand)
+            new InstrumentPacket(
+                sound, instrumentScreen.getPitch(),
+                instrumentScreen.interactionHand, instrumentScreen.getInstrumentId()
+            )
         );
         
 

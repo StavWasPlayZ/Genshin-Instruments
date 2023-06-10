@@ -8,6 +8,7 @@ import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.ServerUtil;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.network.NetworkDirection;
@@ -21,15 +22,21 @@ public class InstrumentPacket implements ModPacket {
     private final InteractionHand hand;
     private final float pitch;
 
-    public InstrumentPacket(final NoteSound sound, final float pitch, final InteractionHand hand) {
+    private final ResourceLocation instrumentId;
+
+    public InstrumentPacket(NoteSound sound, float pitch, InteractionHand hand, ResourceLocation instrumentId) {
         this.sound = sound;
         this.hand = hand;
         this.pitch = pitch;
+
+        this.instrumentId = instrumentId;
     }
     public InstrumentPacket(FriendlyByteBuf buf) {
         sound = NoteSound.readFromNetwork(buf);
         hand = buf.readEnum(InteractionHand.class);
         pitch = buf.readFloat();
+
+        instrumentId = buf.readResourceLocation();
     }
 
     @Override
@@ -37,6 +44,8 @@ public class InstrumentPacket implements ModPacket {
         sound.writeToNetwork(buf);
         buf.writeEnum(hand);
         buf.writeFloat(pitch);
+
+        buf.writeResourceLocation(instrumentId);
     }
 
 
@@ -50,7 +59,7 @@ public class InstrumentPacket implements ModPacket {
             if (!InstrumentOpen.isOpen(player))
                 return;
 
-            ServerUtil.sendPlayNotePackets(player, hand, sound, pitch);
+            ServerUtil.sendPlayNotePackets(player, hand, sound, instrumentId, pitch);
         });
 
         return true;
