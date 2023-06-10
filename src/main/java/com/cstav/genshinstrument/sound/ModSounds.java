@@ -5,6 +5,7 @@ import static com.cstav.genshinstrument.sound.NoteSoundRegistrer.registerInstrum
 
 import com.cstav.genshinstrument.Main;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -19,16 +20,23 @@ public class ModSounds {
 
 
     public static final NoteSound[]
-        WINDSONG_LYRE_NOTE_SOUNDS = createInstrumentNotes(SOUNDS, "windsong_lyre", true),
-        VINTAGE_LYRE_NOTE_SOUNDS = createInstrumentNotes(SOUNDS, "vintage_lyre"),
+        WINDSONG_LYRE_NOTE_SOUNDS = createInstrumentNotes(SOUNDS, loc("windsong_lyre"), true),
+        VINTAGE_LYRE_NOTE_SOUNDS = createInstrumentNotes(SOUNDS, loc("vintage_lyre")),
 
-        ZITHER_NEW_NOTE_SOUNDS = createInstrumentNotes(SOUNDS, "floral_zither_new"),
-        ZITHER_OLD_NOTE_SOUNDS = createInstrumentNotes(SOUNDS, "floral_zither_old"),
+        ZITHER_NEW_NOTE_SOUNDS = createInstrumentNotes(SOUNDS, loc("floral_zither_new")),
+        ZITHER_OLD_NOTE_SOUNDS = createInstrumentNotes(SOUNDS, loc("floral_zither_old")),
 
         GLORIOUS_DRUM = new NoteSound[] {
-            registerInstrument(SOUNDS, "glorious_drum_don", false),
-            registerInstrument(SOUNDS, "glorious_drum_ka", false)
+            registerInstrument(SOUNDS, loc("glorious_drum_don"), false),
+            registerInstrument(SOUNDS, loc("glorious_drum_ka"), false)
         }
     ;
+
+    /**
+     * Shorthand for {@code new ResourceLocation(Main.MODID, name)}
+     */
+    private static ResourceLocation loc(final String name) {
+        return new ResourceLocation(Main.MODID, name);
+    }
 
 }
