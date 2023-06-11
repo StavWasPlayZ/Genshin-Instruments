@@ -13,8 +13,8 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.registries.ForgeRegistries;
 
 /**
- * An event that fires when an instrument produces a sound.
- * This event is fired on the server-side Forge event bus
+ * An event fired when an instrument sound has been produced.
+ * This event is fired on the Forge event bus
  */
 @Cancelable
 public class InstrumentPlayedEvent extends Event {
