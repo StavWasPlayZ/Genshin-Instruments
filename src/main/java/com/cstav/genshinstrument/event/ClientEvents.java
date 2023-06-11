@@ -40,6 +40,8 @@ public class ClientEvents {
     public static void onInstrumentPlayed(final InstrumentPlayedEvent event) {
         if (!event.isClientSide)
             return;
+
+        // If this sound was produced by a player, and that player is ourselves - omit.
         if ((event instanceof ByPlayer) && ((ByPlayer)(event)).player.equals(MINECRAFT.player))
             return;
 
@@ -51,10 +53,10 @@ public class ClientEvents {
             return;
 
         final AbstractInstrumentScreen screen = (AbstractInstrumentScreen) MINECRAFT.screen;
-
+        // The instrument sound produced has to match the current screen's sounds
         if (!screen.getInstrumentId().equals(event.instrumentId))
             return;
-
+        // Only show the played note in a close distance
         if (!event.pos.closerThan(MINECRAFT.player.blockPosition(), ServerUtil.PLAY_DISTANCE / 3))
             return;
 

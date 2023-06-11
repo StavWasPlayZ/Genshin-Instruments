@@ -21,11 +21,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.resources.sounds.SimpleSoundInstance;
-import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -226,13 +223,7 @@ public class NoteButton extends AbstractButton {
         if (locked)
             return;
         
-        // Play sound locally
-        minecraft.getSoundManager().play(new SimpleSoundInstance(
-            sound.getByPreference().getLocation(), SoundSource.RECORDS,
-            1, instrumentScreen.getPitch(), SoundInstance.createUnseededRandom(),
-            false, 0, SoundInstance.Attenuation.NONE,
-            0, 0, 0, true
-        ));
+        sound.playLocally(instrumentScreen.getPitch());
 
         // Send sound packet to server
         ModPacketHandler.sendToServer(
@@ -241,7 +232,6 @@ public class NoteButton extends AbstractButton {
                 instrumentScreen.interactionHand, instrumentScreen.getInstrumentId()
             )
         );
-        
 
         playNoteAnimation(false);
 

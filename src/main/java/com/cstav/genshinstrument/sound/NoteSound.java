@@ -8,6 +8,8 @@ import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Position;
 import net.minecraft.network.FriendlyByteBuf;
@@ -34,6 +36,10 @@ public class NoteSound {
      * The range from which players will stop hearing Minecraft's background music on playing
      */
     public static final int STOP_SOUND_DISTANCE = 10;
+    /**
+     * The range from which players will hear instruments from their local sound output rather than the level's
+     */
+    public static final float LOCAL_RANGE = 4.5f;
 
     public static final float MIN_PITCH = .5f, MAX_PITCH = 1.9f;
 
@@ -140,10 +146,23 @@ public class NoteSound {
         if (player.getUUID().equals(playerUUID))
             return;
             
-        level.playLocalSound(pos,
-            getByPreference(distanceFromPlayer), SoundSource.RECORDS,
-            1, NoteSound.clampPitch(pitch)
-        , false);
+        if (distanceFromPlayer > LOCAL_RANGE)
+            level.playLocalSound(pos,
+                getByPreference(distanceFromPlayer), SoundSource.RECORDS,
+                1, NoteSound.clampPitch(pitch)
+            , false);
+        else
+            playLocally(pitch);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void playLocally(final float pitch) {
+        Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(
+            getByPreference().getLocation(), SoundSource.RECORDS,
+            1, pitch, SoundInstance.createUnseededRandom(),
+            false, 0, SoundInstance.Attenuation.NONE,
+            0, 0, 0, true
+        ));
     }
 
 
