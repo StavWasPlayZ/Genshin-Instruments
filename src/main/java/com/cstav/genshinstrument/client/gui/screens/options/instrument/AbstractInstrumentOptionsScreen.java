@@ -12,7 +12,6 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractI
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.ibm.icu.text.DecimalFormat;
-import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -277,13 +276,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     @Override
     public void render(GuiGraphics gui, int pMouseX, int pMouseY, float pPartialTick) {
         renderBackground(gui);
-        RenderSystem.setShaderGlintAlpha(0);
-        RenderSystem.setShaderColor(
-            56 / 255f,
-            56 / 255f,
-            56 / 255f,
-            .5f
-        );
+        
         gui.drawCenteredString(font, title, width/2, 20, Color.WHITE.getRGB());
         
         super.render(gui, pMouseX, pMouseY, pPartialTick);

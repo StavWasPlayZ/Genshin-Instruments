@@ -193,19 +193,7 @@ public class NoteButton extends AbstractButton {
 
         // Note
         final int noteWidth = width/2, noteHeight = height/2;
-
-        if (isPlaying() && !foreignPlaying)
-            RenderSystem.setShaderColor(
-                pressedNoteTheme.getRed() / 255f,
-                pressedNoteTheme.getGreen() / 255f,
-                pressedNoteTheme.getBlue() / 255f,
-            1);
-        else
-            RenderSystem.setShaderColor(
-                labelTheme.getRed() / 255f,
-                labelTheme.getGreen() / 255f,
-                labelTheme.getBlue() / 255f,
-            1);
+        ClientUtil.setShaderColor((isPlaying() && !foreignPlaying) ? pressedNoteTheme : labelTheme);
 
         gui.blit(noteLocation,
             this.getX() + noteWidth/2, this.getY() + noteHeight/2,
@@ -217,11 +205,11 @@ public class NoteButton extends AbstractButton {
             (int)(noteWidth * (noteTextureWidth / rowsInNoteTexture) * randomAssMultiplier1), height/2
         );
 
-        RenderSystem.setShaderColor(1, 1, 1, 1);
+        ClientUtil.reserShaderColor();
 
         // Label
         //FIXME: All text rendered this way are making their way to the top of
-        // the render stack, for some reasonW
+        // the render stack, for some reason
         gui.drawCenteredString(
             minecraft.font, getMessage(),
             textX, textY,

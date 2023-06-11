@@ -18,6 +18,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class FloralZitherOptionsScreen extends GridInstrumentOptionsScreen {
     private static final String SOUND_TYPE_KEY = "button.genshinstrument.zither.soundType";
+    private final static int SPACE_BEFORE = 50, SPACER_HEIGHT = 0, PADDING = 20;
 
     public FloralZitherOptionsScreen(final FloralZitherScreen screen) {
         super(screen);
@@ -29,12 +30,12 @@ public class FloralZitherOptionsScreen extends GridInstrumentOptionsScreen {
     }
 
 
-    private final int spaceBefore = 55, spacerHeight = 10;
     private int heightBefore;
+
     @Override
     protected void initOptionsGrid(GridLayout grid, RowHelper rowHelper) {
         super.initOptionsGrid(grid, rowHelper);
-        rowHelper.addChild(SpacerElement.height(spacerHeight), 2);
+        rowHelper.addChild(SpacerElement.height(SPACER_HEIGHT), 2);
         heightBefore = grid.getHeight();
 
         final CycleButton<ZitherSoundType> soundTypeButton = CycleButton.<ZitherSoundType>builder((type) ->
@@ -46,7 +47,7 @@ public class FloralZitherOptionsScreen extends GridInstrumentOptionsScreen {
                 getBigButtonWidth(), getButtonHeight()
             , Component.translatable(SOUND_TYPE_KEY), this::onSoundTypeChange);
 
-        rowHelper.addChild(soundTypeButton, 2, rowHelper.newCellSettings().paddingTop(30));
+        rowHelper.addChild(soundTypeButton, 2, rowHelper.newCellSettings().paddingTop(PADDING));
 
         grid.arrangeElements();
     }
@@ -56,7 +57,7 @@ public class FloralZitherOptionsScreen extends GridInstrumentOptionsScreen {
         
         gui.drawCenteredString(font,
             Component.translatable("button.genshinstrument.zither_options"),
-            width/2, heightBefore + spaceBefore + spacerHeight
+            width/2, heightBefore + SPACE_BEFORE + SPACER_HEIGHT
         , Color.WHITE.getRGB());
     }
 

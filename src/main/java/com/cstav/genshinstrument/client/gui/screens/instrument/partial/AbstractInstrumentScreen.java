@@ -198,18 +198,6 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     @Override
     public void render(GuiGraphics gui, int pMouseX, int pMouseY, float pPartialTick) {
-        // Test 1.20 alpha render bug
-        // It is indeed a bug
-        // Only 1st cell gets rendered with half alpha
-        
-        // RenderSystem.setShaderColor(
-        //     getThemeLoader().getNoteTheme().getRed() / 255f,
-        //     getThemeLoader().getNoteTheme().getGreen() / 255f,
-        //     getThemeLoader().getNoteTheme().getBlue() / 255f,
-        //     .5f
-        // );
-
-        
         super.render(gui, pMouseX, pMouseY, pPartialTick);
         if (ioa())
             optionsScreen.render(gui, pMouseX, pMouseY, pPartialTick);
