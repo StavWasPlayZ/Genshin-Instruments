@@ -31,10 +31,17 @@ public class InstrumentItem extends Item {
      * It should should send a packet to the given player for opening this instrument's screen.
      */
     public InstrumentItem(final ServerPlayerRunnable onOpenRequest) {
-        super(new Properties()
-            .stacksTo(1)
-        );
-
+        this(onOpenRequest, new Properties());
+    }
+    /**
+     * @param onOpenRequest A server-side event fired when the player has requested to interact
+     * with the instrument.
+     * It should should send a packet to the given player for opening this instrument's screen.
+     * @param properties The properties of this instrument item. {@link Properties#stacksTo stack size}
+     * will always be set to 1.
+     */
+    public InstrumentItem(final ServerPlayerRunnable onOpenRequest, final Properties properties) {
+        super(properties.stacksTo(1));
         this.onOpenRequest = onOpenRequest;
     }
 

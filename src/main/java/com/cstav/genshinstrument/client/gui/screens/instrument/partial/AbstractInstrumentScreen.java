@@ -134,8 +134,8 @@ public abstract class AbstractInstrumentScreen extends Screen {
         final Button button = Button.builder(
             Component.translatable("button.genshinstrument.instrumentOptions").append("..."), (btn) -> onOptionsOpen()
         )
-        .width(150)
-        .build();
+            .width(150)
+            .build();
 
         button.setPosition((width - button.getWidth())/2, vertOffset - button.getHeight()/2);
 
