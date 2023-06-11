@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
 
 import java.util.Map;
 
+import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteGrid;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
@@ -56,7 +57,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
 
     @Override
     public ResourceLocation getNotesLocation() {
-        return getResourceFromGlob("grid_notes.png");
+        return new ResourceLocation(Main.MODID, getGlobalRootPath() + "grid_notes.png");
     }
     
 
