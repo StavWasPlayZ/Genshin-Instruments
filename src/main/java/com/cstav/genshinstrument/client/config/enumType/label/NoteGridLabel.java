@@ -1,5 +1,6 @@
 package com.cstav.genshinstrument.client.config.enumType.label;
 
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteGridButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.AbsGridLabels;
@@ -19,7 +20,7 @@ public enum NoteGridLabel implements INoteLabel {
         KeyMappings.GRID_INSTRUMENT_MAPPINGS[ng(note).column][ng(note).row].getDisplayName()
     )),
     DO_RE_MI((note) -> Component.translatable(
-        INoteLabel.TRANSLATABLE_PATH + AbsGridLabels.DO_RE_MI[ng(note).row % ng(note).maxRows]
+        INoteLabel.TRANSLATABLE_PATH + AbsGridLabels.DO_RE_MI[ng(note).row % gs(note).rows()]
     )),
     ABC((note) -> Component.literal(
         (
@@ -49,5 +50,8 @@ public enum NoteGridLabel implements INoteLabel {
 
     private static NoteGridButton ng(final NoteButton btn) {
         return (NoteGridButton)btn;
+    }
+    private static AbstractGridInstrumentScreen gs(final NoteButton btn) {
+        return (AbstractGridInstrumentScreen)btn.instrumentScreen;
     }
 }

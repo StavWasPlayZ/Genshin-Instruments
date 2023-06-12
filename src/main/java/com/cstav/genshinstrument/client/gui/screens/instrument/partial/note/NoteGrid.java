@@ -5,7 +5,6 @@ import java.util.Iterator;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractGridInstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
@@ -27,13 +26,13 @@ public class NoteGrid implements Iterable<NoteButton> {
     public static final int PADDING_HORZ = 9, PADDING_VERT = 7;
 
     
-    public final AbstractInstrumentScreen instrumentScreen;
+    public final AbstractGridInstrumentScreen instrumentScreen;
     protected final NoteButton[][] notes;
     private NoteSound[] noteSounds;
 
     public final int rows, columns;
 
-    public NoteGrid(int rows, int columns, NoteSound[] noteSounds, AbstractInstrumentScreen instrumentScreen) {
+    public NoteGrid(int rows, int columns, NoteSound[] noteSounds, AbstractGridInstrumentScreen instrumentScreen) {
         this.instrumentScreen = instrumentScreen;
         this.rows = rows;
         this.columns = columns;
@@ -53,7 +52,7 @@ public class NoteGrid implements Iterable<NoteButton> {
     
     protected NoteButton createNote(int row, int column) {
         return new NoteGridButton(row, column,
-            getSoundAt(noteSounds, row, column), getLabelSupplier(), rows
+            getSoundAt(noteSounds, row, column), getLabelSupplier()
         , instrumentScreen);
     }
     /**
@@ -62,8 +61,8 @@ public class NoteGrid implements Iterable<NoteButton> {
      * @param row The row of the note
      * @param column The column of the note
      */
-    protected static NoteSound getSoundAt(final NoteSound[] sounds, final int row, final int column) {
-        return sounds[row + column * AbstractGridInstrumentScreen.DEF_ROWS];
+    public NoteSound getSoundAt(final NoteSound[] sounds, final int row, final int column) {
+        return sounds[row + column * instrumentScreen.rows()];
     }
     /**
      * @return The perferred label supplier specified in this mod's configs

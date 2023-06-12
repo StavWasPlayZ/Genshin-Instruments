@@ -9,6 +9,7 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.ibm.icu.text.DecimalFormat;
@@ -248,8 +249,10 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     }
 
     protected void onPitchChanged(final AbstractSliderButton slider, final double pitch) {
-        if (instrumentScreen != null)
+        if (instrumentScreen != null) {
             instrumentScreen.setPitch((float)pitch);
+            instrumentScreen.notesIterable().forEach(NoteButton::updateNoteLabel);
+        }
 
         queueToSave("pitch", () -> savePitch(pitch));
     }

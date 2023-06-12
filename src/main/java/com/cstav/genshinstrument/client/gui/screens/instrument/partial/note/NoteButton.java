@@ -103,6 +103,9 @@ public class NoteButton extends AbstractButton {
     public NoteLabelSupplier getLabelSupplier() {
         return labelSupplier;
     }
+    public void updateNoteLabel() {
+        setMessage(labelSupplier.get(this));
+    }
 
 
     /**

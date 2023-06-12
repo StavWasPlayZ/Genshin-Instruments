@@ -1,7 +1,6 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.vintagelyre;
 
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractGridInstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteGridButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.sound.NoteSound;
@@ -18,9 +17,8 @@ public class VintageNoteButton extends NoteGridButton {
     private final ResourceLocation thingyLocation = getResourceFromRoot("thing.png");
 
     public VintageNoteButton(int row, int column,
-            NoteSound sound, NoteLabelSupplier labelSupplier, AbstractInstrumentScreen instrumentScreen) {
-        // We know for sure that the lyre is a 7x3
-        super(row, column, sound, labelSupplier, AbstractGridInstrumentScreen.DEF_ROWS, instrumentScreen);
+            NoteSound sound, NoteLabelSupplier labelSupplier, AbstractGridInstrumentScreen instrumentScreen) {
+        super(row, column, sound, labelSupplier, instrumentScreen);
     }
 
     
