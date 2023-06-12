@@ -35,11 +35,11 @@ public class NoteSound {
     /**
      * The range from which players will stop hearing Minecraft's background music on playing
      */
-    public static final int STOP_SOUND_DISTANCE = 10;
+    public static final double STOP_SOUND_DISTANCE = 10;
     /**
      * The range from which players will hear instruments from their local sound output rather than the level's
      */
-    public static final float LOCAL_RANGE = 4.5f;
+    public static final double LOCAL_RANGE = STEREO_RANGE;
 
     public static final float MIN_PITCH = .5f, MAX_PITCH = 1.9f;
 
