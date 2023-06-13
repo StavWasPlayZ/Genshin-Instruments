@@ -174,6 +174,8 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
 
             @Override
+            // We only use getNoteName for the 1st note
+            @SuppressWarnings("deprecation")
             protected void updateMessage() {
                 this.setMessage(
                     Component.translatable("button.genshinstrument.pitch").append(
