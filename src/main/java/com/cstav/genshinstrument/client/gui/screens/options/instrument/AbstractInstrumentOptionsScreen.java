@@ -10,6 +10,7 @@ import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.AbsGridLabels;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.ibm.icu.text.DecimalFormat;
@@ -175,8 +176,12 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
             @Override
             protected void updateMessage() {
                 this.setMessage(
-                    Component.translatable("button.genshinstrument.pitch")
-                        .append(": " + format.format(instrumentScreen.getPitch()))
+                    Component.translatable("button.genshinstrument.pitch").append(
+                        String.format(": %s (%s)",
+                            format.format(instrumentScreen.getPitch()),
+                            AbsGridLabels.getNoteName(instrumentScreen.getPitch(), 0)
+                        )
+                    )
                 );
             }
             

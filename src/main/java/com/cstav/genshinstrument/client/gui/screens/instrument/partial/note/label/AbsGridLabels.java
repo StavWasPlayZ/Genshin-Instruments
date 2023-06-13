@@ -16,30 +16,58 @@ public abstract class AbsGridLabels {
     ;
 
     // nvm i suck
-    @Deprecated(forRemoval = true)
+    // i have no idea what are these crazy dumb rules over this format
+    @Deprecated
+    //NOTE: Assuming pitch step is always .05 and (0 < pitch < 2)
     public static String getNoteName(final float pitch, final int noteRow) {
-        // Assuming pitch step is always .05 and (0 < pitch < 2)
-        // +1 because the lyre starts at C
-        float index = ((pitch + noteRow * .05f * 2) * 100 - 100) / 5 + 1;
-        // Ceil/floor for float imperfections
-        index += (index >= 0) ? .001f : -.001f;
-
+        int index = getNoteIndex(pitch + noteRow * .05f * 2);
+        
+        // Cb at start
+        // final boolean didWrap = index > PITCHES.length;
+        
         // E and F shenanigans
-        // This is after a few hours of trail and error at 12am+, I'm too tired now
-        // Thus:
-        //FIXME there is probablly a much better way to do this
-        // TODO Compose the method in the brackets into a seperate method
-        if ( ((pitch * 100 - 100) / 5 + 1) + 5 < index)
+        final int startIndex = getNoteIndex(pitch);
+        if (steppedOnPoint(startIndex, index - startIndex, 6 + (startIndex - 1)))
             index--;
-        if ( ((pitch * 100 - 100) / 5 + 1) + 10 < index)
-            index++;
+        // if (Math.abs(index - getPitchUnit(pitch)) > 10)
+        //     index--;
 
-        // This makes a similar behaviour to python's indexing,
-        // where negatives are counted as backwards indexing.
+        return PITCHES[pyWrap(index % PITCHES.length, PITCHES) /*+ (didWrap ? 1 : 0)*/];
+    }
+
+    private static boolean steppedOnPoint(final int start, int passed, final int point) {
+        for (int i = start; passed > 0; i = (i + 1) % PITCHES.length) {
+            if (i == point)
+                return true;
+
+            passed--;
+        }
+
+        return false;
+    }
+
+    private static int getNoteIndex(final float pitch) {
+        return getPitchUnit(pitch);
+    }
+    private static int getPitchUnit(final float pitch) {
+        float result = (pitch * 100 - 100) / 5 + 1;
+        // Ceil/floor for float imperfections
+        result += (result >= 0) ? .001f : -.001f;
+
+        return pyWrap((int)result, PITCHES);
+    }
+    /**
+     * Provides a similar behaviour to python's indexing,
+     * where negatives are counted backwards.
+     */
+    private static int pyWrap(int index, final Object[] arr, boolean add1) {
         if (index < 0)
-            index += PITCHES.length;
+            index += arr.length + (add1 ? 1 : 0);
 
-        return PITCHES[(int)index % PITCHES.length];
+        return index;
+    }
+    private static int pyWrap(int index, final Object[] arr) {
+        return pyWrap(index, arr, false);
     }
 
 }
