@@ -11,7 +11,6 @@ import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.client.gui.screens.options.widget.BetterSlider;
-import com.cstav.genshinstrument.client.gui.screens.options.widget.copied.FrameWidget;
 import com.cstav.genshinstrument.client.gui.screens.options.widget.copied.GridWidget;
 import com.cstav.genshinstrument.client.gui.screens.options.widget.copied.GridWidget.RowHelper;
 import com.cstav.genshinstrument.sounds.NoteSound;
@@ -46,20 +45,20 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
     
 
-    protected int getHorzPadding() {
+    public int getHorzPadding() {
         return 4;
     }
-    protected int getVertPadding() {
+    public int getVertPadding() {
         return 2;
     }
 
-    protected int getSmallButtonWidth() {
+    public int getSmallButtonWidth() {
         return 190;
     }
-    protected int getBigButtonWidth() {
+    public int getBigButtonWidth() {
         return (getSmallButtonWidth() + getHorzPadding()) * 2;
     }
-    protected int getButtonHeight() {
+    public int getButtonHeight() {
         return 20;
     }
 
@@ -121,16 +120,17 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
         initOptionsGrid(grid, rowHelper);
 
-        FrameWidget.alignInRectangle(grid, 0, 0, width, height, 0.5f, 0);
+        grid.setY(40);
+        grid.setX((grid.getWidth() + getSmallButtonWidth()) / 2 - getHorzPadding() * 2);
+        
         addRenderableWidget(grid);
         
-        grid.setY(40);
 
 
         final Button doneBtn = new Button(
             (width - getSmallButtonWidth())/2,
             Math.min(grid.y + grid.getHeight() + 60, height - getButtonHeight() - 15),
-            getSmallButtonWidth(), 25,  CommonComponents.GUI_DONE, (btn) -> onClose());
+            getSmallButtonWidth(), getButtonHeight(),  CommonComponents.GUI_DONE, (btn) -> onClose());
         addRenderableWidget(doneBtn);
         
     }
@@ -151,7 +151,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
                 getBigButtonWidth(), 20, Component.translatable(SOUND_CHANNEL_KEY), this::onChannelTypeChanged);
         rowHelper.addChild(instrumentChannel, 2);
 
-        final BetterSlider pitchSlider = new BetterSlider(0, 0, getSmallButtonWidth(), 23,
+        final BetterSlider pitchSlider = new BetterSlider(0, 0, getSmallButtonWidth(), getButtonHeight(),
             Component.translatable("button.genshinstrument.pitch").append(": "), Component.empty(),
             NoteSound.MIN_PITCH, NoteSound.MAX_PITCH, ModClientConfigs.PITCH.get(), 0.1,
             this::onPitchChanged

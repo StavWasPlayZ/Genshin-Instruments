@@ -3,7 +3,6 @@ package com.cstav.genshinstrument.networking.packets.instrument;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import com.cstav.genshinstrument.client.gui.screens.instrument.drum.AratakisGreatAndGloriousDrumScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.floralZither.FloralZitherScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.vintageLyre.VintageLyreScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.windsongLyre.WindsongLyreScreen;
@@ -20,8 +19,7 @@ public class OpenInstrumentPacket implements ModPacket {
     private static final Map<String, Runnable> OPEN_INSTRUMENT = Map.of(
         "windsong_lyre", () -> WindsongLyreScreen.open(),
         "vintage_lyre", () -> VintageLyreScreen.open(),
-        "floral_zither", () -> FloralZitherScreen.open(),
-        "glorious_drum", () -> AratakisGreatAndGloriousDrumScreen.open()
+        "floral_zither", () -> FloralZitherScreen.open()
     );
 
 

@@ -1,10 +1,9 @@
 {
-    "genshinstrument.itemGroup.instruments": "инструменты",
+    "itemGroup.genshinstrument.instruments": "инструменты",
 
     "item.genshinstrument.windsong_lyre": "Лира ветров",
     "item.genshinstrument.floral_zither": "Цветочная цитра",
     "item.genshinstrument.vintage_lyre": "Старинная лира",
-    "item.genshinstrument.glorious_drum": "Грандиозный барабан Аратаки",
     
 
 
@@ -28,7 +27,6 @@
 
     
     "button.genshinstrument.label": "Наклейки для заметок",
-    "button.genshinstrument.pitch": "Pitch",
 
     "button.genshinstrument.zither.soundType": "Тип звука",
     "button.genshinstrument.zither.soundType.old": "Старый",

@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @EventBusSubscriber(modid = Main.MODID, bus = Bus.MOD)
 public class ModCreativeModeTabs {
     
-    public static CreativeModeTab INSTRUMENTS_TAB = new CreativeModeTab("label") {
+    public static CreativeModeTab INSTRUMENTS_TAB = new CreativeModeTab("genshinstrument.instruments") {
         @Override
         public ItemStack makeIcon() {
             return new ItemStack(ModItems.FLORAL_ZITHER.get());

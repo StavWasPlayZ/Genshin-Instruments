@@ -102,7 +102,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
      */
     protected AbstractWidget initOptionsButton(final int vertOffset) {
         final Button button = new Button(0, 0,
-            150, 25,
+            150, 20,
             Component.translatable("button.genshinstrument.instrumentOptions").append("..."),
             (btn) -> onOptionsOpen()
         );

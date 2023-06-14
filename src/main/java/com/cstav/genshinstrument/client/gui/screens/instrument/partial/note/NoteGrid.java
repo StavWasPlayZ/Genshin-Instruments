@@ -6,7 +6,6 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
-import com.cstav.genshinstrument.client.gui.screens.options.widget.copied.FrameWidget;
 import com.cstav.genshinstrument.client.gui.screens.options.widget.copied.GridWidget;
 import com.cstav.genshinstrument.client.gui.screens.options.widget.copied.GridWidget.RowHelper;
 import com.cstav.genshinstrument.sounds.NoteSound;
@@ -104,10 +103,12 @@ public class NoteGrid implements Iterable<NoteButton> {
 
         final RowHelper rowHelper = grid.createRowHelper(rows);
         forEach((note) -> rowHelper.addChild(note));
-
+        
+        grid.pack();
+        grid.x = grid.getWidth() / 2 + (int)(NoteButton.getSize()/1.5f);
+        grid.y = screenHeight - grid.getHeight() - 25;
         grid.pack();
 
-        FrameWidget.alignInRectangle(grid, 0, 0, screenWidth, screenHeight, 0.5f, vertAlignment);
         
         // Initialize all the notes
         forEach((note) -> note.init());

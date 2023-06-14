@@ -35,13 +35,6 @@ public class ModItems {
                 (player) -> InstrumentItem.sendOpenRequest(player, "floral_zither"),
                 ModSounds.ZITHER_NEW_NOTE_SOUNDS, ModSounds.ZITHER_OLD_NOTE_SOUNDS
             )
-        ),
-
-        GLORIOUS_DRUM = ITEMS.register("glorious_drum", () ->
-            new InstrumentItem(
-                (player) -> InstrumentItem.sendOpenRequest(player, "glorious_drum"),
-                ModSounds.GLORIOUS_DRUM
-            )
         )
     ;
 

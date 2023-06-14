@@ -424,15 +424,5 @@
     "vintage_lyre_note_20": {
         "category": "record",
         "sounds": ["genshinstrument:vintage_lyre/20"]
-    },
-
-
-    "glorious_drum_don": {
-        "catrgory": "record",
-        "sounds": ["genshinstrument:glorious_drum/don"]
-    },
-    "glorious_drum_ka": {
-        "category": "record",
-        "sounds": ["genshinstrument:glorious_drum/ka"]
     }
 }
