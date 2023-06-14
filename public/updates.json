@@ -1,6 +1,9 @@
 {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/genshin-instruments",
 
+    "1.19.2": {
+        "2.2.1": "Downgraded mod to 1.19.2"
+    }
     "1.19.3": {
         "1.0": "Initial release",
         "1.0.1": "- Fixed resources folder and package names being incorrect\n- implemented Forge's updates mechanism",
