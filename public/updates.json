@@ -2,8 +2,8 @@
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/genshin-instruments",
 
     "1.19.2": {
-        "2.2.1": "Downgraded mod to 1.19.2",
-        "2.2.1.1": "- Fix FPS not being pulled correctly\n- Fix instrument screens being off-center"
+        "2.2.1": "Backport mod to 1.19.2",
+        "2.2.1.2": "- Fix FPS not being pulled correctly\n- Fix instrument and options screens being off-center"
     }
     "1.19.3": {
         "1.0": "Initial release",
@@ -36,8 +36,8 @@
     },
 
     "promos": {
-        "1.19.2-latest": "2.2.1.1",
-        "1.19.2-recommended": "2.2.1.1",
+        "1.19.2-latest": "2.2.1.2",
+        "1.19.2-recommended": "2.2.1.2",
         
         "1.19.3-latest": "2.4.1",
         "1.19.3-recommended": "2.4.1",
