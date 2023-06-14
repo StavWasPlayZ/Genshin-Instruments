@@ -217,9 +217,9 @@ public class NoteButton extends Button {
 
             // Assuming the shape will always be a square
             if (animState == NoteAnimationState.UP)
-                dSize = dSize += scaleReduction * 1.5;
+                dSize += scaleReduction * 1.5;
             else
-                dSize = dSize -= scaleReduction * 1.5;
+                dSize -= scaleReduction * 1.5;
         }
         
         width = height = (int)dSize;
@@ -242,7 +242,7 @@ public class NoteButton extends Button {
             return fps.getInt(Minecraft.getInstance());
         } catch (Exception e) {
             LogUtils.getLogger().error("Exception occured during the proccess of getting FPS! Defaulting to 90", e);
-            return 60;
+            return 90;
         }
     }
 
