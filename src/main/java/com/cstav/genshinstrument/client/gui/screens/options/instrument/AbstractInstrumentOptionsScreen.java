@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument.client.gui.screens.options.instrument;
 
 import java.util.HashMap;
+import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
@@ -10,6 +11,7 @@ import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.client.gui.screens.options.widget.BetterSlider;
+import com.cstav.genshinstrument.client.gui.screens.options.widget.copied.FrameWidget;
 import com.cstav.genshinstrument.client.gui.screens.options.widget.copied.GridWidget;
 import com.cstav.genshinstrument.client.gui.screens.options.widget.copied.GridWidget.RowHelper;
 import com.cstav.genshinstrument.sounds.NoteSound;
@@ -17,10 +19,9 @@ import com.cstav.genshinstrument.util.RGBColor;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.OptionInstance.TooltipSupplier;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
-import net.minecraft.client.gui.components.FrameWidget;
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -126,10 +127,10 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         grid.setY(40);
 
 
-        final Button doneBtn = Button.builder(CommonComponents.GUI_DONE, (btn) -> onClose())
-            .width(getSmallButtonWidth())
-            .pos((width - getSmallButtonWidth())/2, Math.min(grid.getY() + grid.getHeight() + 60, height - getButtonHeight() - 15))
-            .build();
+        final Button doneBtn = new Button(
+            (width - getSmallButtonWidth())/2,
+            Math.min(grid.y + grid.getHeight() + 60, height - getButtonHeight() - 15),
+            getSmallButtonWidth(), 25,  CommonComponents.GUI_DONE, (btn) -> onClose());
         addRenderableWidget(doneBtn);
         
     }
@@ -141,7 +142,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
             .withValues(InstrumentChannelType.values())
             .withInitialValue(ModClientConfigs.CHANNEL_TYPE.get())
 
-            .withTooltip((soundType) -> Tooltip.create(switch (soundType) {
+            .withTooltip(tooltip((soundType) -> switch (soundType) {
                 case MIXED -> translatableArgs(SOUND_CHANNEL_KEY+".mixed.tooltip", NoteSound.STEREO_RANGE);
                 case STEREO -> Component.translatable(SOUND_CHANNEL_KEY+".stereo.tooltip");
                 default -> Component.empty();
@@ -170,7 +171,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
         final CycleButton<Boolean> stopMusic = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(ModClientConfigs.STOP_MUSIC_ON_PLAY.get())
-            .withTooltip((value) -> Tooltip.create(Component.translatable(STOP_MUSIC_KEY+".tooltip", NoteSound.STOP_SOUND_DISTANCE)))
+            .withTooltip(tooltip((val) -> Component.translatable(STOP_MUSIC_KEY+".tooltip", NoteSound.STOP_SOUND_DISTANCE)))
             .create(0, 0,
                 getBigButtonWidth(), getButtonHeight(),
                 Component.translatable(STOP_MUSIC_KEY), this::onMusicStopChanged
@@ -178,6 +179,10 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         rowHelper.addChild(stopMusic, 2, rowHelper.newCellSettings().paddingTop(15));
 
         grid.pack();
+    }
+
+    private <T> TooltipSupplier<T> tooltip(final Function<T, Component> text) {
+        return (value) -> minecraft.font.split(text.apply(value), 200);
     }
 
     // Option handlers

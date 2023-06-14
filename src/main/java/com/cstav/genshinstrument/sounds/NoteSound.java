@@ -1,7 +1,5 @@
 package com.cstav.genshinstrument.sounds;
 
-import java.util.Optional;
-
 import javax.annotation.Nullable;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
@@ -10,7 +8,6 @@ import com.cstav.genshinstrument.networking.packets.instrument.InstrumentPacket;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;

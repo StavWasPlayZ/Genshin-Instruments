@@ -3,12 +3,12 @@ package com.cstav.genshinstrument.client.gui.screens.options.instrument;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.ZitherSoundType;
 import com.cstav.genshinstrument.client.gui.screens.instrument.floralZither.FloralZitherScreen;
+import com.cstav.genshinstrument.client.gui.screens.options.widget.copied.GridWidget;
+import com.cstav.genshinstrument.client.gui.screens.options.widget.copied.GridWidget.RowHelper;
 import com.cstav.genshinstrument.util.RGBColor;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.gui.components.CycleButton;
-import net.minecraft.client.gui.components.GridWidget;
-import net.minecraft.client.gui.components.GridWidget.RowHelper;
 import net.minecraft.client.gui.components.SpacerWidget;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;

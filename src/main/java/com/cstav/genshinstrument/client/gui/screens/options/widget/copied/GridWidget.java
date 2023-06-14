@@ -3,6 +3,7 @@ package com.cstav.genshinstrument.client.gui.screens.options.widget.copied;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -11,7 +12,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class GridWidget extends AbstractContainerWidget {
-   private final List<AbstractWidget2> children = new ArrayList<>();
+   private final List<AbstractWidget> children = new ArrayList<>();
    private final List<GridWidget.CellInhabitant> cellInhabitants = new ArrayList<>();
    private final LayoutSettings defaultCellSettings = LayoutSettings.defaults();
 
@@ -88,19 +89,19 @@ public class GridWidget extends AbstractContainerWidget {
       this.height = aint3[i] + aint1[i];
    }
 
-   public <T extends AbstractWidget2> T addChild(T pChild, int pRow, int pColumn) {
+   public <T extends AbstractWidget> T addChild(T pChild, int pRow, int pColumn) {
       return this.addChild(pChild, pRow, pColumn, this.newCellSettings());
    }
 
-   public <T extends AbstractWidget2> T addChild(T pChild, int pRow, int pColumn, LayoutSettings pLayoutSettings) {
+   public <T extends AbstractWidget> T addChild(T pChild, int pRow, int pColumn, LayoutSettings pLayoutSettings) {
       return this.addChild(pChild, pRow, pColumn, 1, 1, pLayoutSettings);
    }
 
-   public <T extends AbstractWidget2> T addChild(T pChild, int pRow, int pColumn, int pOccupiedRows, int pOccupiedColumns) {
+   public <T extends AbstractWidget> T addChild(T pChild, int pRow, int pColumn, int pOccupiedRows, int pOccupiedColumns) {
       return this.addChild(pChild, pRow, pColumn, pOccupiedRows, pOccupiedColumns, this.newCellSettings());
    }
 
-   public <T extends AbstractWidget2> T addChild(T pChild, int pRow, int pColumn, int pOccupiedRows, int pOccupiedColumns, LayoutSettings pLayoutSettings) {
+   public <T extends AbstractWidget> T addChild(T pChild, int pRow, int pColumn, int pOccupiedRows, int pOccupiedColumns, LayoutSettings pLayoutSettings) {
       if (pOccupiedRows < 1) {
          throw new IllegalArgumentException("Occupied rows must be at least 1");
       } else if (pOccupiedColumns < 1) {
@@ -112,7 +113,7 @@ public class GridWidget extends AbstractContainerWidget {
       }
    }
 
-   protected List<? extends AbstractWidget2> getContainedChildren() {
+   protected List<? extends AbstractWidget> getContainedChildren() {
       return this.children;
    }
 
@@ -135,7 +136,7 @@ public class GridWidget extends AbstractContainerWidget {
       final int occupiedRows;
       final int occupiedColumns;
 
-      CellInhabitant(AbstractWidget2 pChild, int pRow, int pColumn, int pOccupiedRows, int pOccupiedColumns, LayoutSettings pLayoutSettings) {
+      CellInhabitant(AbstractWidget pChild, int pRow, int pColumn, int pOccupiedRows, int pOccupiedColumns, LayoutSettings pLayoutSettings) {
          super(pChild, pLayoutSettings.getExposed());
          this.row = pRow;
          this.column = pColumn;
@@ -161,19 +162,19 @@ public class GridWidget extends AbstractContainerWidget {
          this.columns = pColumns;
       }
 
-      public <T extends AbstractWidget2> T addChild(T pChild) {
+      public <T extends AbstractWidget> T addChild(T pChild) {
          return this.addChild(pChild, 1);
       }
 
-      public <T extends AbstractWidget2> T addChild(T pChild, int pOccupiedColumns) {
+      public <T extends AbstractWidget> T addChild(T pChild, int pOccupiedColumns) {
          return this.addChild(pChild, pOccupiedColumns, this.defaultCellSetting());
       }
 
-      public <T extends AbstractWidget2> T addChild(T pChild, LayoutSettings pLayoutSettings) {
+      public <T extends AbstractWidget> T addChild(T pChild, LayoutSettings pLayoutSettings) {
          return this.addChild(pChild, 1, pLayoutSettings);
       }
 
-      public <T extends AbstractWidget2> T addChild(T pChild, int pOccupiedColumns, LayoutSettings pLayoutSettings) {
+      public <T extends AbstractWidget> T addChild(T pChild, int pOccupiedColumns, LayoutSettings pLayoutSettings) {
          int i = this.index / this.columns;
          int j = this.index % this.columns;
          if (j + pOccupiedColumns > this.columns) {

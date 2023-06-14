@@ -50,7 +50,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
         final AbstractWidget grid = noteGrid.initNoteGridWidget(.9f, width, height);
         addRenderableWidget(grid);
         
-        initOptionsButton(grid.getY() - 15);
+        initOptionsButton(grid.y - 15);
         super.init();
     }
 

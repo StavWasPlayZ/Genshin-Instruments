@@ -1,5 +1,6 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note;
 
+import java.lang.reflect.Field;
 import java.util.UUID;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
@@ -12,6 +13,7 @@ import com.cstav.genshinstrument.util.CommonUtil;
 import com.cstav.genshinstrument.util.RGBColor;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
@@ -22,12 +24,14 @@ import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Position;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 @OnlyIn(Dist.CLIENT)
 public class NoteButton extends Button {
@@ -65,9 +69,7 @@ public class NoteButton extends Button {
     
     public NoteButton(NoteSound sound, NoteLabelSupplier labelSupplier, int noteTextureRow, int rowsInNoteTexture,
       AbstractInstrumentScreen instrumentScreen) {
-        super(Button.builder(null, (iAmADissapointmentAndAFailureToMyParents) -> {})
-            .size(getSize(), getSize())
-        );
+        super(0, 0, getSize(), getSize(), CommonComponents.EMPTY, (iAmADissapointmentAndAFailureToMyParents) -> {});
 
 
         this.sound = sound;
@@ -124,11 +126,11 @@ public class NoteButton extends Button {
      * This is done for the animations to work properly - for them to stick to the same position.
      */
     public void initPos() {
-        initX = getX();
-        initY = getY();
+        initX = x;
+        initY = y;
 
-        textX = getX() + width/2;
-        textY = getY() + height/2 + 7;
+        textX = x + width/2;
+        textY = y + height/2 + 7;
     }
 
 
@@ -147,7 +149,7 @@ public class NoteButton extends Button {
         pressAnimationFrame();
 
         GuiComponent.blit(pPoseStack,
-            this.getX(), this.getY(),
+            x, this.y,
             isPlaying() ? width : 0, 0,
             width, height,
             width*2, height
@@ -158,7 +160,7 @@ public class NoteButton extends Button {
         final int noteWidth = width/2, noteHeight = height/2;
 
         GuiComponent.blit(pPoseStack,
-            this.getX() + noteWidth/2, this.getY() + noteHeight/2,
+            this.x + noteWidth/2, this.y + noteHeight/2,
             //NOTE: I have no clue whatsoever how on earth these 1.025 and .9 multipliers actually work.
             // Like seriously wtf why fkuaherjgaeorg i hate maths
             //NOTE: Moved said numbers to the randomAss vars
@@ -196,7 +198,7 @@ public class NoteButton extends Button {
         if (!isPlaying())
             return;
 
-        final int fps = minecraft.getFps();
+        final int fps = getFps();
         final float targetTime = fps * PRESS_ANIM_SECS;
             
         if (animTime++ >= targetTime/2) {
@@ -221,15 +223,27 @@ public class NoteButton extends Button {
         }
         
         width = height = (int)dSize;
-        setPosition(
-            (getSize() - width) / 2 + initX,
-            (getSize() - width) / 2 + initY
-        );
+        x = (getSize() - width) / 2 + initX;
+        y = (getSize() - width) / 2 + initY;
     }
     private void resetAnimVars() {
         animTime = 0;
         dSize = width = height = getSize();
-        setPosition(initX, initY);
+
+        x = initX;
+        y = initY;
+    }
+
+
+    private static int getFps() {
+        try {
+            final Field fps = ObfuscationReflectionHelper.findField(Minecraft.class, "fps");
+            fps.setAccessible(true);
+            return fps.getInt(Minecraft.getInstance());
+        } catch (Exception e) {
+            LogUtils.getLogger().error("Exception occured during the proccess of getting FPS", e);
+            return 60;
+        }
     }
 
 
@@ -283,7 +297,7 @@ public class NoteButton extends Button {
             return;
             
         final Level level = minecraft.level;
-        level.playLocalSound(pos,
+        level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(),
             sound.getByPreference(distanceFromPlayer), SoundSource.RECORDS,
             1, sound.getPitch()
         , false);

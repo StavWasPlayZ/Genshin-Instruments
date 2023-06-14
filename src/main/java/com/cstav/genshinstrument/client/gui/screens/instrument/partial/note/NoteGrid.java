@@ -6,12 +6,12 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
+import com.cstav.genshinstrument.client.gui.screens.options.widget.copied.FrameWidget;
+import com.cstav.genshinstrument.client.gui.screens.options.widget.copied.GridWidget;
+import com.cstav.genshinstrument.client.gui.screens.options.widget.copied.GridWidget.RowHelper;
 import com.cstav.genshinstrument.sounds.NoteSound;
 
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.FrameWidget;
-import net.minecraft.client.gui.components.GridWidget;
-import net.minecraft.client.gui.components.GridWidget.RowHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 

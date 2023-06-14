@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
@@ -18,7 +19,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public abstract class AbstractContainerWidget extends AbstractWidget2 implements ContainerEventHandler {
+public abstract class AbstractContainerWidget extends AbstractWidget implements ContainerEventHandler {
    @Nullable
    private GuiEventListener focused;
    private boolean dragging;
@@ -28,15 +29,15 @@ public abstract class AbstractContainerWidget extends AbstractWidget2 implements
    }
 
    public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-      for(AbstractWidget2 AbstractWidget2 : this.getContainedChildren()) {
-         AbstractWidget2.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+      for(AbstractWidget AbstractWidget : this.getContainedChildren()) {
+         AbstractWidget.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
       }
 
    }
 
    public boolean isMouseOver(double pMouseX, double pMouseY) {
-      for(AbstractWidget2 AbstractWidget2 : this.getContainedChildren()) {
-         if (AbstractWidget2.isMouseOver(pMouseX, pMouseY)) {
+      for(AbstractWidget AbstractWidget : this.getContainedChildren()) {
+         if (AbstractWidget.isMouseOver(pMouseX, pMouseY)) {
             return true;
          }
       }
@@ -54,7 +55,7 @@ public abstract class AbstractContainerWidget extends AbstractWidget2 implements
       return this.getContainedChildren();
    }
 
-   protected abstract List<? extends AbstractWidget2> getContainedChildren();
+   protected abstract List<? extends AbstractWidget> getContainedChildren();
 
    public boolean isDragging() {
       return this.dragging;
@@ -67,8 +68,8 @@ public abstract class AbstractContainerWidget extends AbstractWidget2 implements
    public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
       boolean flag = false;
 
-      for(AbstractWidget2 AbstractWidget2 : this.getContainedChildren()) {
-         if (AbstractWidget2.isMouseOver(pMouseX, pMouseY) && AbstractWidget2.mouseScrolled(pMouseX, pMouseY, pDelta)) {
+      for(AbstractWidget AbstractWidget : this.getContainedChildren()) {
+         if (AbstractWidget.isMouseOver(pMouseX, pMouseY) && AbstractWidget.mouseScrolled(pMouseX, pMouseY, pDelta)) {
             flag = true;
          }
       }
@@ -82,9 +83,9 @@ public abstract class AbstractContainerWidget extends AbstractWidget2 implements
 
    @Nullable
    protected GuiEventListener getHovered() {
-      for(AbstractWidget2 AbstractWidget2 : this.getContainedChildren()) {
-         if (AbstractWidget2.isHovered) {
-            return AbstractWidget2;
+      for(AbstractWidget AbstractWidget : this.getContainedChildren()) {
+         if (AbstractWidget.isHoveredOrFocused()) {
+            return AbstractWidget;
          }
       }
 
@@ -126,18 +127,18 @@ public abstract class AbstractContainerWidget extends AbstractWidget2 implements
    }
 
    public void setX(int pX) {
-      for(AbstractWidget2 AbstractWidget2 : this.getContainedChildren()) {
-         int i = AbstractWidget2.x + (pX - this.x);
-         AbstractWidget2.x = i;
+      for(AbstractWidget AbstractWidget : this.getContainedChildren()) {
+         int i = AbstractWidget.x + (pX - this.x);
+         AbstractWidget.x = i;
       }
 
       super.x = pX;
    }
 
    public void setY(int pY) {
-      for(AbstractWidget2 AbstractWidget2 : this.getContainedChildren()) {
-         int i = AbstractWidget2.y + (pY - this.y);
-         AbstractWidget2.y = i;
+      for(AbstractWidget AbstractWidget : this.getContainedChildren()) {
+         int i = AbstractWidget.y + (pY - this.y);
+         AbstractWidget.y = i;
       }
 
       super.y = pY;
@@ -164,10 +165,10 @@ public abstract class AbstractContainerWidget extends AbstractWidget2 implements
 
    @OnlyIn(Dist.CLIENT)
    protected abstract static class AbstractChildWrapper {
-      public final AbstractWidget2 child;
+      public final AbstractWidget child;
       public final LayoutSettings.LayoutSettingsImpl layoutSettings;
 
-      protected AbstractChildWrapper(AbstractWidget2 pChild, LayoutSettings pLayoutSettings) {
+      protected AbstractChildWrapper(AbstractWidget pChild, LayoutSettings pLayoutSettings) {
          this.child = pChild;
          this.layoutSettings = pLayoutSettings.getExposed();
       }
