@@ -1,16 +1,16 @@
 {
-    "parent": "genshinstrument:genshin_instruments/glorious_drum",
+    "parent": "genshinstrument:genshin_instruments/floral_zither",
 
     "display": {
         "icon": {
-            "item": "genshinstrument:vintage_lyre"
+            "item": "genshinstrument:glorious_drum"
         },
 
         "title": {
-            "translate": "genshinstrument.advancements.main.vintage_lyre.title"
+            "translate": "genshinstrument.advancements.main.glorious_drum.title"
         },
         "description": {
-            "translate": "genshinstrument.advancements.main.vintage_lyre.description"
+            "translate": "genshinstrument.advancements.main.glorious_drum.description"
         }
     },
 
@@ -20,7 +20,7 @@
 
             "conditions": {
                 "instrument": {
-                    "items": ["genshinstrument:vintage_lyre"]
+                    "items": ["genshinstrument:glorious_drum"]
                 }
             }
         }

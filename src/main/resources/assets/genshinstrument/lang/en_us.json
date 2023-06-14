@@ -4,6 +4,7 @@
     "item.genshinstrument.windsong_lyre": "Windsong Lyre",
     "item.genshinstrument.floral_zither": "Floral Zither",
     "item.genshinstrument.vintage_lyre": "Vintage Lyre",
+    "item.genshinstrument.glorious_drum": "Arataki's Great And Glorious Drum",
 
 
     "soundCategory.record": "Instruments",
@@ -43,10 +44,15 @@
     "genshinstrument.label.la": "La",
     "genshinstrument.label.ti": "Ti",
 
+    "genshinstrument.label.glorious_drum.ka": "Ka",
+    "genshinstrument.label.glorious_drum.don": "Don",
+
 
     "button.genshinstrument.label.keyboard_layout": "Keyboard",
     "button.genshinstrument.label.abc": "ABC",
     "button.genshinstrument.label.none": "No Label",
+
+    "button.genshinstrument.label.don_ka": "Don-Ka",
 
 
 

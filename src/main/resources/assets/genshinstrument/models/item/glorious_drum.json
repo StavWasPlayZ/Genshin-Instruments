@@ -1,0 +1,6 @@
+{
+    "parent": "genshinstrument:item/instrument",
+    "textures": {
+        "layer0": "genshinstrument:item/glorious_drum"
+    }
+}

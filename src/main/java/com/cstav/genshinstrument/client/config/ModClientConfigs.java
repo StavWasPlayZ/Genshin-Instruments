@@ -3,6 +3,7 @@ package com.cstav.genshinstrument.client.config;
 import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.client.config.enumType.ZitherSoundType;
+import com.cstav.genshinstrument.client.config.enumType.label.DrumNoteLabel;
 import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
 import com.cstav.genshinstrument.sounds.NoteSound;
 
@@ -31,6 +32,7 @@ public class ModClientConfigs {
     public static final BooleanValue STOP_MUSIC_ON_PLAY;
 
     public static final EnumValue<ZitherSoundType> ZITHER_SOUND_TYPE;
+    public static final EnumValue<DrumNoteLabel> DRUM_LABEL_TYPE;
 
 
     static {
@@ -47,6 +49,7 @@ public class ModClientConfigs {
         ).define("stop_music_on_play", true);
 
         ZITHER_SOUND_TYPE = configBuilder.defineEnum("zither_sound_type", ZitherSoundType.NEW);
+        DRUM_LABEL_TYPE = configBuilder.defineEnum("drum_label_type", DrumNoteLabel.KEYBOARD_LAYOUT);
 
 
         CONFIGS = configBuilder.build();
