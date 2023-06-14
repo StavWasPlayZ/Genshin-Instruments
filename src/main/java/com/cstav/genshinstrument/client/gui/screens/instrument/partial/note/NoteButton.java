@@ -237,11 +237,11 @@ public class NoteButton extends Button {
 
     private static int getFps() {
         try {
-            final Field fps = ObfuscationReflectionHelper.findField(Minecraft.class, "fps");
+            final Field fps = ObfuscationReflectionHelper.findField(Minecraft.class, "f_91021_");
             fps.setAccessible(true);
             return fps.getInt(Minecraft.getInstance());
         } catch (Exception e) {
-            LogUtils.getLogger().error("Exception occured during the proccess of getting FPS", e);
+            LogUtils.getLogger().error("Exception occured during the proccess of getting FPS! Defaulting to 90", e);
             return 60;
         }
     }
