@@ -7,14 +7,14 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractI
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
+import com.cstav.genshinstrument.client.gui.screens.options.widget.copied.LinearLayoutWidget;
+import com.cstav.genshinstrument.client.gui.screens.options.widget.copied.LinearLayoutWidget.Orientation;
 import com.cstav.genshinstrument.sounds.ModSounds;
 import com.cstav.genshinstrument.sounds.NoteSound;
 import com.cstav.genshinstrument.util.RGBColor;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.LinearLayoutWidget;
-import net.minecraft.client.gui.components.LinearLayoutWidget.Orientation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -54,9 +54,14 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
         layout1.pack();
         layout2.pack();
 
-        layout1.setPosition((width - layout1.getWidth()) / 2, (int)(height * .8f));
-        layout2.setPosition((width - layout2.getWidth()) / 2, layout1.getY() - layout1.getHeight());
 
+        layout1.x = (width - layout1.getWidth()) / 2;
+        layout1.y = (int)(height * .8f);
+
+        layout2.x = (width - layout2.getWidth()) / 2;
+        layout2.y = layout1.y - layout1.getHeight();
+
+        
         addRenderableWidget(layout1);
         addRenderableWidget(layout2);
 
