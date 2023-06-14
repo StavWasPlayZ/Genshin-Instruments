@@ -121,7 +121,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         initOptionsGrid(grid, rowHelper);
 
         grid.setY(40);
-        grid.setX((grid.getWidth() + getSmallButtonWidth()) / 2 - getHorzPadding() * 2);
+        grid.setX((width - grid.getWidth()) / 2);
         
         addRenderableWidget(grid);
         
