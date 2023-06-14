@@ -105,7 +105,7 @@ public class NoteGrid implements Iterable<NoteButton> {
         forEach((note) -> rowHelper.addChild(note));
         
         grid.pack();
-        grid.x = grid.getWidth() / 2 + (int)(NoteButton.getSize()/1.5f);
+        grid.x = (screenWidth - grid.getWidth()) / 2;
         grid.y = screenHeight - grid.getHeight() - 25;
         grid.pack();
 
