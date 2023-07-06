@@ -10,7 +10,6 @@ import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.AbsGridLabels;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.ibm.icu.text.DecimalFormat;
@@ -38,6 +37,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
     private static final String SOUND_CHANNEL_KEY = "button.genshinstrument.audioChannels",
         STOP_MUSIC_KEY = "button.genshinstrument.stop_music_on_play";
+    private static final double PITCH_STEP = .05;
 
     protected final HashMap<String, Runnable> APPLIED_OPTIONS = new HashMap<>();
     /**
@@ -174,15 +174,10 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
 
             @Override
-            // We only use getNoteName for the 1st note
-            @SuppressWarnings("deprecation")
             protected void updateMessage() {
                 this.setMessage(
                     Component.translatable("button.genshinstrument.pitch").append(
-                        String.format(": %s (%s)",
-                            format.format(instrumentScreen.getPitch()),
-                            AbsGridLabels.getNoteName(instrumentScreen.getPitch(), 0)
-                        )
+                        ": " + format.format(instrumentScreen.getPitch())
                     )
                 );
             }
@@ -193,9 +188,11 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
             }
 
             private static double divisibleBy5(double number) {
-                final double result = Math.floor(number * 20) / 20;
-                // Substraction done for percision
-                return number > (NoteSound.MAX_PITCH - .001) ? NoteSound.MAX_PITCH : result;
+                if (number > (NoteSound.MAX_PITCH - .001))
+                    return NoteSound.MAX_PITCH;
+
+                final double factor = Math.round(1 / PITCH_STEP * 100) / 100;
+                return (int)(number * factor) / factor;
             }
         };
         rowHelper.addChild(pitchSlider);

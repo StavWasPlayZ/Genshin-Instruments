@@ -11,63 +11,69 @@ public abstract class AbsGridLabels {
             "do", "re", "mi", "fa", "so", "la", "ti"
         },
         PITCHES = {
-            "Cb", "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"
+            "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"
         }
     ;
 
-    // nvm i suck
-    // i have no idea what are these crazy dumb rules over this format
-    @Deprecated
-    //NOTE: Assuming pitch step is always .05 and (0 < pitch < 2)
-    public static String getNoteName(final float pitch, final int noteRow) {
-        int index = getNoteIndex(pitch + noteRow * .05f * 2);
+    // The pitches dont even match, 1/16th is annoying to get
+    // @Deprecated(forRemoval = true)
+    // public static String getNoteName(final float pitch, final int noteRow) {
+    //     int index = getNoteIndex(pitch + noteRow * .05f * 2);
         
-        // Cb at start
-        // final boolean didWrap = index > PITCHES.length;
+    //     // // Cb at start
+    //     // final boolean didWrap = index > PITCHES.length;
         
-        // E and F shenanigans
-        final int startIndex = getNoteIndex(pitch);
-        if (steppedOnPoint(startIndex, index - startIndex, 6 + (startIndex - 1)))
-            index--;
-        // if (Math.abs(index - getPitchUnit(pitch)) > 10)
-        //     index--;
+    //     // E and F
+    //     final int startIndex = getNoteIndex(pitch), passed = index - startIndex;
+    //     for (int i = 0; i < steppedOnPoint(startIndex, passed, 6 + (startIndex - 1)); i++)
+    //         index--;
+    //     // B and C
+    //     // for (int i = 0; i < steppedOnPoint(startIndex, passed, 0 + (startIndex - 1)); i++)
+    //     //     index--;
 
-        return PITCHES[pyWrap(index % PITCHES.length, PITCHES) /*+ (didWrap ? 1 : 0)*/];
-    }
+    //     return PITCHES[doublyPyWrap(index, PITCHES) /*+ (didWrap ? 1 : 0)*/];
+    // }
 
-    private static boolean steppedOnPoint(final int start, int passed, final int point) {
-        for (int i = start; passed > 0; i = (i + 1) % PITCHES.length) {
-            if (i == point)
-                return true;
+    // private static int steppedOnPoint(final int start, int passed, final int point) {
+    //     int counter = 0;
 
-            passed--;
-        }
+    //     for (int i = start; passed > 0; i = (i + 1) % PITCHES.length) {
+    //         if (i == point)
+    //             counter++;
 
-        return false;
-    }
+    //         passed--;
+    //     }
 
-    private static int getNoteIndex(final float pitch) {
-        return getPitchUnit(pitch);
-    }
-    private static int getPitchUnit(final float pitch) {
-        float result = (pitch * 100 - 100) / 5 + 1;
-        // Ceil/floor for float imperfections
-        result += (result >= 0) ? .001f : -.001f;
+    //     return counter;
+    // }
 
-        return pyWrap((int)result, PITCHES);
-    }
-    /**
-     * Provides a similar behaviour to python's indexing,
-     * where negatives are counted backwards.
-     */
-    private static int pyWrap(int index, final Object[] arr, boolean add1) {
-        if (index < 0)
-            index += arr.length + (add1 ? 1 : 0);
+    // //NOTE: Assuming pitch step is always .05 and (0 < pitch < 2)
+    // private static int getNoteIndex(final float pitch) {
+    //     float result = (pitch * 100 - 100) / 5;
+    //     // Ceil/floor for float imperfections
+    //     result += (result >= 0) ? .001f : -.001f;
 
-        return index;
-    }
-    private static int pyWrap(int index, final Object[] arr) {
-        return pyWrap(index, arr, false);
-    }
+    //     return pyWrap((int)result, PITCHES);
+    // }
+    // /**
+    //  * Provides a similar behaviour to python's indexing,
+    //  * where negatives are counted backwards.
+    //  */
+    // private static int pyWrap(int index, final Object[] arr, boolean add1) {
+    //     while (index < 0)
+    //         index += arr.length + (add1 ? 1 : 0);
+
+    //     return index;
+    // }
+    // private static int doublyPyWrap(int index, final Object[] arr) {
+    //     while (index >= arr.length)
+    //         index -= arr.length;
+
+    //     return pyWrap(index, arr);
+    // }
+
+    // private static int pyWrap(int index, final Object[] arr) {
+    //     return pyWrap(index, arr, false);
+    // }
 
 }
