@@ -106,7 +106,7 @@ public class NoteGrid implements Iterable<NoteButton> {
         grid.defaultCellSetting().padding(PADDING_HORZ, PADDING_VERT);
 
         final RowHelper rowHelper = grid.createRowHelper(rows);
-        forEach((note) -> rowHelper.addChild(note));
+        forEach(rowHelper::addChild);
 
         grid.arrangeElements();
 

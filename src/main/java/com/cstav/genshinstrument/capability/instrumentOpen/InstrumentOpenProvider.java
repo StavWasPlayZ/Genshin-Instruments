@@ -44,8 +44,8 @@ public class InstrumentOpenProvider implements ICapabilityProvider, INBTSerializ
     
 
     public static void setOpen(final Player player, final boolean isOpen) {
-        player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((lyreOpen) ->
-            lyreOpen.setOpen(isOpen)
+        player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((instrumentOpen) ->
+            instrumentOpen.setOpen(isOpen)
         );
     }
 }

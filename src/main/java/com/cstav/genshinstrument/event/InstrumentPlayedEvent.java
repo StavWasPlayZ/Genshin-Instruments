@@ -39,8 +39,8 @@ public class InstrumentPlayedEvent extends Event {
             setCanceled(true);
     }
 
-
-    public static final class ByPlayer extends InstrumentPlayedEvent {
+    @Cancelable
+    public static class ByPlayer extends InstrumentPlayedEvent {
         public final Player player;
         /** The instrument held by the player who initiated the sound */
         public final ItemStack instrument;

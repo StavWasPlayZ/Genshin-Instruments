@@ -16,13 +16,15 @@
     "button.genshinstrument.audioChannels.stereo": "Стерео",
     "button.genshinstrument.audioChannels.mono": "Моно",
     "button.genshinstrument.audioChannels.mixed.tooltip":
-        "В мультиплеере, если категория звука Instruments установлена на 100% - вы будете слышать инструменты на Stereo в пределах %s блоков диапазона.\nВ противном случае, вы будете слышать Stereo, как и когда вы играете сами.",
+        "Если для категории звука Instruments установлено значение 100%, то в пределах %s блоков диапазона вы будете слышать инструменты в режиме Stereo.\nВ противном случае вы будете слышать Mono.",
     "button.genshinstrument.audioChannels.mixed": "Смешанные",
     "button.genshinstrument.stop_music_on_play.tooltip": "Когда вы или другие игроки в радиусе %s блоков играют на инструменте, фоновая музыка Minecraft остановится.",
     "button.genshinstrument.stop_music_on_play": "Остановка музыки при воспроизведении",
     "button.genshinstrument.emit_ring": "Показать анимацию примечаний",
     "button.genshinstrument.shared_instrument.tooltip": "Смотрите на экране своего инструмента, какие ноты нажимают другие игроки поблизости",
     "button.genshinstrument.shared_instrument": "Экран общего инструмента",
+
+    "button.genshinstrument.render_background": "Показать фоновые визуальные",
 
 
     

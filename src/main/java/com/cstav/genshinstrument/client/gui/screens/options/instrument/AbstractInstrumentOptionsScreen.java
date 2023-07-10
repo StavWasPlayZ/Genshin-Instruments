@@ -125,8 +125,8 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
             .alignHorizontallyCenter();
         final RowHelper rowHelper = grid.createRowHelper(2);
 
-
         initOptionsGrid(grid, rowHelper);
+        grid.arrangeElements();
 
         FrameLayout.alignInRectangle(grid, 0, 0, width, height, 0.5f, 0);
         grid.visitWidgets(this::addRenderableWidget);
@@ -196,6 +196,19 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
             }
         };
         rowHelper.addChild(pitchSlider);
+
+        final CycleButton<Boolean> stopMusic = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
+            .withInitialValue(ModClientConfigs.STOP_MUSIC_ON_PLAY.get())
+            .withTooltip((value) -> Tooltip.create(Component.translatable(STOP_MUSIC_KEY+".tooltip", NoteSound.STOP_SOUND_DISTANCE)))
+            .create(0, 0,
+                getSmallButtonWidth(), getButtonHeight(),
+                Component.translatable(STOP_MUSIC_KEY), this::onMusicStopChanged
+            );
+        rowHelper.addChild(stopMusic);
+
+
+        rowHelper.addChild(SpacerElement.height(15), 2);
+        
         
         if (labels != null) {
             final CycleButton<INoteLabel> labelType = CycleButton.<INoteLabel>builder((label) -> Component.translatable(label.getKey()))
@@ -224,19 +237,6 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
                 Component.translatable("button.genshinstrument.shared_instrument"), this::onSharedInstrumentChanged
             );
         rowHelper.addChild(sharedInstrument);
-
-        rowHelper.addChild(SpacerElement.height(15), 2);
-
-        final CycleButton<Boolean> stopMusic = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
-            .withInitialValue(ModClientConfigs.STOP_MUSIC_ON_PLAY.get())
-            .withTooltip((value) -> Tooltip.create(Component.translatable(STOP_MUSIC_KEY+".tooltip", NoteSound.STOP_SOUND_DISTANCE)))
-            .create(0, 0,
-                getBigButtonWidth(), getButtonHeight(),
-                Component.translatable(STOP_MUSIC_KEY), this::onMusicStopChanged
-            );
-        rowHelper.addChild(stopMusic, 2);
-
-        grid.arrangeElements();
     }
 
 

@@ -35,7 +35,9 @@ public class FloralZitherOptionsScreen extends GridInstrumentOptionsScreen {
     @Override
     protected void initOptionsGrid(GridLayout grid, RowHelper rowHelper) {
         super.initOptionsGrid(grid, rowHelper);
+        
         rowHelper.addChild(SpacerElement.height(SPACER_HEIGHT), 2);
+        grid.arrangeElements();
         heightBefore = grid.getHeight();
 
         final CycleButton<ZitherSoundType> soundTypeButton = CycleButton.<ZitherSoundType>builder((type) ->
@@ -48,9 +50,8 @@ public class FloralZitherOptionsScreen extends GridInstrumentOptionsScreen {
             , Component.translatable(SOUND_TYPE_KEY), this::onSoundTypeChange);
 
         rowHelper.addChild(soundTypeButton, 2, rowHelper.newCellSettings().paddingTop(PADDING));
-
-        grid.arrangeElements();
     }
+
     @Override
     public void render(GuiGraphics gui, int pMouseX, int pMouseY, float pPartialTick) {
         super.render(gui, pMouseX, pMouseY, pPartialTick);

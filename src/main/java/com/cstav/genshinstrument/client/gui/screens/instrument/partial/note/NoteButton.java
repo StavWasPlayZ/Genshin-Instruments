@@ -40,7 +40,7 @@ public class NoteButton extends AbstractButton {
             case 1 -> 35;
             case 2 -> 46;
             case 3 -> 48;
-            case 4 -> 43;
+            case 4 -> 40;
             default -> guiScale * 18;
         };
     }
@@ -205,7 +205,7 @@ public class NoteButton extends AbstractButton {
             (int)(noteWidth * (noteTextureWidth / rowsInNoteTexture) * randomAssMultiplier1), height/2
         );
 
-        ClientUtil.reserShaderColor();
+        ClientUtil.resetShaderColor();
 
         // Label
         //FIXME: All text rendered this way are making their way to the top of

@@ -52,7 +52,7 @@ public class NoteSound {
         this.mono = mono;
         this.stereo = stereo;
     }
-    public NoteSound() {}
+    NoteSound() {}
     
 
     public SoundEvent getMono() {

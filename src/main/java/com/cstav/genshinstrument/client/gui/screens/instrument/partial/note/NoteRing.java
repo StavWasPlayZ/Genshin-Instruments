@@ -51,7 +51,7 @@ public class NoteRing {
             size, size
         );
 
-        ClientUtil.reserShaderColor();
+        ClientUtil.resetShaderColor();
     }
 
     public boolean isPlaying() {

@@ -32,7 +32,7 @@ public class ClientUtil {
     public static void setShaderColor(final Color color) {
         setShaderColor(color, 1);
     }
-    public static void reserShaderColor() {
+    public static void resetShaderColor() {
         setShaderColor(Color.WHITE);
     }
 
