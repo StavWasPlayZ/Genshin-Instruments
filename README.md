@@ -6,7 +6,7 @@
 
 Genshin Instruments is a Forge and Fabric mod that brings in Genshin Impact's set of instruments into your Minecraft worlds!
 
-For documentation of gameplay, visit [the mod's curseforge page](https://www.curseforge.com/minecraft/mc-mods/genshin-instruments).  
+For gameplay tutorials, visit [this PlanetMinecraft article](https://www.planetminecraft.com/blog/how-to-master-the-lyre-genshin-instruments-mod/) or [the mod's curseforge page](https://www.curseforge.com/minecraft/mc-mods/genshin-instruments).  
 For full Mod and "in-game" API documentations, visit [this repository's wiki](https://github.com/StavWasPlayZ/Genshin-Instruments/wiki).
 
-You may also find the Fabric version [here](https://github.com/StavWasPlayZ/Genshin-Instruments-Fabric)
+You may also find the Fabric version's GitHub repository [here](https://github.com/StavWasPlayZ/Genshin-Instruments-Fabric)
