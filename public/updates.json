@@ -4,7 +4,7 @@
     "1.19.2": {
         "2.2.1": "Backport mod to 1.19.2",
         "2.2.1.2": "- Fix FPS not being pulled correctly\n- Fix instrument and options screens being off-center"
-    }
+    },
     "1.19.3": {
         "1.0": "Initial release",
         "1.0.1": "- Fixed resources folder and package names being incorrect\n- implemented Forge's updates mechanism",
@@ -24,6 +24,7 @@
 
         "2.6": "- Added the visual play ring from Genshin"
     },
+
     "1.20": {
         "2.7": "- Updated mod to MC v1.20",
         "2.7.1": "- Fixed play ring's alpha channel rendering incorrectly",
@@ -32,9 +33,11 @@
         "2.7.7": "- All instrument sounds now play locally on a range of 5 blocks"
     },
     "1.20.1": {
-        "2.7.8": "- Update to 1.20.1\n- Pitch slider now has note names"
+        "2.7.8": "- Update to 1.20.1\n- Pitch slider now has note names",
+        "2.8": "- Added the staff instrument background"
     },
 
+    
     "promos": {
         "1.19.2-latest": "2.2.1.2",
         "1.19.2-recommended": "2.2.1.2",
@@ -45,7 +48,11 @@
         "1.19.4-latest": "2.6",
         "1.19.4-recommended": "2.6",
 
-        "1.20-latest": "2.7.8",
-        "1.20-recommended": "2.7.8"
+
+        "1.20-latest": "2.7.7",
+        "1.20-recommended": "2.7.7",
+
+        "1.20.1-latest": "2.8",
+        "1.20.1-recommended": "2.8"
     }
 }

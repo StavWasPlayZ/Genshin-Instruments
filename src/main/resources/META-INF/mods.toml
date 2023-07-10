@@ -17,7 +17,7 @@ license="CC-BY-NC 4.0"
 # The modid of the mod
 modId="genshinstrument" #mandatory
 # The version number of the mod
-version="2.7.8" #mandatory
+version="2.8" #mandatory
 # A display name for the mod
 displayName="Genshin Instruments" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://docs.minecraftforge.net/en/latest/misc/updatechecker/
