@@ -2,12 +2,19 @@ package com.cstav.genshinstrument.networking;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+
 import com.cstav.genshinstrument.Main;
+import com.cstav.genshinstrument.networking.buttonidentifiers.DrumNoteIdentifier;
+import com.cstav.genshinstrument.networking.buttonidentifiers.NoteButtonIdentifier;
+import com.cstav.genshinstrument.networking.buttonidentifiers.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.networking.packets.instrument.CloseInstrumentPacket;
 import com.cstav.genshinstrument.networking.packets.instrument.InstrumentPacket;
 import com.cstav.genshinstrument.networking.packets.instrument.NotifyInstrumentOpenPacket;
 import com.cstav.genshinstrument.networking.packets.instrument.OpenInstrumentPacket;
 import com.cstav.genshinstrument.networking.packets.instrument.PlayNotePacket;
+import com.cstav.genshinstrument.util.ServerUtil;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -23,6 +30,8 @@ import net.minecraftforge.network.simple.SimpleChannel;
 
 @EventBusSubscriber(modid = Main.MODID, bus = Bus.MOD)
 public class ModPacketHandler {
+    private static final Logger LOGGER = LogUtils.getLogger();
+
     @SuppressWarnings("unchecked")
     private static final List<Class<ModPacket>> ACCEPTABLE_PACKETS = List.of(new Class[] {
         InstrumentPacket.class, PlayNotePacket.class, OpenInstrumentPacket.class, CloseInstrumentPacket.class,
@@ -30,7 +39,21 @@ public class ModPacketHandler {
     });
 
 
-    private static final String PROTOCOL_VERSION = "3.7";
+    @SuppressWarnings("unchecked")
+    private static final List<Class<? extends NoteButtonIdentifier>> ACCEPTABLE_IDENTIFIERS = List.of(new Class[] {
+        NoteButtonIdentifier.class, NoteGridButtonIdentifier.class, DrumNoteIdentifier.class
+    });
+
+    /**
+     * @see ServerUtil#getValidNoteIdentifier
+     */
+    public static Class<? extends NoteButtonIdentifier> getValidIdentifier(String classType)
+            throws ClassNotFoundException {
+        return ServerUtil.getValidNoteIdentifier(classType, ACCEPTABLE_IDENTIFIERS);
+    }
+
+
+    private static final String PROTOCOL_VERSION = "4";
     private static int id;
 
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
@@ -61,16 +84,19 @@ public class ModPacketHandler {
                             try {
                                 return packetType.getDeclaredConstructor(FriendlyByteBuf.class).newInstance(buf);
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                LOGGER.error("Error constructing packet of type "+packetType.getName(), e);
                                 return null;
                             }
                         })
                         .encoder(ModPacket::toBytes)
                         .consumerMainThread(ModPacket::handle)
-                        .add();
+                    .add();
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    LOGGER.error(
+                        "Error registring packet of type "+packetType.getName()
+                            +". Make sure to have a NETWORK_DIRECTION static field of type NetworkDirection."
+                    , e);
                 }
 
         });

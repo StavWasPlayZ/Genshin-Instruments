@@ -1,5 +1,6 @@
 package com.cstav.genshinstrument.event;
 
+import com.cstav.genshinstrument.networking.buttonidentifiers.NoteButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraft.core.BlockPos;
@@ -22,17 +23,20 @@ public class InstrumentPlayedEvent extends Event {
     public final NoteSound sound;
     public final Level level;
     public final boolean isClientSide;
-
+    
     public final ResourceLocation instrumentId;
+    public final NoteButtonIdentifier noteIdentifier;
     public final BlockPos pos;
     
 
-    public InstrumentPlayedEvent(NoteSound sound, Level level, BlockPos pos, ResourceLocation instrumentId, boolean isClientSide) {
+    public InstrumentPlayedEvent(NoteSound sound, Level level, BlockPos pos,
+            ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, boolean isClientSide) {
         this.sound = sound;
         this.level = level;
         this.pos = pos;
         this.isClientSide = isClientSide;
         this.instrumentId = instrumentId;
+        this.noteIdentifier = noteIdentifier;
 
         // Handle provided invalid id
         if (!ForgeRegistries.ITEMS.containsKey(instrumentId))
@@ -46,8 +50,9 @@ public class InstrumentPlayedEvent extends Event {
         public final ItemStack instrument;
         public final InteractionHand hand;
 
-        public ByPlayer(NoteSound sound, Player player, InteractionHand hand, ResourceLocation instrumentId, boolean isClientSide) {
-            super(sound, player.level(), player.blockPosition(), instrumentId, isClientSide);
+        public ByPlayer(NoteSound sound, Player player, InteractionHand hand,
+                ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, boolean isClientSide) {
+            super(sound, player.level(), player.blockPosition(), instrumentId, noteIdentifier, isClientSide);
             this.player = player;
             this.hand = hand;
 

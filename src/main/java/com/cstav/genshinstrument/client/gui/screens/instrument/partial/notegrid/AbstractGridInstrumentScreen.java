@@ -1,11 +1,11 @@
-package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
+package com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid;
 
 import java.util.Map;
 
 import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteGrid;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.GridInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
