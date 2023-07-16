@@ -22,7 +22,7 @@ public class DrumNoteIdentifier extends NoteButtonIdentifier {
     public DrumNoteIdentifier(FriendlyByteBuf buf) {
         super(buf);
         noteType = buf.readEnum(DrumButtonType.class);
-        buf.readBoolean();
+        isRight = buf.readBoolean();
     }
     @Override
     public void writeToNetwork(FriendlyByteBuf buf) {
