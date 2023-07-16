@@ -5,9 +5,9 @@ import java.util.List;
 import org.slf4j.Logger;
 
 import com.cstav.genshinstrument.Main;
-import com.cstav.genshinstrument.client.gui.screens.instrument.drum.DrumNoteIdentifier;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButtonIdentifier;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.NoteGridButtonIdentifier;
+import com.cstav.genshinstrument.networking.buttonidentifiers.DrumNoteIdentifier;
+import com.cstav.genshinstrument.networking.buttonidentifiers.NoteButtonIdentifier;
+import com.cstav.genshinstrument.networking.buttonidentifiers.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.networking.packets.instrument.CloseInstrumentPacket;
 import com.cstav.genshinstrument.networking.packets.instrument.InstrumentPacket;
 import com.cstav.genshinstrument.networking.packets.instrument.NotifyInstrumentOpenPacket;
@@ -41,7 +41,7 @@ public class ModPacketHandler {
 
     @SuppressWarnings("unchecked")
     private static final List<Class<? extends NoteButtonIdentifier>> ACCEPTABLE_IDENTIFIERS = List.of(new Class[] {
-        DrumNoteIdentifier.class, NoteGridButtonIdentifier.class
+        NoteButtonIdentifier.class, NoteGridButtonIdentifier.class, DrumNoteIdentifier.class
     });
 
     /**

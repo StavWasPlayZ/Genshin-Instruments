@@ -3,8 +3,8 @@ package com.cstav.genshinstrument.networking.packets.instrument;
 import java.util.function.Supplier;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpen;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.ModPacket;
+import com.cstav.genshinstrument.networking.buttonidentifiers.NoteButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.ServerUtil;
 

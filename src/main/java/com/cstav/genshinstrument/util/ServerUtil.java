@@ -3,9 +3,9 @@ package com.cstav.genshinstrument.util;
 import java.util.List;
 import java.util.Optional;
 
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButtonIdentifier;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
+import com.cstav.genshinstrument.networking.buttonidentifiers.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.packets.instrument.PlayNotePacket;
 import com.cstav.genshinstrument.sound.NoteSound;
 

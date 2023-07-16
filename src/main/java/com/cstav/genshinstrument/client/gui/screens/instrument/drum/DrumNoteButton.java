@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.drum;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
+import com.cstav.genshinstrument.networking.buttonidentifiers.DrumNoteIdentifier;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

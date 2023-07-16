@@ -1,6 +1,6 @@
 package com.cstav.genshinstrument.event;
 
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButtonIdentifier;
+import com.cstav.genshinstrument.networking.buttonidentifiers.NoteButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraft.core.BlockPos;

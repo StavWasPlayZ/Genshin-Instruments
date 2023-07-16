@@ -1,10 +1,13 @@
-package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note;
+package com.cstav.genshinstrument.networking.buttonidentifiers;
 
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * <p>
@@ -18,6 +21,10 @@ public class NoteButtonIdentifier {
     private NoteSound sound;
     public NoteButtonIdentifier(final NoteSound sound) {
         this.sound = sound;
+    }
+    @OnlyIn(Dist.CLIENT)
+    public NoteButtonIdentifier(final NoteButton note) {
+        this(note.sound);
     }
 
     public NoteButtonIdentifier(final FriendlyByteBuf buf) {

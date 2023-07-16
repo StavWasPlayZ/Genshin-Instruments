@@ -9,27 +9,21 @@ import com.cstav.genshinstrument.sound.NoteSound;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public enum DrumButtonType {
-    DON(0, ModSounds.GLORIOUS_DRUM[0], "glorious_drum.don", KeyMappings.DON),
-    KA(1, ModSounds.GLORIOUS_DRUM[1], "glorious_drum.ka", KeyMappings.KA);
+    DON(0, ModSounds.GLORIOUS_DRUM[0], "glorious_drum.don"),
+    KA(1, ModSounds.GLORIOUS_DRUM[1], "glorious_drum.ka");
 
-    private final DrumKeys keys;
     private final String transKey;
     private final NoteSound sound;
     private final int index;
 
-    private DrumButtonType(int index, NoteSound sound, String transKey, DrumKeys keys) {
+    private DrumButtonType(int index, NoteSound sound, String transKey) {
         this.sound = sound;
         this.index = index;
-        this.keys = keys;
 
         this.transKey = INoteLabel.TRANSLATABLE_PATH + transKey;
     }
 
-    public DrumKeys getKeys() {
-        return keys;
-    }
     public NoteSound getSound() {
         return sound;
     }
@@ -39,4 +33,12 @@ public enum DrumButtonType {
     public String getTransKey() {
         return transKey;
     }
+
+
+    // Seperated for server compatibility
+    @OnlyIn(Dist.CLIENT)
+    public DrumKeys getKeys() {
+        return (this == DON) ? KeyMappings.DON : KeyMappings.KA;
+    }
+
 }
