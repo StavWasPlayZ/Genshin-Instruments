@@ -8,7 +8,7 @@ import net.minecraft.network.FriendlyByteBuf;
 
 /**
  * <p>
- * A class used for identifying {@link NoteButton note buttons}.
+ * A class used for identifying {@link NoteButton note buttons} over network.
  * By default, uses a button's {@link NoteSound} as an identifier
  * </p>
  * All implementors must include a constructor that gets type {@link FriendlyByteBuf}.

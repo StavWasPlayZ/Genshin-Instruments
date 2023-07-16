@@ -6,10 +6,13 @@ import java.util.ArrayList;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import org.slf4j.Logger;
+
 import com.cstav.genshinstrument.Main;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -34,6 +37,9 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(modid = Main.MODID, bus = Bus.MOD, value = Dist.CLIENT)
 public class InstrumentThemeLoader {
+    private static final Logger LOGGER = LogUtils.getLogger();
+
+
     private static final ArrayList<InstrumentThemeLoader> LOADERS = new ArrayList<>();
     private static final Color DEF_NOTE_PRESSED_THEME = new Color(255, 249, 239);
 
@@ -93,7 +99,7 @@ public class InstrumentThemeLoader {
         try {
             return getter.apply(element);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error retrieving property from JSON element", e);
             return def;
         }
     }
@@ -106,16 +112,17 @@ public class InstrumentThemeLoader {
             @Override
             public void onResourceManagerReload(ResourceManager resourceManager) {
                 for (final InstrumentThemeLoader instrumentLoader : LOADERS) {
+                    final ResourceLocation styleLocation = instrumentLoader.getInstrumentStyleLocation();
                     try {
 
                         // Call all load listeners on the current loader
                         for (final Consumer<JsonObject> listener : instrumentLoader.listeners)
                             listener.accept(JsonParser.parseReader(
-                                resourceManager.getResource(instrumentLoader.getInstrumentStyleLocation()).get().openAsReader()
+                                resourceManager.getResource(styleLocation).get().openAsReader()
                             ).getAsJsonObject());
 
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        LOGGER.error("Error retrieving instrument styler from "+styleLocation, e);
                         continue;
                     }
                 }

@@ -2,6 +2,8 @@ package com.cstav.genshinstrument.networking;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+
 import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.client.gui.screens.instrument.drum.DrumNoteIdentifier;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButtonIdentifier;
@@ -11,6 +13,8 @@ import com.cstav.genshinstrument.networking.packets.instrument.InstrumentPacket;
 import com.cstav.genshinstrument.networking.packets.instrument.NotifyInstrumentOpenPacket;
 import com.cstav.genshinstrument.networking.packets.instrument.OpenInstrumentPacket;
 import com.cstav.genshinstrument.networking.packets.instrument.PlayNotePacket;
+import com.cstav.genshinstrument.util.ServerUtil;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -26,6 +30,8 @@ import net.minecraftforge.network.simple.SimpleChannel;
 
 @EventBusSubscriber(modid = Main.MODID, bus = Bus.MOD)
 public class ModPacketHandler {
+    private static final Logger LOGGER = LogUtils.getLogger();
+
     @SuppressWarnings("unchecked")
     private static final List<Class<ModPacket>> ACCEPTABLE_PACKETS = List.of(new Class[] {
         InstrumentPacket.class, PlayNotePacket.class, OpenInstrumentPacket.class, CloseInstrumentPacket.class,
@@ -39,31 +45,11 @@ public class ModPacketHandler {
     });
 
     /**
-     * @see ModPacketHandler#getValidIdentifier(String, List)
+     * @see ServerUtil#getValidNoteIdentifier
      */
     public static Class<? extends NoteButtonIdentifier> getValidIdentifier(String classType)
             throws ClassNotFoundException {
-        return getValidIdentifier(classType, ACCEPTABLE_IDENTIFIERS);
-    }
-
-    /**
-     * Gets a {@link NoteButtonIdentifier} as described by the {@code classType} destination.
-     * Will only return a class type if it is valid and included in the {@code acceptableIdentifiers} list.
-     * @param classType The class name of the requested identifiers
-     * @param acceptableIdentifiers
-     * 
-     * @return The class of the requested identifier
-     * @throws ClassNotFoundException If the requested class was not found in the provided {@code acceptableIdentifiers} list
-     */
-    public static Class<? extends NoteButtonIdentifier> getValidIdentifier(String classType,
-            List<Class<? extends NoteButtonIdentifier>> acceptableIdentifiers) throws ClassNotFoundException {
-
-        for (final Class<? extends NoteButtonIdentifier> identifier : acceptableIdentifiers) {
-            if (identifier.getName().equals(classType))
-                return identifier;
-        }
-
-        throw new ClassNotFoundException("Class type "+classType+" could not be evaluated as part of the acceptable identifiers");
+        return ServerUtil.getValidNoteIdentifier(classType, ACCEPTABLE_IDENTIFIERS);
     }
 
 
@@ -98,7 +84,7 @@ public class ModPacketHandler {
                             try {
                                 return packetType.getDeclaredConstructor(FriendlyByteBuf.class).newInstance(buf);
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                LOGGER.error("Error constructing packet of type "+packetType.getName(), e);
                                 return null;
                             }
                         })
@@ -107,7 +93,10 @@ public class ModPacketHandler {
                     .add();
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    LOGGER.error(
+                        "Error registring packet of type "+packetType.getName()
+                            +". Make sure to have a NETWORK_DIRECTION static field of type NetworkDirection."
+                    , e);
                 }
 
         });
