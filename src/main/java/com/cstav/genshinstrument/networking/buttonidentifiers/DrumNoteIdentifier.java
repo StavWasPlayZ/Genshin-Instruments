@@ -16,7 +16,7 @@ public class DrumNoteIdentifier extends NoteButtonIdentifier {
     public DrumNoteIdentifier(final DrumNoteButton note) {
         super(note);
         noteType = note.btnType;
-        isRight = !note.isRight;
+        isRight = note.isRight;
     }
 
     public DrumNoteIdentifier(FriendlyByteBuf buf) {
@@ -33,11 +33,9 @@ public class DrumNoteIdentifier extends NoteButtonIdentifier {
 
     @Override
     public boolean matches(NoteButtonIdentifier other) {
-        return (other instanceof DrumNoteIdentifier)
-            ? matches((DrumNoteIdentifier)other)
-            : super.matches(other);
+        return hierarchyMatch(other, this::drumMatch, super::matches);
     }
-    private boolean matches(final DrumNoteIdentifier other) {
+    private boolean drumMatch(final DrumNoteIdentifier other) {
         return (noteType == other.noteType) && (isRight == other.isRight);
     }
 

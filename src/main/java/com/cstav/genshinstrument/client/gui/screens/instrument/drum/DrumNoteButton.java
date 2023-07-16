@@ -13,7 +13,7 @@ public class DrumNoteButton extends NoteButton {
     public final DrumButtonType btnType;
     public final boolean isRight;
 
-    public DrumNoteButton(DrumButtonType btnType, boolean isLeft, AratakisGreatAndGloriousDrumScreen drumScreen) {
+    public DrumNoteButton(DrumButtonType btnType, boolean isRight, AratakisGreatAndGloriousDrumScreen drumScreen) {
         super(
             btnType.getSound(),
             ModClientConfigs.DRUM_LABEL_TYPE.get().getLabelSupplier(),
@@ -23,7 +23,7 @@ public class DrumNoteButton extends NoteButton {
         );
 
         this.btnType = btnType;
-        this.isRight = isLeft;
+        this.isRight = isRight;
     }
 
     @Override
