@@ -61,11 +61,11 @@ public abstract class NoteButton extends AbstractButton {
      * You may use the {@link DefaultNoteButtonIdentifier default implementation} if you're too lazy.
      */
     public NoteButtonIdentifier getIdentifier() {
-        return new NoteButtonIdentifier(sound);
+        return new NoteButtonIdentifier(getSound());
     }
 
     
-    public NoteSound sound;
+    private NoteSound sound;
     public final AbstractInstrumentScreen instrumentScreen;
 
     protected final int noteTextureRow, rowsInNoteTexture;
@@ -118,6 +118,14 @@ public abstract class NoteButton extends AbstractButton {
     }
     public void updateNoteLabel() {
         setMessage(labelSupplier.get(this));
+    }
+
+    public NoteSound getSound() {
+        return sound;
+    }
+    public void setSound(NoteSound sound) {
+        this.sound = sound;
+        getIdentifier().setSound(sound);
     }
 
 

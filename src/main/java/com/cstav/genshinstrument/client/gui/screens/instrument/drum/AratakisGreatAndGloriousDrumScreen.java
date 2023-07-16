@@ -9,8 +9,6 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.Instrumen
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.DrumOptionsScren;
-import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
-import com.cstav.genshinstrument.client.keyMaps.KeyMappings.DrumKeys;
 import com.cstav.genshinstrument.sound.ModSounds;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;

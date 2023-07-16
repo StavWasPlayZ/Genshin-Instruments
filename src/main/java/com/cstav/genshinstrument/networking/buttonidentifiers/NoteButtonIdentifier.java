@@ -20,14 +20,27 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  */
 public class NoteButtonIdentifier {
     
+    // Default implementation
     private NoteSound sound;
+
     public NoteButtonIdentifier(final NoteSound sound) {
         this.sound = sound;
     }
     @OnlyIn(Dist.CLIENT)
     public NoteButtonIdentifier(final NoteButton note) {
-        this(note.sound);
+        this(note.getSound());
     }
+
+    public void setSound(NoteSound sound) {
+        this.sound = sound;
+    }
+
+
+    public boolean matches(NoteButtonIdentifier other) {
+        return other.sound.equals(sound);
+    }
+    
+
 
     public NoteButtonIdentifier(final FriendlyByteBuf buf) {
         sound = NoteSound.readFromNetwork(buf);
@@ -37,10 +50,6 @@ public class NoteButtonIdentifier {
         sound.writeToNetwork(buf);
     }
 
-
-    public boolean matches(NoteButtonIdentifier other) {
-        return sound == other.sound;
-    }
 
     /**
      * <p>Executes match methods such that if the current {@code matchFunction} returned {@code false},
