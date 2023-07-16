@@ -30,7 +30,5 @@ public class DrumNoteButton extends NoteButton {
     public DrumNoteIdentifier getIdentifier() {
         return new DrumNoteIdentifier(this);
     }
-
-    
     
 }

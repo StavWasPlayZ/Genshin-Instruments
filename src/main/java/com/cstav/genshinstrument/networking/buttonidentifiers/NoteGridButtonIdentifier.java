@@ -28,14 +28,15 @@ public class NoteGridButtonIdentifier extends NoteButtonIdentifier {
         buf.writeFloat(column);
     }
 
+
     @Override
     public boolean matches(NoteButtonIdentifier other) {
         return (other instanceof NoteGridButtonIdentifier)
-            && (row == ng(other).row) && (column == ng(other).column);
+            ? matches((NoteGridButtonIdentifier)other)
+            : super.matches(other);
     }
-
-    private NoteGridButtonIdentifier ng(final NoteButtonIdentifier identifier) {
-        return (NoteGridButtonIdentifier)identifier;
+    private boolean matches(final NoteGridButtonIdentifier other) {
+        return (row == other.row) && (column == other.column);
     }
 
 }

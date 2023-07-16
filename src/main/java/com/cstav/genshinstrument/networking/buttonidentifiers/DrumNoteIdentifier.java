@@ -10,27 +10,36 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class DrumNoteIdentifier extends NoteButtonIdentifier {
 
     private DrumButtonType noteType;
+    private boolean isRight;
 
     @OnlyIn(Dist.CLIENT)
     public DrumNoteIdentifier(final DrumNoteButton note) {
         super(note);
         noteType = note.btnType;
+        isRight = !note.isRight;
     }
 
     public DrumNoteIdentifier(FriendlyByteBuf buf) {
         super(buf);
         noteType = buf.readEnum(DrumButtonType.class);
+        buf.readBoolean();
     }
     @Override
     public void writeToNetwork(FriendlyByteBuf buf) {
         super.writeToNetwork(buf);
         buf.writeEnum(noteType);
+        buf.writeBoolean(isRight);
     }
 
     @Override
     public boolean matches(NoteButtonIdentifier other) {
         return (other instanceof DrumNoteIdentifier)
-            && (noteType == ((DrumNoteIdentifier)other).noteType);
+            ? matches((DrumNoteIdentifier)other)
+            : super.matches(other);
     }
+    private boolean matches(final DrumNoteIdentifier other) {
+        return (noteType == other.noteType) && (isRight == other.isRight);
+    }
+
     
 }

@@ -35,7 +35,8 @@ public class NoteButtonIdentifier {
         sound.writeToNetwork(buf);
     }
 
-
+    // Avoiding generics because of networking
+    // It will also require me to change every reference of NoteButton which isn't fun
     public boolean matches(NoteButtonIdentifier other) {
         return sound == other.sound;
     }
