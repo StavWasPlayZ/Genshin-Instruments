@@ -19,9 +19,6 @@ public class NoteButtonIdentifier {
     public NoteButtonIdentifier(final NoteSound sound) {
         this.sound = sound;
     }
-    public NoteButtonIdentifier(final NoteButton button) {
-        this(button.sound);
-    }
 
     public NoteButtonIdentifier(final FriendlyByteBuf buf) {
         sound = NoteSound.readFromNetwork(buf);

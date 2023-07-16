@@ -60,7 +60,7 @@ public abstract class NoteButton extends AbstractButton {
      * You may use the {@link DefaultNoteButtonIdentifier default implementation} if you're too lazy.
      */
     public NoteButtonIdentifier getIdentifier() {
-        return new NoteButtonIdentifier(this);
+        return new NoteButtonIdentifier(sound);
     }
 
     

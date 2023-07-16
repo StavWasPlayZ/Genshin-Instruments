@@ -8,7 +8,7 @@ public class NoteGridButtonIdentifier extends NoteButtonIdentifier {
 
     private int row, column;
     public NoteGridButtonIdentifier(final NoteGridButton button) {
-        super(button);
+        super(button.sound);
         this.row = button.row;
         this.column = button.column;
     }

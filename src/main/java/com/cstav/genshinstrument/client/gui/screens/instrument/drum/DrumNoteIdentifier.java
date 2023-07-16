@@ -8,7 +8,7 @@ public class DrumNoteIdentifier extends NoteButtonIdentifier {
 
     private DrumButtonType noteType;
     public DrumNoteIdentifier(final DrumNoteButton note) {
-        super(note);
+        super(note.sound);
         noteType = note.btnType;
     }
     public DrumNoteIdentifier(FriendlyByteBuf buf) {
