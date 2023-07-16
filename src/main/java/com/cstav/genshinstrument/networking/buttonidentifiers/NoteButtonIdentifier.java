@@ -71,6 +71,25 @@ public class NoteButtonIdentifier {
             return unmatchFunction.apply(other);
         }
     }
+    /**
+     * Executes the given match method such that if the expected type does not match {@code other},
+     * {@code false} will be returned.
+     * @param <T> The type of the identifier to expect
+     * @param other
+     * @param matchFunction The function for when the type is as expected
+     * @return The result of the identification process, or false if the expected type and {@code other}'s do not match
+     */
+    @SuppressWarnings("unchecked")
+    public static <T extends NoteButtonIdentifier> boolean forceMatch(NoteButtonIdentifier other,
+            Function<T, Boolean> matchFunction) {
+                
+        try {
+            return matchFunction.apply((T)other);
+        } catch (ClassCastException e) {
+            return false;
+        }
+    }
+
 
     
 

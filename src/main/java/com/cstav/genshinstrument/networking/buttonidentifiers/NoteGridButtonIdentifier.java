@@ -24,8 +24,8 @@ public class NoteGridButtonIdentifier extends NoteButtonIdentifier {
     @Override
     public void writeToNetwork(FriendlyByteBuf buf) {
         super.writeToNetwork(buf);
-        buf.writeFloat(row);
-        buf.writeFloat(column);
+        buf.writeInt(row);
+        buf.writeInt(column);
     }
 
 
