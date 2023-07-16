@@ -50,47 +50,6 @@ public class NoteButtonIdentifier {
         sound.writeToNetwork(buf);
     }
 
-
-    /**
-     * <p>Executes match methods such that if the current {@code matchFunction} returned {@code false},
-     * the {@code unmatchFunction} will execute in its stead.</p>
-     * If the type of {@code other} and {@code T} do not match, then {@code unmatchFunction} will be executed.
-     * @param <T> The type of the identifier to expect
-     * @param other
-     * @param matchFunction The function for when the type is as expected
-     * @param unmatchFunction The function for when the type is as unexpected (generic, {@link NoteButtonIdentifier})
-     * @return The result of the identification process
-     */
-    @SuppressWarnings("unchecked")
-    public static <T extends NoteButtonIdentifier> boolean hierarchyMatch(NoteButtonIdentifier other,
-            Function<T, Boolean> matchFunction, Function<NoteButtonIdentifier, Boolean> unmatchFunction) {
-                
-        try {
-            return matchFunction.apply((T)other) || unmatchFunction.apply(other);
-        } catch (ClassCastException e) {
-            return unmatchFunction.apply(other);
-        }
-    }
-    /**
-     * Executes the given match method such that if the expected type does not match {@code other},
-     * {@code false} will be returned.
-     * @param <T> The type of the identifier to expect
-     * @param other
-     * @param matchFunction The function for when the type is as expected
-     * @return The result of the identification process, or false if the expected type and {@code other}'s do not match
-     */
-    @SuppressWarnings("unchecked")
-    public static <T extends NoteButtonIdentifier> boolean forceMatch(NoteButtonIdentifier other,
-            Function<T, Boolean> matchFunction) {
-                
-        try {
-            return matchFunction.apply((T)other);
-        } catch (ClassCastException e) {
-            return false;
-        }
-    }
-
-
     
 
     @Override
@@ -108,6 +67,52 @@ public class NoteButtonIdentifier {
         } catch (Exception e) {
             LogUtils.getLogger().error("Error initializing button identifier", e);
             return null;
+        }
+    }
+
+
+
+    /**
+     * A class holding methods to simplify the usage of the {@link NoteButtonIdentifier#matches matches} function
+     */
+    public static abstract class MatchType {
+        /**
+         * <p>Executes match methods such that if the current {@code matchFunction} returned {@code false},
+         * the {@code unmatchFunction} will execute in its stead.</p>
+         * If the type of {@code other} and {@code T} do not match, then {@code unmatchFunction} will be executed.
+         * @param <T> The type of the identifier to expect
+         * @param other
+         * @param matchFunction The function for when the type is as expected
+         * @param unmatchFunction The function for when the type is as unexpected (generic, {@link NoteButtonIdentifier})
+         * @return The result of the identification process
+         */
+        @SuppressWarnings("unchecked")
+        public static <T extends NoteButtonIdentifier> boolean hierarchyMatch(NoteButtonIdentifier other,
+                Function<T, Boolean> matchFunction, Function<NoteButtonIdentifier, Boolean> unmatchFunction) {
+                    
+            try {
+                return matchFunction.apply((T)other) || unmatchFunction.apply(other);
+            } catch (ClassCastException e) {
+                return unmatchFunction.apply(other);
+            }
+        }
+        /**
+         * Executes the given match method such that if the expected type does not match {@code other},
+         * {@code false} will be returned.
+         * @param <T> The type of the identifier to expect
+         * @param other
+         * @param matchFunction The function for when the type is as expected
+         * @return The result of the identification process, or false if the expected type and {@code other}'s do not match
+         */
+        @SuppressWarnings("unchecked")
+        public static <T extends NoteButtonIdentifier> boolean forceMatch(NoteButtonIdentifier other,
+                Function<T, Boolean> matchFunction) {
+                    
+            try {
+                return matchFunction.apply((T)other);
+            } catch (ClassCastException e) {
+                return false;
+            }
         }
     }
 
