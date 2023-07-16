@@ -1,10 +1,10 @@
-package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note;
+package com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid;
 
 import java.util.HashMap;
 import java.util.Iterator;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractGridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;

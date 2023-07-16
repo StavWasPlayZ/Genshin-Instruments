@@ -24,5 +24,12 @@ public class DrumNoteButton extends NoteButton {
         this.btnType = btnType;
         this.isRight = isLeft;
     }
+
+    @Override
+    public DrumNoteIdentifier getIdentifier() {
+        return new DrumNoteIdentifier(this);
+    }
+
+    
     
 }

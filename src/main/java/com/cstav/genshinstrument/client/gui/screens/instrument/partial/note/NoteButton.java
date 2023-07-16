@@ -26,8 +26,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+/**
+ * The abstract implementation of an instrument's note button.
+ * @param <T> The type of this button's identifier
+ */
 @OnlyIn(Dist.CLIENT)
-public class NoteButton extends AbstractButton {
+public abstract class NoteButton extends AbstractButton {
     public static final String NOTE_BG_FILENAME = "note_bg.png";
 
 
@@ -50,6 +54,14 @@ public class NoteButton extends AbstractButton {
 
     protected final NoteAnimationController noteAnimation = new NoteAnimationController(.15f, 9, this);
     protected final ArrayList<NoteRing> rings = new ArrayList<>();
+
+    /**
+     * <p>Returns the identifier of this button.</p>
+     * You may use the {@link DefaultNoteButtonIdentifier default implementation} if you're too lazy.
+     */
+    public NoteButtonIdentifier getIdentifier() {
+        return new NoteButtonIdentifier(this);
+    }
 
     
     public NoteSound sound;
@@ -232,7 +244,8 @@ public class NoteButton extends AbstractButton {
         ModPacketHandler.sendToServer(
             new InstrumentPacket(
                 sound, instrumentScreen.getPitch(),
-                instrumentScreen.interactionHand, instrumentScreen.getInstrumentId()
+                instrumentScreen.interactionHand,
+                instrumentScreen.getInstrumentId(), getIdentifier()
             )
         );
 

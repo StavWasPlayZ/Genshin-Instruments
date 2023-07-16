@@ -3,6 +3,9 @@ package com.cstav.genshinstrument.networking;
 import java.util.List;
 
 import com.cstav.genshinstrument.Main;
+import com.cstav.genshinstrument.client.gui.screens.instrument.drum.DrumNoteIdentifier;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButtonIdentifier;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.networking.packets.instrument.CloseInstrumentPacket;
 import com.cstav.genshinstrument.networking.packets.instrument.InstrumentPacket;
 import com.cstav.genshinstrument.networking.packets.instrument.NotifyInstrumentOpenPacket;
@@ -28,6 +31,40 @@ public class ModPacketHandler {
         InstrumentPacket.class, PlayNotePacket.class, OpenInstrumentPacket.class, CloseInstrumentPacket.class,
         NotifyInstrumentOpenPacket.class
     });
+
+
+    @SuppressWarnings("unchecked")
+    private static final List<Class<? extends NoteButtonIdentifier>> ACCEPTABLE_IDENTIFIERS = List.of(new Class[] {
+        DrumNoteIdentifier.class, NoteGridButtonIdentifier.class
+    });
+
+    /**
+     * @see ModPacketHandler#getValidIdentifier(String, List)
+     */
+    public static Class<? extends NoteButtonIdentifier> getValidIdentifier(String classType)
+            throws ClassNotFoundException {
+        return getValidIdentifier(classType, ACCEPTABLE_IDENTIFIERS);
+    }
+
+    /**
+     * Gets a {@link NoteButtonIdentifier} as described by the {@code classType} destination.
+     * Will only return a class type if it is valid and included in the {@code acceptableIdentifiers} list.
+     * @param classType The class name of the requested identifiers
+     * @param acceptableIdentifiers
+     * 
+     * @return The class of the requested identifier
+     * @throws ClassNotFoundException If the requested class was not found in the provided {@code acceptableIdentifiers} list
+     */
+    public static Class<? extends NoteButtonIdentifier> getValidIdentifier(String classType,
+            List<Class<? extends NoteButtonIdentifier>> acceptableIdentifiers) throws ClassNotFoundException {
+
+        for (final Class<? extends NoteButtonIdentifier> identifier : acceptableIdentifiers) {
+            if (identifier.getName().equals(classType))
+                return identifier;
+        }
+
+        throw new ClassNotFoundException("Class type "+classType+" could not be evaluated as part of the acceptable identifiers");
+    }
 
 
     private static final String PROTOCOL_VERSION = "3.7";
@@ -67,7 +104,7 @@ public class ModPacketHandler {
                         })
                         .encoder(ModPacket::toBytes)
                         .consumerMainThread(ModPacket::handle)
-                        .add();
+                    .add();
 
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButtonIdentifier;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 
 import net.minecraft.client.Minecraft;
@@ -125,7 +126,8 @@ public class NoteSound {
      * @param pos The position at which the sound was fired from
      */
     @OnlyIn(Dist.CLIENT)
-    public void playAtPos(float pitch, UUID playerUUID, InteractionHand hand, ResourceLocation instrumentId, BlockPos pos) {
+    public void playAtPos(float pitch, UUID playerUUID, InteractionHand hand,
+            ResourceLocation instrumentId, NoteButtonIdentifier buttonIdentifier, BlockPos pos) {
         final Minecraft minecraft = Minecraft.getInstance();
         final Player player = minecraft.player;
 
@@ -138,8 +140,13 @@ public class NoteSound {
 
         
         MinecraftForge.EVENT_BUS.post((playerUUID == null)
-            ? new InstrumentPlayedEvent(this, level, pos, instrumentId, true)
-            : new InstrumentPlayedEvent.ByPlayer(this, level.getPlayerByUUID(playerUUID), hand, instrumentId, true)
+            ? new InstrumentPlayedEvent(
+                this, level, pos, instrumentId, buttonIdentifier, true
+            )
+            : new InstrumentPlayedEvent.ByPlayer(
+                this, level.getPlayerByUUID(playerUUID), hand,
+                instrumentId, buttonIdentifier, true
+            )
         );
         
 
