@@ -11,13 +11,11 @@ public class NoteGridButtonIdentifier extends NoteButtonIdentifier {
     private int row, column;
     @OnlyIn(Dist.CLIENT)
     public NoteGridButtonIdentifier(final NoteGridButton button) {
-        super(button);
         this.row = button.row;
         this.column = button.column;
     }
 
     public NoteGridButtonIdentifier(FriendlyByteBuf buf) {
-        super(buf);
         row = buf.readInt();
         column = buf.readInt();
     }

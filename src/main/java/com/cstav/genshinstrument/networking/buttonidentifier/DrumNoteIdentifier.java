@@ -14,13 +14,11 @@ public class DrumNoteIdentifier extends NoteButtonIdentifier {
 
     @OnlyIn(Dist.CLIENT)
     public DrumNoteIdentifier(final DrumNoteButton note) {
-        super(note);
         noteType = note.btnType;
         isRight = note.isRight;
     }
 
     public DrumNoteIdentifier(FriendlyByteBuf buf) {
-        super(buf);
         noteType = buf.readEnum(DrumButtonType.class);
         isRight = buf.readBoolean();
     }
