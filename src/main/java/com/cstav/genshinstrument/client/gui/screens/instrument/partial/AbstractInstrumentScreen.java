@@ -7,7 +7,7 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
-import com.cstav.genshinstrument.networking.packets.instrument.CloseInstrumentPacket;
+import com.cstav.genshinstrument.networking.packet.instrument.CloseInstrumentPacket;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.platform.InputConstants.Type;
