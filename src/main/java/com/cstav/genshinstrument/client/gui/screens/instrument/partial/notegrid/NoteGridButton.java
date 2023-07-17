@@ -2,7 +2,7 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid
 
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
-import com.cstav.genshinstrument.networking.buttonidentifiers.NoteGridButtonIdentifier;
+import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraftforge.api.distmarker.Dist;

@@ -5,9 +5,9 @@ import java.util.List;
 import org.slf4j.Logger;
 
 import com.cstav.genshinstrument.Main;
-import com.cstav.genshinstrument.networking.buttonidentifiers.DrumNoteIdentifier;
-import com.cstav.genshinstrument.networking.buttonidentifiers.NoteButtonIdentifier;
-import com.cstav.genshinstrument.networking.buttonidentifiers.NoteGridButtonIdentifier;
+import com.cstav.genshinstrument.networking.buttonidentifier.DrumNoteIdentifier;
+import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
+import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.networking.packets.instrument.CloseInstrumentPacket;
 import com.cstav.genshinstrument.networking.packets.instrument.InstrumentPacket;
 import com.cstav.genshinstrument.networking.packets.instrument.NotifyInstrumentOpenPacket;
