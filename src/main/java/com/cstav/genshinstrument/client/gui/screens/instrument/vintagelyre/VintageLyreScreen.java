@@ -19,7 +19,11 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @EventBusSubscriber(bus = Bus.MOD, value = Dist.CLIENT)
 public class VintageLyreScreen extends AbstractGridInstrumentScreen {
     public static final String INSTRUMENT_ID = "vintage_lyre";
-    public static final String[] VINTAGE_LYRE_LAYOUT = new String[] {"C", "Db", "Eb", "F", "G", "Ab", "Bb"};
+    public static final String[] VINTAGE_LYRE_LAYOUT = new String[] {
+        "C", "Db", "Eb", "F", "G", "Ab", "Bb",
+        "C", "D", "Eb", "F", "G", "A", "Bb",
+        "C", "D", "Eb", "F", "G", "A", "Bb"
+    };
     
     public VintageLyreScreen(InteractionHand hand) {
         super(hand);

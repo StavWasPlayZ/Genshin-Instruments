@@ -5,7 +5,7 @@ import static java.util.Map.entry;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.NoteGridButton;
 
 import net.minecraftforge.api.distmarker.Dist;
@@ -70,7 +70,7 @@ public abstract class AbsGridLabels {
     }
 
     public static String getNoteName(final float pitch, final String[] noteLayout, final int offset) {
-        final String baseNote = noteLayout[offset];
+        final String baseNote = noteLayout[wrapAround(offset, noteLayout.length)];
         //NOTE: Assuming pitch step is always .05
         //TODO: Figure a formula for this 2
         final int pitchStep = perfectConv(
@@ -84,8 +84,11 @@ public abstract class AbsGridLabels {
         return scale[(doublyPyWrap(pitchStep, scale.length))];
     }
     public static String getNoteName(final NoteGridButton gridButton) {
-        final AbstractInstrumentScreen screen = gridButton.instrumentScreen;
-        return getNoteName(screen.getPitch(), screen.noteLayout(), gridButton.row);
+        final AbstractGridInstrumentScreen screen = (AbstractGridInstrumentScreen) gridButton.instrumentScreen;
+        return getNoteName(
+            screen.getPitch(), screen.noteLayout(),
+            gridButton.row + gridButton.column * screen.rows()
+        );
     }
 
 
@@ -107,13 +110,19 @@ public abstract class AbsGridLabels {
         return index;
     }
     /**
-     * Wraps the index around an array and performs {@link AbsGridLabels#pyWrap}
+     * Wraps the index around an array
      */
-    private static int doublyPyWrap(int index, final int arrLength) {
+    private static int wrapAround(int index, final int arrLength) {
         while (index >= arrLength)
             index -= arrLength;
 
-        return pyWrap(index, arrLength);
+        return index;
+    }
+    /**
+     * Performs both {@link AbsGridLabels#pyWrap} and {@link AbsGridLabels#wrapAround}
+     */
+    private static int doublyPyWrap(int index, final int arrLength) {
+        return wrapAround(pyWrap(index, arrLength), arrLength);
     }
 
 }
