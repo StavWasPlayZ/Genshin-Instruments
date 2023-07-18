@@ -35,7 +35,7 @@
 
     "button.genshinstrument.render_background": "Show Background Visuals",
     "button.genshinstrument.accurate_accidentals": "Accurate Accidentals",
-    "button.genshinstrument.accurate_accidentals.tooltip": "When on, provides a pitch-accurate representation of the accidentals used by this isntrument's layout",
+    "button.genshinstrument.accurate_accidentals.tooltip": "When on, provides a pitch-accurate representation of the accidentals used by this instrument's layout",
     
 
 

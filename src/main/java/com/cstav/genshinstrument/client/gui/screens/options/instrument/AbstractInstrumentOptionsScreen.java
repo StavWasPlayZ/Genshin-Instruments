@@ -142,13 +142,8 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         addRenderableWidget(doneBtn);
         
     }
-    /**
-     * Fills the settings grid with all the necessary widgets, buttons and such
-     * @param grid The settings grid to add the widgets to
-     * @param rowHelper A row helper for the specified {@code grid}
-     */
-    protected void initOptionsGrid(final GridLayout grid, final RowHelper rowHelper) {
 
+    protected void initAudioSection(final GridLayout grid, final RowHelper rowHelper) {
         final CycleButton<InstrumentChannelType> instrumentChannel = CycleButton.<InstrumentChannelType>builder((soundType) ->
             Component.translatable(SOUND_CHANNEL_KEY +"."+ soundType.toString().toLowerCase())
         )
@@ -207,21 +202,9 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
                 Component.translatable(STOP_MUSIC_KEY), this::onMusicStopChanged
             );
         rowHelper.addChild(stopMusic);
+    }
 
-
-        rowHelper.addChild(SpacerElement.height(15), 2);
-        
-        
-        if (labels != null) {
-            final CycleButton<INoteLabel> labelType = CycleButton.<INoteLabel>builder((label) -> Component.translatable(label.getKey()))
-                .withValues(labels)
-                .withInitialValue(currLabel)
-                .create(0, 0,
-                    getSmallButtonWidth(), getButtonHeight(),
-                    Component.translatable("button.genshinstrument.label"), this::onLabelChanged
-                );
-            rowHelper.addChild(labelType);
-        }
+    protected void initVisualsSection(final GridLayout grid, final RowHelper rowHelper) {
 
         final CycleButton<Boolean> emitRing = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(ModClientConfigs.EMIT_RING_ANIMATION.get())
@@ -248,6 +231,32 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
                 Component.translatable("button.genshinstrument.accurate_accidentals"), this::onAccurateAccidentalsChanged
             );
         rowHelper.addChild(accurateAccidentals);
+
+
+        if (labels != null) {
+            final CycleButton<INoteLabel> labelType = CycleButton.<INoteLabel>builder((label) -> Component.translatable(label.getKey()))
+                .withValues(labels)
+                .withInitialValue(currLabel)
+                .create(0, 0,
+                    getBigButtonWidth(), getButtonHeight(),
+                    Component.translatable("button.genshinstrument.label"), this::onLabelChanged
+                );
+            rowHelper.addChild(labelType, 2);
+        }
+    }
+
+
+    /**
+     * Fills the settings grid with all the necessary widgets, buttons and such
+     * @param grid The settings grid to add the widgets to
+     * @param rowHelper A row helper for the specified {@code grid}
+     */
+    protected void initOptionsGrid(final GridLayout grid, final RowHelper rowHelper) {
+        initAudioSection(grid, rowHelper);
+
+        rowHelper.addChild(SpacerElement.height(15), 2);
+        
+        initVisualsSection(grid, rowHelper);
     }
 
     private float getPitch() {
