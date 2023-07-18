@@ -1,5 +1,13 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label;
 
+import static java.util.Map.entry;
+
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
+
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.NoteGridButton;
+
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -12,71 +20,96 @@ public abstract class AbsGridLabels {
         },
         ABC = {
             "C", "D", "E", "F", "G", "A", "B"
-        };
-        // PITCHES = {
-        //     "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"
-        // }
+        }
     ;
 
-    // The pitches dont even match, 1/16th is annoying to get
-    // @Deprecated(forRemoval = true)
-    // public static String getNoteName(final float pitch, final int noteRow) {
-    //     int index = getNoteIndex(pitch + noteRow * .05f * 2);
-        
-    //     // // Cb at start
-    //     // final boolean didWrap = index > PITCHES.length;
-        
-    //     // E and F
-    //     final int startIndex = getNoteIndex(pitch), passed = index - startIndex;
-    //     for (int i = 0; i < steppedOnPoint(startIndex, passed, 6 + (startIndex - 1)); i++)
-    //         index--;
-    //     // B and C
-    //     // for (int i = 0; i < steppedOnPoint(startIndex, passed, 0 + (startIndex - 1)); i++)
-    //     //     index--;
 
-    //     return PITCHES[doublyPyWrap(index, PITCHES) /*+ (didWrap ? 1 : 0)*/];
-    // }
+    // Pitch system implementation
+    // Literally could not have been done w/o Specy's instrument app, oh my gosh their method is genius
+    // Either that or I'm just too much of a novice on music theory
 
-    // private static int steppedOnPoint(final int start, int passed, final int point) {
-    //     int counter = 0;
+    /**
+     * @implNote Scales map taken from Specy's
+     * <a href=https://github.com/Specy/genshin-music/blob/19dfe0e2fb8081508bd61dd47289dcb2d89ad5e3/src/Config.ts#L89>
+     * Genshin Music app configs
+     * </a>
+     */
+    public static final LinkedHashMap<String, String[]> NOTE_SCALES = ofEntries(
+        entry("Cb", strArr("Cb", "Dbb", "Db", "Ebb", "Eb", "Fb", "Gbb", "Gb", "Abb", "Ab", "Bbb", "Bb")),
+        entry("C", strArr("C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B")),
+        entry("C#", strArr("C#", "D", "D#", "E", "E#", "F#", "G", "G#", "A", "A#", "B", "B#")),
+        entry("Db", strArr("Db", "Ebb", "Eb", "Fb", "F", "Gb", "Abb", "Ab", "Bbb", "Bb", "Cb", "C")),
+        entry("D", strArr("D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B", "C", "C#")),
+        entry("D#", strArr("D#", "E", "E#", "F#", "F##", "G#", "A", "A#", "B", "B#", "C#", "C##")),
+        entry("Eb", strArr("Eb", "Fb", "F", "Gb", "G", "Ab", "Bbb", "Bb", "Cb", "C", "Db", "D")),
+        entry("E", strArr("E", "F", "F#", "G", "G#", "A", "Bb", "B", "C", "C#", "D", "D#")),
+        entry("E#", strArr("E#", "F#", "F##", "G#", "G##", "A#", "B", "B#", "C#", "C##", "D#", "D##")),
+        entry("Fb", strArr("Fb", "Gbb", "Gb", "Abb", "Ab", "Bbb", "Cbb", "Cb", "Dbb", "Db", "Ebb", "Eb")),
+        entry("F", strArr("F", "Gb", "G", "Ab", "A", "Bb", "Cb", "C", "Db", "D", "Eb", "E")),
+        entry("F#", strArr("F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "E#")),
+        entry("Gb", strArr("Gb", "Abb", "Ab", "Bbb", "Bb", "Cb", "Dbb", "Db", "Ebb", "Eb", "Fb", "F")),
+        entry("G", strArr("G", "Ab", "A", "Bb", "B", "C", "Db", "D", "Eb", "E", "F", "F#")),
+        entry("G#", strArr("G#", "A", "A#", "B", "B#", "C#", "D", "D#", "E", "E#", "F#", "F##")),
+        entry("Ab", strArr("Ab", "Bbb", "Bb", "Cb", "C", "Db", "Ebb", "Eb", "Fb", "F", "Gb", "G")),
+        entry("A", strArr("A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#", "G", "G#")),
+        entry("A#", strArr("A#", "B", "B#", "C#", "C##", "D#", "E", "E#", "F#", "F##", "G#", "G##")),
+        entry("Bb", strArr("Bb", "Cb", "C", "Db", "D", "Eb", "Fb", "F", "Gb", "G", "Ab", "A")),
+        entry("B", strArr("B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#")),
+        entry("B#", strArr("B#", "C#", "C##", "D#", "D##", "E#", "F#", "F##", "G#", "G##", "A#", "A##"))
+    );
+    private static String[] strArr(final String... arr) {
+        return arr;
+    }
+    @SafeVarargs
+    public static <K, V> LinkedHashMap<K, V> ofEntries(Entry<K, V>... entries) {
+        final LinkedHashMap<K, V> map = new LinkedHashMap<>();
+        for (Entry<K, V> entry : entries)
+            map.put(entry.getKey(), entry.getValue());
 
-    //     for (int i = start; passed > 0; i = (i + 1) % PITCHES.length) {
-    //         if (i == point)
-    //             counter++;
+        return map;
+    }
 
-    //         passed--;
-    //     }
+    // The pitches dont match, 1/16th slider is annoying to get, but whatever
+    public static String getNoteName(final float pitch, final String[] noteLayout, final int offset) {
+        final String baseNote = noteLayout[offset];
+        //NOTE: Assuming pitch step is always .05
+        //TODO: Figure a formula for this 2
+        final int pitchStep = perfectConv(((2) * 10) * (pitch - 1));
 
-    //     return counter;
-    // }
+        final String[] scale = NOTE_SCALES.get(baseNote);
+        return scale[(doublyPyWrap(pitchStep, scale.length))];
+    }
+    public static String getNoteName(final NoteGridButton gridButton) {
+        final AbstractInstrumentScreen screen = gridButton.instrumentScreen;
+        return getNoteName(screen.getPitch(), screen.noteLayout(), gridButton.row);
+    }
 
-    // //NOTE: Assuming pitch step is always .05 and (0 < pitch < 2)
-    // private static int getNoteIndex(final float pitch) {
-    //     float result = (pitch * 100 - 100) / 5;
-    //     // Ceil/floor for float imperfections
-    //     result += (result >= 0) ? .001f : -.001f;
 
-    //     return pyWrap((int)result, PITCHES);
-    // }
-    // /**
-    //  * Provides a similar behaviour to python's indexing,
-    //  * where negatives are counted backwards.
-    //  */
-    // private static int pyWrap(int index, final Object[] arr, boolean add1) {
-    //     while (index < 0)
-    //         index += arr.length + (add1 ? 1 : 0);
+    /**
+     * Perfects {@code num} to its actual int value by an accuricity of 0.001
+     */
+    private static int perfectConv(final float num) {
+        return (int)(num + ((num >= 0) ? .001f : -.001f));
+    }
 
-    //     return index;
-    // }
-    // private static int doublyPyWrap(int index, final Object[] arr) {
-    //     while (index >= arr.length)
-    //         index -= arr.length;
+    /**
+     * Provides a similar behaviour to python's indexing,
+     * where negatives are counted backwards.
+     */
+    private static int pyWrap(int index, final int arrLength) {
+        while (index < 0)
+            index += arrLength;
 
-    //     return pyWrap(index, arr);
-    // }
+        return index;
+    }
+    /**
+     * Wraps the index around an array and performs {@link AbsGridLabels#pyWrap}
+     */
+    private static int doublyPyWrap(int index, final int arrLength) {
+        while (index >= arrLength)
+            index -= arrLength;
 
-    // private static int pyWrap(int index, final Object[] arr) {
-    //     return pyWrap(index, arr, false);
-    // }
+        return pyWrap(index, arrLength);
+    }
 
 }

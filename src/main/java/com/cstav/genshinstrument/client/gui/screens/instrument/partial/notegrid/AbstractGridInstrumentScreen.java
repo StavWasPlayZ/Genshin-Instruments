@@ -78,6 +78,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
         );
     }
 
+
     public final NoteGrid noteGrid = initNoteGrid();
     
     private final Map<Key, NoteButton> noteMap = noteGrid.genKeyboardMap(KeyMappings.GRID_INSTRUMENT_MAPPINGS);
