@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
+import com.cstav.genshinstrument.client.gui.screens.instrument.GenshinConsentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
@@ -72,6 +73,16 @@ public abstract class AbstractInstrumentScreen extends Screen {
     public abstract NoteSound[] getSounds();
 
     /**
+     * @return Whether this instrument is derived from Genshin Impact
+     * @apiNote This value will help the mod determine whether a disclaimer pop-up should appear upon opening this
+     * instrument.
+     */
+    public boolean isGenshinInstrument() {
+        return true;
+    }
+
+
+    /**
      * @return The first {@link NoteButton} that matches the description of the given identifier
      */
     public NoteButton getNoteButton(final NoteButtonIdentifier noteIdentifier) throws NoSuchElementException {
@@ -136,6 +147,9 @@ public abstract class AbstractInstrumentScreen extends Screen {
     @Override
     protected void init() {
         optionsScreen.init(minecraft, width, height);
+
+        if (isGenshinInstrument() && !ModClientConfigs.ACCEPTED_GENSHIN_CONSENT.get())
+            minecraft.setScreen(new GenshinConsentScreen(this));
     }
     /**
      * Initializes a new button responsible for popping up the options menu for this instrument.

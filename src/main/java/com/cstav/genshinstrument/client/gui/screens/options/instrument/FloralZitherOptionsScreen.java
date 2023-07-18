@@ -57,7 +57,7 @@ public class FloralZitherOptionsScreen extends GridInstrumentOptionsScreen {
         super.render(gui, pMouseX, pMouseY, pPartialTick);
         
         gui.drawCenteredString(font,
-            Component.translatable("button.genshinstrument.zither_options"),
+            Component.translatable("label.genshinstrument.zither_options"),
             width/2, heightBefore + SPACE_BEFORE + SPACER_HEIGHT
         , Color.WHITE.getRGB());
     }
