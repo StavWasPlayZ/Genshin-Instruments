@@ -224,7 +224,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         rowHelper.addChild(sharedInstrument);
 
         final CycleButton<Boolean> accurateAccidentals = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
-            .withInitialValue(ModClientConfigs.SHARED_INSTRUMENT.get())
+            .withInitialValue(ModClientConfigs.ACCURATE_ACCIDENTALS.get())
             .withTooltip((value) -> Tooltip.create(Component.translatable("button.genshinstrument.accurate_accidentals.tooltip")))
             .create(0, 0,
                 getSmallButtonWidth(), getButtonHeight(),
@@ -337,6 +337,8 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     protected void onSave() {
         for (final Runnable runnable : APPLIED_OPTIONS.values())
             runnable.run();
+        
+        ModClientConfigs.CONFIGS.save();
     }
 
 
