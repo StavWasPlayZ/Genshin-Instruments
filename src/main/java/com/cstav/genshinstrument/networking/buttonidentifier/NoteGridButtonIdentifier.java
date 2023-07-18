@@ -31,7 +31,7 @@ public class NoteGridButtonIdentifier extends DefaultNoteButtonIdentifier {
 
     @Override
     public boolean matches(NoteButtonIdentifier other) {
-        return MatchType.hierarchyMatch(other, this::gridMatch, super::matches);
+        return MatchType.perferMatch(other, this::gridMatch, super::matches);
     }
     private boolean gridMatch(final NoteGridButtonIdentifier other) {
         return (row == other.row) && (column == other.column);
