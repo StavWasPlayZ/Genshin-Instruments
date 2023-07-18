@@ -25,6 +25,9 @@
     "button.genshinstrument.shared_instrument": "מסך נגינה משותף",
 
     "button.genshinstrument.render_background": "הצג תפאורות רקע",
+    "button.genshinstrument.accurate_accidentals": "Accurate Accidentals",
+    "button.genshinstrument.accurate_accidentals.tooltip": "When on, provides a pitch-accurate representation of the accidentals used by this isntrument's layout",
+    
 
 
     

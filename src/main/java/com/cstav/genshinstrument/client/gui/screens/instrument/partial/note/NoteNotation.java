@@ -7,7 +7,7 @@ public enum NoteNotation {
         if (noteName.endsWith("b"))
             return noteName.endsWith("bb") ? DOUBLE_FLAT : FLAT;
         if (noteName.endsWith("#"))
-            return noteName.endsWith("bb") ? DOUBLE_SHARP : DOUBLE_SHARP;
+            return noteName.endsWith("##") ? DOUBLE_SHARP : SHARP;
 
         return NONE;
     }

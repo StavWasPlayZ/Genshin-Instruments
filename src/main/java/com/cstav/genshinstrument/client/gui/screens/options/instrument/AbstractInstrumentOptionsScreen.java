@@ -137,7 +137,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
         final Button doneBtn = Button.builder(CommonComponents.GUI_DONE, (btn) -> onClose())
             .width(getSmallButtonWidth())
-            .pos((width - getSmallButtonWidth())/2, Math.min(grid.getY() + grid.getHeight() + 60, height - getButtonHeight() - 15))
+            .pos((width - getSmallButtonWidth())/2, Math.min(grid.getY() + grid.getHeight() + 50, height - getButtonHeight() - 15))
             .build();
         addRenderableWidget(doneBtn);
         
@@ -242,6 +242,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
         final CycleButton<Boolean> accurateAccidentals = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(ModClientConfigs.SHARED_INSTRUMENT.get())
+            .withTooltip((value) -> Tooltip.create(Component.translatable("button.genshinstrument.accurate_accidentals.tooltip")))
             .create(0, 0,
                 getSmallButtonWidth(), getButtonHeight(),
                 Component.translatable("button.genshinstrument.accurate_accidentals"), this::onAccurateAccidentalsChanged

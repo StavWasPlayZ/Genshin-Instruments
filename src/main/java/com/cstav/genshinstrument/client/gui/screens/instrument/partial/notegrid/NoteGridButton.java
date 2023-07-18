@@ -15,9 +15,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class NoteGridButton extends NoteButton {
-    private static final float
-        FLAT_TEXTURE_HEIGHT_MULTIPLIER = 2.3f/1.3f,
-        FLAT_TEXTURE_WIDTH_MULTIPLIER = 1.7f/1.3f
+    private static final double
+        FLAT_TEXTURE_HEIGHT_MULTIPLIER = 3.7f/1.3f,
+        FLAT_TEXTURE_WIDTH_MULTIPLIER = 1.7f/1.3f,
+        SHARP_MULTIPLIER = .8f,
+        DOUBLE_SHARP_MULTIPLIER = .9f
     ;
 
     private final ResourceLocation accidentalsLocation = getResourceFromRoot("accidentals.png");
@@ -50,39 +52,41 @@ public class NoteGridButton extends NoteButton {
             case NONE: break;
 
             case FLAT:
-                renderAccidental(gui, false);
+                renderAccidental(gui, 0);
                 break;
             case SHARP:
-                renderAccidental(gui, true);
+                renderAccidental(gui, 1);
                 break;
             case DOUBLE_FLAT:
-                renderDoubleAccidental(gui, false);
+                renderAccidental(gui, 0, -6, -3);
+                renderAccidental(gui, 0, 5, 2);
                 break;
             case DOUBLE_SHARP:
-                renderDoubleAccidental(gui, true);
+                renderAccidental(gui, 2, -1, 0);
                 break;
 
         }
     }
-
-    protected void renderDoubleAccidental(final GuiGraphics gui, final boolean isSharp) {
-        renderAccidental(gui, isSharp, -6, -3);
-        renderAccidental(gui, isSharp, 5, 2);
-    }
     
-    protected void renderAccidental(final GuiGraphics gui, final boolean isSharp) {
-        renderAccidental(gui, isSharp, 0, 0);
+    protected void renderAccidental(final GuiGraphics gui, int index) {
+        renderAccidental(gui, index, 0, 0);
     }
-    protected void renderAccidental(GuiGraphics gui, boolean isSharp, int offsetX, int offsetY) {
-        final int textureWidth = (int)(width * FLAT_TEXTURE_WIDTH_MULTIPLIER),
-        textureHeight = (int)(height * FLAT_TEXTURE_HEIGHT_MULTIPLIER);
+    protected void renderAccidental(GuiGraphics gui, int index, int offsetX, int offsetY) {
+        final int textureWidth = (int)(width * FLAT_TEXTURE_WIDTH_MULTIPLIER * (
+            (index == 1) ? SHARP_MULTIPLIER : (index == 2) ? DOUBLE_SHARP_MULTIPLIER : 1
+        )),
+        textureHeight = (int)(height * FLAT_TEXTURE_HEIGHT_MULTIPLIER * (
+            (index == 1) ? SHARP_MULTIPLIER : (index == 2) ? DOUBLE_SHARP_MULTIPLIER : 1
+        ));
+
+        final int spritePartHeight = textureHeight/3;
 
         gui.blit(accidentalsLocation,
             getX() - 9 + offsetX, getY() - 6 + offsetY,
             // Handle sharp imperfections
-            isPlaying() ? textureWidth/2 : 0, isSharp ? textureHeight/2-3 : 0,
-            textureWidth/2,  textureHeight/2 + (isSharp ? 4 : 0),
-            textureWidth - ((isSharp && isPlaying()) ? 1 : 0), textureHeight
+            isPlaying() ? textureWidth/2 : 0, (spritePartHeight) * index - index,
+            textureWidth/2,  spritePartHeight + ((index == 1) ? 3 : 0),
+            textureWidth - (((index != 0) && isPlaying()) ? 1 : 0), textureHeight
         );
     }
 
