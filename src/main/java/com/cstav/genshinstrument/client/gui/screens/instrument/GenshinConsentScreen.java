@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument;
 
 import java.awt.Color;
+import java.util.List;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 
@@ -11,6 +12,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.multiplayer.WarningScreen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 
 /**
  * @implNote <p>
@@ -24,11 +26,11 @@ public class GenshinConsentScreen extends WarningScreen {
     private static final Component TITLE = Component.translatable(
         "genshinstrument.genshin_disclaimer.title"
     ).withStyle(ChatFormatting.BOLD);
-    private static final Component CONTENT = Component.translatable(
+    // Can't create object field because of constructor
+    private static final MutableComponent CONTENT = Component.translatable(
         "genshinstrument.genshin_disclaimer.content", boldenAll(2)
     );
     private static final Component NARRATION = TITLE.copy().append("\n").append(CONTENT);
-
 
     private final Screen previousScreen;
 
@@ -43,18 +45,50 @@ public class GenshinConsentScreen extends WarningScreen {
         return 10;
     }
 
-
+    private static boolean hasGreeting = false;
 
     @Override
-    protected void initButtons(int lineHeight) {
+    protected void init() {
         final Button acknowledgeButton = Button.builder(CommonComponents.GUI_ACKNOWLEDGE, (button) -> {
             ModClientConfigs.ACCEPTED_GENSHIN_CONSENT.set(true);
             minecraft.setScreen(previousScreen);
         }).build();
 
-        acknowledgeButton.setPosition((width - acknowledgeButton.getWidth()) / 2, 100 + lineHeight);
+
+        // Make space for if the button is overlayed atop of the greeting
+        final int perferredButtonY = 100 + 140, annoyingButtonY = height - acknowledgeButton.getHeight() - 10;
+
+        if (annoyingButtonY <= perferredButtonY) {
+            acknowledgeButton.setPosition(
+                (width - acknowledgeButton.getWidth()) / 2,
+                annoyingButtonY
+            );
+            
+            if (hasGreeting) {
+                // i have to eradicate brothers alike UmU
+                final List<Component> siblings = CONTENT.getSiblings();
+                for (int i = 0; i < 2; i++)
+                    siblings.remove(siblings.size() - 1);
+                    
+                hasGreeting = false;
+            }
+        } else {
+            acknowledgeButton.setPosition(
+                (width - acknowledgeButton.getWidth()) / 2,
+                perferredButtonY
+            );
+
+            if (!hasGreeting) {
+                CONTENT.append("\n\n\n\n")
+                    .append(Component.translatable("genshinstrument.genshin_disclaimer.content.no_legal"));
+
+                hasGreeting = true;
+            }
+        }
 
         this.addRenderableWidget(acknowledgeButton);
+
+        super.init();
     }
 
     @Override
@@ -74,4 +108,8 @@ public class GenshinConsentScreen extends WarningScreen {
 
         return result;
     }
+
+
+    @Override
+    protected void initButtons(int idc) {}
 }

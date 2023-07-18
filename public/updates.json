@@ -37,7 +37,7 @@
         "2.8": "- Added the staff instrument background\n- Removed pitch names from pitch slider",
         "2.8.1": "- Fixed drum and zither shared playing issues",
         "2.8.2": "- Improved drum sounds\n- Optimized note buttons' UI lookup",
-        "2.8.3": "- New pitch-accurate accidentals system! Support for flats, sharps, and their doubly varients\n- Added Note Label type\n- Re-implemented pitch names in slider\n- Fixed ABC label type\n"
+        "2.8.3": "- New pitch-accurate accidentals system! Support for flats, sharps, and their doubly variants\n- Added Note Label type\n- Re-implemented pitch names in slider\n- Fixed ABC label type"
     },
 
     
