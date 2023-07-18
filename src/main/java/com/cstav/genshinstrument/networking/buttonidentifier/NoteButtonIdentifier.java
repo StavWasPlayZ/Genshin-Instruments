@@ -45,6 +45,10 @@ public abstract class NoteButtonIdentifier {
 
     /**
      * A class holding methods to simplify the usage of the {@link NoteButtonIdentifier#matches matches} function
+     * 
+     * @apiNote It is mostly always recommended to use a {@link MatchType#hierarchyMatch hierarchy match}
+     * (with the {@link DefaultNoteButtonIdentifier default identifier} as a basis), because a lower type of
+     * identifier may be triggered as a result of 3rd-party initiation of notes.
      */
     public static abstract class MatchType {
         /**

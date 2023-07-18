@@ -3,6 +3,7 @@ package com.cstav.genshinstrument.networking.buttonidentifier;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.sound.NoteSound;
 
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -24,6 +25,19 @@ public class DefaultNoteButtonIdentifier extends NoteButtonIdentifier {
     public void setSound(NoteSound sound) {
         this.sound = sound;
     }
+
+
+    public DefaultNoteButtonIdentifier(final FriendlyByteBuf buf) {
+        sound = NoteSound.readFromNetwork(buf);
+    }
+    
+    @Override
+    public void writeToNetwork(FriendlyByteBuf buf) {
+        super.writeToNetwork(buf);
+        sound.writeToNetwork(buf);
+    }
+
+    
 
 
     public boolean matches(NoteButtonIdentifier other) {
