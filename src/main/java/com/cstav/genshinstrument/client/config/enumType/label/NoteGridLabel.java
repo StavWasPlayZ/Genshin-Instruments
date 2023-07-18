@@ -1,5 +1,6 @@
 package com.cstav.genshinstrument.client.config.enumType.label;
 
+import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.AbsGridLabels;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
@@ -25,11 +26,16 @@ public enum NoteGridLabel implements INoteLabel {
     ABC((note) -> Component.literal(
         AbsGridLabels.ABC[ng(note).row] + (gs(note).columns() - ng(note).column)
     )),
-    NOTE_NAME((note) -> Component.literal(
-        AbsGridLabels.getNoteName(ng(note))
-    )),
+    NOTE_NAME((note) -> {
+        String result = AbsGridLabels.getNoteName(ng(note));
+
+        if (ModClientConfigs.ACCURATE_ACCIDENTALS.get())
+            result = String.valueOf(result.charAt(0));
+
+        return Component.literal(result);
+    }),
     NONE(NoteLabelSupplier.EMPTY);
-        
+    
 
     private final NoteLabelSupplier labelSupplier;
     private NoteGridLabel(final NoteLabelSupplier labelSupplier) {

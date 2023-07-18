@@ -9,6 +9,7 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.AbsGridLabels;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.sound.NoteSound;
@@ -238,6 +239,14 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
                 Component.translatable("button.genshinstrument.shared_instrument"), this::onSharedInstrumentChanged
             );
         rowHelper.addChild(sharedInstrument);
+
+        final CycleButton<Boolean> accurateAccidentals = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
+            .withInitialValue(ModClientConfigs.SHARED_INSTRUMENT.get())
+            .create(0, 0,
+                getSmallButtonWidth(), getButtonHeight(),
+                Component.translatable("button.genshinstrument.accurate_accidentals"), this::onAccurateAccidentalsChanged
+            );
+        rowHelper.addChild(accurateAccidentals);
     }
 
     private float getPitch() {
@@ -281,6 +290,12 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     }
     protected void onSharedInstrumentChanged(final CycleButton<Boolean> button, final boolean value) {
         ModClientConfigs.SHARED_INSTRUMENT.set(value);
+    }
+    protected void onAccurateAccidentalsChanged(final CycleButton<Boolean> button, final boolean value) {
+        ModClientConfigs.ACCURATE_ACCIDENTALS.set(value);
+
+        if (isOverlay)
+            instrumentScreen.notesIterable().forEach(NoteButton::updateNoteLabel);
     }
 
 

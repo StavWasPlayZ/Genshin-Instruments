@@ -30,7 +30,7 @@ public class ModClientConfigs {
     public static final EnumValue<NoteGridLabel> GRID_LABEL_TYPE;
     public static final EnumValue<InstrumentChannelType> CHANNEL_TYPE;
     public static final BooleanValue STOP_MUSIC_ON_PLAY, EMIT_RING_ANIMATION, SHARED_INSTRUMENT,
-        RENDER_BACKGROUND, ACCEPTED_GENSHIN_CONSENT;
+        RENDER_BACKGROUND, ACCEPTED_GENSHIN_CONSENT, ACCURATE_ACCIDENTALS;
 
     public static final EnumValue<ZitherSoundType> ZITHER_SOUND_TYPE;
     public static final EnumValue<DrumNoteLabel> DRUM_LABEL_TYPE;
@@ -52,7 +52,9 @@ public class ModClientConfigs {
         EMIT_RING_ANIMATION = configBuilder.define("emit_ring_animation", true);
         SHARED_INSTRUMENT = configBuilder.comment("Defines whether you will see others playing on your instrument's screen")
             .define("display_other_players", true);
+
         RENDER_BACKGROUND = configBuilder.define("render_background", true);
+        ACCURATE_ACCIDENTALS = configBuilder.define("accurate_accidentals", true);
 
         ACCEPTED_GENSHIN_CONSENT = configBuilder.define("accepted_genshin_consent", false);
 
