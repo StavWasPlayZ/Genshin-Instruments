@@ -111,5 +111,12 @@ public class GenshinConsentScreen extends WarningScreen {
 
 
     @Override
+    public void onClose() {
+        super.onClose();
+        previousScreen.onClose();
+    }
+
+
+    @Override
     protected void initButtons(int idc) {}
 }
