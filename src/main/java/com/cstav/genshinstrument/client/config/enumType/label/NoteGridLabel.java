@@ -23,11 +23,7 @@ public enum NoteGridLabel implements INoteLabel {
         INoteLabel.TRANSLATABLE_PATH + AbsGridLabels.DO_RE_MI[ng(note).row % gs(note).rows()]
     )),
     ABC((note) -> Component.literal(
-        (
-            (ng(note).column == 0) ? "A" :
-            (ng(note).column == 1) ? "B" :
-            "C"
-        ) + (ng(note).row + 1)
+        AbsGridLabels.ABC[ng(note).row] + (gs(note).columns() - ng(note).column)
     )),
     NONE(NoteLabelSupplier.EMPTY);
         

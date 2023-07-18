@@ -10,9 +10,12 @@ public abstract class AbsGridLabels {
         DO_RE_MI = {
             "do", "re", "mi", "fa", "so", "la", "ti"
         },
-        PITCHES = {
-            "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"
-        }
+        ABC = {
+            "C", "D", "E", "F", "G", "A", "B"
+        };
+        // PITCHES = {
+        //     "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"
+        // }
     ;
 
     // The pitches dont even match, 1/16th is annoying to get
