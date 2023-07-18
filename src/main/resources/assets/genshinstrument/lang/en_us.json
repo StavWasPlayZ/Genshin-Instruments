@@ -63,7 +63,8 @@
 
 
     "button.genshinstrument.label.keyboard_layout": "Keyboard",
-    "button.genshinstrument.label.abc": "ABC",
+    "button.genshinstrument.label.abc_1": "ABC - Type 1",
+    "button.genshinstrument.label.abc_2": "ABC - Type 2",
     "button.genshinstrument.label.note_name": "Note Name",
     "button.genshinstrument.label.none": "No Label",
 
