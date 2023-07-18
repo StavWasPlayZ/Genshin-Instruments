@@ -8,7 +8,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class NoteGridButtonIdentifier extends DefaultNoteButtonIdentifier {
 
-    private int row, column;
+    public final int row, column;
     @OnlyIn(Dist.CLIENT)
     public NoteGridButtonIdentifier(final NoteGridButton button) {
         super(button);

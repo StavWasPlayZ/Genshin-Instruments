@@ -9,8 +9,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class DrumNoteIdentifier extends DefaultNoteButtonIdentifier {
 
-    private DrumButtonType noteType;
-    private boolean isRight;
+    public final DrumButtonType noteType;
+    public final boolean isRight;
 
     @OnlyIn(Dist.CLIENT)
     public DrumNoteIdentifier(final DrumNoteButton note) {

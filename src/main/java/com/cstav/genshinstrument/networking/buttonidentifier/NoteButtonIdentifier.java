@@ -10,7 +10,7 @@ import net.minecraft.network.FriendlyByteBuf;
 
 /**
  * <p>
- * A class used for identifying {@link NoteButton note buttons} over network.
+ * A class used for identifying {@link NoteButton note button}s' UI placement over network.
  * </p>
  * All implementors must include a constructor that gets a type {@link FriendlyByteBuf}.
  */
@@ -86,7 +86,7 @@ public abstract class NoteButtonIdentifier {
                 return unmatchFunction.apply(other);
             }
         }
-        
+
         /**
          * Executes the given match method such that if the expected type does not match {@code other},
          * {@code false} will be returned.
