@@ -34,10 +34,12 @@
     },
     "1.20.1": {
         "2.7.8": "- Update to 1.20.1\n- Pitch slider now has pitch names",
+
         "2.8": "- Added the staff instrument background\n- Removed pitch names from pitch slider",
         "2.8.1": "- Fixed drum and zither shared playing issues",
         "2.8.2": "- Improved drum sounds\n- Optimized note buttons' UI lookup",
-        "2.8.3": "- New pitch-accurate accidentals system! Support for flats, sharps, and their doubly variants\n- Added Note Label type\n- Re-implemented pitch names in slider\n- Fixed ABC label type\n- Partial Arabic language support"
+
+        "3.0": "- New pitch-accurate accidentals system! Support for flats, sharps, and their doubly variants\n- Added Note Label type\n- Re-implemented pitch names in slider\n- Fixed ABC label type\n- Partial Arabic language support"
     },
 
     
@@ -55,7 +57,7 @@
         "1.20-latest": "2.7.7",
         "1.20-recommended": "2.7.7",
 
-        "1.20.1-latest": "2.8.3",
-        "1.20.1-recommended": "2.8.3"
+        "1.20.1-latest": "3.0",
+        "1.20.1-recommended": "3.0"
     }
 }
