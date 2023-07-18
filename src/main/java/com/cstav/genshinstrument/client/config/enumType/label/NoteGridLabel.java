@@ -25,7 +25,11 @@ public enum NoteGridLabel implements INoteLabel {
         ).append(AbsGridLabels.getCutNoteName(ng(note)).substring(1))
     ),
     ABC((note) -> Component.literal(
-        AbsGridLabels.ABC[ng(note).row] + (gs(note).columns() - ng(note).column)
+        (
+            (ng(note).column == 0) ? "A" :
+            (ng(note).column == 1) ? "B" :
+            "C"
+        ) + (ng(note).row + 1)
     )),
     NOTE_NAME((note) -> Component.literal(
         AbsGridLabels.getCutNoteName(ng(note))
