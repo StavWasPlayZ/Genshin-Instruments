@@ -69,12 +69,16 @@ public abstract class AbsGridLabels {
         return map;
     }
 
-    // The pitches dont match, 1/16th slider is annoying to get, but whatever
     public static String getNoteName(final float pitch, final String[] noteLayout, final int offset) {
         final String baseNote = noteLayout[offset];
         //NOTE: Assuming pitch step is always .05
         //TODO: Figure a formula for this 2
-        final int pitchStep = perfectConv(((2) * 10) * (pitch - 1));
+        final int pitchStep = perfectConv(
+            ((2) * 10) * (pitch - 1)
+            // To account for the fact that a pitch step is 1/16th and we are doing jumps of 1/20th,
+            // divide by the following amount
+                / 1.6f
+        );
 
         final String[] scale = NOTE_SCALES.get(baseNote);
         return scale[(doublyPyWrap(pitchStep, scale.length))];
