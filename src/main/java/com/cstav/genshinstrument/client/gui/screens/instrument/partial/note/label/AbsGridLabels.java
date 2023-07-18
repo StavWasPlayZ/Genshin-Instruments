@@ -5,6 +5,7 @@ import static java.util.Map.entry;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
+import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.NoteGridButton;
 
@@ -89,6 +90,15 @@ public abstract class AbsGridLabels {
             screen.getPitch(), screen.noteLayout(),
             gridButton.row + gridButton.column * screen.rows()
         );
+    }
+
+    public static String getCutNoteName(final NoteGridButton gridButton) {
+        String result = AbsGridLabels.getNoteName(gridButton);
+
+        if (ModClientConfigs.ACCURATE_ACCIDENTALS.get())
+            result = String.valueOf(result.charAt(0));
+
+        return result;
     }
 
 

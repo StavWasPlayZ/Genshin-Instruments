@@ -5,8 +5,12 @@
     "item.genshinstrument.floral_zither": "הציטר הפרחי",
     "item.genshinstrument.vintage_lyre": "נבל הבציר",
     "item.genshinstrument.glorious_drum": "התוף הגדול והמפואר של ארטאקי",
-    
 
+
+    "genshinstrument.genshin_disclaimer.content": "מוד כלי הנגינה של גנשין הינו %s ו%s, ואין לו שום קשר עם Genshin Impact או HoYoverse.\n\nלכן, כל נכס הנעשה בו שימוש בתוסף, כגון צלילים, תמונוץ, כלי נגינה וכו' שייכים במלואן ל- HoYoverse.\n\nכמשתמש, עליך מוטלת האחריות המלאה על מעשיך במשחק זה, הכולל ניגון ושיתוף של כל שיר/פיסת מוזיקה המוגן תחת זכויות יוצרים.\n\n\n\nדברי משפט בצד; מקווה שתהנו מהתוסף!",
+    "genshinstrument.genshin_disclaimer.bolden1": "תוצר קהילתי",
+    "genshinstrument.genshin_disclaimer.bolden2": "לא רשמי",
+    
 
     "soundCategory.record": "כלי נגינה",
 

@@ -1,6 +1,5 @@
 package com.cstav.genshinstrument.client.config.enumType.label;
 
-import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.AbsGridLabels;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
@@ -20,20 +19,17 @@ public enum NoteGridLabel implements INoteLabel {
     KEYBOARD_LAYOUT((note) -> INoteLabel.upperComponent(
         KeyMappings.GRID_INSTRUMENT_MAPPINGS[ng(note).column][ng(note).row].getDisplayName()
     )),
-    DO_RE_MI((note) -> Component.translatable(
-        INoteLabel.TRANSLATABLE_PATH + AbsGridLabels.DO_RE_MI[ng(note).row % gs(note).rows()]
-    )),
+    DO_RE_MI((note) ->
+        Component.translatable(
+            INoteLabel.TRANSLATABLE_PATH + AbsGridLabels.DO_RE_MI[ng(note).row % gs(note).rows()]
+        ).append(AbsGridLabels.getCutNoteName(ng(note)).substring(1))
+    ),
     ABC((note) -> Component.literal(
         AbsGridLabels.ABC[ng(note).row] + (gs(note).columns() - ng(note).column)
     )),
-    NOTE_NAME((note) -> {
-        String result = AbsGridLabels.getNoteName(ng(note));
-
-        if (ModClientConfigs.ACCURATE_ACCIDENTALS.get())
-            result = String.valueOf(result.charAt(0));
-
-        return Component.literal(result);
-    }),
+    NOTE_NAME((note) -> Component.literal(
+        AbsGridLabels.getCutNoteName(ng(note))
+    )),
     NONE(NoteLabelSupplier.EMPTY);
     
 
