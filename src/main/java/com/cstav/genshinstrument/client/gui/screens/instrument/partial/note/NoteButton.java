@@ -112,13 +112,13 @@ public abstract class NoteButton extends AbstractButton {
 
     public void setLabelSupplier(final NoteLabelSupplier labelSupplier) {
         this.labelSupplier = labelSupplier;
-        setMessage(labelSupplier.get(this));
+        updateNoteLabel();
     }
     public NoteLabelSupplier getLabelSupplier() {
         return labelSupplier;
     }
     public void updateNoteLabel() {
-        setMessage(labelSupplier.get(this));
+        setMessage(getLabelSupplier().get(this));
     }
 
     public NoteSound getSound() {

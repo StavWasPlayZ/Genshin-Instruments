@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
+import com.cstav.genshinstrument.client.gui.screens.instrument.GenshinConsentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
@@ -27,6 +28,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractInstrumentScreen extends Screen {
+    public static final String[] DEFAULT_NOTE_LAYOUT = new String[] {"C", "D", "E", "F", "G", "A", "B"};
+    
     
     /**
      * The set pitch of all note buttons in this screen
@@ -37,6 +40,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
     public void setPitch(float pitch) {
         this.pitch = NoteSound.clampPitch(pitch);
+        notesIterable().forEach(NoteButton::updateNoteLabel);
     }
 
 
@@ -70,6 +74,27 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * @return The array of sounds used by this instruments.
      */
     public abstract NoteSound[] getSounds();
+
+    /**
+     * @return The layout of the note names accross the instrument's rows.
+     * @apiNote All built-in instruments' layouts are derived from
+     * <a href=https://github.com/Specy/genshin-music/blob/19dfe0e2fb8081508bd61dd47289dcb2d89ad5e3/src/Config.ts#L114>
+     * Genshin Music app configs
+     * </a>
+     */
+    public String[] noteLayout() {
+        return DEFAULT_NOTE_LAYOUT;
+    }
+
+    /**
+     * @return Whether this instrument is derived from Genshin Impact
+     * @apiNote This value will help the mod determine whether a disclaimer pop-up should appear upon opening this
+     * instrument.
+     */
+    public boolean isGenshinInstrument() {
+        return true;
+    }
+
 
     /**
      * @return The first {@link NoteButton} that matches the description of the given identifier
@@ -136,6 +161,9 @@ public abstract class AbstractInstrumentScreen extends Screen {
     @Override
     protected void init() {
         optionsScreen.init(minecraft, width, height);
+
+        if (isGenshinInstrument() && !ModClientConfigs.ACCEPTED_GENSHIN_CONSENT.get())
+            minecraft.setScreen(new GenshinConsentScreen(this));
     }
     /**
      * Initializes a new button responsible for popping up the options menu for this instrument.

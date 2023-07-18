@@ -78,6 +78,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
         );
     }
 
+
     public final NoteGrid noteGrid = initNoteGrid();
     
     private final Map<Key, NoteButton> noteMap = noteGrid.genKeyboardMap(KeyMappings.GRID_INSTRUMENT_MAPPINGS);
@@ -116,6 +117,8 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
     }
 
 
+    // Background rendering
+
     /**
      * Renders the background of this grid instrument.
      * This render method will only work for a 3-column instrument. Overwrite it
@@ -150,5 +153,5 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
             grid.getWidth() - 5, NoteButton.getSize()
         );
     }
-    
+
 }

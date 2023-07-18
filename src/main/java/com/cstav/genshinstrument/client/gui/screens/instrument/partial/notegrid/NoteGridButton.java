@@ -1,22 +1,35 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid;
 
+import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteNotation;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.AbsGridLabels;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
 
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class NoteGridButton extends NoteButton {
+    private static final double
+        FLAT_TEXTURE_HEIGHT_MULTIPLIER = 3.7f/1.3f,
+        FLAT_TEXTURE_WIDTH_MULTIPLIER = 1.7f/1.3f,
+        SHARP_MULTIPLIER = .8f,
+        DOUBLE_SHARP_MULTIPLIER = .9f
+    ;
+
+    private final ResourceLocation accidentalsLocation = getResourceFromRoot("accidentals.png");
+
 
     public final int row, column;
 
     public NoteGridButton(int row, int column, NoteSound sound, NoteLabelSupplier labelSupplier,
             AbstractGridInstrumentScreen instrumentScreen) {
         super(sound, labelSupplier, row, instrumentScreen.rows(), instrumentScreen);
-        
         
         this.row = row;
         this.column = column;
@@ -25,5 +38,61 @@ public class NoteGridButton extends NoteButton {
     @Override
     public NoteGridButtonIdentifier getIdentifier() {
         return new NoteGridButtonIdentifier(this);
+    }
+
+
+    @Override
+    public void renderWidget(GuiGraphics gui, int mouseX, int mouseY, float partialTick) {
+        super.renderWidget(gui, mouseX, mouseY, partialTick);
+        renderAccidentals(gui);
+    }
+
+    protected void renderAccidentals(final GuiGraphics gui) {
+        switch (getNotation()) {
+            case NONE: break;
+
+            case FLAT:
+                renderAccidental(gui, 0);
+                break;
+            case SHARP:
+                renderAccidental(gui, 1);
+                break;
+            case DOUBLE_FLAT:
+                renderAccidental(gui, 0, -6, -3);
+                renderAccidental(gui, 0, 5, 2);
+                break;
+            case DOUBLE_SHARP:
+                renderAccidental(gui, 2, -1, 0);
+                break;
+
+        }
+    }
+    
+    protected void renderAccidental(final GuiGraphics gui, int index) {
+        renderAccidental(gui, index, 0, 0);
+    }
+    protected void renderAccidental(GuiGraphics gui, int index, int offsetX, int offsetY) {
+        final int textureWidth = (int)(width * FLAT_TEXTURE_WIDTH_MULTIPLIER * (
+            (index == 1) ? SHARP_MULTIPLIER : (index == 2) ? DOUBLE_SHARP_MULTIPLIER : 1
+        )),
+        textureHeight = (int)(height * FLAT_TEXTURE_HEIGHT_MULTIPLIER * (
+            (index == 1) ? SHARP_MULTIPLIER : (index == 2) ? DOUBLE_SHARP_MULTIPLIER : 1
+        ));
+
+        final int spritePartHeight = textureHeight/3;
+
+        gui.blit(accidentalsLocation,
+            getX() - 9 + offsetX, getY() - 6 + offsetY,
+            // Handle sharp imperfections
+            isPlaying() ? textureWidth/2 : 0, (spritePartHeight) * index - index,
+            textureWidth/2,  spritePartHeight + ((index == 1) ? 3 : 0),
+            textureWidth - (((index != 0) && isPlaying()) ? 1 : 0), textureHeight
+        );
+    }
+
+    public NoteNotation getNotation() {
+        return ModClientConfigs.ACCURATE_ACCIDENTALS.get()
+            ? NoteNotation.getNotation(AbsGridLabels.getNoteName(this))
+            : NoteNotation.NONE;
     }
 }
