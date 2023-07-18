@@ -33,7 +33,7 @@ public class DrumNoteIdentifier extends DefaultNoteButtonIdentifier {
 
     @Override
     public boolean matches(NoteButtonIdentifier other) {
-        return MatchType.hierarchyMatch(other, this::drumMatch, super::matches);
+        return MatchType.perferMatch(other, this::drumMatch, super::matches);
     }
     private boolean drumMatch(final DrumNoteIdentifier other) {
         return (noteType == other.noteType) && (isRight == other.isRight);

@@ -30,7 +30,7 @@ public class DefaultNoteButtonIdentifier extends NoteButtonIdentifier {
     public DefaultNoteButtonIdentifier(final FriendlyByteBuf buf) {
         sound = NoteSound.readFromNetwork(buf);
     }
-    
+
     @Override
     public void writeToNetwork(FriendlyByteBuf buf) {
         super.writeToNetwork(buf);
@@ -38,8 +38,6 @@ public class DefaultNoteButtonIdentifier extends NoteButtonIdentifier {
     }
 
     
-
-
     public boolean matches(NoteButtonIdentifier other) {
         return MatchType.forceMatch(other, this::matchSound);
     }
