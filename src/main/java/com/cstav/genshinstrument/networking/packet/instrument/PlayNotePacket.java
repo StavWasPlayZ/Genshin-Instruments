@@ -1,11 +1,11 @@
-package com.cstav.genshinstrument.networking.packets.instrument;
+package com.cstav.genshinstrument.networking.packet.instrument;
 
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
 
 import com.cstav.genshinstrument.networking.ModPacket;
-import com.cstav.genshinstrument.networking.buttonidentifiers.NoteButtonIdentifier;
+import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraft.core.BlockPos;

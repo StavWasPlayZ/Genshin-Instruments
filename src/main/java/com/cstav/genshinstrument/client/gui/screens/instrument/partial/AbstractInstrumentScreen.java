@@ -1,13 +1,15 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
 
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
-import com.cstav.genshinstrument.networking.packets.instrument.CloseInstrumentPacket;
+import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
+import com.cstav.genshinstrument.networking.packet.instrument.CloseInstrumentPacket;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.platform.InputConstants.Type;
@@ -68,6 +70,17 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * @return The array of sounds used by this instruments.
      */
     public abstract NoteSound[] getSounds();
+
+    /**
+     * @return The first {@link NoteButton} that matches the description of the given identifier
+     */
+    public NoteButton getNoteButton(final NoteButtonIdentifier noteIdentifier) throws NoSuchElementException {
+        for (NoteButton note : notesIterable())
+            if (note.getIdentifier().matches(noteIdentifier))
+                return note;
+
+        throw new NoSuchElementException("Could not find a note in "+getClass().getSimpleName()+" based on the given identifier");
+    }
 
     /**
      * @return A map holding an integer key as its keycode and a {@link NoteButton} as its value.

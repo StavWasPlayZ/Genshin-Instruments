@@ -5,8 +5,9 @@ import java.util.Optional;
 
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
-import com.cstav.genshinstrument.networking.buttonidentifiers.NoteButtonIdentifier;
-import com.cstav.genshinstrument.networking.packets.instrument.PlayNotePacket;
+import com.cstav.genshinstrument.networking.buttonidentifier.DefaultNoteButtonIdentifier;
+import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
+import com.cstav.genshinstrument.networking.packet.instrument.PlayNotePacket;
 import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraft.core.BlockPos;
@@ -38,7 +39,7 @@ public class ServerUtil {
     public static void sendPlayNotePackets(ServerPlayer player, InteractionHand hand,
             NoteSound sound, ResourceLocation instrumentId, float pitch) {
 
-        sendPlayNotePackets(player, hand, sound, instrumentId, new NoteButtonIdentifier(sound), pitch);
+        sendPlayNotePackets(player, hand, sound, instrumentId, new DefaultNoteButtonIdentifier(sound), pitch);
     }
     /**
      * Sends {@link PlayNotePacket}s in the specified {@link ServerUtil#PLAY_DISTANCE}.
@@ -85,7 +86,7 @@ public class ServerUtil {
      * @param pitch The pitch of the sound to initiate
      */
     public static void sendPlayNotePackets(Level level, BlockPos pos, NoteSound sound, ResourceLocation instrumentId, float pitch) {
-        sendPlayNotePackets(level, pos, sound, instrumentId, new NoteButtonIdentifier(sound), pitch);
+        sendPlayNotePackets(level, pos, sound, instrumentId, new DefaultNoteButtonIdentifier(sound), pitch);
     }
     /**
      * Sends {@link PlayNotePacket}s in the specified {@link ServerUtil#PLAY_DISTANCE}.

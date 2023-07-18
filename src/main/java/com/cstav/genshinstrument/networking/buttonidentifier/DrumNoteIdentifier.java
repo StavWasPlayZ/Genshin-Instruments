@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.networking.buttonidentifiers;
+package com.cstav.genshinstrument.networking.buttonidentifier;
 
 import com.cstav.genshinstrument.client.gui.screens.instrument.drum.DrumButtonType;
 import com.cstav.genshinstrument.client.gui.screens.instrument.drum.DrumNoteButton;
@@ -7,10 +7,10 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class DrumNoteIdentifier extends NoteButtonIdentifier {
+public class DrumNoteIdentifier extends DefaultNoteButtonIdentifier {
 
-    private DrumButtonType noteType;
-    private boolean isRight;
+    public final DrumButtonType noteType;
+    public final boolean isRight;
 
     @OnlyIn(Dist.CLIENT)
     public DrumNoteIdentifier(final DrumNoteButton note) {
@@ -33,7 +33,7 @@ public class DrumNoteIdentifier extends NoteButtonIdentifier {
 
     @Override
     public boolean matches(NoteButtonIdentifier other) {
-        return MatchType.forceMatch(other, this::drumMatch);
+        return MatchType.perferMatch(other, this::drumMatch, super::matches);
     }
     private boolean drumMatch(final DrumNoteIdentifier other) {
         return (noteType == other.noteType) && (isRight == other.isRight);

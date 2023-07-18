@@ -1,56 +1,27 @@
-package com.cstav.genshinstrument.networking.buttonidentifiers;
+package com.cstav.genshinstrument.networking.buttonidentifier;
 
 import java.util.function.Function;
 
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
-import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * <p>
- * A class used for identifying {@link NoteButton note buttons} over network.
- * By default, uses a button's {@link NoteSound} as an identifier
+ * A class used for identifying {@link NoteButton note button}s' UI placement over network.
  * </p>
- * All implementors must include a constructor that gets type {@link FriendlyByteBuf}.
+ * All implementors must include a constructor that gets a type {@link FriendlyByteBuf}.
  */
-public class NoteButtonIdentifier {
+public abstract class NoteButtonIdentifier {
     
-    // Default implementation
-    private NoteSound sound;
-
-    public NoteButtonIdentifier(final NoteSound sound) {
-        this.sound = sound;
-    }
-    @OnlyIn(Dist.CLIENT)
-    public NoteButtonIdentifier(final NoteButton note) {
-        this(note.getSound());
-    }
-
-    public void setSound(NoteSound sound) {
-        this.sound = sound;
-    }
-
-
-    public boolean matches(NoteButtonIdentifier other) {
-        return other.sound.equals(sound);
-    }
-    
-
-
-    public NoteButtonIdentifier(final FriendlyByteBuf buf) {
-        sound = NoteSound.readFromNetwork(buf);
-    }
     public void writeToNetwork(final FriendlyByteBuf buf) {
         buf.writeUtf(getClass().getName());
-        sound.writeToNetwork(buf);
     }
 
-    
+    public abstract boolean matches(NoteButtonIdentifier other);
+
 
     @Override
     public boolean equals(Object other) {
@@ -77,13 +48,13 @@ public class NoteButtonIdentifier {
      */
     public static abstract class MatchType {
         /**
-         * <p>Executes match methods such that if the current {@code matchFunction} returned {@code false},
+         * <p>Executes the match methods such that if the current {@code matchFunction} returned {@code false},
          * the {@code unmatchFunction} will execute in its stead.</p>
          * If the type of {@code other} and {@code T} do not match, then {@code unmatchFunction} will be executed.
          * @param <T> The type of the identifier to expect
          * @param other
          * @param matchFunction The function for when the type is as expected
-         * @param unmatchFunction The function for when the type is as unexpected (generic, {@link NoteButtonIdentifier})
+         * @param unmatchFunction The function for when the type is unexpected (generic, {@link NoteButtonIdentifier})
          * @return The result of the identification process
          */
         @SuppressWarnings("unchecked")
@@ -97,12 +68,39 @@ public class NoteButtonIdentifier {
             }
         }
         /**
+         * <p>Executes the match methods such that only that if {@code other} did not match the type of {@code matchFunction},
+         * the {@code unmatchFunction} will execute in its stead.</p>
+         * @param <T> The type of the identifier to expect
+         * @param other
+         * @param matchFunction The function for when the type is as expected
+         * @param unmatchFunction The function for when the type is unexpected (generic, {@link NoteButtonIdentifier})
+         * @return The result of the identification process
+         */
+        @SuppressWarnings("unchecked")
+        public static <T extends NoteButtonIdentifier> boolean perferMatch(NoteButtonIdentifier other,
+                Function<T, Boolean> matchFunction, Function<NoteButtonIdentifier, Boolean> unmatchFunction) {
+                    
+            try {
+                return matchFunction.apply((T)other);
+            } catch (ClassCastException e) {
+                return unmatchFunction.apply(other);
+            }
+        }
+
+        /**
          * Executes the given match method such that if the expected type does not match {@code other},
          * {@code false} will be returned.
          * @param <T> The type of the identifier to expect
          * @param other
          * @param matchFunction The function for when the type is as expected
-         * @return The result of the identification process, or false if the expected type and {@code other}'s do not match
+         * @return The result of the identification process, or {@code false} if the expected type does not match
+         * 
+         * 
+         * @apiNote It is generally recommended not to use this match method,
+         * because a lower type of identifier may be triggered as a result of 3rd-party initiation of notes.
+         * 
+         * Implementors should instead consider using any of the other types
+         * with {@link DefaultNoteButtonIdentifier the default identifier} as their basis.
          */
         @SuppressWarnings("unchecked")
         public static <T extends NoteButtonIdentifier> boolean forceMatch(NoteButtonIdentifier other,

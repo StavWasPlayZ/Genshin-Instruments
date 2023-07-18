@@ -11,8 +11,9 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.Instrumen
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.animation.NoteAnimationController;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
-import com.cstav.genshinstrument.networking.buttonidentifiers.NoteButtonIdentifier;
-import com.cstav.genshinstrument.networking.packets.instrument.InstrumentPacket;
+import com.cstav.genshinstrument.networking.buttonidentifier.DefaultNoteButtonIdentifier;
+import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
+import com.cstav.genshinstrument.networking.packet.instrument.InstrumentPacket;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.CommonUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -61,7 +62,7 @@ public abstract class NoteButton extends AbstractButton {
      * You may use the {@link DefaultNoteButtonIdentifier default implementation} if you're too lazy.
      */
     public NoteButtonIdentifier getIdentifier() {
-        return new NoteButtonIdentifier(getSound());
+        return new DefaultNoteButtonIdentifier(getSound());
     }
 
     
@@ -125,7 +126,10 @@ public abstract class NoteButton extends AbstractButton {
     }
     public void setSound(NoteSound sound) {
         this.sound = sound;
-        getIdentifier().setSound(sound);
+
+        // Update the sound for the sound (default) identifier
+        if (getIdentifier() instanceof DefaultNoteButtonIdentifier)
+            ((DefaultNoteButtonIdentifier)getIdentifier()).setSound(sound);
     }
 
 

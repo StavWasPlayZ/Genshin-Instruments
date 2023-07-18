@@ -434,5 +434,9 @@
     "glorious_drum_ka": {
         "category": "record",
         "sounds": ["genshinstrument:glorious_drum/ka"]
+    },
+    "glorious_drum_ka_stereo": {
+        "category": "record",
+        "sounds": ["genshinstrument:glorious_drum/ka.stereo"]
     }
 }
