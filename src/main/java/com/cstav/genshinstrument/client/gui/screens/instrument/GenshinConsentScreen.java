@@ -49,20 +49,22 @@ public class GenshinConsentScreen extends WarningScreen {
 
     @Override
     protected void init() {
-        final Button acknowledgeButton = Button.builder(CommonComponents.GUI_ACKNOWLEDGE, (button) -> {
-            ModClientConfigs.ACCEPTED_GENSHIN_CONSENT.set(true);
-            minecraft.setScreen(previousScreen);
-        }).build();
+        final Button acknowledgeButton = new Button(
+            0, 0,
+            160, 20, CommonComponents.GUI_ACKNOWLEDGE,
+            (button) -> {
+                ModClientConfigs.ACCEPTED_GENSHIN_CONSENT.set(true);
+                minecraft.setScreen(previousScreen);
+            }
+        );
 
+        acknowledgeButton.x = (width - acknowledgeButton.getWidth()) / 2;
 
         // Make space for if the button is overlayed atop of the greeting
         final int perferredButtonY = 100 + 140, annoyingButtonY = height - acknowledgeButton.getHeight() - 10;
 
         if (annoyingButtonY <= perferredButtonY) {
-            acknowledgeButton.setPosition(
-                (width - acknowledgeButton.getWidth()) / 2,
-                annoyingButtonY
-            );
+            acknowledgeButton.y = annoyingButtonY;
             
             if (hasGreeting) {
                 // i have to eradicate brothers alike UmU
@@ -73,10 +75,7 @@ public class GenshinConsentScreen extends WarningScreen {
                 hasGreeting = false;
             }
         } else {
-            acknowledgeButton.setPosition(
-                (width - acknowledgeButton.getWidth()) / 2,
-                perferredButtonY
-            );
+            acknowledgeButton.y = perferredButtonY;
 
             if (!hasGreeting) {
                 CONTENT.append("\n\n\n\n")

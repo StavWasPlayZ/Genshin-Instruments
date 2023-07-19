@@ -6,13 +6,12 @@ import java.util.Iterator;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
+import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget;
+import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget.RowHelper;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.FrameWidget;
-import net.minecraft.client.gui.components.GridWidget;
-import net.minecraft.client.gui.components.GridWidget.RowHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -109,8 +108,9 @@ public class NoteGrid implements Iterable<NoteButton> {
         forEach(rowHelper::addChild);
 
         grid.pack();
-
-        FrameWidget.alignInRectangle(grid, 0, 0, screenWidth, screenHeight, 0.5f, vertAlignment);
+        grid.x = (screenWidth - grid.getWidth()) / 2;
+        grid.y = screenHeight - grid.getHeight() - 25;
+        grid.pack();
         
         // Initialize all the notes
         forEach(NoteButton::init);

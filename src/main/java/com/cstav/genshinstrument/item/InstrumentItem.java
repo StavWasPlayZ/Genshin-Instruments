@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.item;
 
 import java.util.function.Consumer;
 
+import com.cstav.genshinstrument.ModCreativeModeTabs;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.item.clientExtensions.ClientInstrumentItem;
@@ -26,12 +27,13 @@ public class InstrumentItem extends Item {
 
     protected final ServerPlayerRunnable onOpenRequest;
     /**
+     * Creates an instrument item and registers it to the Instruments item group.
      * @param onOpenRequest A server-side event fired when the player has requested to interact
      * with the instrument.
      * It should should send a packet to the given player for opening this instrument's screen.
      */
     public InstrumentItem(final ServerPlayerRunnable onOpenRequest) {
-        this(onOpenRequest, new Properties());
+        this(onOpenRequest, new Properties().tab(ModCreativeModeTabs.instrumentsTab));
     }
     /**
      * @param onOpenRequest A server-side event fired when the player has requested to interact

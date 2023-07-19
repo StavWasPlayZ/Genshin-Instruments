@@ -63,7 +63,7 @@ public abstract class NoteSoundRegistrer {
     }
 
     public static SoundEvent createSoundUnsafe(final ResourceLocation location) {
-        return SoundEvent.createVariableRangeEvent(location);
+        return new SoundEvent(location);
     }
 
 

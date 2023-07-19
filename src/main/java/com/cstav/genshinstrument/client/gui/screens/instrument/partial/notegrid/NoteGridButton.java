@@ -86,7 +86,7 @@ public class NoteGridButton extends NoteButton {
         ClientUtil.displaySprite(accidentalsLocation);
 
         blit(stack,
-            getX() - 9 + offsetX, getY() - 6 + offsetY,
+            x - 9 + offsetX, y - 6 + offsetY,
             // Handle sharp imperfections
             isPlaying() ? textureWidth/2 : 0, (spritePartHeight) * index - index,
             textureWidth/2,  spritePartHeight + ((index == 1) ? 3 : 0),

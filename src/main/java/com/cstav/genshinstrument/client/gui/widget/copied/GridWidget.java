@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.client.gui.screens.options.widget.copied;
+package com.cstav.genshinstrument.client.gui.widget.copied;
 
 import java.util.ArrayList;
 import java.util.List;

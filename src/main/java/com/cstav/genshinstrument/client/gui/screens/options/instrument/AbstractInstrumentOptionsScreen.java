@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.client.gui.screens.options.instrument;
 
 import java.awt.Color;
 import java.util.HashMap;
+import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
@@ -12,19 +13,18 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractI
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.AbsGridLabels;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
+import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget;
+import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget.RowHelper;
+import com.cstav.genshinstrument.client.gui.widget.copied.SpacerWidget;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.ibm.icu.text.DecimalFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.OptionInstance.TooltipSupplier;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
-import net.minecraft.client.gui.components.FrameWidget;
-import net.minecraft.client.gui.components.GridWidget;
-import net.minecraft.client.gui.components.GridWidget.RowHelper;
-import net.minecraft.client.gui.components.SpacerWidget;
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -129,20 +129,19 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         
         initOptionsGrid(grid, rowHelper);
         grid.pack();
-
-        FrameWidget.alignInRectangle(grid, 0, 0, width, height, 0.5f, 0);
+        
+        grid.setX((width - grid.getWidth()) / 2);
         grid.setY(40);
         
         grid.pack();
         addRenderableWidget(grid);
-
-
-        final Button doneBtn = Button.builder(CommonComponents.GUI_DONE, (btn) -> onClose())
-            .width(getSmallButtonWidth())
-            .pos((width - getSmallButtonWidth())/2, Math.min(grid.getY() + grid.getHeight() + 50, height - getButtonHeight() - 15))
-            .build();
-        addRenderableWidget(doneBtn);
         
+
+        final Button doneBtn = new Button(
+            (width - getSmallButtonWidth())/2,
+            Math.min(grid.y + grid.getHeight() + 60, height - getButtonHeight() - 15),
+            getSmallButtonWidth(), getButtonHeight(),  CommonComponents.GUI_DONE, (btn) -> onClose());
+        addRenderableWidget(doneBtn);
     }
 
     protected void initAudioSection(final GridWidget grid, final RowHelper rowHelper) {
@@ -152,7 +151,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
             .withValues(InstrumentChannelType.values())
             .withInitialValue(ModClientConfigs.CHANNEL_TYPE.get())
 
-            .withTooltip((soundType) -> Tooltip.create(switch (soundType) {
+            .withTooltip(tooltip((soundType) -> switch (soundType) {
                 case MIXED -> translatableArgs(SOUND_CHANNEL_KEY+".mixed.tooltip", NoteSound.STEREO_RANGE);
                 case STEREO -> Component.translatable(SOUND_CHANNEL_KEY+".stereo.tooltip");
                 default -> CommonComponents.EMPTY;
@@ -198,7 +197,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
         final CycleButton<Boolean> stopMusic = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(ModClientConfigs.STOP_MUSIC_ON_PLAY.get())
-            .withTooltip((value) -> Tooltip.create(Component.translatable(STOP_MUSIC_KEY+".tooltip", NoteSound.STOP_SOUND_DISTANCE)))
+            .withTooltip(tooltip((value) -> Component.translatable(STOP_MUSIC_KEY+".tooltip", NoteSound.STOP_SOUND_DISTANCE)))
             .create(0, 0,
                 getSmallButtonWidth(), getButtonHeight(),
                 Component.translatable(STOP_MUSIC_KEY), this::onMusicStopChanged
@@ -218,7 +217,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
         final CycleButton<Boolean> sharedInstrument = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(ModClientConfigs.SHARED_INSTRUMENT.get())
-            .withTooltip((value) -> Tooltip.create(Component.translatable("button.genshinstrument.shared_instrument.tooltip")))
+            .withTooltip(tooltip((value) -> Component.translatable("button.genshinstrument.shared_instrument.tooltip")))
             .create(0, 0,
                 getSmallButtonWidth(), getButtonHeight(),
                 Component.translatable("button.genshinstrument.shared_instrument"), this::onSharedInstrumentChanged
@@ -227,7 +226,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
         final CycleButton<Boolean> accurateAccidentals = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(ModClientConfigs.ACCURATE_ACCIDENTALS.get())
-            .withTooltip((value) -> Tooltip.create(Component.translatable("button.genshinstrument.accurate_accidentals.tooltip")))
+            .withTooltip(tooltip((value) -> Component.translatable("button.genshinstrument.accurate_accidentals.tooltip")))
             .create(0, 0,
                 getSmallButtonWidth(), getButtonHeight(),
                 Component.translatable("button.genshinstrument.accurate_accidentals"), this::onAccurateAccidentalsChanged
@@ -245,6 +244,10 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
                 );
             rowHelper.addChild(labelType, 2);
         }
+    }
+
+    private <T> TooltipSupplier<T> tooltip(final Function<T, Component> text) {
+        return (value) -> minecraft.font.split(text.apply(value), 200);
     }
 
 
@@ -302,7 +305,6 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     }
     protected void onSharedInstrumentChanged(final CycleButton<Boolean> button, final boolean value) {
         ModClientConfigs.SHARED_INSTRUMENT.set(value);
-        System.out.println("sharing is caring");
     }
     protected void onAccurateAccidentalsChanged(final CycleButton<Boolean> button, final boolean value) {
         ModClientConfigs.ACCURATE_ACCIDENTALS.set(value);
@@ -356,12 +358,6 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         return Component.literal(
             Component.translatable(key).getString().replace("%s", arg.toString())
         );
-    }
-
-    @Override
-    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
-        // System.out.println("clicked on screen");
-        return super.mouseClicked(pMouseX, pMouseY, pButton);
     }
 
 }

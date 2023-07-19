@@ -172,13 +172,14 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * @return A new Instrument Options button
      */
     protected AbstractWidget initOptionsButton(final int vertOffset) {
-        final Button button = Button.builder(
-            Component.translatable("button.genshinstrument.instrumentOptions").append("..."), (btn) -> onOptionsOpen()
-        )
-            .width(150)
-            .build();
+        final Button button = new Button(0, 0,
+            150, 20,
+            Component.translatable("button.genshinstrument.instrumentOptions").append("..."),
+            (btn) -> onOptionsOpen()
+        );
 
-        button.setPosition((width - button.getWidth())/2, vertOffset - button.getHeight()/2);
+        button.x = (width - button.getWidth())/2;
+        button.y = vertOffset - button.getHeight()/2;
 
         addRenderableWidget(button);
         return button;

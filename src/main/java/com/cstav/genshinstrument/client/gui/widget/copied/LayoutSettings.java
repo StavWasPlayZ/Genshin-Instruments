@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.client.gui.screens.options.widget.copied;
+package com.cstav.genshinstrument.client.gui.widget.copied;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

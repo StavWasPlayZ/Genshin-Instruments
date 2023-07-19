@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.client.gui.screens.options.widget.copied;
+package com.cstav.genshinstrument.client.gui.widget.copied;
 
 import com.google.common.annotations.VisibleForTesting;
 import it.unimi.dsi.fastutil.ints.IntIterator;

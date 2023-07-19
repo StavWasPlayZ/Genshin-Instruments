@@ -154,7 +154,7 @@ public class NoteSound {
             return;
             
         if (distanceFromPlayer > LOCAL_RANGE)
-            level.playLocalSound(pos,
+            level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(),
                 getByPreference(distanceFromPlayer), SoundSource.RECORDS,
                 1, NoteSound.clampPitch(pitch)
             , false);
@@ -179,13 +179,13 @@ public class NoteSound {
 
 
     public void writeToNetwork(final FriendlyByteBuf buf) {
-        mono.writeToNetwork(buf);
-        buf.writeOptional(stereo, (fbb, sound) -> sound.writeToNetwork(fbb));
+        buf.writeResourceLocation(mono.getLocation());
+        buf.writeOptional(stereo, (fbb, sound) -> fbb.writeResourceLocation(sound.getLocation()));
     }
     public static NoteSound readFromNetwork(final FriendlyByteBuf buf) {
         return new NoteSound(
-            SoundEvent.readFromNetwork(buf),
-            buf.readOptional(SoundEvent::readFromNetwork)
+            new SoundEvent(buf.readResourceLocation()),
+            buf.readOptional((fbb) -> new SoundEvent(fbb.readResourceLocation()))
         );
     }
 

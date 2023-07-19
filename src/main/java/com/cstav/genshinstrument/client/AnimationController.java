@@ -1,8 +1,13 @@
 package com.cstav.genshinstrument.client;
 
+import java.lang.reflect.Field;
+
+import com.mojang.logging.LogUtils;
+
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AnimationController {
@@ -31,7 +36,7 @@ public abstract class AnimationController {
         if (!isPlaying())
             return;
 
-        final int fps = minecraft.getFps();
+        final int fps = getFps();
         final float targetTime = fps * duration;
             
         if (animTime++ >= targetTime) {
@@ -40,6 +45,17 @@ public abstract class AnimationController {
         }
         
         animFrame(targetTime, targetValue / targetTime);
+    }
+    
+    private static int getFps() {
+        try {
+            final Field fps = ObfuscationReflectionHelper.findField(Minecraft.class, "f_91021_");
+            fps.setAccessible(true);
+            return fps.getInt(Minecraft.getInstance());
+        } catch (Exception e) {
+            LogUtils.getLogger().error("Exception occured during the proccess of getting FPS! Defaulting to 90", e);
+            return 90;
+        }
     }
     
     protected abstract void animFrame(final float targetTime, final float deltaValue);

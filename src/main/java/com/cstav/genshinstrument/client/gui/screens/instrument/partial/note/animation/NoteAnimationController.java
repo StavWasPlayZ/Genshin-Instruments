@@ -41,7 +41,8 @@ public class NoteAnimationController extends AnimationController {
         button.setHeight(NoteButton.getSize());
         dSize = NoteButton.getSize();
 
-        button.setPosition(button.getInitX(), button.getInitY());
+        button.x = button.getInitX();
+        button.y = button.getInitY();
     }
     
     public void play(final boolean isForeign) {
