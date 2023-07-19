@@ -54,7 +54,7 @@ public class ServerUtil {
     public static void sendPlayNotePackets(ServerPlayer player, InteractionHand hand,
             NoteSound sound, ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, float pitch) {
 
-        for (final Player listener : noteListeners(player.level(), player.blockPosition()))
+        for (final Player listener : noteListeners(player.getLevel(), player.blockPosition()))
             ModPacketHandler.sendToClient(
                 new PlayNotePacket(
                     player.blockPosition(), sound, pitch,
@@ -66,7 +66,7 @@ public class ServerUtil {
 
         // Trigger an instrument game event
         // This is done so that sculk sensors can pick up the instrument's sound
-        player.level().gameEvent(
+        player.getLevel().gameEvent(
             GameEvent.INSTRUMENT_PLAY, player.blockPosition(),
             GameEvent.Context.of(player)
         );

@@ -25,7 +25,6 @@ public class Main
         
         ModItems.register(bus);
         ModSounds.register(bus);
-        ModCreativeModeTabs.regsiter(bus);
 
         bus.register(InstrumentPlayedEvent.class);
 

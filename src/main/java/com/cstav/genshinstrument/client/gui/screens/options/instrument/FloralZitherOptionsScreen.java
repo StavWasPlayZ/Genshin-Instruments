@@ -5,8 +5,8 @@ import java.awt.Color;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.ZitherSoundType;
 import com.cstav.genshinstrument.client.gui.screens.instrument.floralzither.FloralZitherScreen;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.layouts.GridLayout.RowHelper;
@@ -53,10 +53,10 @@ public class FloralZitherOptionsScreen extends GridInstrumentOptionsScreen {
     }
 
     @Override
-    public void render(GuiGraphics gui, int pMouseX, int pMouseY, float pPartialTick) {
-        super.render(gui, pMouseX, pMouseY, pPartialTick);
+    public void render(PoseStack stack, int pMouseX, int pMouseY, float pPartialTick) {
+        super.render(stack, pMouseX, pMouseY, pPartialTick);
         
-        gui.drawCenteredString(font,
+        drawCenteredString(stack, font,
             Component.translatable("label.genshinstrument.zither_options"),
             width/2, heightBefore + SPACE_BEFORE + SPACER_HEIGHT
         , Color.WHITE.getRGB());

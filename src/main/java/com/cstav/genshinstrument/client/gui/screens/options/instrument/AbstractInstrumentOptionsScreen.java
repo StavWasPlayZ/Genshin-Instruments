@@ -14,9 +14,9 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.labe
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.ibm.icu.text.DecimalFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
@@ -311,12 +311,12 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
 
     @Override
-    public void render(GuiGraphics gui, int pMouseX, int pMouseY, float pPartialTick) {
-        renderBackground(gui);
+    public void render(PoseStack stack, int pMouseX, int pMouseY, float pPartialTick) {
+        renderBackground(stack);
         
-        gui.drawCenteredString(font, title, width/2, 20, Color.WHITE.getRGB());
+        drawCenteredString(stack, font, title, width/2, 20, Color.WHITE.getRGB());
         
-        super.render(gui, pMouseX, pMouseY, pPartialTick);
+        super.render(stack, pMouseX, pMouseY, pPartialTick);
     }
 
 

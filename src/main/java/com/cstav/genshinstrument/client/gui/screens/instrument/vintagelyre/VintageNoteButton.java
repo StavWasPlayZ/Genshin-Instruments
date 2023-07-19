@@ -6,8 +6,8 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.labe
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.NoteGridButton;
 import com.cstav.genshinstrument.sound.NoteSound;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -35,8 +35,8 @@ public class VintageNoteButton extends NoteGridButton {
 
 
     @Override
-    public void renderWidget(GuiGraphics gui, int pMouseX, int pMouseY, float pPartialTick) {
-        super.renderWidget(gui, pMouseX, pMouseY, pPartialTick);
+    public void renderWidget(PoseStack stack, int pMouseX, int pMouseY, float pPartialTick) {
+        super.renderWidget(stack, pMouseX, pMouseY, pPartialTick);
     }
     
 }

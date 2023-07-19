@@ -1,5 +1,6 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid;
 
+import com.cstav.genshinstrument.client.ClientUtil;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteNotation;
@@ -7,8 +8,8 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.labe
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -42,36 +43,36 @@ public class NoteGridButton extends NoteButton {
 
 
     @Override
-    public void renderWidget(GuiGraphics gui, int mouseX, int mouseY, float partialTick) {
-        super.renderWidget(gui, mouseX, mouseY, partialTick);
-        renderAccidentals(gui);
+    public void renderWidget(PoseStack stack, int mouseX, int mouseY, float partialTick) {
+        super.renderWidget(stack, mouseX, mouseY, partialTick);
+        renderAccidentals(stack);
     }
 
-    protected void renderAccidentals(final GuiGraphics gui) {
+    protected void renderAccidentals(final PoseStack stack) {
         switch (getNotation()) {
             case NONE: break;
 
             case FLAT:
-                renderAccidental(gui, 0);
+                renderAccidental(stack, 0);
                 break;
             case SHARP:
-                renderAccidental(gui, 1);
+                renderAccidental(stack, 1);
                 break;
             case DOUBLE_FLAT:
-                renderAccidental(gui, 0, -6, -3);
-                renderAccidental(gui, 0, 5, 2);
+                renderAccidental(stack, 0, -6, -3);
+                renderAccidental(stack, 0, 5, 2);
                 break;
             case DOUBLE_SHARP:
-                renderAccidental(gui, 2, -1, 0);
+                renderAccidental(stack, 2, -1, 0);
                 break;
 
         }
     }
     
-    protected void renderAccidental(final GuiGraphics gui, int index) {
-        renderAccidental(gui, index, 0, 0);
+    protected void renderAccidental(final PoseStack stack, int index) {
+        renderAccidental(stack, index, 0, 0);
     }
-    protected void renderAccidental(GuiGraphics gui, int index, int offsetX, int offsetY) {
+    protected void renderAccidental(PoseStack stack, int index, int offsetX, int offsetY) {
         final int textureWidth = (int)(width * FLAT_TEXTURE_WIDTH_MULTIPLIER * (
             (index == 1) ? SHARP_MULTIPLIER : (index == 2) ? DOUBLE_SHARP_MULTIPLIER : 1
         )),
@@ -81,7 +82,10 @@ public class NoteGridButton extends NoteButton {
 
         final int spritePartHeight = textureHeight/3;
 
-        gui.blit(accidentalsLocation,
+        
+        ClientUtil.displaySprite(accidentalsLocation);
+
+        blit(stack,
             getX() - 9 + offsetX, getY() - 6 + offsetY,
             // Handle sharp imperfections
             isPlaying() ? textureWidth/2 : 0, (spritePartHeight) * index - index,

@@ -5,6 +5,8 @@ import java.awt.Point;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -34,6 +36,19 @@ public class ClientUtil {
     }
     public static void resetShaderColor() {
         setShaderColor(Color.WHITE);
+    }
+
+
+    /**
+     * Sets the render system's texture shader as the specified resource
+     */
+    public static void displaySprite(final ResourceLocation location) {
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderTexture(0, location);
+
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.enableDepthTest();
     }
 
 }

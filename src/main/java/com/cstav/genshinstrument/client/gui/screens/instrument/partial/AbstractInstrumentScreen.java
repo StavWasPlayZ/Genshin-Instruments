@@ -14,8 +14,8 @@ import com.cstav.genshinstrument.networking.packet.instrument.CloseInstrumentPac
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.platform.InputConstants.Type;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -238,10 +238,10 @@ public abstract class AbstractInstrumentScreen extends Screen {
     private boolean isOptionsActive = false;
 
     @Override
-    public void render(GuiGraphics gui, int pMouseX, int pMouseY, float pPartialTick) {
-        super.render(gui, pMouseX, pMouseY, pPartialTick);
+    public void render(PoseStack stack, int pMouseX, int pMouseY, float pPartialTick) {
+        super.render(stack, pMouseX, pMouseY, pPartialTick);
         if (ioa())
-            optionsScreen.render(gui, pMouseX, pMouseY, pPartialTick);
+            optionsScreen.render(stack, pMouseX, pMouseY, pPartialTick);
     }
 
     protected void onOptionsOpen() {

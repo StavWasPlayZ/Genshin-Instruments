@@ -4,7 +4,7 @@ import com.cstav.genshinstrument.Main;
 
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -47,8 +47,8 @@ public class ModItems {
 
 
     @SubscribeEvent
-    public static void registerItemsToTab(final BuildCreativeModeTabContentsEvent event) {
-        if (!event.getTabKey().equals(CreativeModeTabs.TOOLS_AND_UTILITIES))
+    public static void registerItemsToTab(final CreativeModeTabEvent.BuildContents event) {
+        if (!event.getTab().equals(CreativeModeTabs.TOOLS_AND_UTILITIES))
             return;
 
         for (final RegistryObject<Item> itemObj : ITEMS.getEntries())
