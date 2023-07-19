@@ -9,10 +9,10 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.labe
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 
-import net.minecraft.client.gui.layouts.AbstractLayout;
-import net.minecraft.client.gui.layouts.FrameLayout;
-import net.minecraft.client.gui.layouts.GridLayout;
-import net.minecraft.client.gui.layouts.GridLayout.RowHelper;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.FrameWidget;
+import net.minecraft.client.gui.components.GridWidget;
+import net.minecraft.client.gui.components.GridWidget.RowHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -101,16 +101,16 @@ public class NoteGrid implements Iterable<NoteButton> {
      * @param screenHeight The height of the screen
      * @return A new {@link NoteButton} grid
      */
-    public AbstractLayout initNoteGridLayout(final float vertAlignment, final int screenWidth, final int screenHeight) {
-        final GridLayout grid = new GridLayout();
+    public AbstractWidget initNoteGridWidget(final float vertAlignment, final int screenWidth, final int screenHeight) {
+        final GridWidget grid = new GridWidget();
         grid.defaultCellSetting().padding(PADDING_HORZ, PADDING_VERT);
 
         final RowHelper rowHelper = grid.createRowHelper(rows);
         forEach(rowHelper::addChild);
 
-        grid.arrangeElements();
+        grid.pack();
 
-        FrameLayout.alignInRectangle(grid, 0, 0, screenWidth, screenHeight, 0.5f, vertAlignment);
+        FrameWidget.alignInRectangle(grid, 0, 0, screenWidth, screenHeight, 0.5f, vertAlignment);
         
         // Initialize all the notes
         forEach(NoteButton::init);

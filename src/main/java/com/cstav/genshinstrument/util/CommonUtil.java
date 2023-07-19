@@ -34,4 +34,8 @@ public abstract class CommonUtil {
             dir.getPath() + "/" + path
         );
     }
+
+    public static ResourceLocation withSuffix(final ResourceLocation resource, final String suffix) {
+        return new ResourceLocation(resource.getNamespace(), resource.getPath()+suffix);
+    }
 }

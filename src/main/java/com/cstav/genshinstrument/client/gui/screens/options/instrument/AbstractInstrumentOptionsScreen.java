@@ -20,11 +20,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
+import net.minecraft.client.gui.components.FrameWidget;
+import net.minecraft.client.gui.components.GridWidget;
+import net.minecraft.client.gui.components.GridWidget.RowHelper;
+import net.minecraft.client.gui.components.SpacerWidget;
 import net.minecraft.client.gui.components.Tooltip;
-import net.minecraft.client.gui.layouts.FrameLayout;
-import net.minecraft.client.gui.layouts.GridLayout;
-import net.minecraft.client.gui.layouts.GridLayout.RowHelper;
-import net.minecraft.client.gui.layouts.SpacerElement;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -119,7 +119,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     @Override
     protected void init() {
 
-        final GridLayout grid = new GridLayout();
+        final GridWidget grid = new GridWidget();
         grid.defaultCellSetting()
             .padding(getHorzPadding(), getVertPadding())
             .alignVertically(.5f)
@@ -127,10 +127,10 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         final RowHelper rowHelper = grid.createRowHelper(2);
 
         initOptionsGrid(grid, rowHelper);
-        grid.arrangeElements();
+        grid.pack();
 
-        FrameLayout.alignInRectangle(grid, 0, 0, width, height, 0.5f, 0);
-        grid.visitWidgets(this::addRenderableWidget);
+        FrameWidget.alignInRectangle(grid, 0, 0, width, height, 0.5f, 0);
+        addRenderableWidget(grid);
         
         grid.setY(40);
 
@@ -143,7 +143,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         
     }
 
-    protected void initAudioSection(final GridLayout grid, final RowHelper rowHelper) {
+    protected void initAudioSection(final GridWidget grid, final RowHelper rowHelper) {
         final CycleButton<InstrumentChannelType> instrumentChannel = CycleButton.<InstrumentChannelType>builder((soundType) ->
             Component.translatable(SOUND_CHANNEL_KEY +"."+ soundType.toString().toLowerCase())
         )
@@ -204,7 +204,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         rowHelper.addChild(stopMusic);
     }
 
-    protected void initVisualsSection(final GridLayout grid, final RowHelper rowHelper) {
+    protected void initVisualsSection(final GridWidget grid, final RowHelper rowHelper) {
 
         final CycleButton<Boolean> emitRing = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(ModClientConfigs.EMIT_RING_ANIMATION.get())
@@ -251,10 +251,10 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
      * @param grid The settings grid to add the widgets to
      * @param rowHelper A row helper for the specified {@code grid}
      */
-    protected void initOptionsGrid(final GridLayout grid, final RowHelper rowHelper) {
+    protected void initOptionsGrid(final GridWidget grid, final RowHelper rowHelper) {
         initAudioSection(grid, rowHelper);
 
-        rowHelper.addChild(SpacerElement.height(15), 2);
+        rowHelper.addChild(SpacerWidget.height(15), 2);
         
         initVisualsSection(grid, rowHelper);
     }

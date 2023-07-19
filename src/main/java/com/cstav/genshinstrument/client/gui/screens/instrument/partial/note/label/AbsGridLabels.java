@@ -70,8 +70,8 @@ public abstract class AbsGridLabels {
         return map;
     }
 
-    public static String getNoteName(final float pitch, final String[] noteLayout, final int offset) {
-        final String baseNote = noteLayout[wrapAround(offset, noteLayout.length)];
+    public static String getNoteName(final float pitch, final String[] noteWidget, final int offset) {
+        final String baseNote = noteWidget[wrapAround(offset, noteWidget.length)];
         //NOTE: Assuming pitch step is always .05
         //TODO: Figure a formula for this 2
         final int pitchStep = perfectConv(
@@ -87,7 +87,7 @@ public abstract class AbsGridLabels {
     public static String getNoteName(final NoteGridButton gridButton) {
         final AbstractGridInstrumentScreen screen = (AbstractGridInstrumentScreen) gridButton.instrumentScreen;
         return getNoteName(
-            screen.getPitch(), screen.noteLayout(),
+            screen.getPitch(), screen.noteWidget(),
             gridButton.row + gridButton.column * screen.rows()
         );
     }

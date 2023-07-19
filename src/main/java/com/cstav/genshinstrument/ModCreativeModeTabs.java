@@ -27,9 +27,9 @@ public class ModCreativeModeTabs {
                 .icon(() -> new ItemStack(ModItems.FLORAL_ZITHER.get()))
                 .noScrollBar()
                 
-                .displayItems((displayParams, out) ->
+                .displayItems((features, output, opTabEnabled) ->
                     ModItems.ITEMS.getEntries().forEach((item) ->
-                        out.accept(item.get())
+                        output.accept(item.get())
                     )
                 )
         );

@@ -16,7 +16,7 @@ import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdent
 import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.gui.layouts.AbstractLayout;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
@@ -27,7 +27,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
     public static final int DEF_ROWS = 7, DEF_COLUMNS = 3,
         CLEF_WIDTH = 26, CLEF_HEIGHT = 52;
 
-    protected AbstractLayout grid;
+    protected AbstractWidget grid;
 
 
     public AbstractGridInstrumentScreen(InteractionHand hand) {
@@ -101,8 +101,8 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
 
     @Override
     protected void init() {
-        grid = noteGrid.initNoteGridLayout(.9f, width, height);
-        grid.visitWidgets(this::addRenderableWidget);
+        grid = noteGrid.initNoteGridWidget(.9f, width, height);
+        addRenderableWidget(grid);
         
         initOptionsButton(grid.getY() - 15);
         super.init();

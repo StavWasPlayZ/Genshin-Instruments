@@ -35,8 +35,8 @@ public class VintageNoteButton extends NoteGridButton {
 
 
     @Override
-    public void renderWidget(PoseStack stack, int pMouseX, int pMouseY, float pPartialTick) {
-        super.renderWidget(stack, pMouseX, pMouseY, pPartialTick);
+    public void renderButton(PoseStack stack, int pMouseX, int pMouseY, float pPartialTick) {
+        super.renderButton(stack, pMouseX, pMouseY, pPartialTick);
     }
     
 }

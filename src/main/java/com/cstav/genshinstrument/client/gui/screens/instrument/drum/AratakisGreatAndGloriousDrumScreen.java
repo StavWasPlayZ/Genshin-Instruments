@@ -13,8 +13,8 @@ import com.cstav.genshinstrument.sound.ModSounds;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 
-import net.minecraft.client.gui.layouts.LinearLayout;
-import net.minecraft.client.gui.layouts.LinearLayout.Orientation;
+import net.minecraft.client.gui.components.LinearLayoutWidget;
+import net.minecraft.client.gui.components.LinearLayoutWidget.Orientation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
@@ -62,18 +62,18 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
     protected void init() {
         initOptionsButton(height/2 + 25);
 
-        final LinearLayout layout1 = createRow(DrumButtonType.DON, 2.25f),
+        final LinearLayoutWidget layout1 = createRow(DrumButtonType.DON, 2.25f),
             layout2 = createRow(DrumButtonType.KA, 1.5f);
 
         // Make layout magic
-        layout1.arrangeElements();
-        layout2.arrangeElements();
+        layout1.pack();
+        layout2.pack();
 
         layout1.setPosition((width - layout1.getWidth()) / 2, (int)(height * .8f));
         layout2.setPosition((width - layout2.getWidth()) / 2, layout1.getY() - layout1.getHeight());
 
-        layout1.visitWidgets(this::addRenderableWidget);
-        layout2.visitWidgets(this::addRenderableWidget);
+        addRenderableWidget(layout1);
+        addRenderableWidget(layout2);
 
         // Initialize all the notes
         notesIterable().forEach(NoteButton::init);
@@ -81,8 +81,8 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
         super.init();
     }
 
-    private LinearLayout createRow(DrumButtonType type, float widthPercent) {
-        final LinearLayout layout = new LinearLayout(
+    private LinearLayoutWidget createRow(DrumButtonType type, float widthPercent) {
+        final LinearLayoutWidget layout = new LinearLayoutWidget(
             0, 0,
             (int)(width/widthPercent), NoteButton.getSize(),
             Orientation.HORIZONTAL
@@ -93,7 +93,7 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
 
         return layout;
     }
-    private NoteButton createButton(DrumButtonType btnType, LinearLayout container, Key key, boolean isRight) {
+    private NoteButton createButton(DrumButtonType btnType, LinearLayoutWidget container, Key key, boolean isRight) {
         final NoteButton btn = new DrumNoteButton(btnType, isRight, this);
 
         container.addChild(btn);

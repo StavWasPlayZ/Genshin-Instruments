@@ -40,7 +40,7 @@ public class VintageLyreScreen extends AbstractGridInstrumentScreen {
     }
 
     @Override
-    public String[] noteLayout() {
+    public String[] noteWidget() {
         return VINTAGE_LYRE_LAYOUT;
     }
 

@@ -181,7 +181,7 @@ public abstract class NoteButton extends AbstractButton {
 
 
     @Override
-    public void renderWidget(PoseStack stack, int mouseX, int mouseY, float partialTick) {
+    public void renderButton(PoseStack stack, int mouseX, int mouseY, float partialTick) {
         rings.removeIf((ring) -> !ring.isPlaying());
         rings.forEach((ring) -> ring.render(stack));
 

@@ -3,6 +3,7 @@ package com.cstav.genshinstrument.sound;
 import java.util.Optional;
 
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
+import com.cstav.genshinstrument.util.CommonUtil;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -31,7 +32,7 @@ public abstract class NoteSoundRegistrer {
     public static NoteSound registerInstrument(DeferredRegister<SoundEvent> soundRegistrer,
       ResourceLocation soundLocation, int note, boolean hasStereo) {
 
-        return registerNote(soundRegistrer, soundLocation.withSuffix("_note_"+note), hasStereo);
+        return registerNote(soundRegistrer, CommonUtil.withSuffix(soundLocation, "_note_"+note), hasStereo);
     }
     /**
      * Creates a {@link NoteSound} with null sounds, that will get filled
@@ -50,7 +51,7 @@ public abstract class NoteSoundRegistrer {
 
         if (hasStereo)
             soundRegistrer.register(soundLocation.getPath() + STEREO_SUFFIX, () ->
-                (sound.stereo = Optional.of(createSoundUnsafe(soundLocation.withSuffix(STEREO_SUFFIX)))).get()
+                (sound.stereo = Optional.of(createSoundUnsafe(CommonUtil.withSuffix(soundLocation, STEREO_SUFFIX)))).get()
             );
         else
             sound.stereo = Optional.empty();

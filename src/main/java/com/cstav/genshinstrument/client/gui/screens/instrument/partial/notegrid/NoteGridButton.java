@@ -43,8 +43,8 @@ public class NoteGridButton extends NoteButton {
 
 
     @Override
-    public void renderWidget(PoseStack stack, int mouseX, int mouseY, float partialTick) {
-        super.renderWidget(stack, mouseX, mouseY, partialTick);
+    public void renderButton(PoseStack stack, int mouseX, int mouseY, float partialTick) {
+        super.renderButton(stack, mouseX, mouseY, partialTick);
         renderAccidentals(stack);
     }
 

@@ -5,8 +5,8 @@ import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 
 import net.minecraft.client.gui.components.CycleButton;
-import net.minecraft.client.gui.layouts.GridLayout;
-import net.minecraft.client.gui.layouts.GridLayout.RowHelper;
+import net.minecraft.client.gui.components.GridWidget;
+import net.minecraft.client.gui.components.GridWidget.RowHelper;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
@@ -31,7 +31,7 @@ public class GridInstrumentOptionsScreen extends AbstractInstrumentOptionsScreen
 
 
     @Override
-    protected void initVisualsSection(GridLayout grid, RowHelper rowHelper) {
+    protected void initVisualsSection(GridWidget grid, RowHelper rowHelper) {
         final CycleButton<Boolean> renderBackground = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(ModClientConfigs.RENDER_BACKGROUND.get())
             .create(0, 0,

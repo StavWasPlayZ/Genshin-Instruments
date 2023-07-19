@@ -82,7 +82,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * Genshin Music app configs
      * </a>
      */
-    public String[] noteLayout() {
+    public String[] noteWidget() {
         return DEFAULT_NOTE_LAYOUT;
     }
 
