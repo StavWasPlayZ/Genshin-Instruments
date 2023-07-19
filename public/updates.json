@@ -30,7 +30,9 @@
         "2.7.1": "- Fixed play ring's alpha channel rendering incorrectly",
         "2.7.5": "- New shared play screen implementation",
         "2.7.6": "- Improved API\n- Fixed zither options button overflowing",
-        "2.7.7": "- All instrument sounds now play locally on a range of 5 blocks"
+        "2.7.7": "- All instrument sounds now play locally on a range of 5 blocks",
+
+        "3.0": "Backported mod version v3.0 to Minecraft version 1.20\nChanges up until v3.0:\n\nv3.0\n- New pitch-accurate accidentals system! Support for flats, sharps, and their doubly variants\n- Added Note Label type\n- Implemented pitch names in slider\n- Fixed ABC label type\n- Partial Arabic language support\n\n2.8.2\n- Improved drum sounds\n\nv2.8.1\n- Fixed drum and zither shared playing issues\n\nv2.8\n- Added the staff instrument background"
     },
     "1.20.1": {
         "2.7.8": "- Update to 1.20.1\n- Pitch slider now has pitch names",
@@ -54,8 +56,8 @@
         "1.19.4-recommended": "2.6",
 
 
-        "1.20-latest": "2.7.7",
-        "1.20-recommended": "2.7.7",
+        "1.20-latest": "3.0",
+        "1.20-recommended": "3.0",
 
         "1.20.1-latest": "3.0",
         "1.20.1-recommended": "3.0"
