@@ -130,9 +130,9 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         grid.arrangeElements();
 
         FrameLayout.alignInRectangle(grid, 0, 0, width, height, 0.5f, 0);
-        grid.visitWidgets(this::addRenderableWidget);
-        
         grid.setY(40);
+        
+        grid.visitWidgets(this::addRenderableWidget);
 
 
         final Button doneBtn = Button.builder(CommonComponents.GUI_DONE, (btn) -> onClose())
