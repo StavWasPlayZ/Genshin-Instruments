@@ -7,7 +7,6 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.NoteGridButton;
 import com.cstav.genshinstrument.sound.NoteSound;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -30,13 +29,6 @@ public class VintageNoteButton extends NoteGridButton {
         return ModClientConfigs.ACCURATE_ACCIDENTALS.get()
             ? super.getNotation()
             : isDefaultFlat() ? NoteNotation.FLAT : NoteNotation.NONE;
-    }
-
-
-
-    @Override
-    public void renderWidget(GuiGraphics gui, int pMouseX, int pMouseY, float pPartialTick) {
-        super.renderWidget(gui, pMouseX, pMouseY, pPartialTick);
     }
     
 }

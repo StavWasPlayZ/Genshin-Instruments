@@ -298,4 +298,16 @@ public abstract class NoteButton extends AbstractButton {
         neo.add(NarratedElementType.TITLE, getMessage());
     }
 
+
+    /**
+     * <p>Check whether an object is equal to this {@link NoteButton}.</p>
+     * 
+     * An object will only be equal to this note if it is of type {@link NoteButton}
+     * and both their identifiers {@link NoteButtonIdentifier#matches match}
+     */
+    @Override
+    public boolean equals(Object obj) {
+        return getIdentifier().matches(obj);
+    }
+
 }
