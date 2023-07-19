@@ -78,7 +78,6 @@ public class InstrumentItem extends Item {
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new ClientInstrumentItem());
-        System.out.println("test");
     }
     
     
