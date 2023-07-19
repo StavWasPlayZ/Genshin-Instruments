@@ -101,7 +101,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
      */
     public NoteButton getNoteButton(final NoteButtonIdentifier noteIdentifier) throws NoSuchElementException {
         for (NoteButton note : notesIterable())
-            if (note.getIdentifier().matches(noteIdentifier))
+            if (noteIdentifier.matches(note))
                 return note;
 
         throw new NoSuchElementException("Could not find a note in "+getClass().getSimpleName()+" based on the given identifier");
