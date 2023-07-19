@@ -126,13 +126,15 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
             .alignHorizontallyCenter();
         final RowHelper rowHelper = grid.createRowHelper(2);
 
+        
         initOptionsGrid(grid, rowHelper);
         grid.arrangeElements();
 
         FrameLayout.alignInRectangle(grid, 0, 0, width, height, 0.5f, 0);
-        grid.visitWidgets(this::addRenderableWidget);
-        
         grid.setY(40);
+        
+        grid.arrangeElements();
+        grid.visitWidgets(this::addRenderableWidget);
 
 
         final Button doneBtn = Button.builder(CommonComponents.GUI_DONE, (btn) -> onClose())
