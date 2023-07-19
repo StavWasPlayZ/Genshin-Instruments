@@ -133,6 +133,8 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         addRenderableWidget(grid);
         
         grid.setY(40);
+        
+        addRenderableWidget(grid);
 
 
         final Button doneBtn = Button.builder(CommonComponents.GUI_DONE, (btn) -> onClose())

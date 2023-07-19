@@ -72,6 +72,10 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
         layout1.setPosition((width - layout1.getWidth()) / 2, (int)(height * .8f));
         layout2.setPosition((width - layout2.getWidth()) / 2, layout1.getY() - layout1.getHeight());
 
+        layout1.pack();
+        layout2.pack();
+
+        
         addRenderableWidget(layout1);
         addRenderableWidget(layout2);
 
