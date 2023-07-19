@@ -20,13 +20,24 @@ public abstract class NoteButtonIdentifier {
         buf.writeUtf(getClass().getName());
     }
 
-    public abstract boolean matches(NoteButtonIdentifier other);
+
+    public abstract boolean matches(final NoteButtonIdentifier other);
+    
+    public boolean matches(final NoteButton note) {
+        return matches(note.getIdentifier());
+    }
+    public boolean matches(final Object obj) {
+        return equals(obj);
+    }
 
 
     @Override
     public boolean equals(Object other) {
         if (other instanceof NoteButtonIdentifier)
             return matches((NoteButtonIdentifier)other);
+        if (other instanceof NoteButton)
+            return matches((NoteButton)other);
+
         return false;
     }
 
