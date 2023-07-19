@@ -130,10 +130,8 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         grid.pack();
 
         FrameWidget.alignInRectangle(grid, 0, 0, width, height, 0.5f, 0);
-        addRenderableWidget(grid);
         
         grid.setY(40);
-        
         addRenderableWidget(grid);
 
 
@@ -207,7 +205,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     }
 
     protected void initVisualsSection(final GridWidget grid, final RowHelper rowHelper) {
-
+        
         final CycleButton<Boolean> emitRing = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(ModClientConfigs.EMIT_RING_ANIMATION.get())
             .create(0, 0,
@@ -302,6 +300,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     }
     protected void onSharedInstrumentChanged(final CycleButton<Boolean> button, final boolean value) {
         ModClientConfigs.SHARED_INSTRUMENT.set(value);
+        System.out.println("sharing is caring");
     }
     protected void onAccurateAccidentalsChanged(final CycleButton<Boolean> button, final boolean value) {
         ModClientConfigs.ACCURATE_ACCIDENTALS.set(value);
@@ -356,4 +355,11 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
             Component.translatable(key).getString().replace("%s", arg.toString())
         );
     }
+
+    @Override
+    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
+        // System.out.println("clicked on screen");
+        return super.mouseClicked(pMouseX, pMouseY, pButton);
+    }
+
 }
