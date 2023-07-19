@@ -302,7 +302,6 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     }
     protected void onSharedInstrumentChanged(final CycleButton<Boolean> button, final boolean value) {
         ModClientConfigs.SHARED_INSTRUMENT.set(value);
-        System.out.println("sharing is caring");
     }
     protected void onAccurateAccidentalsChanged(final CycleButton<Boolean> button, final boolean value) {
         ModClientConfigs.ACCURATE_ACCIDENTALS.set(value);
@@ -356,12 +355,6 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         return Component.literal(
             Component.translatable(key).getString().replace("%s", arg.toString())
         );
-    }
-
-    @Override
-    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
-        // System.out.println("clicked on screen");
-        return super.mouseClicked(pMouseX, pMouseY, pButton);
     }
 
 }
