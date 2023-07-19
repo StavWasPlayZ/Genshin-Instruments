@@ -2,7 +2,7 @@ package com.cstav.genshinstrument.client.gui.screens.options.instrument;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractGridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.layouts.GridLayout;
@@ -31,9 +31,7 @@ public class GridInstrumentOptionsScreen extends AbstractInstrumentOptionsScreen
 
 
     @Override
-    protected void initOptionsGrid(GridLayout grid, RowHelper rowHelper) {
-        super.initOptionsGrid(grid, rowHelper);
-
+    protected void initVisualsSection(GridLayout grid, RowHelper rowHelper) {
         final CycleButton<Boolean> renderBackground = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(ModClientConfigs.RENDER_BACKGROUND.get())
             .create(0, 0,
@@ -41,6 +39,8 @@ public class GridInstrumentOptionsScreen extends AbstractInstrumentOptionsScreen
                 Component.translatable("button.genshinstrument.render_background"), this::onRenderBackgroundChanged
             );
         rowHelper.addChild(renderBackground);
+
+        super.initVisualsSection(grid, rowHelper);
     }
 
     protected void onRenderBackgroundChanged(final CycleButton<Boolean> button, final boolean value) {

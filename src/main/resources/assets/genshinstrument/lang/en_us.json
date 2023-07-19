@@ -11,7 +11,13 @@
 
 
     "button.genshinstrument.instrumentOptions": "Instrument Options",
-    "button.genshinstrument.zither_options": "Zither Options",
+    "label.genshinstrument.zither_options": "Zither Options",
+
+    "genshinstrument.genshin_disclaimer.title": "Disclaimer!",
+    "genshinstrument.genshin_disclaimer.content": "Genshin Instruments is an %s and %s Minecraft mod that is in no way afiliated with Genshin Impact nor HoYoverse.\n\nThus, all assets used in-game, such as sounds, images, instrumens and more are of complete ownership to HoYoverse.\n\nAs the user, you have the full responsibility over your actions within the game, including (but not limited to!) playing and sharing/publishing any songs that may be protected by copyright laws.",
+    "genshinstrument.genshin_disclaimer.content.no_legal": "Legal stuff aside; I hope you enjoy playing with this mod!",
+    "genshinstrument.genshin_disclaimer.bolden1": "unofficial",
+    "genshinstrument.genshin_disclaimer.bolden2": "fanmade",
 
 
     "button.genshinstrument.audioChannels": "Instrument Audio Channel Type",
@@ -29,9 +35,12 @@
     "button.genshinstrument.shared_instrument": "Shared Instrument Screen",
 
     "button.genshinstrument.render_background": "Show Background Visuals",
+    "button.genshinstrument.accurate_accidentals": "Accurate Accidentals",
+    "button.genshinstrument.accurate_accidentals.tooltip": "When on, provides a pitch-accurate representation of the accidentals used by this instrument's layout",
+    
 
 
-    "button.genshinstrument.label": "Note labels",
+    "button.genshinstrument.label": "Note Labels Type",
     "button.genshinstrument.pitch": "Pitch",
 
     "button.genshinstrument.zither.soundType": "Sound Type",
@@ -54,7 +63,9 @@
 
 
     "button.genshinstrument.label.keyboard_layout": "Keyboard",
-    "button.genshinstrument.label.abc": "ABC",
+    "button.genshinstrument.label.abc_1": "ABC - Type 1",
+    "button.genshinstrument.label.abc_2": "ABC - Type 2",
+    "button.genshinstrument.label.note_name": "Note Name",
     "button.genshinstrument.label.none": "No Label",
 
     "button.genshinstrument.label.don_ka": "Don-Ka",

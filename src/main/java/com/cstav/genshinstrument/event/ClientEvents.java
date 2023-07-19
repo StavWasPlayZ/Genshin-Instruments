@@ -3,7 +3,6 @@ package com.cstav.genshinstrument.event;
 import com.cstav.genshinstrument.Main;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent.ByPlayer;
 import com.cstav.genshinstrument.item.InstrumentItem;
 import com.cstav.genshinstrument.util.ServerUtil;
@@ -61,11 +60,9 @@ public class ClientEvents {
             return;
 
 
-        for (NoteButton note : screen.notesIterable())
-            if (note.sound.equals(event.sound)) {
-                note.playNoteAnimation(true);
-                return;
-            }
+        try {   
+            screen.getNoteButton(event.noteIdentifier).playNoteAnimation(true);
+        } catch (Exception e) {}
     }
 
 }

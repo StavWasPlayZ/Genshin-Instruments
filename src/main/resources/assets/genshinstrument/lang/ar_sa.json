@@ -1,0 +1,56 @@
+{
+    "genshinstrument.itemGroup.instruments": "الات موسيقية",
+
+    "item.genshinstrument.windsong_lyre": "القيثارة",
+    "item.genshinstrument.floral_zither": "القانون",
+    "item.genshinstrument.vintage_lyre": "خمر القيثارة",
+    "item.genshinstrument.glorious_drum": "طبلة اغتكي الرائعة والمجيدة",
+
+
+    "soundCategory.record": "الات موسيقية",
+
+
+    "button.genshinstrument.instrumentOptions": "خيارات الأداة",
+    "label.genshinstrument.zither_options": "Zither Options",
+
+
+    "button.genshinstrument.audioChannels": "Instrument Audio Channel Type",
+    "button.genshinstrument.audioChannels.mono": "مونو",
+    "button.genshinstrument.audioChannels.stereo": "ستيريو",
+    "button.genshinstrument.audioChannels.mixed.tooltip":
+        "إذا تم تعيين فئة صوت الآلات على 100٪ ، فسوف تسمع آلات على ستيريو ضمن٪ s كتل من النطاق.\nخلاف ذلك ، سوف تسمع مونو.",
+    "button.genshinstrument.audioChannels.mixed": "مختلط",
+    "button.genshinstrument.stop_music_on_play.tooltip": "عندما تعزف أنت أو لاعبون آخرون ضمن٪ s من النطاق على آلة موسيقية ، ستتوقف موسيقى Minecraft في الخلفية.",
+    "button.genshinstrument.stop_music_on_play": "إيقاف تشغيل الموسيقى",
+    "button.genshinstrument.emit_ring": "انبعاث الرسوم المتحركة الدائري",
+    "button.genshinstrument.shared_instrument.tooltip": "تعرف على ما يلعبه لاعبو الملاحظات الآخرون القريبون في شاشة الآلة الموسيقية الخاصة بك",
+    "button.genshinstrument.shared_instrument": "شاشة الجهاز المشترك",
+
+    "button.genshinstrument.render_background": "إظهار مرئيات الخلفية",
+    
+
+
+    "button.genshinstrument.label": "نوع تسميات الملاحظات",
+    "button.genshinstrument.pitch": "نغمة",
+
+    "button.genshinstrument.zither.soundType": "نوع الصوت",
+    "button.genshinstrument.zither.soundType.old": "قديم",
+    "button.genshinstrument.zither.soundType.new": "جديد",
+
+
+    "button.genshinstrument.label.do_re_mi": "دو ري مي",
+
+    "genshinstrument.label.do": "دو",
+    "genshinstrument.label.re": "ري",
+    "genshinstrument.label.mi": "مي",
+    "genshinstrument.label.fa": "فا",
+    "genshinstrument.label.so": "صو",
+    "genshinstrument.label.la": "لا ",
+    "genshinstrument.label.ti": "تي",
+
+
+    "button.genshinstrument.label.keyboard_layout": "لوحة المفاتيح",
+    "button.genshinstrument.label.note_name": "اسم الملاحظة",
+    "button.genshinstrument.label.none": "لا تسمية"
+
+}

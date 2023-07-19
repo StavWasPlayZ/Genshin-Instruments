@@ -11,7 +11,9 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.Instrumen
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.animation.NoteAnimationController;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
-import com.cstav.genshinstrument.networking.packets.instrument.InstrumentPacket;
+import com.cstav.genshinstrument.networking.buttonidentifier.DefaultNoteButtonIdentifier;
+import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
+import com.cstav.genshinstrument.networking.packet.instrument.InstrumentPacket;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.CommonUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -26,8 +28,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+/**
+ * The abstract implementation of an instrument's note button.
+ * @param <T> The type of this button's identifier
+ */
 @OnlyIn(Dist.CLIENT)
-public class NoteButton extends AbstractButton {
+public abstract class NoteButton extends AbstractButton {
     public static final String NOTE_BG_FILENAME = "note_bg.png";
 
 
@@ -51,8 +57,16 @@ public class NoteButton extends AbstractButton {
     protected final NoteAnimationController noteAnimation = new NoteAnimationController(.15f, 9, this);
     protected final ArrayList<NoteRing> rings = new ArrayList<>();
 
+    /**
+     * <p>Returns the identifier of this button.</p>
+     * You may use the {@link DefaultNoteButtonIdentifier default implementation} if you're too lazy.
+     */
+    public NoteButtonIdentifier getIdentifier() {
+        return new DefaultNoteButtonIdentifier(getSound());
+    }
+
     
-    public NoteSound sound;
+    private NoteSound sound;
     public final AbstractInstrumentScreen instrumentScreen;
 
     protected final int noteTextureRow, rowsInNoteTexture;
@@ -98,13 +112,24 @@ public class NoteButton extends AbstractButton {
 
     public void setLabelSupplier(final NoteLabelSupplier labelSupplier) {
         this.labelSupplier = labelSupplier;
-        setMessage(labelSupplier.get(this));
+        updateNoteLabel();
     }
     public NoteLabelSupplier getLabelSupplier() {
         return labelSupplier;
     }
     public void updateNoteLabel() {
-        setMessage(labelSupplier.get(this));
+        setMessage(getLabelSupplier().get(this));
+    }
+
+    public NoteSound getSound() {
+        return sound;
+    }
+    public void setSound(NoteSound sound) {
+        this.sound = sound;
+
+        // Update the sound for the sound (default) identifier
+        if (getIdentifier() instanceof DefaultNoteButtonIdentifier)
+            ((DefaultNoteButtonIdentifier)getIdentifier()).setSound(sound);
     }
 
 
@@ -232,7 +257,8 @@ public class NoteButton extends AbstractButton {
         ModPacketHandler.sendToServer(
             new InstrumentPacket(
                 sound, instrumentScreen.getPitch(),
-                instrumentScreen.interactionHand, instrumentScreen.getInstrumentId()
+                instrumentScreen.interactionHand,
+                instrumentScreen.getInstrumentId(), getIdentifier()
             )
         );
 

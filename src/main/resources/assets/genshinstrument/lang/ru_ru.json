@@ -25,11 +25,12 @@
     "button.genshinstrument.shared_instrument": "Экран общего инструмента",
 
     "button.genshinstrument.render_background": "Показать фоновые визуальные",
-
+    "button.genshinstrument.accurate_accidentals": "Точные случайности",
+    "button.genshinstrument.accurate_accidentals.tooltip": "Во включенном состоянии обеспечивает точное отображение питч-аккомпанемента, используемого в схеме данного инструмента",
 
     
     "button.genshinstrument.instrumentOptions": "Варианты инструментов",
-    "button.genshinstrument.zither_options": "Варианты цитры",
+    "label.genshinstrument.zither_options": "Варианты цитры",
 
     
     "button.genshinstrument.label": "Наклейки для заметок",
@@ -52,6 +53,7 @@
 
 
     "button.genshinstrument.label.keyboard_layout": "Клавиатура",
+    "button.genshinstrument.label.note_name": "Название Ноты",
     "button.genshinstrument.label.none": "Без этикетки",
 
 

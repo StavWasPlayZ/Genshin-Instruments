@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.networking.packets.instrument;
+package com.cstav.genshinstrument.networking.packet.instrument;
 
 import java.util.Map;
 import java.util.function.Function;

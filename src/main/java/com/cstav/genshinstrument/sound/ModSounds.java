@@ -28,7 +28,7 @@ public class ModSounds {
 
         GLORIOUS_DRUM = new NoteSound[] {
             registerNote(SOUNDS, loc("glorious_drum_don")),
-            registerNote(SOUNDS, loc("glorious_drum_ka"))
+            registerNote(SOUNDS, loc("glorious_drum_ka"), true)
         }
     ;
 

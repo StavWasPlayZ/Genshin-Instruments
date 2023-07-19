@@ -1,9 +1,9 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.vintagelyre;
 
 import com.cstav.genshinstrument.Main;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteGrid;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.NoteGrid;
 import com.cstav.genshinstrument.sound.ModSounds;
 import com.cstav.genshinstrument.sound.NoteSound;
 
@@ -19,6 +19,11 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @EventBusSubscriber(bus = Bus.MOD, value = Dist.CLIENT)
 public class VintageLyreScreen extends AbstractGridInstrumentScreen {
     public static final String INSTRUMENT_ID = "vintage_lyre";
+    public static final String[] VINTAGE_LYRE_LAYOUT = new String[] {
+        "C", "Db", "Eb", "F", "G", "Ab", "Bb",
+        "C", "D", "Eb", "F", "G", "A", "Bb",
+        "C", "D", "Eb", "F", "G", "A", "Bb"
+    };
     
     public VintageLyreScreen(InteractionHand hand) {
         super(hand);
@@ -33,7 +38,12 @@ public class VintageLyreScreen extends AbstractGridInstrumentScreen {
     public NoteSound[] getSounds() {
         return ModSounds.VINTAGE_LYRE_NOTE_SOUNDS;
     }
-    
+
+    @Override
+    public String[] noteLayout() {
+        return VINTAGE_LYRE_LAYOUT;
+    }
+
     @Override
     public NoteGrid initNoteGrid() {
         return new VintageNoteGrid(

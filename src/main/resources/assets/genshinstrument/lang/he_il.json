@@ -5,8 +5,13 @@
     "item.genshinstrument.floral_zither": "הציטר הפרחי",
     "item.genshinstrument.vintage_lyre": "נבל הבציר",
     "item.genshinstrument.glorious_drum": "התוף הגדול והמפואר של ארטאקי",
-    
 
+
+    "genshinstrument.genshin_disclaimer.content": "מוד כלי הנגינה של גנשין הינו %s ו%s, כלפי שום קשר עם Genshin Impact או HoYoverse.\n\nלכן, כל נכס הנעשה בו שימוש בתוסף, כגון צלילים, תמונות, כלי נגינה וכו' שייכים במלואן ל- HoYoverse.\n\nכמשתמש, עליך מוטלת האחריות המלאה על מעשיך במשחק זה, הכולל ניגון ושיתוף של כל שיר/פיסת מוזיקה המוגן תחת זכויות יוצרים ועוד.",
+    "genshinstrument.genshin_disclaimer.content.no_legal": "דברי משפט בצד; מקווה שתהנו מהתוסף!",
+    "genshinstrument.genshin_disclaimer.bolden1": "תוצר קהילתי",
+    "genshinstrument.genshin_disclaimer.bolden2": "לא רשמי",
+    
 
     "soundCategory.record": "כלי נגינה",
 
@@ -20,16 +25,19 @@
     "button.genshinstrument.audioChannels.mixed": "מעורב",
     "button.genshinstrument.stop_music_on_play.tooltip": "כאשר את.ה או שחקנים אחרים בטווח של %s בלוקים מנגנים בכלי נגינה, מוזיקת הרקע תחדול לנגן.",
     "button.genshinstrument.stop_music_on_play": "הפסק מוזיקה בזמן נגינה",
-    "button.genshinstrument.emit_ring": "הצג אנימציות תווים",
+    "button.genshinstrument.emit_ring": "הצג הנפשות תווים",
     "button.genshinstrument.shared_instrument.tooltip": "ראה מה שחקנים אחרים מנגנים במסך הנגינה שלך",
     "button.genshinstrument.shared_instrument": "מסך נגינה משותף",
 
     "button.genshinstrument.render_background": "הצג תפאורות רקע",
+    "button.genshinstrument.accurate_accidentals": "סימני היתק מדוייקים",
+    "button.genshinstrument.accurate_accidentals.tooltip": "כאשר אופציה זו מופעלת, יוצגו יתקיהם של כל התווים בהתאם לגובה הצליל הנבחר",
+    
 
 
     
     "button.genshinstrument.instrumentOptions": "אפשרויות כלי נגינה",
-    "button.genshinstrument.zither_options": "אפשרויות הציטר",
+    "label.genshinstrument.zither_options": "אפשרויות הציטר",
 
     
     "button.genshinstrument.label": "תגיות תווים",
@@ -41,6 +49,7 @@
 
 
     "button.genshinstrument.label.do_re_mi": "דו רה מי",
+    "button.genshinstrument.label.note_name": "שם תו",
 
 
     "button.genshinstrument.label.keyboard_layout": "מקלדת",

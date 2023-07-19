@@ -1,9 +1,10 @@
-package com.cstav.genshinstrument.networking.packets.instrument;
+package com.cstav.genshinstrument.networking.packet.instrument;
 
 import java.util.function.Supplier;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpen;
 import com.cstav.genshinstrument.networking.ModPacket;
+import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.ServerUtil;
 
@@ -23,13 +24,16 @@ public class InstrumentPacket implements ModPacket {
     private final float pitch;
 
     private final ResourceLocation instrumentId;
+    private final NoteButtonIdentifier noteIdentifier;
 
-    public InstrumentPacket(NoteSound sound, float pitch, InteractionHand hand, ResourceLocation instrumentId) {
+    public InstrumentPacket(NoteSound sound, float pitch, InteractionHand hand,
+            ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier) {
         this.sound = sound;
         this.hand = hand;
         this.pitch = pitch;
 
         this.instrumentId = instrumentId;
+        this.noteIdentifier = noteIdentifier;
     }
     public InstrumentPacket(FriendlyByteBuf buf) {
         sound = NoteSound.readFromNetwork(buf);
@@ -37,6 +41,7 @@ public class InstrumentPacket implements ModPacket {
         pitch = buf.readFloat();
 
         instrumentId = buf.readResourceLocation();
+        noteIdentifier = NoteButtonIdentifier.readIdentifier(buf);
     }
 
     @Override
@@ -46,6 +51,7 @@ public class InstrumentPacket implements ModPacket {
         buf.writeFloat(pitch);
 
         buf.writeResourceLocation(instrumentId);
+        noteIdentifier.writeToNetwork(buf);
     }
 
 
@@ -59,7 +65,7 @@ public class InstrumentPacket implements ModPacket {
             if (!InstrumentOpen.isOpen(player))
                 return;
 
-            ServerUtil.sendPlayNotePackets(player, hand, sound, instrumentId, pitch);
+            ServerUtil.sendPlayNotePackets(player, hand, sound, instrumentId, noteIdentifier, pitch);
         });
 
         return true;
