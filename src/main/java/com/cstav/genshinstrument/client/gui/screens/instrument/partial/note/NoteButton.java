@@ -1,6 +1,5 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
 
@@ -34,7 +33,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  */
 @OnlyIn(Dist.CLIENT)
 public abstract class NoteButton extends AbstractButton {
+
     public static final String NOTE_BG_FILENAME = "note_bg.png";
+
+    private static final double
+        FLAT_TEXTURE_HEIGHT_MULTIPLIER = 3.7f/1.3f,
+        FLAT_TEXTURE_WIDTH_MULTIPLIER = 1.7f/1.3f,
+        SHARP_MULTIPLIER = .8f,
+        DOUBLE_SHARP_MULTIPLIER = .9f
+    ;
 
 
     @SuppressWarnings("resource")
@@ -71,7 +78,8 @@ public abstract class NoteButton extends AbstractButton {
 
     protected final int noteTextureRow, rowsInNoteTexture;
     protected final ResourceLocation rootLocation,
-        noteLocation, noteBgLocation;
+        noteLocation, noteBgLocation, accidentalsLocation;
+
 
     private NoteLabelSupplier labelSupplier;
     private int noteTextureWidth = 56;
@@ -98,10 +106,12 @@ public abstract class NoteButton extends AbstractButton {
 
         noteLocation = instrumentScreen.getNotesLocation();
         noteBgLocation = getResourceFromRoot(NOTE_BG_FILENAME);
+        accidentalsLocation = getResourceFromRoot("accidentals.png");
     }
     public NoteButton(NoteSound sound,
-      NoteLabelSupplier labelSupplier, int noteTextureRow, int rowsInNoteTexture,
-      AbstractInstrumentScreen instrumentScreen, int noteTextureWidth,
+            NoteLabelSupplier labelSupplier, int noteTextureRow, int rowsInNoteTexture,
+            AbstractInstrumentScreen instrumentScreen, int noteTextureWidth,
+            
       float randomAssMultiplier1, float randomAssMultiplier2) {
         this(sound, labelSupplier, noteTextureRow, rowsInNoteTexture, instrumentScreen);
 
@@ -171,6 +181,12 @@ public abstract class NoteButton extends AbstractButton {
     }
 
 
+    
+    public NoteNotation getNotation() {
+        return NoteNotation.NONE;
+    }
+
+
     public void init() {
         initPos();
         setLabelSupplier(labelSupplier);
@@ -181,6 +197,8 @@ public abstract class NoteButton extends AbstractButton {
     }
 
 
+    //#region Rendering
+
     @Override
     public void renderWidget(GuiGraphics gui, int mouseX, int mouseY, float partialTick) {
         RenderSystem.enableBlend();
@@ -189,16 +207,19 @@ public abstract class NoteButton extends AbstractButton {
         rings.removeIf((ring) -> !ring.isPlaying());
         rings.forEach((ring) -> ring.render(gui));
 
-        final InstrumentThemeLoader theme = instrumentScreen.getThemeLoader();
-        final Color
-            noteTheme = theme.getNoteTheme(),
-            pressedNoteTheme = theme.getPressedNoteTheme(),
-            labelTheme = theme.getLabelTheme()
-        ;
+        renderNoteButton(gui, instrumentScreen.getThemeLoader());
 
+        noteAnimation.update();
+    }
+    protected void renderNoteButton(GuiGraphics gui, final InstrumentThemeLoader themeLoader) {
+        renderNote(gui, themeLoader);
+        renderSymbol(gui, themeLoader);
+        renderLabel(gui, themeLoader);
         
-        // Button
+        renderAccidentals(gui);
+    }
 
+    protected void renderNote(final GuiGraphics gui, final InstrumentThemeLoader themeLoader) {
         // width = full color, width * 2 = border, 0 = normal
         int blitOffset =
             isPlaying() ?
@@ -215,10 +236,15 @@ public abstract class NoteButton extends AbstractButton {
             width, height,
             width*3, height
         );
-
-        // Note
+    }
+    // "Symbol" so that I can call the above "Note"
+    protected void renderSymbol(final GuiGraphics gui, final InstrumentThemeLoader themeLoader) {
         final int noteWidth = width/2, noteHeight = height/2;
-        ClientUtil.setShaderColor((isPlaying() && !foreignPlaying) ? pressedNoteTheme : labelTheme);
+        
+        ClientUtil.setShaderColor((isPlaying() && !foreignPlaying)
+            ? themeLoader.getPressedNoteTheme()
+            : themeLoader.getLabelTheme()
+        );
 
         gui.blit(noteLocation,
             this.getX() + noteWidth/2, this.getY() + noteHeight/2,
@@ -231,19 +257,63 @@ public abstract class NoteButton extends AbstractButton {
         );
 
         ClientUtil.resetShaderColor();
-
-        // Label
+    }
+    protected void renderLabel(final GuiGraphics gui, final InstrumentThemeLoader themeLoader) {
         //FIXME: All text rendered this way are making their way to the top of
         // the render stack, for some reason
         gui.drawCenteredString(
             minecraft.font, getMessage(),
             textX, textY,
-            ((isPlaying() && !foreignPlaying) ? pressedNoteTheme : noteTheme).getRGB()
+            ((isPlaying() && !foreignPlaying)
+                ? themeLoader.getPressedNoteTheme()
+                : themeLoader.getNoteTheme()
+            ).getRGB()
         );
-        
-
-        noteAnimation.update();
     }
+    protected void renderAccidentals(final GuiGraphics gui) {
+        switch (getNotation()) {
+            case NONE: break;
+
+            case FLAT:
+                renderAccidental(gui, 0);
+                break;
+            case SHARP:
+                renderAccidental(gui, 1);
+                break;
+            case DOUBLE_FLAT:
+                renderAccidental(gui, 0, -6, -3);
+                renderAccidental(gui, 0, 5, 2);
+                break;
+            case DOUBLE_SHARP:
+                renderAccidental(gui, 2, -1, 0);
+                break;
+
+        }
+    }
+    
+    protected void renderAccidental(final GuiGraphics gui, int index) {
+        renderAccidental(gui, index, 0, 0);
+    }
+    protected void renderAccidental(GuiGraphics gui, int index, int offsetX, int offsetY) {
+        final int textureWidth = (int)(width * FLAT_TEXTURE_WIDTH_MULTIPLIER * (
+            (index == 1) ? SHARP_MULTIPLIER : (index == 2) ? DOUBLE_SHARP_MULTIPLIER : 1
+        )),
+        textureHeight = (int)(height * FLAT_TEXTURE_HEIGHT_MULTIPLIER * (
+            (index == 1) ? SHARP_MULTIPLIER : (index == 2) ? DOUBLE_SHARP_MULTIPLIER : 1
+        ));
+
+        final int spritePartHeight = textureHeight/3;
+
+        gui.blit(accidentalsLocation,
+            getX() - 9 + offsetX, getY() - 6 + offsetY,
+            // Handle sharp imperfections
+            isPlaying() ? textureWidth/2 : 0, (spritePartHeight) * index - index,
+            textureWidth/2,  spritePartHeight + ((index == 1) ? 3 : 0),
+            textureWidth - (((index != 0) && isPlaying()) ? 1 : 0), textureHeight
+        );
+    }
+
+    //#endregion
 
 
     public boolean locked = false;

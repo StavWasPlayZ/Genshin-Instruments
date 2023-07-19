@@ -19,6 +19,9 @@ public enum NoteGridLabel implements INoteLabel {
     KEYBOARD_LAYOUT((note) -> INoteLabel.upperComponent(
         KeyMappings.GRID_INSTRUMENT_MAPPINGS[ng(note).column][ng(note).row].getDisplayName()
     )),
+    NOTE_NAME((note) -> Component.literal(
+        AbsGridLabels.getCutNoteName(ng(note))
+    )),
     DO_RE_MI((note) ->
         Component.translatable(
             INoteLabel.TRANSLATABLE_PATH + AbsGridLabels.DO_RE_MI[ng(note).row % gs(note).rows()]
@@ -33,9 +36,6 @@ public enum NoteGridLabel implements INoteLabel {
             (ng(note).column == 1) ? "B" :
             "C"
         ) + (ng(note).row + 1)
-    )),
-    NOTE_NAME((note) -> Component.literal(
-        AbsGridLabels.getCutNoteName(ng(note))
     )),
     NONE(NoteLabelSupplier.EMPTY);
     
