@@ -18,11 +18,15 @@
 
         "2.4": "- Minor techincal fixes",
         "2.4.1": "- Fixed instrument screen being present after item removal\n- API tweaks & fixes",
-
+    },
+    "1.19.4": {
         "2.5": "- Update to version 1.19.4\n- GUI keyboard navigation",
         "2.5.1": "- Fixed pitch slider being offset and not navigation-friendly",
 
-        "2.6": "- Added the visual play ring from Genshin"
+        "2.6": "- Added the visual play ring from Genshin",
+
+        
+        "3.0": "Backported mod version v3.0 to Minecraft version 1.20!\nChanges up until v3.0:\n\nv3.0\n- New pitch-accurate accidentals system! Support for flats, sharps, and their doubly variants\n- Added Note Label type\n- Implemented pitch names in slider\n- Fixed ABC label type\n- Partial Arabic language support\n\n2.8.2\n- Improved drum sounds\n\nv2.8.1\n- Fixed drum and zither shared playing issues\n\nv2.8\n- Added the staff instrument background\n\nv2.7.7\n- All instrument sounds now play locally on a range of 5 blocks\n\nv2.7.6\nBugfixes and API improvements\n\nv2.7.1\n- Fixed play ring's alpha channel rendering incorrectly"
     },
 
     "1.20": {
@@ -32,7 +36,8 @@
         "2.7.6": "- Improved API\n- Fixed zither options button overflowing",
         "2.7.7": "- All instrument sounds now play locally on a range of 5 blocks",
 
-        "3.0": "Backported mod version v3.0 to Minecraft version 1.20\nChanges up until v3.0:\n\nv3.0\n- New pitch-accurate accidentals system! Support for flats, sharps, and their doubly variants\n- Added Note Label type\n- Implemented pitch names in slider\n- Fixed ABC label type\n- Partial Arabic language support\n\n2.8.2\n- Improved drum sounds\n\nv2.8.1\n- Fixed drum and zither shared playing issues\n\nv2.8\n- Added the staff instrument background"
+        
+        "3.0": "Backported mod version v3.0 to Minecraft version 1.20!\nChanges up until v3.0:\n\nv3.0\n- New pitch-accurate accidentals system! Support for flats, sharps, and their doubly variants\n- Added Note Label type\n- Implemented pitch names in slider\n- Fixed ABC label type\n- Partial Arabic language support\n\n2.8.2\n- Improved drum sounds\n\nv2.8.1\n- Fixed drum and zither shared playing issues\n\nv2.8\n- Added the staff instrument background"
     },
     "1.20.1": {
         "2.7.8": "- Update to 1.20.1\n- Pitch slider now has pitch names",
@@ -41,6 +46,7 @@
         "2.8.1": "- Fixed drum and zither shared playing issues",
         "2.8.2": "- Improved drum sounds\n- Optimized note buttons' UI lookup",
 
+        
         "3.0": "- New pitch-accurate accidentals system! Support for flats, sharps, and their doubly variants\n- Added Note Label type\n- Re-implemented pitch names in slider\n- Fixed ABC label type\n- Partial Arabic language support"
     },
 
@@ -52,8 +58,8 @@
         "1.19.3-latest": "2.4.1",
         "1.19.3-recommended": "2.4.1",
 
-        "1.19.4-latest": "2.6",
-        "1.19.4-recommended": "2.6",
+        "1.19.4-latest": "3.0",
+        "1.19.4-recommended": "3.0",
 
 
         "1.20-latest": "3.0",
