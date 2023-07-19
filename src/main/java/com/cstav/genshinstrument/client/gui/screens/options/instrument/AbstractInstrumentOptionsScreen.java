@@ -126,12 +126,14 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
             .alignHorizontallyCenter();
         final RowHelper rowHelper = grid.createRowHelper(2);
 
+        
         initOptionsGrid(grid, rowHelper);
         grid.pack();
 
         FrameWidget.alignInRectangle(grid, 0, 0, width, height, 0.5f, 0);
-        
         grid.setY(40);
+        
+        grid.pack();
         addRenderableWidget(grid);
 
 
