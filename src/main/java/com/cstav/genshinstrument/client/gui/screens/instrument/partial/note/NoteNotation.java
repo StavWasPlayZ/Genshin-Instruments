@@ -1,5 +1,8 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note;
 
+/**
+ * Marks the accidental notation of a {@link NoteButton}
+ */
 public enum NoteNotation {
     NONE, FLAT, DOUBLE_FLAT, SHARP, DOUBLE_SHARP;
 
