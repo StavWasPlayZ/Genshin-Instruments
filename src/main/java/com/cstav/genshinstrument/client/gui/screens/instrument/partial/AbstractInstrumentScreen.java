@@ -241,7 +241,10 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * Unlocks any focused {@link NoteButton}s
      */
     private void unlockFocused(final int keyCode) {
-        getNoteByKey(keyCode).locked = false;
+        final NoteButton note = getNoteByKey(keyCode);
+
+        if (note != null)
+            note.locked = false;
     }
 
 
