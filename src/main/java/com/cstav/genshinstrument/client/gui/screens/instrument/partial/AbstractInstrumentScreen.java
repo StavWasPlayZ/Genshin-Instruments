@@ -201,7 +201,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
     @Override
     public boolean keyReleased(int pKeyCode, int pScanCode, int pModifiers) {
-        unlockFocused();
+        unlockFocused(pKeyCode);
 
         final NoteButton note = getNoteByKey(pKeyCode);
         if (note != null)
@@ -226,6 +226,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
         return noteMap().containsKey(key) ? noteMap().get(key) : null;
     }
+
     /**
      * Unlocks any focused {@link NoteButton}s
      */
@@ -235,6 +236,12 @@ public abstract class AbstractInstrumentScreen extends Screen {
                 note.locked = false;
                 return;
             }
+    }
+    /**
+     * Unlocks any focused {@link NoteButton}s
+     */
+    private void unlockFocused(final int keyCode) {
+        getNoteByKey(keyCode).locked = false;
     }
 
 
