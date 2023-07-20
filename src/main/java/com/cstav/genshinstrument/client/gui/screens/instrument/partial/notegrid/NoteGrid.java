@@ -108,9 +108,10 @@ public class NoteGrid implements Iterable<NoteButton> {
         final RowHelper rowHelper = grid.createRowHelper(rows);
         forEach(rowHelper::addChild);
 
+        
         grid.pack();
-
         FrameWidget.alignInRectangle(grid, 0, 0, screenWidth, screenHeight, 0.5f, vertAlignment);
+        grid.pack();
         
         // Initialize all the notes
         forEach(NoteButton::init);
