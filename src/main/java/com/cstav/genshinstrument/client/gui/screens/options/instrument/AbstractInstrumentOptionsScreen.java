@@ -162,23 +162,25 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
             final DecimalFormat format = new DecimalFormat("0.00");
             {
+                pitch = getPitch();
                 updateMessage();
             }
 
+            private double pitch;
 
             @Override
             protected void updateMessage() {
                 this.setMessage(
-                    Component.translatable("button.genshinstrument.pitch").append(
-                        ": " + format.format(getPitch())
-                            + " ("+AbsGridLabels.getNoteName(getPitch(), AbstractInstrumentScreen.DEFAULT_NOTE_LAYOUT, 0)+")"
+                    Component.translatable("button.genshinstrument.pitch").append(": "+format.format(pitch)
+                        + " ("+AbsGridLabels.getNoteName((float)pitch, AbstractInstrumentScreen.DEFAULT_NOTE_LAYOUT, 0)+")"
                     )
                 );
             }
             
             @Override
             protected void applyValue() {
-                onPitchChanged(this, divisibleBy5(Mth.clampedLerp(NoteSound.MIN_PITCH, NoteSound.MAX_PITCH, value)));
+                pitch = divisibleBy5(Mth.clampedLerp(NoteSound.MIN_PITCH, NoteSound.MAX_PITCH, value));
+                onPitchChanged(this, pitch);
             }
 
             private static double divisibleBy5(double number) {
@@ -270,15 +272,13 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
         queueToSave("note_label", () -> saveLabel(label));
     }
-    protected void saveLabel(final INoteLabel newLabel) {
-        if (newLabel instanceof NoteGridLabel)
-            ModClientConfigs.GRID_LABEL_TYPE.set((NoteGridLabel)newLabel);
-    }
+    protected abstract void saveLabel(final INoteLabel newLabel);
 
     protected void onPitchChanged(final AbstractSliderButton slider, final double pitch) {
         if (isOverlay)
             instrumentScreen.setPitch((float)pitch);
 
+            
         queueToSave("pitch", () -> savePitch(pitch));
     }
     protected void savePitch(final double newPitch) {
