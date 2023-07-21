@@ -15,7 +15,6 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.labe
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.ibm.icu.text.DecimalFormat;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
@@ -319,15 +318,9 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
     @Override
     public void onClose() {
-        if (!isOverlay) {
-            if (lastScreen != null)
-                Minecraft.getInstance().setScreen(lastScreen);
-            else
-                super.onClose();
-        }
-        
         onSave();
-
+        
+        super.onClose();
         if (isOverlay)
             instrumentScreen.onOptionsClose();
     }
@@ -348,14 +341,14 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     // Make pressing notes possible with keyboard
     @Override
     public boolean keyPressed(int p_96552_, int p_96553_, int p_96554_) {
-        if (isOverlay)
+        if (isOverlay && p_96552_ != 256)
             instrumentScreen.keyPressed(p_96552_, p_96553_, p_96554_);
 
         return super.keyPressed(p_96552_, p_96553_, p_96554_);
     }
     @Override
     public boolean keyReleased(int p_94715_, int p_94716_, int p_94717_) {
-        if (isOverlay)
+        if (isOverlay && p_94715_ != 256)
             instrumentScreen.keyReleased(p_94715_, p_94716_, p_94717_);
 
         return super.keyReleased(p_94715_, p_94716_, p_94717_);

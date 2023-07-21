@@ -24,7 +24,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.ForgeHooksClient;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractInstrumentScreen extends Screen {
@@ -230,7 +229,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     public void onOptionsOpen() {
         setFocused(null);
-        ForgeHooksClient.pushGuiLayer(minecraft, optionsScreen);
+        minecraft.pushGuiLayer(optionsScreen);
     }
     public void onOptionsClose() {}
 
