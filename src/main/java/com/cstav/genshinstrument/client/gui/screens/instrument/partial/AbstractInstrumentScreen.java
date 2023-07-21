@@ -33,11 +33,11 @@ public abstract class AbstractInstrumentScreen extends Screen {
     /**
      * The set pitch of all note buttons in this screen
      */
-    private float pitch = ModClientConfigs.PITCH.get().floatValue();
-    public float getPitch() {
+    private int pitch = ModClientConfigs.PITCH.get().intValue();
+    public int getPitch() {
         return pitch;
     }
-    public void setPitch(float pitch) {
+    public void setPitch(int pitch) {
         this.pitch = NoteSound.clampPitch(pitch);
         notesIterable().forEach(NoteButton::updateNoteLabel);
     }

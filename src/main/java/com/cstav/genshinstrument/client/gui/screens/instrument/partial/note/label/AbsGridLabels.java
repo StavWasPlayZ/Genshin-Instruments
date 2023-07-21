@@ -7,7 +7,6 @@ import java.util.Map;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.NoteGridButton;
-import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -58,22 +57,25 @@ public abstract class AbsGridLabels {
         entry("B", strArr("B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#")),
         entry("B#", strArr("B#", "C#", "C##", "D#", "D##", "E#", "F#", "F##", "G#", "G##", "A#", "A##"))
     );
+    public static final int NOTES_PER_SCALE = NOTE_SCALES.get("C").length;
+
     private static String[] strArr(final String... arr) {
         return arr;
     }
+    
 
-    public static String getNoteName(final float pitch, final String[] noteLayout, final int offset) {
+    public static String getNoteName(final int pitch, final String[] noteLayout, final int offset) {
         final String baseNote = noteLayout[wrapAround(offset, noteLayout.length)];
         
-        final int pitchStep = perfectConv(
-            (float)(1 / AbstractInstrumentOptionsScreen.PITCH_STEP) * (pitch - 1)
-            // To account for the fact that a pitch step is 1/16th and we are doing jumps of 1/20th,
-            // divide by the following amount
-                / 1.6f
-        );
+        // final int pitchStep = perfectConv(
+        //     (float)(1 / AbstractInstrumentOptionsScreen.PITCH_STEP) * (pitch - 1)
+        //     // To account for the fact that a pitch step is 1/16th and we are doing jumps of 1/20th,
+        //     // divide by the following amount
+        //         / 1.6f
+        // );
 
         final String[] scale = NOTE_SCALES.get(baseNote);
-        return scale[(doublyPyWrap(pitchStep, scale.length))];
+        return scale[(doublyPyWrap(pitch, scale.length))];
     }
     public static String getNoteName(final NoteGridButton gridButton) {
         final AbstractGridInstrumentScreen screen = (AbstractGridInstrumentScreen) gridButton.instrumentScreen;
@@ -90,14 +92,6 @@ public abstract class AbsGridLabels {
             result = String.valueOf(result.charAt(0));
 
         return result;
-    }
-
-
-    /**
-     * Perfects {@code num} to its actual int value by an accuricity of 0.001
-     */
-    private static int perfectConv(final float num) {
-        return (int)(num + ((num >= 0) ? .001f : -.001f));
     }
 
     /**
