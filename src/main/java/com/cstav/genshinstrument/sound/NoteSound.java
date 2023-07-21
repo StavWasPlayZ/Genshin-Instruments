@@ -44,7 +44,7 @@ public class NoteSound {
     public static final double LOCAL_RANGE = STEREO_RANGE;
 
     public static final int
-        MIN_PITCH = -AbsGridLabels.NOTES_PER_SCALE/2,
+        MIN_PITCH = -AbsGridLabels.NOTES_PER_SCALE,
         MAX_PITCH = AbsGridLabels.NOTES_PER_SCALE
     ;
 
