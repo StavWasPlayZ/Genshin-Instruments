@@ -83,7 +83,6 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
     protected final Screen lastScreen;
     protected final boolean isOverlay;
-    private Runnable onCloseRunnable;
 
     protected final @Nullable INoteLabel[] labels;
     protected final @Nullable INoteLabel currLabel;
@@ -110,10 +109,6 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         // Default to NoteGridLabel's values
         labels = NoteGridLabel.values();
         currLabel = ModClientConfigs.GRID_LABEL_TYPE.get();
-    }
-
-    public void setOnCloseRunnable(final Runnable onCloseRunnable) {
-        this.onCloseRunnable = onCloseRunnable;
     }
 
     @Override
@@ -333,14 +328,37 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         
         onSave();
 
-        if (onCloseRunnable != null)
-            onCloseRunnable.run();
+        if (isOverlay)
+            instrumentScreen.onOptionsClose();
     }
     protected void onSave() {
         for (final Runnable runnable : APPLIED_OPTIONS.values())
             runnable.run();
         
         ModClientConfigs.CONFIGS.save();
+    }
+
+
+    @Override
+    public boolean isPauseScreen() {
+        return false;
+    }
+
+
+    // Make pressing notes possible with keyboard
+    @Override
+    public boolean keyPressed(int p_96552_, int p_96553_, int p_96554_) {
+        if (isOverlay)
+            instrumentScreen.keyPressed(p_96552_, p_96553_, p_96554_);
+
+        return super.keyPressed(p_96552_, p_96553_, p_96554_);
+    }
+    @Override
+    public boolean keyReleased(int p_94715_, int p_94716_, int p_94717_) {
+        if (isOverlay)
+            instrumentScreen.keyReleased(p_94715_, p_94716_, p_94717_);
+
+        return super.keyReleased(p_94715_, p_94716_, p_94717_);
     }
 
 

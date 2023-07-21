@@ -259,8 +259,6 @@ public abstract class NoteButton extends AbstractButton {
         ClientUtil.resetShaderColor();
     }
     protected void renderLabel(final GuiGraphics gui, final InstrumentThemeLoader themeLoader) {
-        //FIXME: All text rendered this way are making their way to the top of
-        // the render stack, for some reason
         gui.drawCenteredString(
             minecraft.font, getMessage(),
             textX, textY,

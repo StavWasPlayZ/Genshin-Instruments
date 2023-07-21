@@ -15,7 +15,6 @@ import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.platform.InputConstants.Type;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -25,6 +24,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.ForgeHooksClient;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractInstrumentScreen extends Screen {
@@ -154,7 +154,6 @@ public abstract class AbstractInstrumentScreen extends Screen {
         super(CommonComponents.EMPTY);
 
         interactionHand = hand;
-        optionsScreen.setOnCloseRunnable(this::onOptionsClose);
     }
 
 
@@ -195,8 +194,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
             return true;
         }
 
-        return ioa() ? optionsScreen.keyPressed(pKeyCode, pScanCode, pModifiers)
-            : super.keyPressed(pKeyCode, pScanCode, pModifiers);
+        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
     }
     @Override
     public boolean keyReleased(int pKeyCode, int pScanCode, int pModifiers) {
@@ -206,17 +204,13 @@ public abstract class AbstractInstrumentScreen extends Screen {
         if (note != null)
             note.locked = false;
 
-        return ioa() ? optionsScreen.keyReleased(pKeyCode, pScanCode, pModifiers)
-            : super.keyReleased(pKeyCode, pScanCode, pModifiers);
+        return super.keyReleased(pKeyCode, pScanCode, pModifiers);
     }
 
     @Override
     public boolean mouseReleased(double pMouseX, double pMouseY, int pButton) {
-        if (ioa())
-            return optionsScreen.mouseReleased(pMouseX, pMouseY, pButton);
-
         unlockFocused();
-
+        
         return super.mouseReleased(pMouseX, pMouseY, pButton);
     }
 
@@ -234,57 +228,11 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
 
-    //#region Making the options screen function
-    private boolean isOptionsActive = false;
-
-    @Override
-    public void render(GuiGraphics gui, int pMouseX, int pMouseY, float pPartialTick) {
-        super.render(gui, pMouseX, pMouseY, pPartialTick);
-        if (ioa())
-            optionsScreen.render(gui, pMouseX, pMouseY, pPartialTick);
-    }
-
-    protected void onOptionsOpen() {
-        isOptionsActive = true;
+    public void onOptionsOpen() {
         setFocused(null);
+        ForgeHooksClient.pushGuiLayer(minecraft, optionsScreen);
     }
-    protected void onOptionsClose() {
-        isOptionsActive = false;
-    }
-
-
-    @Override
-    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
-        return ioa() ? optionsScreen.mouseClicked(pMouseX, pMouseY, pButton)
-            : super.mouseClicked(pMouseX, pMouseY, pButton);
-    }
-    @Override
-    public boolean mouseDragged(double pMouseX, double pMouseY, int pButton, double pDragX, double pDragY) {
-        return ioa() ? optionsScreen.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY)
-            : super.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
-    }
-    @Override
-    public void mouseMoved(double pMouseX, double pMouseY) {
-        if (ioa())
-            optionsScreen.mouseMoved(pMouseX, pMouseY);
-        else
-            super.mouseMoved(pMouseX, pMouseY);
-    }
-    @Override
-    public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
-        return ioa() ? optionsScreen.mouseScrolled(pMouseX, pMouseY, pDelta)
-            : super.mouseScrolled(pMouseX, pMouseY, pDelta);
-    }
-
-
-    /**
-     * Shorthand for {@link AbstractInstrumentScreen#isOptionsActive isOptionsActive}.
-     */
-    private boolean ioa() {
-        return isOptionsActive;
-    }
-
-    //#endregion
+    public void onOptionsClose() {}
 
 
     @Override
