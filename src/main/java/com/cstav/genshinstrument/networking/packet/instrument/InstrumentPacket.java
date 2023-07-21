@@ -48,7 +48,7 @@ public class InstrumentPacket implements ModPacket {
     public void toBytes(final FriendlyByteBuf buf) {
         sound.writeToNetwork(buf);
         buf.writeEnum(hand);
-        buf.writeFloat(pitch);
+        buf.writeInt(pitch);
 
         buf.writeResourceLocation(instrumentId);
         noteIdentifier.writeToNetwork(buf);
