@@ -1,12 +1,12 @@
 package com.cstav.genshinstrument.client.config.enumType.label;
 
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.AbsGridLabels;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.NoteGridButton;
 import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
+import com.cstav.genshinstrument.util.LabelUtil;
 
 import net.minecraft.network.chat.Component;
 
@@ -20,15 +20,15 @@ public enum NoteGridLabel implements INoteLabel {
         KeyMappings.GRID_INSTRUMENT_MAPPINGS[ng(note).column][ng(note).row].getDisplayName()
     )),
     NOTE_NAME((note) -> Component.literal(
-        AbsGridLabels.getCutNoteName(ng(note))
+        LabelUtil.getCutNoteName(ng(note))
     )),
     DO_RE_MI((note) ->
         Component.translatable(
-            INoteLabel.TRANSLATABLE_PATH + AbsGridLabels.DO_RE_MI[ng(note).row % gs(note).rows()]
-        ).append(AbsGridLabels.getCutNoteName(ng(note)).substring(1))
+            INoteLabel.TRANSLATABLE_PATH + LabelUtil.DO_RE_MI[ng(note).row % gs(note).rows()]
+        ).append(LabelUtil.getCutNoteName(ng(note)).substring(1))
     ),
     ABC_1((note) -> Component.literal(
-        AbsGridLabels.ABC[ng(note).row] + (gs(note).columns() - ng(note).column)
+        LabelUtil.ABC[ng(note).row] + (gs(note).columns() - ng(note).column)
     )),
     ABC_2((note) -> Component.literal(
         (

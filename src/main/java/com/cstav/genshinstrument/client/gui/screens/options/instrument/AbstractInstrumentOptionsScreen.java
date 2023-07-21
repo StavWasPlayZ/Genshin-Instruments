@@ -11,9 +11,9 @@ import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.AbsGridLabels;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.sound.NoteSound;
+import com.cstav.genshinstrument.util.LabelUtil;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSliderButton;
@@ -170,7 +170,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
             protected void updateMessage() {
                 this.setMessage(
                     Component.translatable("button.genshinstrument.pitch").append(": "
-                        + AbsGridLabels.getNoteName(pitch, AbstractInstrumentScreen.DEFAULT_NOTE_LAYOUT, 0)
+                        + LabelUtil.getNoteName(pitch, AbstractInstrumentScreen.DEFAULT_NOTE_LAYOUT, 0)
                         + " ("+format.format(NoteSound.getPitchByNoteOffset(pitch))+")"
                     )
                 );

@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label;
+package com.cstav.genshinstrument.util;
 
 import static java.util.Map.entry;
 
@@ -8,11 +8,7 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.NoteGridButton;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-
-@OnlyIn(Dist.CLIENT)
-public abstract class AbsGridLabels {
+public abstract class LabelUtil {
     
     public static final String[]
         DO_RE_MI = {
@@ -86,7 +82,7 @@ public abstract class AbsGridLabels {
     }
 
     public static String getCutNoteName(final NoteGridButton gridButton) {
-        String result = AbsGridLabels.getNoteName(gridButton);
+        String result = LabelUtil.getNoteName(gridButton);
 
         if (ModClientConfigs.ACCURATE_ACCIDENTALS.get())
             result = String.valueOf(result.charAt(0));
@@ -114,7 +110,7 @@ public abstract class AbsGridLabels {
         return index;
     }
     /**
-     * Performs both {@link AbsGridLabels#pyWrap} and {@link AbsGridLabels#wrapAround}
+     * Performs both {@link LabelUtil#pyWrap} and {@link LabelUtil#wrapAround}
      */
     private static int doublyPyWrap(int index, final int arrLength) {
         return wrapAround(pyWrap(index, arrLength), arrLength);

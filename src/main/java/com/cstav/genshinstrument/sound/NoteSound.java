@@ -5,9 +5,9 @@ import java.util.UUID;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.AbsGridLabels;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
+import com.cstav.genshinstrument.util.LabelUtil;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -44,8 +44,8 @@ public class NoteSound {
     public static final double LOCAL_RANGE = STEREO_RANGE;
 
     public static final int
-        MIN_PITCH = -AbsGridLabels.NOTES_PER_SCALE,
-        MAX_PITCH = AbsGridLabels.NOTES_PER_SCALE
+        MIN_PITCH = -LabelUtil.NOTES_PER_SCALE,
+        MAX_PITCH = LabelUtil.NOTES_PER_SCALE
     ;
 
 
@@ -206,7 +206,7 @@ public class NoteSound {
      * </a>
      */
     public static float getPitchByNoteOffset(final int pitch) {
-        return (float)Math.pow(2, (double)pitch/AbsGridLabels.NOTES_PER_SCALE);
+        return (float)Math.pow(2, (double)pitch/LabelUtil.NOTES_PER_SCALE);
     }
 
 
