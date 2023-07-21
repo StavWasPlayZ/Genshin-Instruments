@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.NoteGridButton;
+import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -72,10 +73,9 @@ public abstract class AbsGridLabels {
 
     public static String getNoteName(final float pitch, final String[] noteLayout, final int offset) {
         final String baseNote = noteLayout[wrapAround(offset, noteLayout.length)];
-        //NOTE: Assuming pitch step is always .05
-        //TODO: Figure a formula for this 2
+        
         final int pitchStep = perfectConv(
-            ((2) * 10) * (pitch - 1)
+            (float)(1 / AbstractInstrumentOptionsScreen.PITCH_STEP) * (pitch - 1)
             // To account for the fact that a pitch step is 1/16th and we are doing jumps of 1/20th,
             // divide by the following amount
                 / 1.6f
