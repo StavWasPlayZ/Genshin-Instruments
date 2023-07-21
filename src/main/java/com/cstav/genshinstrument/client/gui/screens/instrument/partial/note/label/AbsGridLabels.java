@@ -2,8 +2,7 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.lab
 
 import static java.util.Map.entry;
 
-import java.util.LinkedHashMap;
-import java.util.Map.Entry;
+import java.util.Map;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
@@ -36,7 +35,7 @@ public abstract class AbsGridLabels {
      * Genshin Music app configs
      * </a>
      */
-    public static final LinkedHashMap<String, String[]> NOTE_SCALES = ofEntries(
+    public static final Map<String, String[]> NOTE_SCALES = Map.ofEntries(
         entry("Cb", strArr("Cb", "Dbb", "Db", "Ebb", "Eb", "Fb", "Gbb", "Gb", "Abb", "Ab", "Bbb", "Bb")),
         entry("C", strArr("C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B")),
         entry("C#", strArr("C#", "D", "D#", "E", "E#", "F#", "G", "G#", "A", "A#", "B", "B#")),
@@ -61,14 +60,6 @@ public abstract class AbsGridLabels {
     );
     private static String[] strArr(final String... arr) {
         return arr;
-    }
-    @SafeVarargs
-    public static <K, V> LinkedHashMap<K, V> ofEntries(Entry<K, V>... entries) {
-        final LinkedHashMap<K, V> map = new LinkedHashMap<>();
-        for (Entry<K, V> entry : entries)
-            map.put(entry.getKey(), entry.getValue());
-
-        return map;
     }
 
     public static String getNoteName(final float pitch, final String[] noteLayout, final int offset) {
