@@ -53,7 +53,7 @@ public class ModPacketHandler {
     }
 
 
-    private static final String PROTOCOL_VERSION = "4";
+    private static final String PROTOCOL_VERSION = "4.1";
     private static int id;
 
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
