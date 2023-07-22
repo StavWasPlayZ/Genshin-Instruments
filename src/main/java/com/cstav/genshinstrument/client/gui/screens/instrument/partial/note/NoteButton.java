@@ -36,7 +36,6 @@ public abstract class NoteButton extends AbstractButton {
             case 1 -> 35;
             case 2 -> 46;
             case 3 -> 48;
-            case 4 -> 40;
             default -> guiScale * 18;
         };
     }
