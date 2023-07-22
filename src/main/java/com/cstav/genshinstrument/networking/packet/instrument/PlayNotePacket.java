@@ -21,14 +21,14 @@ public class PlayNotePacket implements ModPacket {
 
     private final BlockPos blockPos;
     private final NoteSound sound;
-    private final float pitch;
+    private final int pitch;
     private final ResourceLocation instrumentId;
     private final NoteButtonIdentifier noteIdentifier;
     
     private final Optional<UUID> playerUUID;
     private final Optional<InteractionHand> hand;
 
-    public PlayNotePacket(BlockPos pos, NoteSound sound, float pitch, ResourceLocation instrumentId,
+    public PlayNotePacket(BlockPos pos, NoteSound sound, int pitch, ResourceLocation instrumentId,
         NoteButtonIdentifier noteIdentifier, Optional<UUID> playerUUID, Optional<InteractionHand> hand) {
         this.blockPos = pos;
         this.sound = sound;
@@ -42,7 +42,7 @@ public class PlayNotePacket implements ModPacket {
     public PlayNotePacket(FriendlyByteBuf buf) {
         blockPos = buf.readBlockPos();
         sound = NoteSound.readFromNetwork(buf);
-        pitch = buf.readFloat();
+        pitch = buf.readInt();
         instrumentId = buf.readResourceLocation();
         noteIdentifier = NoteButtonIdentifier.readIdentifier(buf);
 
@@ -54,7 +54,7 @@ public class PlayNotePacket implements ModPacket {
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeBlockPos(blockPos);
         sound.writeToNetwork(buf);
-        buf.writeFloat(pitch);
+        buf.writeInt(pitch);
         buf.writeResourceLocation(instrumentId);
         noteIdentifier.writeToNetwork(buf);
 

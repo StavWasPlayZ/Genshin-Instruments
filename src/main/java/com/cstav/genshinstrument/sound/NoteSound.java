@@ -7,6 +7,7 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
+import com.cstav.genshinstrument.util.LabelUtil;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -42,7 +43,10 @@ public class NoteSound {
      */
     public static final double LOCAL_RANGE = STEREO_RANGE;
 
-    public static final float MIN_PITCH = .5f, MAX_PITCH = 1.9f;
+    public static final int
+        MIN_PITCH = -LabelUtil.NOTES_PER_SCALE,
+        MAX_PITCH = LabelUtil.NOTES_PER_SCALE
+    ;
 
 
 
@@ -119,14 +123,13 @@ public class NoteSound {
 
     /**
      * A method for packets to use for playing this note on the client's end.
-     * If {@link Minecraft#player this player} is the same as the gives player,
-     * the method will only stop the client's background music per preference.
+     * Will also stop the client's background music per preference.
      * @param playerUUID The UUID of the player who initiated the sound. Null for when it wasn't a player.
      * @param hand The hand of the player who initiated the sound. Null for when it wasn't a player.
      * @param pos The position at which the sound was fired from
      */
     @OnlyIn(Dist.CLIENT)
-    public void playAtPos(float pitch, UUID playerUUID, InteractionHand hand,
+    public void playAtPos(int pitch, UUID playerUUID, InteractionHand hand,
             ResourceLocation instrumentId, NoteButtonIdentifier buttonIdentifier, BlockPos pos) {
         final Minecraft minecraft = Minecraft.getInstance();
         final Player player = minecraft.player;
@@ -152,16 +155,22 @@ public class NoteSound {
 
         if (player.getUUID().equals(playerUUID))
             return;
+
+        
+        final float mcPitch = getPitchByNoteOffset(clampPitch(pitch));
             
         if (distanceFromPlayer > LOCAL_RANGE)
             level.playLocalSound(pos,
                 getByPreference(distanceFromPlayer), SoundSource.RECORDS,
-                1, NoteSound.clampPitch(pitch)
+                1, mcPitch
             , false);
         else
-            playLocally(pitch);
+            playLocally(mcPitch);
     }
 
+    /**
+     * Plays this sound locally. Treats the given {@code pitch} as a Minecraft pitch.
+     */
     @OnlyIn(Dist.CLIENT)
     public void playLocally(final float pitch) {
         Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(
@@ -171,11 +180,35 @@ public class NoteSound {
             0, 0, 0, true
         ));
     }
-
-
-    public static float clampPitch(final float pitch) {
-        return Mth.clamp(pitch, MIN_PITCH, MAX_PITCH);
+    /**
+     * <p>Plays this note locally.</p>
+     * Treats the given {@code pitch} as a note offset pitch,
+     * thus performs a conversion from note offset pitch to Minecraft pitch.
+     * @see NoteSound#getPitchByNoteOffset
+     */
+    @OnlyIn(Dist.CLIENT)
+    public void playLocally(final int pitch) {
+        playLocally(getPitchByNoteOffset(clampPitch(pitch)));
     }
+
+
+    /**
+     * Clams the given {@code pitch} between the set range
+     */
+    public static int clampPitch(final int pitch) {
+        return (int)Mth.clamp(pitch, MIN_PITCH, MAX_PITCH);
+    }
+    /**
+     * Converts the given note offset to Minecraft pitch.
+     * @apiNote Formula taken from
+     * <a href="https://github.com/Specy/genshin-music/blob/bb8229a279c7e5885ad3ab270b7afbe41f00d1c2/src/lib/Utilities.ts#L207C4-L207C4">
+     * Specy's Genshin music app
+     * </a>
+     */
+    public static float getPitchByNoteOffset(final int pitch) {
+        return (float)Math.pow(2, (double)pitch/LabelUtil.NOTES_PER_SCALE);
+    }
+
 
 
     public void writeToNetwork(final FriendlyByteBuf buf) {
