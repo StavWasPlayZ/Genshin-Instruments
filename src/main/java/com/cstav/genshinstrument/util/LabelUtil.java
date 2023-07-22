@@ -62,13 +62,6 @@ public abstract class LabelUtil {
 
     public static String getNoteName(final int pitch, final String[] noteLayout, final int offset) {
         final String baseNote = noteLayout[wrapAround(offset, noteLayout.length)];
-        
-        // final int pitchStep = perfectConv(
-        //     (float)(1 / AbstractInstrumentOptionsScreen.PITCH_STEP) * (pitch - 1)
-        //     // To account for the fact that a pitch step is 1/16th and we are doing jumps of 1/20th,
-        //     // divide by the following amount
-        //         / 1.6f
-        // );
 
         final String[] scale = NOTE_SCALES.get(baseNote);
         return scale[(doublyPyWrap(pitch, scale.length))];
