@@ -12,8 +12,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
-import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
 import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
+import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -26,7 +26,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
 public class ModClientConfigs {
     public static final ForgeConfigSpec CONFIGS;
 
-    public static final DoubleValue PITCH;
+    public static final IntValue PITCH;
     public static final EnumValue<NoteGridLabel> GRID_LABEL_TYPE;
     public static final EnumValue<InstrumentChannelType> CHANNEL_TYPE;
     public static final BooleanValue STOP_MUSIC_ON_PLAY, EMIT_RING_ANIMATION, SHARED_INSTRUMENT,
@@ -41,7 +41,7 @@ public class ModClientConfigs {
     
 
         PITCH = configBuilder.defineInRange("instrument_pitch",
-            1, doubleMe(NoteSound.MIN_PITCH), doubleMe(NoteSound.MAX_PITCH)
+            1, NoteSound.MIN_PITCH, NoteSound.MAX_PITCH
         );
         GRID_LABEL_TYPE = configBuilder.defineEnum("label_type", NoteGridLabel.KEYBOARD_LAYOUT);
         CHANNEL_TYPE = configBuilder.defineEnum("channel_type", InstrumentChannelType.MIXED);
@@ -64,10 +64,6 @@ public class ModClientConfigs {
 
 
         CONFIGS = configBuilder.build();
-    }
-
-    private static double doubleMe(final float num) {
-        return Double.valueOf(Float.toString(num));
     }
 
 

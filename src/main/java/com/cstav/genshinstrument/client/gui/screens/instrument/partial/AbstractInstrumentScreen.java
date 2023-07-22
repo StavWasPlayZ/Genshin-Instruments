@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
 
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
@@ -14,8 +15,8 @@ import com.cstav.genshinstrument.networking.packet.instrument.CloseInstrumentPac
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.platform.InputConstants.Type;
-import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -34,11 +35,11 @@ public abstract class AbstractInstrumentScreen extends Screen {
     /**
      * The set pitch of all note buttons in this screen
      */
-    private float pitch = ModClientConfigs.PITCH.get().floatValue();
-    public float getPitch() {
+    private int pitch = ModClientConfigs.PITCH.get().intValue();
+    public int getPitch() {
         return pitch;
     }
-    public void setPitch(float pitch) {
+    public void setPitch(int pitch) {
         this.pitch = NoteSound.clampPitch(pitch);
         notesIterable().forEach(NoteButton::updateNoteLabel);
     }
@@ -147,14 +148,13 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
 
-    protected final AbstractInstrumentOptionsScreen optionsScreen = initInstrumentOptionsScreen();
+    public final AbstractInstrumentOptionsScreen optionsScreen = initInstrumentOptionsScreen();
     
     public final InteractionHand interactionHand;
     public AbstractInstrumentScreen(final InteractionHand hand) {
         super(CommonComponents.EMPTY);
 
         interactionHand = hand;
-        optionsScreen.setOnCloseRunnable(this::onOptionsClose);
     }
 
 
@@ -195,8 +195,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
             return true;
         }
 
-        return ioa() ? optionsScreen.keyPressed(pKeyCode, pScanCode, pModifiers)
-            : super.keyPressed(pKeyCode, pScanCode, pModifiers);
+        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
     }
     @Override
     public boolean keyReleased(int pKeyCode, int pScanCode, int pModifiers) {
@@ -206,17 +205,13 @@ public abstract class AbstractInstrumentScreen extends Screen {
         if (note != null)
             note.locked = false;
 
-        return ioa() ? optionsScreen.keyReleased(pKeyCode, pScanCode, pModifiers)
-            : super.keyReleased(pKeyCode, pScanCode, pModifiers);
+        return super.keyReleased(pKeyCode, pScanCode, pModifiers);
     }
 
     @Override
     public boolean mouseReleased(double pMouseX, double pMouseY, int pButton) {
-        if (ioa())
-            return optionsScreen.mouseReleased(pMouseX, pMouseY, pButton);
-
         unlockFocused();
-
+        
         return super.mouseReleased(pMouseX, pMouseY, pButton);
     }
 
@@ -247,58 +242,11 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
 
-    //#region Making the options screen function
-    private boolean isOptionsActive = false;
-
-    @Override
-    public void render(PoseStack stack, int pMouseX, int pMouseY, float pPartialTick) {
-        super.render(stack, pMouseX, pMouseY, pPartialTick);
-        if (ioa())
-            optionsScreen.render(stack, pMouseX, pMouseY, pPartialTick);
-    }
-
-    protected void onOptionsOpen() {
-        isOptionsActive = true;
+    public void onOptionsOpen() {
         setFocused(null);
+        minecraft.pushGuiLayer(optionsScreen);
     }
-    protected void onOptionsClose() {
-        isOptionsActive = false;
-    }
-
-
-    @Override
-    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
-        return ioa()
-            ? optionsScreen.mouseClicked(pMouseX, pMouseY, pButton)
-            : super.mouseClicked(pMouseX, pMouseY, pButton);
-    }
-    @Override
-    public boolean mouseDragged(double pMouseX, double pMouseY, int pButton, double pDragX, double pDragY) {
-        return ioa() ? optionsScreen.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY)
-            : super.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
-    }
-    @Override
-    public void mouseMoved(double pMouseX, double pMouseY) {
-        if (ioa())
-            optionsScreen.mouseMoved(pMouseX, pMouseY);
-        else
-            super.mouseMoved(pMouseX, pMouseY);
-    }
-    @Override
-    public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
-        return ioa() ? optionsScreen.mouseScrolled(pMouseX, pMouseY, pDelta)
-            : super.mouseScrolled(pMouseX, pMouseY, pDelta);
-    }
-
-
-    /**
-     * Shorthand for {@link AbstractInstrumentScreen#isOptionsActive isOptionsActive}.
-     */
-    private boolean ioa() {
-        return isOptionsActive;
-    }
-
-    //#endregion
+    public void onOptionsClose() {}
 
 
     @Override
@@ -309,6 +257,23 @@ public abstract class AbstractInstrumentScreen extends Screen {
         ModPacketHandler.sendToServer(new CloseInstrumentPacket());
 
         super.onClose();
+    }
+
+
+    /**
+     * @return The current instrument screen, if present
+     */
+    public static Optional<AbstractInstrumentScreen> getCurrentScreen(final Minecraft minecraft) {
+        if (minecraft.screen instanceof AbstractInstrumentScreen)
+            return Optional.of((AbstractInstrumentScreen)minecraft.screen);
+
+        if (minecraft.screen instanceof AbstractInstrumentOptionsScreen) {
+            final AbstractInstrumentOptionsScreen instrumentOptionsScreen = (AbstractInstrumentOptionsScreen)minecraft.screen;
+            if (instrumentOptionsScreen.isOverlay)
+                return Optional.of(instrumentOptionsScreen.instrumentScreen);
+        }
+
+        return Optional.empty();
     }
     
 

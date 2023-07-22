@@ -1,19 +1,14 @@
-package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label;
+package com.cstav.genshinstrument.util;
 
 import static java.util.Map.entry;
 
-import java.util.LinkedHashMap;
-import java.util.Map.Entry;
+import java.util.Map;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.NoteGridButton;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-
-@OnlyIn(Dist.CLIENT)
-public abstract class AbsGridLabels {
+public abstract class LabelUtil {
     
     public static final String[]
         DO_RE_MI = {
@@ -35,7 +30,7 @@ public abstract class AbsGridLabels {
      * Genshin Music app configs
      * </a>
      */
-    public static final LinkedHashMap<String, String[]> NOTE_SCALES = ofEntries(
+    public static final Map<String, String[]> NOTE_SCALES = Map.ofEntries(
         entry("Cb", strArr("Cb", "Dbb", "Db", "Ebb", "Eb", "Fb", "Gbb", "Gb", "Abb", "Ab", "Bbb", "Bb")),
         entry("C", strArr("C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B")),
         entry("C#", strArr("C#", "D", "D#", "E", "E#", "F#", "G", "G#", "A", "A#", "B", "B#")),
@@ -58,31 +53,18 @@ public abstract class AbsGridLabels {
         entry("B", strArr("B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#")),
         entry("B#", strArr("B#", "C#", "C##", "D#", "D##", "E#", "F#", "F##", "G#", "G##", "A#", "A##"))
     );
+    public static final int NOTES_PER_SCALE = NOTE_SCALES.get("C").length;
+
     private static String[] strArr(final String... arr) {
         return arr;
     }
-    @SafeVarargs
-    public static <K, V> LinkedHashMap<K, V> ofEntries(Entry<K, V>... entries) {
-        final LinkedHashMap<K, V> map = new LinkedHashMap<>();
-        for (Entry<K, V> entry : entries)
-            map.put(entry.getKey(), entry.getValue());
+    
 
-        return map;
-    }
-
-    public static String getNoteName(final float pitch, final String[] noteWidget, final int offset) {
-        final String baseNote = noteWidget[wrapAround(offset, noteWidget.length)];
-        //NOTE: Assuming pitch step is always .05
-        //TODO: Figure a formula for this 2
-        final int pitchStep = perfectConv(
-            ((2) * 10) * (pitch - 1)
-            // To account for the fact that a pitch step is 1/16th and we are doing jumps of 1/20th,
-            // divide by the following amount
-                / 1.6f
-        );
+    public static String getNoteName(final int pitch, final String[] noteLayout, final int offset) {
+        final String baseNote = noteLayout[wrapAround(offset, noteLayout.length)];
 
         final String[] scale = NOTE_SCALES.get(baseNote);
-        return scale[(doublyPyWrap(pitchStep, scale.length))];
+        return scale[(doublyPyWrap(pitch, scale.length))];
     }
     public static String getNoteName(final NoteGridButton gridButton) {
         final AbstractGridInstrumentScreen screen = (AbstractGridInstrumentScreen) gridButton.instrumentScreen;
@@ -93,20 +75,12 @@ public abstract class AbsGridLabels {
     }
 
     public static String getCutNoteName(final NoteGridButton gridButton) {
-        String result = AbsGridLabels.getNoteName(gridButton);
+        String result = LabelUtil.getNoteName(gridButton);
 
         if (ModClientConfigs.ACCURATE_ACCIDENTALS.get())
             result = String.valueOf(result.charAt(0));
 
         return result;
-    }
-
-
-    /**
-     * Perfects {@code num} to its actual int value by an accuricity of 0.001
-     */
-    private static int perfectConv(final float num) {
-        return (int)(num + ((num >= 0) ? .001f : -.001f));
     }
 
     /**
@@ -129,7 +103,7 @@ public abstract class AbsGridLabels {
         return index;
     }
     /**
-     * Performs both {@link AbsGridLabels#pyWrap} and {@link AbsGridLabels#wrapAround}
+     * Performs both {@link LabelUtil#pyWrap} and {@link LabelUtil#wrapAround}
      */
     private static int doublyPyWrap(int index, final int arrLength) {
         return wrapAround(pyWrap(index, arrLength), arrLength);
