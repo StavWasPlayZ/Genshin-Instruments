@@ -244,7 +244,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     protected void initOptionsGrid(final GridLayout grid, final RowHelper rowHelper) {
         initAudioSection(grid, rowHelper);
 
-        rowHelper.addChild(SpacerElement.height(15), 2);
+        rowHelper.addChild(SpacerElement.height(7), 2);
         
         initVisualsSection(grid, rowHelper);
     }
