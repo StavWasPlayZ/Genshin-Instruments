@@ -5,7 +5,7 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent.ByPlayer;
 import com.cstav.genshinstrument.item.InstrumentItem;
-import com.cstav.genshinstrument.util.ServerUtil;
+import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
@@ -39,30 +39,29 @@ public class ClientEvents {
     public static void onInstrumentPlayed(final InstrumentPlayedEvent event) {
         if (!event.isClientSide)
             return;
+        if (!ModClientConfigs.SHARED_INSTRUMENT.get())
+            return;
 
         // If this sound was produced by a player, and that player is ourselves - omit.
         if ((event instanceof ByPlayer) && ((ByPlayer)(event)).player.equals(MINECRAFT.player))
             return;
 
-        if (!ModClientConfigs.SHARED_INSTRUMENT.get())
+        // Only show play notes in the local range
+        if (!event.pos.closerThan(MINECRAFT.player.blockPosition(), NoteSound.LOCAL_RANGE))
             return;
 
 
-        if (!(MINECRAFT.screen instanceof AbstractInstrumentScreen))
-            return;
+        AbstractInstrumentScreen.getCurrentScreen(MINECRAFT).ifPresent((screen) -> {
+            // The produced instrument sound has to match the current screen's sounds
+            if (!screen.getInstrumentId().equals(event.instrumentId))
+                return;
 
-        final AbstractInstrumentScreen screen = (AbstractInstrumentScreen) MINECRAFT.screen;
-        // The instrument sound produced has to match the current screen's sounds
-        if (!screen.getInstrumentId().equals(event.instrumentId))
-            return;
-        // Only show the played note in a close distance
-        if (!event.pos.closerThan(MINECRAFT.player.blockPosition(), ServerUtil.PLAY_DISTANCE / 3))
-            return;
+            try {
 
+                screen.getNoteButton(event.noteIdentifier).playNoteAnimation(true);
 
-        try {   
-            screen.getNoteButton(event.noteIdentifier).playNoteAnimation(true);
-        } catch (Exception e) {}
+            } catch (Exception e) {}
+        });
     }
 
 }

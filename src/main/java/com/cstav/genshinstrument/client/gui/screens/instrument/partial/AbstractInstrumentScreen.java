@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
 
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
@@ -15,6 +16,7 @@ import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.platform.InputConstants.Type;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -146,7 +148,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
 
-    protected final AbstractInstrumentOptionsScreen optionsScreen = initInstrumentOptionsScreen();
+    public final AbstractInstrumentOptionsScreen optionsScreen = initInstrumentOptionsScreen();
     
     public final InteractionHand interactionHand;
     public AbstractInstrumentScreen(final InteractionHand hand) {
@@ -242,6 +244,23 @@ public abstract class AbstractInstrumentScreen extends Screen {
         ModPacketHandler.sendToServer(new CloseInstrumentPacket());
 
         super.onClose();
+    }
+
+
+    /**
+     * @return The current instrument screen, if present
+     */
+    public static Optional<AbstractInstrumentScreen> getCurrentScreen(final Minecraft minecraft) {
+        if (minecraft.screen instanceof AbstractInstrumentScreen)
+            return Optional.of((AbstractInstrumentScreen)minecraft.screen);
+
+        if (minecraft.screen instanceof AbstractInstrumentOptionsScreen) {
+            final AbstractInstrumentOptionsScreen instrumentOptionsScreen = (AbstractInstrumentOptionsScreen)minecraft.screen;
+            if (instrumentOptionsScreen.isOverlay)
+                return Optional.of(instrumentOptionsScreen.instrumentScreen);
+        }
+
+        return Optional.empty();
     }
     
 

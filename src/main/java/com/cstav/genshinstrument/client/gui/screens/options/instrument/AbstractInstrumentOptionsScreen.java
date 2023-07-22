@@ -80,12 +80,12 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     
 
     protected final Screen lastScreen;
-    protected final boolean isOverlay;
+    public final boolean isOverlay;
 
     protected final @Nullable INoteLabel[] labels;
     protected final @Nullable INoteLabel currLabel;
     
-    protected final @Nullable AbstractInstrumentScreen instrumentScreen;
+    public final @Nullable AbstractInstrumentScreen instrumentScreen;
 
     public AbstractInstrumentOptionsScreen(@Nullable AbstractInstrumentScreen screen) {
         super(Component.translatable("button.genshinstrument.instrumentOptions"));
