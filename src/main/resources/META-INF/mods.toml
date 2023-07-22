@@ -17,7 +17,7 @@ license="CC-BY-NC 4.0"
 # The modid of the mod
 modId="genshinstrument" #mandatory
 # The version number of the mod
-version="3.0.1" #mandatory
+version="3.1" #mandatory
 # A display name for the mod
 displayName="Genshin Instruments" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://docs.minecraftforge.net/en/latest/misc/updatechecker/
@@ -40,7 +40,8 @@ authors="Stav (IGN StavWasPlayZ)" #optional
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-A mod that brings Genshin Impact's instruments to Minecraft!\nThis is my first ever published mod, and I am quite proud of it :')
+A mod that brings Genshin Impact's instruments to Minecraft!
+This is my first ever published mod, and I am quite proud of it :')
 
 Hope you enjoy it as much as I do!!
 '''

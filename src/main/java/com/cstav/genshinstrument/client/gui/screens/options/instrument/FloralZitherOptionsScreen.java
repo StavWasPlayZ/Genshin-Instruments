@@ -18,7 +18,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class FloralZitherOptionsScreen extends GridInstrumentOptionsScreen {
     private static final String SOUND_TYPE_KEY = "button.genshinstrument.zither.soundType";
-    private final static int SPACE_BEFORE = 50, SPACER_HEIGHT = 0, PADDING = 20;
+    private final static int SPACE_BEFORE = 30, SPACER_HEIGHT = 13;
 
     public FloralZitherOptionsScreen(final FloralZitherScreen screen) {
         super(screen);
@@ -49,7 +49,7 @@ public class FloralZitherOptionsScreen extends GridInstrumentOptionsScreen {
                 getBigButtonWidth(), getButtonHeight()
             , Component.translatable(SOUND_TYPE_KEY), this::onSoundTypeChange);
 
-        rowHelper.addChild(soundTypeButton, 2, rowHelper.newCellSettings().paddingTop(PADDING));
+        rowHelper.addChild(soundTypeButton, 2);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class FloralZitherOptionsScreen extends GridInstrumentOptionsScreen {
         
         drawCenteredString(stack, font,
             Component.translatable("label.genshinstrument.zither_options"),
-            width/2, heightBefore + SPACE_BEFORE + SPACER_HEIGHT
+            width/2, heightBefore + SPACE_BEFORE
         , Color.WHITE.getRGB());
     }
 

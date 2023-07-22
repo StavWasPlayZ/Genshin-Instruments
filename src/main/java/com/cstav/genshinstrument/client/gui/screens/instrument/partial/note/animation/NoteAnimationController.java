@@ -9,7 +9,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class NoteAnimationController extends AnimationController {
 
-    // The size of this button in double
+    /** The size of this button in double */
     protected double dSize;
     protected NoteButton button;
     public NoteAnimationController(float duration, float targetValue, final NoteButton button) {

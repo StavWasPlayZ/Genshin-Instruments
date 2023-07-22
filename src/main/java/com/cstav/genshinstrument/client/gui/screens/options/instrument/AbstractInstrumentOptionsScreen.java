@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument.client.gui.screens.options.instrument;
 
 import java.awt.Color;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.function.Function;
 
@@ -11,16 +12,14 @@ import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.AbsGridLabels;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget;
 import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget.RowHelper;
 import com.cstav.genshinstrument.client.gui.widget.copied.SpacerWidget;
 import com.cstav.genshinstrument.sound.NoteSound;
-import com.ibm.icu.text.DecimalFormat;
+import com.cstav.genshinstrument.util.LabelUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.OptionInstance.TooltipSupplier;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
@@ -38,7 +37,6 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
     private static final String SOUND_CHANNEL_KEY = "button.genshinstrument.audioChannels",
         STOP_MUSIC_KEY = "button.genshinstrument.stop_music_on_play";
-    public static final double PITCH_STEP = .05;
 
     protected final HashMap<String, Runnable> APPLIED_OPTIONS = new HashMap<>();
     /**
@@ -82,13 +80,12 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     
 
     protected final Screen lastScreen;
-    protected final boolean isOverlay;
-    private Runnable onCloseRunnable;
+    public final boolean isOverlay;
 
     protected final @Nullable INoteLabel[] labels;
     protected final @Nullable INoteLabel currLabel;
     
-    protected final @Nullable AbstractInstrumentScreen instrumentScreen;
+    public final @Nullable AbstractInstrumentScreen instrumentScreen;
 
     public AbstractInstrumentOptionsScreen(@Nullable AbstractInstrumentScreen screen) {
         super(Component.translatable("button.genshinstrument.instrumentOptions"));
@@ -110,10 +107,6 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         // Default to NoteGridLabel's values
         labels = NoteGridLabel.values();
         currLabel = ModClientConfigs.GRID_LABEL_TYPE.get();
-    }
-
-    public void setOnCloseRunnable(final Runnable onCloseRunnable) {
-        this.onCloseRunnable = onCloseRunnable;
     }
 
     @Override
@@ -166,31 +159,26 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
             final DecimalFormat format = new DecimalFormat("0.00");
             {
+                pitch = getPitch();
                 updateMessage();
             }
 
+            private int pitch;
 
             @Override
             protected void updateMessage() {
                 this.setMessage(
-                    Component.translatable("button.genshinstrument.pitch").append(
-                        ": " + format.format(getPitch())
-                            + " ("+AbsGridLabels.getNoteName(getPitch(), AbstractInstrumentScreen.DEFAULT_NOTE_LAYOUT, 0)+")"
+                    Component.translatable("button.genshinstrument.pitch").append(": "
+                        + LabelUtil.getNoteName(pitch, AbstractInstrumentScreen.DEFAULT_NOTE_LAYOUT, 0)
+                        + " ("+format.format(NoteSound.getPitchByNoteOffset(pitch))+")"
                     )
                 );
             }
             
             @Override
             protected void applyValue() {
-                onPitchChanged(this, divisibleBy5(Mth.clampedLerp(NoteSound.MIN_PITCH, NoteSound.MAX_PITCH, value)));
-            }
-
-            private static double divisibleBy5(double number) {
-                if (number > (NoteSound.MAX_PITCH - .001))
-                    return NoteSound.MAX_PITCH;
-
-                final double factor = Math.round(1 / PITCH_STEP * 100) / 100;
-                return (int)(number * factor) / factor;
+                pitch = (int)Mth.clampedLerp(NoteSound.MIN_PITCH, NoteSound.MAX_PITCH, value);
+                onPitchChanged(this, pitch);
             }
         };
         rowHelper.addChild(pitchSlider);
@@ -259,15 +247,15 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     protected void initOptionsGrid(final GridWidget grid, final RowHelper rowHelper) {
         initAudioSection(grid, rowHelper);
 
-        rowHelper.addChild(SpacerWidget.height(15), 2);
+        rowHelper.addChild(SpacerWidget.height(7), 2);
         
         initVisualsSection(grid, rowHelper);
     }
 
-    private float getPitch() {
+    private int getPitch() {
         return (isOverlay)
             ? instrumentScreen.getPitch()
-            : ModClientConfigs.PITCH.get().floatValue();
+            : ModClientConfigs.PITCH.get().intValue();
     }
 
 
@@ -278,18 +266,16 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
         queueToSave("note_label", () -> saveLabel(label));
     }
-    protected void saveLabel(final INoteLabel newLabel) {
-        if (newLabel instanceof NoteGridLabel)
-            ModClientConfigs.GRID_LABEL_TYPE.set((NoteGridLabel)newLabel);
-    }
+    protected abstract void saveLabel(final INoteLabel newLabel);
 
-    protected void onPitchChanged(final AbstractSliderButton slider, final double pitch) {
+    protected void onPitchChanged(final AbstractSliderButton slider, final int pitch) {
         if (isOverlay)
-            instrumentScreen.setPitch((float)pitch);
+            instrumentScreen.setPitch(pitch);
 
+            
         queueToSave("pitch", () -> savePitch(pitch));
     }
-    protected void savePitch(final double newPitch) {
+    protected void savePitch(final int newPitch) {
         ModClientConfigs.PITCH.set(newPitch);
     }
 
@@ -327,23 +313,41 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
     @Override
     public void onClose() {
-        if (!isOverlay) {
-            if (lastScreen != null)
-                Minecraft.getInstance().setScreen(lastScreen);
-            else
-                super.onClose();
-        }
-        
         onSave();
-
-        if (onCloseRunnable != null)
-            onCloseRunnable.run();
+        
+        super.onClose();
+        if (isOverlay)
+            instrumentScreen.onOptionsClose();
     }
     protected void onSave() {
         for (final Runnable runnable : APPLIED_OPTIONS.values())
             runnable.run();
         
         ModClientConfigs.CONFIGS.save();
+    }
+
+
+    @Override
+    public boolean isPauseScreen() {
+        return false;
+    }
+
+
+    // Make pressing notes possible with keyboard
+    @Override
+    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
+        // Only pass when it is a note key
+        if (isOverlay && (instrumentScreen.getNoteByKey(pKeyCode) != null))
+            instrumentScreen.keyPressed(pKeyCode, pScanCode, pModifiers);
+
+        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
+    }
+    @Override
+    public boolean keyReleased(int pKeyCode, int pScanCode, int pModifiers) {
+        if (isOverlay && (instrumentScreen.getNoteByKey(pKeyCode) != null))
+            instrumentScreen.keyReleased(pKeyCode, pScanCode, pModifiers);
+
+        return super.keyReleased(pKeyCode, pScanCode, pModifiers);
     }
 
 
