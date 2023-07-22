@@ -7,7 +7,8 @@
 
         
         "3.0": "Backported mod version v3.0 to Minecraft version 1.19.2!\nChanges up until v3.0:\n\nv3.0\n- New pitch-accurate accidentals system! Support for flats, sharps, and their doubly variants\n- Added Note Label type\n- Implemented pitch names in slider\n- Fixed ABC label type\n- Partial Arabic language support\n\nv2.8.2\n- Improved drum sounds\n\nv2.8.1\n- Fixed drum and zither shared playing issues\n\nv2.8\n- Added the staff instrument background\n\nv2.7.7\n- All instrument sounds now play locally on a range of 5 blocks\n\nv2.7.6\nBugfixes and API improvements\n\nv2.7.1\n- Fixed play ring's alpha channel rendering incorrectly\n\nv2.6\n- Added the visual play ring from Genshin\n\nv2.5.1\n- Fixed pitch slider being offset and not navigation-friendly\n\nv2.5\n- Implemented GUI keyboard navigation\n\nv2.4.1\n- Fixed instrument screen being present after item removal\n\nv2.4\n- Minor technical fixes\n\nv2.3\n- Texture fixes",
-        "3.0.1": "- Fixed notes playing twice on key press"
+        "3.0.1": "- Fixed notes playing twice on key press",
+        "3.1": "Changes:\n- Improves instrument textures\n- Pitch is now determined by accurate note scales (fixing inaccurate representations of note labels & accidentals)\n- Implemented instrument options as the config screen for Forge's mod menu\n\nFixed:\n- Zither's sound type button overflowing to the Done button\n- Left-hand display of instruments\n- Note buttons' text labels overflowing to the instrument options\n- Issues playing with navigation"
     },
     "1.19.3": {
         "1.0": "Initial release",
@@ -25,7 +26,8 @@
 
 
         "3.0": "Backported mod version v3.0 to Minecraft version 1.19.3!\nChanges up until v3.0:\n\nv3.0\n- New pitch-accurate accidentals system! Support for flats, sharps, and their doubly variants\n- Added Note Label type\n- Implemented pitch names in slider\n- Fixed ABC label type\n- Partial Arabic language support\n\nv2.8.2\n- Improved drum sounds\n\nv2.8.1\n- Fixed drum and zither shared playing issues\n\nv2.8\n- Added the staff instrument background\n\nv2.7.7\n- All instrument sounds now play locally on a range of 5 blocks\n\nv2.7.6\nBugfixes and API improvements\n\nv2.7.1\n- Fixed play ring's alpha channel rendering incorrectly\n\nv2.6\n- Added the visual play ring from Genshin\n\nv2.5.1\n- Fixed pitch slider being offset and not navigation-friendly\n\nv2.5\n- Implemented GUI keyboard navigation",
-        "3.0.1": "- Fixed notes playing twice on key press"
+        "3.0.1": "- Fixed notes playing twice on key press",
+        "3.1": "Changes:\n- Improves instrument textures\n- Pitch is now determined by accurate note scales (fixing inaccurate representations of note labels & accidentals)\n- Implemented instrument options as the config screen for Forge's mod menu\n\nFixed:\n- Zither's sound type button overflowing to the Done button\n- Left-hand display of instruments\n- Note buttons' text labels overflowing to the instrument options\n- Issues playing with navigation"
     },
     "1.19.4": {
         "2.5": "- Update to version 1.19.4\n- GUI keyboard navigation",
@@ -34,7 +36,8 @@
         "2.6": "- Added the visual play ring from Genshin",
 
         
-        "3.0": "Backported mod version v3.0 to Minecraft version 1.19.4!\nChanges up until v3.0:\n\nv3.0\n- New pitch-accurate accidentals system! Support for flats, sharps, and their doubly variants\n- Added Note Label type\n- Implemented pitch names in slider\n- Fixed ABC label type\n- Partial Arabic language support\n\nv2.8.2\n- Improved drum sounds\n\nv2.8.1\n- Fixed drum and zither shared playing issues\n\nv2.8\n- Added the staff instrument background\n\nv2.7.7\n- All instrument sounds now play locally on a range of 5 blocks\n\nv2.7.6\nBugfixes and API improvements\n\nv2.7.1\n- Fixed play ring's alpha channel rendering incorrectly"
+        "3.0": "Backported mod version v3.0 to Minecraft version 1.19.4!\nChanges up until v3.0:\n\nv3.0\n- New pitch-accurate accidentals system! Support for flats, sharps, and their doubly variants\n- Added Note Label type\n- Implemented pitch names in slider\n- Fixed ABC label type\n- Partial Arabic language support\n\nv2.8.2\n- Improved drum sounds\n\nv2.8.1\n- Fixed drum and zither shared playing issues\n\nv2.8\n- Added the staff instrument background\n\nv2.7.7\n- All instrument sounds now play locally on a range of 5 blocks\n\nv2.7.6\nBugfixes and API improvements\n\nv2.7.1\n- Fixed play ring's alpha channel rendering incorrectly",
+        "3.1": "Changes:\n- Improves instrument textures\n- Pitch is now determined by accurate note scales (fixing inaccurate representations of note labels & accidentals)\n- Implemented instrument options as the config screen for Forge's mod menu\n\nFixed:\n- Zither's sound type button overflowing to the Done button\n- Left-hand display of instruments\n- Note buttons' text labels overflowing to the instrument options"
     },
 
     "1.20": {
@@ -45,7 +48,8 @@
         "2.7.7": "- All instrument sounds now play locally on a range of 5 blocks",
 
         
-        "3.0": "Backported mod version v3.0 to Minecraft version 1.20!\nChanges up until v3.0:\n\nv3.0\n- New pitch-accurate accidentals system! Support for flats, sharps, and their doubly variants\n- Added Note Label type\n- Implemented pitch names in slider\n- Fixed ABC label type\n- Partial Arabic language support\n\nv2.8.2\n- Improved drum sounds\n\nv2.8.1\n- Fixed drum and zither shared playing issues\n\nv2.8\n- Added the staff instrument background"
+        "3.0": "Backported mod version v3.0 to Minecraft version 1.20!\nChanges up until v3.0:\n\nv3.0\n- New pitch-accurate accidentals system! Support for flats, sharps, and their doubly variants\n- Added Note Label type\n- Implemented pitch names in slider\n- Fixed ABC label type\n- Partial Arabic language support\n\nv2.8.2\n- Improved drum sounds\n\nv2.8.1\n- Fixed drum and zither shared playing issues\n\nv2.8\n- Added the staff instrument background",
+        "3.1": "Changes:\n- Improves instrument textures\n- Pitch is now determined by accurate note scales (fixing inaccurate representations of note labels & accidentals)\n- Implemented instrument options as the config screen for Forge's mod menu\n\nFixed:\n- Zither's sound type button overflowing to the Done button\n- Left-hand display of instruments\n- Note buttons' text labels overflowing to the instrument options"
     },
     "1.20.1": {
         "2.7.8": "- Update to 1.20.1\n- Pitch slider now has pitch names",
@@ -56,25 +60,26 @@
 
         
         "3.0": "- New pitch-accurate accidentals system! Support for flats, sharps, and their doubly variants\n- Added Note Label type\n- Re-implemented pitch names in slider\n- Fixed ABC label type\n- Partial Arabic language support",
-        "3.1": "Changes:\n- Improves instrument textures\n- Pitch is now determined by accurate note scales (fixing inaccurate representations of note labels & accidentals)\n- Implemented instrument options as the config screen for Forge's mod menu\n\nFixed:\n- Zither's sound type button overflowing to the Done button\n- Left-hand display of instruments\n- Note buttons' text labels overflowing to the instrument options"
+        "3.1": "Changes:\n- Improves instrument textures\n- Pitch is now determined by accurate note scales (fixing inaccurate representations of note labels & accidentals)\n- Implemented instrument options as the config screen for Forge's mod menu\n\nFixed:\n- Zither's sound type button overflowing to the Done button\n- Left-hand display of instruments\n- Note buttons' text labels overflowing to the instrument options",
+        "3.1.1": "- Fixed shared notes not displaying when options are open"
     },
 
     
     "promos": {
-        "1.19.2-latest": "3.0.1",
-        "1.19.2-recommended": "3.0.1",
+        "1.19.2-latest": "3.1",
+        "1.19.2-recommended": "3.1",
         
-        "1.19.3-latest": "3.0.1",
-        "1.19.3-recommended": "3.0.1",
+        "1.19.3-latest": "3.1",
+        "1.19.3-recommended": "3.1",
 
-        "1.19.4-latest": "3.0",
-        "1.19.4-recommended": "3.0",
+        "1.19.4-latest": "3.1",
+        "1.19.4-recommended": "3.1",
 
 
-        "1.20-latest": "3.0",
-        "1.20-recommended": "3.0",
+        "1.20-latest": "3.1",
+        "1.20-recommended": "3.1",
 
-        "1.20.1-latest": "3.1",
-        "1.20.1-recommended": "3.1"
+        "1.20.1-latest": "3.1.1",
+        "1.20.1-recommended": "3.1.1"
     }
 }
