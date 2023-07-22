@@ -55,7 +55,8 @@
         "2.8.2": "- Improved drum sounds\n- Optimized note buttons' UI lookup",
 
         
-        "3.0": "- New pitch-accurate accidentals system! Support for flats, sharps, and their doubly variants\n- Added Note Label type\n- Re-implemented pitch names in slider\n- Fixed ABC label type\n- Partial Arabic language support"
+        "3.0": "- New pitch-accurate accidentals system! Support for flats, sharps, and their doubly variants\n- Added Note Label type\n- Re-implemented pitch names in slider\n- Fixed ABC label type\n- Partial Arabic language support",
+        "3.1": "Changes:\n- Improves instrument textures\n- Pitch is now determined by accurate note scales (fixing inaccurate representations of note labels & accidentals)\n- Implemented instrument options as the config screen for Forge's mod menu\n\nFixed:\n- Zither's sound type button overflowing to the Done button\n- Left-hand display of instruments\n- Note buttons' text labels overflowing to the instrument options"
     },
 
     
@@ -73,7 +74,7 @@
         "1.20-latest": "3.0",
         "1.20-recommended": "3.0",
 
-        "1.20.1-latest": "3.0",
-        "1.20.1-recommended": "3.0"
+        "1.20.1-latest": "3.1",
+        "1.20.1-recommended": "3.1"
     }
 }
