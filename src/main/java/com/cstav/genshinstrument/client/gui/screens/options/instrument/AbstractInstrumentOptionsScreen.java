@@ -332,18 +332,19 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
     // Make pressing notes possible with keyboard
     @Override
-    public boolean keyPressed(int p_96552_, int p_96553_, int p_96554_) {
-        if (isOverlay && p_96552_ != 256)
-            instrumentScreen.keyPressed(p_96552_, p_96553_, p_96554_);
+    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
+        // Only pass when it is a note key
+        if (isOverlay && (instrumentScreen.getNoteByKey(pKeyCode) != null))
+            instrumentScreen.keyPressed(pKeyCode, pScanCode, pModifiers);
 
-        return super.keyPressed(p_96552_, p_96553_, p_96554_);
+        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
     }
     @Override
-    public boolean keyReleased(int p_94715_, int p_94716_, int p_94717_) {
-        if (isOverlay && p_94715_ != 256)
-            instrumentScreen.keyReleased(p_94715_, p_94716_, p_94717_);
+    public boolean keyReleased(int pKeyCode, int pScanCode, int pModifiers) {
+        if (isOverlay && (instrumentScreen.getNoteByKey(pKeyCode) != null))
+            instrumentScreen.keyReleased(pKeyCode, pScanCode, pModifiers);
 
-        return super.keyReleased(p_94715_, p_94716_, p_94717_);
+        return super.keyReleased(pKeyCode, pScanCode, pModifiers);
     }
 
 
