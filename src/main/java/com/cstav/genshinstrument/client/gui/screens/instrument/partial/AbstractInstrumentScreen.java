@@ -67,14 +67,6 @@ public abstract class AbstractInstrumentScreen extends Screen {
      */
     public abstract ResourceLocation getNotesLocation();
 
-    
-    /**
-     * <p>Gets the sound array used by this instrument.
-     * Its length must be equal to this Note Grid's {@code row*column}.</p>
-     * Each sound is used on press by the their index on the grid.
-     * @return The array of sounds used by this instruments.
-     */
-    public abstract NoteSound[] getSounds();
 
     /**
      * @return The layout of the note names accross the instrument's rows.

@@ -12,6 +12,7 @@ import com.cstav.genshinstrument.client.gui.screens.options.instrument.GridInstr
 import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
+import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 
 import net.minecraft.client.gui.GuiGraphics;
@@ -39,6 +40,15 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
     public int rows() {
         return DEF_ROWS;
     }
+
+
+    /**
+     * <p>Gets the sound array used by this instrument.
+     * Its length must be equal to this Note Grid's {@code row*column}.</p>
+     * Each sound is used on press by the their index on the grid.
+     * @return The array of sounds used by this instruments.
+     */
+    public abstract NoteSound[] getSounds();
 
 
     /**

@@ -9,8 +9,6 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.Instrumen
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.DrumOptionsScren;
-import com.cstav.genshinstrument.sound.ModSounds;
-import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 
 import net.minecraft.client.gui.layouts.LinearLayout;
@@ -105,12 +103,7 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
 
         return btn;
     }
-
-
-    @Override
-    public NoteSound[] getSounds() {
-        return ModSounds.GLORIOUS_DRUM;
-    }
+    
 
     private static final InstrumentThemeLoader THEME_LOADER = initThemeLoader(Main.MODID, INSTRUMENT_ID);
     @Override
