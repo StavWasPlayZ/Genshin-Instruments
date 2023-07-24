@@ -18,7 +18,6 @@ public enum DrumButtonType {
 
     private DrumButtonType(NoteSound sound, String transKey) {
         this.sound = sound;
-
         this.transKey = INoteLabel.TRANSLATABLE_PATH + transKey;
     }
 

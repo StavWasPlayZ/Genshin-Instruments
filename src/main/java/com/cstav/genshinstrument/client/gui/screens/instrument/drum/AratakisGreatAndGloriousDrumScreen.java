@@ -60,15 +60,15 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
     protected void init() {
         initOptionsButton(height/2 + 25);
 
-        final LinearLayout layout1 = createRow(DrumButtonType.DON, 2.25f),
-            layout2 = createRow(DrumButtonType.KA, 1.5f);
+        final LinearLayout layout1 = createRow(DrumButtonType.DON, 2f),
+            layout2 = createRow(DrumButtonType.KA, 1.3f);
 
         // Make layout magic
         layout1.arrangeElements();
         layout2.arrangeElements();
 
         layout1.setPosition((width - layout1.getWidth()) / 2, (int)(height * .8f));
-        layout2.setPosition((width - layout2.getWidth()) / 2, layout1.getY() - layout1.getHeight());
+        layout2.setPosition((width - layout2.getWidth()) / 2, layout1.getY() - layout1.getHeight()/2);
 
         layout1.arrangeElements();
         layout2.arrangeElements();
