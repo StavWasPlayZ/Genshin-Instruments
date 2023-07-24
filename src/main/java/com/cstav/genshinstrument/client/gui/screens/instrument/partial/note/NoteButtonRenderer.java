@@ -33,9 +33,6 @@ public class NoteButtonRenderer {
 
     // Texture properties
     protected final int noteTextureRow, rowsInNoteTexture;
-    private final int noteTextureWidth;
-    //FIXME Actually figure out a formula instead of guessing
-    private final float randomAssMultiplier1, randomAssMultiplier2;
 
     // Animations
     public final NoteAnimationController noteAnimation;
@@ -43,8 +40,7 @@ public class NoteButtonRenderer {
     protected final ArrayList<NoteRing> rings = new ArrayList<>();
 
 
-    public NoteButtonRenderer(NoteButton noteButton, int noteTextureRow, int rowsInNoteTexture,
-            int noteTextureWidth, float randomAssMultiplier1, float randomAssMultiplier2) {
+    public NoteButtonRenderer(NoteButton noteButton, int noteTextureRow, int rowsInNoteTexture) {
         this.noteButton = noteButton;
         instrumentScreen = noteButton.instrumentScreen;
 
@@ -60,12 +56,6 @@ public class NoteButtonRenderer {
         noteLocation = instrumentScreen.getNotesLocation();
         noteBgLocation = getResourceFromRoot("note_bg.png");
         accidentalsLocation = getResourceFromRoot("accidentals.png");
-
-
-
-        this.noteTextureWidth = noteTextureWidth;
-        this.randomAssMultiplier1 = randomAssMultiplier1;
-        this.randomAssMultiplier2 = randomAssMultiplier2;
     }
 
 
@@ -120,9 +110,9 @@ public class NoteButtonRenderer {
             //NOTE: I have no clue whatsoever how on earth these 1.025 and .9 multipliers actually work.
             // Like seriously wtf why fkuaherjgaeorg i hate maths
             //NOTE: Moved said numbers to the randomAss vars
-            noteWidth * noteTextureRow * randomAssMultiplier2, 0,
+            noteWidth * noteTextureRow, 0,
             noteWidth, noteHeight,
-            (int)(noteWidth * (noteTextureWidth / rowsInNoteTexture) * randomAssMultiplier1), noteButton.getHeight()/2
+            noteWidth * rowsInNoteTexture, noteButton.getHeight()/2
         );
 
         ClientUtil.resetShaderColor();

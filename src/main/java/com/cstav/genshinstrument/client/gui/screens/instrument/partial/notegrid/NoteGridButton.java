@@ -40,9 +40,6 @@ public class NoteGridButton extends NoteButton {
 
     @Override
     protected NoteButtonRenderer initNoteRenderer() {
-        return new NoteButtonRenderer(this,
-            row, ((AbstractGridInstrumentScreen)instrumentScreen).rows(),
-            57, .9f, 1.025f
-        );
+        return new NoteButtonRenderer(this, row, ((AbstractGridInstrumentScreen)instrumentScreen).rows());
     }
 }

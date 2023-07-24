@@ -33,10 +33,7 @@ public class DrumNoteButton extends NoteButton {
 
     @Override
     protected NoteButtonRenderer initNoteRenderer() {
-        return new NoteButtonRenderer(this,
-            btnType.getSpriteIndex(), 2,
-            13, .34f, 1.01f
-        );
+        return new NoteButtonRenderer(this, btnType.getSpriteIndex(isRight), 3);
     }
     
 }
