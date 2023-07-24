@@ -2,6 +2,7 @@ package com.cstav.genshinstrument;
 
 import com.cstav.genshinstrument.block.ModBlockEntities;
 import com.cstav.genshinstrument.block.ModBlocks;
+import com.cstav.genshinstrument.client.ModArmPose;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.item.ModItems;
 import com.cstav.genshinstrument.sound.ModSounds;
@@ -9,6 +10,7 @@ import com.cstav.genshinstrument.sound.ModSounds;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 /**
@@ -25,6 +27,7 @@ public class GInstrumentMod
     public GInstrumentMod()
     {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        bus.addListener(GInstrumentMod::clientSetup);
         
         ModItems.register(bus);
         ModBlocks.register(bus);
@@ -37,5 +40,9 @@ public class GInstrumentMod
 
         
         MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    private static void clientSetup(final FMLClientSetupEvent event) {
+        ModArmPose.register();
     }
 }
