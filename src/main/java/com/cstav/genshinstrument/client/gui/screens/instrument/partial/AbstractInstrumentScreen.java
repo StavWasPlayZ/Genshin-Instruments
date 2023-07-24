@@ -9,6 +9,7 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.GenshinConsentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
+import com.cstav.genshinstrument.item.InstrumentItem;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.packet.instrument.CloseInstrumentPacket;
@@ -17,6 +18,7 @@ import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.platform.InputConstants.Type;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -24,6 +26,7 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -86,6 +89,38 @@ public abstract class AbstractInstrumentScreen extends Screen {
      */
     public boolean isGenshinInstrument() {
         return true;
+    }
+
+
+    @Override
+    public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+        super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
+        handleAbruptClosing();
+    }
+    /**
+     * Handles this instrument being closed by either recieving a false signal from {@link InstrumentOpenProvider#isOpen}
+     * or, if it is an item, if the item has been ripped out of the player's hands.
+     * @return Whether the instrument has closed as a result of this method
+     */
+    protected boolean handleAbruptClosing() {
+        final Player player = minecraft.player;
+
+        if (!InstrumentOpenProvider.isOpen(player)) {
+            onClose(false);
+            return true;
+        }
+
+        // Handle item not in hand seperately
+        // This is done like so because there is no event (that I know of) for when an item is moved/removed
+        if (
+            InstrumentOpenProvider.isItem(player)
+            && !(player.getItemInHand(interactionHand).getItem() instanceof InstrumentItem)
+        ) {
+            onClose(true);
+            return true;
+        }
+
+        return false;
     }
 
 

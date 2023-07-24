@@ -5,7 +5,6 @@ import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvide
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent.ByPlayer;
-import com.cstav.genshinstrument.item.InstrumentItem;
 import com.cstav.genshinstrument.item.clientExtensions.ClientInstrumentItem;
 import com.cstav.genshinstrument.sound.NoteSound;
 
@@ -16,7 +15,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -24,29 +22,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(bus = Bus.FORGE, modid = GInstrumentMod.MODID, value = Dist.CLIENT)
 public class ClientEvents {
-
-    private static final Minecraft MINECRAFT = Minecraft.getInstance();
     
-    // Responsible for closing the instrument screen when the player no longer plays
-    @SubscribeEvent
-    public static void onPlayerTick(final ClientTickEvent event) {
-        AbstractInstrumentScreen.getCurrentScreen(MINECRAFT).ifPresent((screen) -> {
-            final Player player = MINECRAFT.player;
-
-            if (!InstrumentOpenProvider.isOpen(player))
-                screen.onClose(false);
-
-            // Handle item not in hand seperately
-            // This is done like so because there is no event (that I know of) for when an item is moved/removed
-            else if (
-                InstrumentOpenProvider.isItem(player)
-                && !(MINECRAFT.player.getItemInHand(screen.interactionHand).getItem() instanceof InstrumentItem)
-            )
-                screen.onClose(true);
-
-        });
-    }
-
+    private static final Minecraft MINECRAFT = Minecraft.getInstance();
 
     // Handle block instrument arm pose
     @SubscribeEvent
