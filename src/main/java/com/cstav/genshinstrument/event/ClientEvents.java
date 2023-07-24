@@ -6,12 +6,17 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent.ByPlayer;
 import com.cstav.genshinstrument.item.InstrumentItem;
+import com.cstav.genshinstrument.item.clientExtensions.ClientInstrumentItem;
 import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -41,6 +46,19 @@ public class ClientEvents {
                 screen.onClose(true);
 
         });
+    }
+
+
+    // Handle block instrument arm pose
+    @SubscribeEvent
+    public static void prePlayerRenderEvent(final RenderPlayerEvent.Pre event) {
+        final LocalPlayer player = MINECRAFT.player;
+
+        if (!(InstrumentOpenProvider.isOpen(player) && !InstrumentOpenProvider.isItem(player)))
+            return;
+
+        final PlayerModel<AbstractClientPlayer> model = event.getRenderer().getModel();
+        model.leftArmPose = model.rightArmPose = ClientInstrumentItem.PLAYING_BLOCK_INSTRUMENT;
     }
 
     
