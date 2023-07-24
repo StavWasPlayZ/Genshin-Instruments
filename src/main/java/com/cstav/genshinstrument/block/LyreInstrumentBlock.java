@@ -1,5 +1,7 @@
 package com.cstav.genshinstrument.block;
 
+import com.cstav.genshinstrument.block.partial.AbstractInstrumentBlock;
+import com.cstav.genshinstrument.block.partial.InstrumentBlockEntity;
 import com.cstav.genshinstrument.networking.OpenInstrumentPacketSender;
 import com.cstav.genshinstrument.util.ServerUtil;
 

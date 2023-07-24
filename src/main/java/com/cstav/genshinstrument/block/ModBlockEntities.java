@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument.block;
 
 import com.cstav.genshinstrument.GInstrumentMod;
+import com.cstav.genshinstrument.block.partial.InstrumentBlockEntity;
 
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;

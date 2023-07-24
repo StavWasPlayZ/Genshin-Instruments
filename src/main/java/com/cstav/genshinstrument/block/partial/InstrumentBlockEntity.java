@@ -1,8 +1,10 @@
-package com.cstav.genshinstrument.block;
+package com.cstav.genshinstrument.block.partial;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+
+import com.cstav.genshinstrument.block.ModBlockEntities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;

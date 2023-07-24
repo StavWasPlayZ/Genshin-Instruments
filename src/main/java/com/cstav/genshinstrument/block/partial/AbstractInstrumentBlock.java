@@ -1,5 +1,9 @@
-package com.cstav.genshinstrument.block;
+package com.cstav.genshinstrument.block.partial;
 
+import java.util.function.Consumer;
+
+import com.cstav.genshinstrument.block.partial.client.IClientBlockArmPose;
+import com.cstav.genshinstrument.block.partial.client.InstrumentClientBlockArmPose;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.OpenInstrumentPacketSender;
@@ -16,6 +20,9 @@ import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 
 public abstract class AbstractInstrumentBlock extends BaseEntityBlock {
 
@@ -26,6 +33,27 @@ public abstract class AbstractInstrumentBlock extends BaseEntityBlock {
      */
     public AbstractInstrumentBlock(Properties pProperties) {
         super(pProperties);
+
+        if (!FMLEnvironment.dist.isDedicatedServer())
+            initClientBlockUseAnim((pose) -> clientBlockArmPose = pose);
+    }
+
+    
+    // Abstract implementations
+    protected abstract OpenInstrumentPacketSender instrumentPacketSender();
+    @Override
+    public abstract InstrumentBlockEntity newBlockEntity(BlockPos pPos, BlockState pState);
+    
+    /**
+     * An instance of {@link IClientBlockArmPose} as defined in {@link AbstractInstrumentBlock#initClientBlockUseAnim}
+     */
+    private Object clientBlockArmPose;
+    protected void initClientBlockUseAnim(final Consumer<IClientBlockArmPose> consumer) {
+        consumer.accept(new InstrumentClientBlockArmPose());
+    }
+    @OnlyIn(Dist.CLIENT)
+    public IClientBlockArmPose getClientBlockArmPose() {
+        return (IClientBlockArmPose)clientBlockArmPose;
     }
 
 
@@ -47,10 +75,6 @@ public abstract class AbstractInstrumentBlock extends BaseEntityBlock {
 
         return InteractionResult.FAIL;
     }
-
-    protected abstract OpenInstrumentPacketSender instrumentPacketSender();
-    @Override
-    public abstract InstrumentBlockEntity newBlockEntity(BlockPos pPos, BlockState pState);
     
 
     @Override
@@ -69,4 +93,5 @@ public abstract class AbstractInstrumentBlock extends BaseEntityBlock {
             });
         }
     }
+
 }

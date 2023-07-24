@@ -1,17 +1,18 @@
 package com.cstav.genshinstrument.event;
 
 import com.cstav.genshinstrument.GInstrumentMod;
+import com.cstav.genshinstrument.block.partial.AbstractInstrumentBlock;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent.ByPlayer;
-import com.cstav.genshinstrument.item.clientExtensions.ClientInstrumentItem;
 import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -22,7 +23,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(bus = Bus.FORGE, modid = GInstrumentMod.MODID, value = Dist.CLIENT)
 public class ClientEvents {
-    
+
     private static final Minecraft MINECRAFT = Minecraft.getInstance();
 
     // Handle block instrument arm pose
@@ -33,8 +34,14 @@ public class ClientEvents {
         if (!(InstrumentOpenProvider.isOpen(player) && !InstrumentOpenProvider.isItem(player)))
             return;
 
+
+        final Block block = player.level().getBlockState(InstrumentOpenProvider.getBlockPos(player)).getBlock();
+        if (!(block instanceof AbstractInstrumentBlock))
+            return;
+
+        final AbstractInstrumentBlock instrumentBlock = (AbstractInstrumentBlock) block;
         final PlayerModel<AbstractClientPlayer> model = event.getRenderer().getModel();
-        model.leftArmPose = model.rightArmPose = ClientInstrumentItem.PLAYING_BLOCK_INSTRUMENT;
+        model.leftArmPose = model.rightArmPose = instrumentBlock.getClientBlockArmPose().getArmPose();
     }
 
     
