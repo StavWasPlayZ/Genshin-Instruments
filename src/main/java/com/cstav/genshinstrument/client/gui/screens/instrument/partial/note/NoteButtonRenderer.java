@@ -53,7 +53,7 @@ public class NoteButtonRenderer {
 
         rootLocation = instrumentScreen.getResourceFromRoot("note");
 
-        noteLocation = instrumentScreen.getNotesLocation();
+        noteLocation = instrumentScreen.getNoteSymbolsLocation();
         noteBgLocation = getResourceFromRoot("note_bg.png");
         accidentalsLocation = getResourceFromRoot("accidentals.png");
     }
@@ -107,10 +107,8 @@ public class NoteButtonRenderer {
 
         gui.blit(noteLocation,
             noteButton.getX() + noteWidth/2, noteButton.getY() + noteHeight/2,
-            //NOTE: I have no clue whatsoever how on earth these 1.025 and .9 multipliers actually work.
-            // Like seriously wtf why fkuaherjgaeorg i hate maths
-            //NOTE: Moved said numbers to the randomAss vars
             noteWidth * noteTextureRow, 0,
+
             noteWidth, noteHeight,
             noteWidth * rowsInNoteTexture, noteButton.getHeight()/2
         );

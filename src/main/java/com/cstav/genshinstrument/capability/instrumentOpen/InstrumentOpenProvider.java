@@ -48,4 +48,8 @@ public class InstrumentOpenProvider implements ICapabilityProvider, INBTSerializ
             instrumentOpen.setOpen(isOpen)
         );
     }
+    public static boolean isOpen(final Player player) {
+        final LazyOptional<InstrumentOpen> lazyOpen = player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN);
+        return lazyOpen.isPresent() && lazyOpen.resolve().get().isOpen();
+    }
 }

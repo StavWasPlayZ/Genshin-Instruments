@@ -3,10 +3,13 @@ package com.cstav.genshinstrument.util;
 import java.util.List;
 import java.util.Optional;
 
+import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
+import com.cstav.genshinstrument.networking.OpenInstrumentPacketSender;
 import com.cstav.genshinstrument.networking.buttonidentifier.DefaultNoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
+import com.cstav.genshinstrument.networking.packet.instrument.NotifyInstrumentOpenPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.PlayNotePacket;
 import com.cstav.genshinstrument.sound.NoteSound;
 
@@ -157,4 +160,25 @@ public class ServerUtil {
         throw new ClassNotFoundException("Class type "+classType+" could not be evaluated as part of the acceptable identifiers");
     }
 
+
+
+    public static boolean sendOpenRequest(ServerPlayer player, InteractionHand usedHand, OpenInstrumentPacketSender onOpenRequest) {
+        if (InstrumentOpenProvider.isOpen(player))
+            return false;
+
+
+        onOpenRequest.send(player, usedHand);
+
+        // Update the the capabilty on server
+        InstrumentOpenProvider.setOpen(player, true);
+        // And clients
+        player.level().players().forEach((nearbyPlayer) ->
+            ModPacketHandler.sendToClient(
+                new NotifyInstrumentOpenPacket(player.getUUID(), true),
+                (ServerPlayer)nearbyPlayer
+            )
+        );
+
+        return true;
+    }
 }

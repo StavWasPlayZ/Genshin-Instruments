@@ -102,8 +102,12 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
         return new GridInstrumentOptionsScreen(this);
     }
 
+    /**
+     * Defines the location of the note symbols.
+     * The number of symbols should match with the number of {@link AbstractGridInstrumentScreen#rows rows} in this instrument.
+     */
     @Override
-    public ResourceLocation getNotesLocation() {
+    public ResourceLocation getNoteSymbolsLocation() {
         return new ResourceLocation(GInstrumentMod.MODID, getGlobalRootPath() + "grid_notes.png");
     }
     

@@ -65,14 +65,14 @@ public abstract class AbstractInstrumentScreen extends Screen {
     /**
      * @return The location of all labels present in this instrument
      */
-    public abstract ResourceLocation getNotesLocation();
+    public abstract ResourceLocation getNoteSymbolsLocation();
 
 
     /**
      * @return The layout of the note names accross the instrument's rows.
-     * @apiNote All built-in instruments' layouts are derived from
+     * @implNote All built-in instruments' layouts are derived from
      * <a href=https://github.com/Specy/genshin-music/blob/19dfe0e2fb8081508bd61dd47289dcb2d89ad5e3/src/Config.ts#L114>
-     * Genshin Music app configs
+     * Specy's Genshin Music app
      * </a>
      */
     public String[] noteLayout() {
@@ -230,9 +230,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     @Override
     public void onClose() {
-        minecraft.player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((instrumentOpen) ->
-            instrumentOpen.setOpen(false)
-        );
+        InstrumentOpenProvider.setOpen(minecraft.player, false);
         ModPacketHandler.sendToServer(new CloseInstrumentPacket());
 
         super.onClose();

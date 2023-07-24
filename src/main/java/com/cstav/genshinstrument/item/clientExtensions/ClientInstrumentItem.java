@@ -2,7 +2,6 @@ package com.cstav.genshinstrument.item.clientExtensions;
 
 import javax.annotation.Nullable;
 
-import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpen;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 
 import net.minecraft.client.model.HumanoidModel;
@@ -14,7 +13,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.IArmPoseTransformer;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.common.util.LazyOptional;
 
 public class ClientInstrumentItem implements IClientItemExtensions {
     
@@ -39,8 +37,7 @@ public class ClientInstrumentItem implements IClientItemExtensions {
             return null;
         final Player player = (Player)entityLiving;
         
-        final LazyOptional<InstrumentOpen> lazyOpen = player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN);
-        if (!lazyOpen.isPresent() || !lazyOpen.resolve().get().isOpen())
+        if (!InstrumentOpenProvider.isOpen(player))
             return null;
 
 

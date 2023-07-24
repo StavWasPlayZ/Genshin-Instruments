@@ -36,7 +36,7 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
     }
 
     @Override
-    public ResourceLocation getNotesLocation() {
+    public ResourceLocation getNoteSymbolsLocation() {
         return getResourceFromRoot("note/notes.png");
     }
 
