@@ -17,9 +17,9 @@ public class InstrumentBlockEntity extends BlockEntity {
         super(pType, pPos, pBlockState);
     }
 
-    // //NOTE: For testing purposes
-    // public InstrumentBlockEntity(BlockPos pPos, BlockState pBlockState) {
-    //     super(ModBlockEntities.INSTRUMENT_BE.get(), pPos, pBlockState);
-    // }
+    //NOTE: For testing purposes
+    public InstrumentBlockEntity(BlockPos pPos, BlockState pBlockState) {
+        super(ModBlockEntities.INSTRUMENT_BE.get(), pPos, pBlockState);
+    }
     
 }

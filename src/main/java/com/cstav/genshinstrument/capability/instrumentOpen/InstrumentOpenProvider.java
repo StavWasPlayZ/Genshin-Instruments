@@ -5,6 +5,7 @@ import java.util.function.Function;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
@@ -41,14 +42,18 @@ public class InstrumentOpenProvider implements ICapabilityProvider, INBTSerializ
 
     @Override
     public void deserializeNBT(final CompoundTag nbt) {
-        System.out.println("nbt is here: "+nbt);
         getInstance().loadNBTData(nbt);
     }
     
 
-    public static void setOpen(Player player, boolean isOpen, boolean isItem) {
+    public static void setOpen(final Player player, final BlockPos pos) {
         player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((instrumentOpen) ->
-            instrumentOpen.setOpen(isOpen, isItem)
+            instrumentOpen.setOpen(pos)
+        );
+    }
+    public static void setOpen(Player player) {
+        player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((instrumentOpen) ->
+            instrumentOpen.setOpen()
         );
     }
     public static void setClosed(Player player) {
@@ -59,14 +64,20 @@ public class InstrumentOpenProvider implements ICapabilityProvider, INBTSerializ
 
 
     public static boolean isOpen(final Player player) {
-        return getInstrumentOpen(player, InstrumentOpen::isOpen);
+        return getInstrumentOpen(player, InstrumentOpen::isOpen, false);
     }
     public static boolean isItem(final Player player) {
-        return getInstrumentOpen(player, InstrumentOpen::isItem);
+        return getInstrumentOpen(player, InstrumentOpen::isItem, false);
+    }
+    public static BlockPos getBlockPos(final Player player) {
+        return getInstrumentOpen(player, InstrumentOpen::getBlockPos, null);
     }
 
-    private static final boolean getInstrumentOpen(Player player, Function<InstrumentOpen, Boolean> ifExists) {
+    private static final <T> T getInstrumentOpen(Player player, Function<InstrumentOpen, T> ifExists, T elseVal) {
         final LazyOptional<InstrumentOpen> lazyOpen = player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN);
-        return lazyOpen.isPresent() && ifExists.apply(lazyOpen.resolve().get());
+
+        return lazyOpen.isPresent()
+            ? ifExists.apply(lazyOpen.resolve().get())
+            : elseVal;
     }
 }

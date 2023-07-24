@@ -40,7 +40,7 @@ public abstract class AbstractInstrumentBlock extends BaseEntityBlock {
         if (!(be instanceof InstrumentBlockEntity))
             return InteractionResult.FAIL;
 
-        if (ServerUtil.sendOpenPacket((ServerPlayer)pPlayer, instrumentPacketSender())) {
+        if (ServerUtil.sendOpenPacket((ServerPlayer)pPlayer, instrumentPacketSender(), pPos)) {
             ((InstrumentBlockEntity)be).users.add(pPlayer.getUUID());
             return InteractionResult.SUCCESS;
         }

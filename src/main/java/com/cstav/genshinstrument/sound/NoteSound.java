@@ -147,7 +147,7 @@ public class NoteSound {
                 this, level, pos, instrumentId, buttonIdentifier, true
             )
             : new InstrumentPlayedEvent.ByPlayer(
-                this, level.getPlayerByUUID(playerUUID), hand,
+                this, level.getPlayerByUUID(playerUUID), pos, hand,
                 instrumentId, buttonIdentifier, true
             )
         );

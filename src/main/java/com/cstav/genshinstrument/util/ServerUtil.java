@@ -43,25 +43,26 @@ public class ServerUtil {
     public static void sendPlayNotePackets(ServerPlayer player, Optional<InteractionHand> hand,
             NoteSound sound, ResourceLocation instrumentId, int pitch) {
 
-        sendPlayNotePackets(player, hand, sound, instrumentId, new DefaultNoteButtonIdentifier(sound), pitch);
+        sendPlayNotePackets(player, player.blockPosition(), hand, sound, instrumentId, new DefaultNoteButtonIdentifier(sound), pitch);
     }
     /**
      * Sends {@link PlayNotePacket}s in the specified {@link ServerUtil#PLAY_DISTANCE}.
      * This method treats the sound as it was produced by a player.
      * @param player The player producing the sounds
+     * @param pos The position of the sound being produced
      * @param hand The hand of the player producing the sounds. Empty for when it was not a player.
      * @param sound The sound to initiate
      * @param instrumentId The ID of the instrument initiating the sound
      * @param noteIdentifier The identifier of the note
      * @param pitch The pitch of the sound to initiate
      */
-    public static void sendPlayNotePackets(ServerPlayer player, Optional<InteractionHand> hand,
+    public static void sendPlayNotePackets(ServerPlayer player, BlockPos pos, Optional<InteractionHand> hand,
             NoteSound sound, ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, int pitch) {
 
         for (final Player listener : noteListeners(player.level(), player.blockPosition()))
             ModPacketHandler.sendToClient(
                 new PlayNotePacket(
-                    player.blockPosition(), sound, pitch,
+                    pos, sound, pitch,
                     instrumentId, noteIdentifier,
                     Optional.of(player.getUUID()), hand
                 ),
@@ -71,12 +72,12 @@ public class ServerUtil {
         // Trigger an instrument game event
         // This is done so that sculk sensors can pick up the instrument's sound
         player.level().gameEvent(
-            GameEvent.INSTRUMENT_PLAY, player.blockPosition(),
+            GameEvent.INSTRUMENT_PLAY, pos,
             GameEvent.Context.of(player)
         );
 
         MinecraftForge.EVENT_BUS.post(
-            new InstrumentPlayedEvent.ByPlayer(sound, player, hand, instrumentId, noteIdentifier, false)
+            new InstrumentPlayedEvent.ByPlayer(sound, player, pos, hand, instrumentId, noteIdentifier, false)
         );
     }
 
@@ -167,25 +168,28 @@ public class ServerUtil {
      * Sends an instrument open packet as an item
      */
     public static boolean sendOpenPacket(ServerPlayer player, InteractionHand usedHand, OpenInstrumentPacketSender onOpenRequest) {
-        return sendOpenPacket(player, usedHand, onOpenRequest, true);
+        return sendOpenPacket(player, usedHand, onOpenRequest, null);
     }
     /**
      * Sends an instrument open packet as a block
      */
-    public static boolean sendOpenPacket(ServerPlayer player, OpenInstrumentPacketSender onOpenRequest) {
-        return sendOpenPacket(player, null, onOpenRequest, false);
+    public static boolean sendOpenPacket(ServerPlayer player, OpenInstrumentPacketSender onOpenRequest, BlockPos pos) {
+        return sendOpenPacket(player, null, onOpenRequest, pos);
     }
     private static boolean sendOpenPacket(ServerPlayer player, InteractionHand usedHand, OpenInstrumentPacketSender onOpenRequest,
-            boolean isItem) {
+            BlockPos pos) {
 
         onOpenRequest.send(player, usedHand);
 
         // Update the the capabilty on server
-        InstrumentOpenProvider.setOpen(player, true, isItem);
+        InstrumentOpenProvider.setOpen(player, pos);
+        
         // And clients
+        final Optional<BlockPos> playPos = Optional.ofNullable(pos);
+
         player.level().players().forEach((nearbyPlayer) ->
             ModPacketHandler.sendToClient(
-                new NotifyInstrumentOpenPacket(player.getUUID(), true, isItem),
+                new NotifyInstrumentOpenPacket(player.getUUID(), true, playPos),
                 (ServerPlayer)nearbyPlayer
             )
         );

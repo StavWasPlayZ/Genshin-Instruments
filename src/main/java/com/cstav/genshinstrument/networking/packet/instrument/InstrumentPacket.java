@@ -9,6 +9,7 @@ import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifie
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.ServerUtil;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,6 +21,7 @@ public class InstrumentPacket implements ModPacket {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_SERVER;
 
 
+    private final BlockPos pos;
     private final NoteSound sound;
     private final Optional<InteractionHand> hand;
     private final int pitch;
@@ -27,8 +29,9 @@ public class InstrumentPacket implements ModPacket {
     private final ResourceLocation instrumentId;
     private final NoteButtonIdentifier noteIdentifier;
 
-    public InstrumentPacket(NoteSound sound, int pitch, InteractionHand hand,
+    public InstrumentPacket(BlockPos pos, NoteSound sound, int pitch, InteractionHand hand,
             ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier) {
+        this.pos = pos;
         this.sound = sound;
         this.hand = Optional.ofNullable(hand);
         this.pitch = pitch;
@@ -37,6 +40,7 @@ public class InstrumentPacket implements ModPacket {
         this.noteIdentifier = noteIdentifier;
     }
     public InstrumentPacket(FriendlyByteBuf buf) {
+        pos = buf.readBlockPos();
         sound = NoteSound.readFromNetwork(buf);
         hand = buf.readOptional((fbb) -> buf.readEnum(InteractionHand.class));
         pitch = buf.readInt();
@@ -47,6 +51,7 @@ public class InstrumentPacket implements ModPacket {
 
     @Override
     public void toBytes(final FriendlyByteBuf buf) {
+        buf.writeBlockPos(pos);
         sound.writeToNetwork(buf);
         buf.writeOptional(hand, FriendlyByteBuf::writeEnum);
         buf.writeInt(pitch);
@@ -66,7 +71,7 @@ public class InstrumentPacket implements ModPacket {
             if (!InstrumentOpen.isOpen(player))
                 return;
 
-            ServerUtil.sendPlayNotePackets(player, hand, sound, instrumentId, noteIdentifier, pitch);
+            ServerUtil.sendPlayNotePackets(player, pos, hand, sound, instrumentId, noteIdentifier, pitch);
         });
 
         return true;

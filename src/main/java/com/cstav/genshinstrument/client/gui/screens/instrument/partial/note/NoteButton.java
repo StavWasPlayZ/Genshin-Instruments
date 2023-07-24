@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note;
 
 import java.awt.Point;
 
+import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.ClientUtil;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
@@ -17,6 +18,8 @@ import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.sounds.SoundManager;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -154,9 +157,16 @@ public abstract class NoteButton extends AbstractButton {
         
         sound.playLocally(instrumentScreen.getPitch());
 
+
+        final Player player = minecraft.player;
+
+        final BlockPos pos = InstrumentOpenProvider.isItem(player)
+            ? player.blockPosition()
+            : InstrumentOpenProvider.getBlockPos(player);
+
         // Send sound packet to server
         ModPacketHandler.sendToServer(
-            new InstrumentPacket(
+            new InstrumentPacket(pos,
                 sound, instrumentScreen.getPitch(),
                 instrumentScreen.interactionHand,
                 instrumentScreen.getInstrumentId(), getIdentifier()
