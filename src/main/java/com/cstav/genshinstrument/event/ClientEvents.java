@@ -12,7 +12,6 @@ import com.cstav.genshinstrument.sound.NoteSound;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -52,7 +51,7 @@ public class ClientEvents {
     // Handle block instrument arm pose
     @SubscribeEvent
     public static void prePlayerRenderEvent(final RenderPlayerEvent.Pre event) {
-        final LocalPlayer player = MINECRAFT.player;
+        final Player player = event.getEntity();
 
         if (!(InstrumentOpenProvider.isOpen(player) && !InstrumentOpenProvider.isItem(player)))
             return;
