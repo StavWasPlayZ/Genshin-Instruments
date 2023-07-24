@@ -1,5 +1,7 @@
 package com.cstav.genshinstrument.capability.instrumentOpen;
 
+import java.util.function.Function;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,17 +41,32 @@ public class InstrumentOpenProvider implements ICapabilityProvider, INBTSerializ
 
     @Override
     public void deserializeNBT(final CompoundTag nbt) {
+        System.out.println("nbt is here: "+nbt);
         getInstance().loadNBTData(nbt);
     }
     
 
-    public static void setOpen(final Player player, final boolean isOpen) {
+    public static void setOpen(Player player, boolean isOpen, boolean isItem) {
         player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((instrumentOpen) ->
-            instrumentOpen.setOpen(isOpen)
+            instrumentOpen.setOpen(isOpen, isItem)
         );
     }
+    public static void setClosed(Player player) {
+        player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((instrumentOpen) ->
+            instrumentOpen.setClosed()
+        );
+    }
+
+
     public static boolean isOpen(final Player player) {
+        return getInstrumentOpen(player, InstrumentOpen::isOpen);
+    }
+    public static boolean isItem(final Player player) {
+        return getInstrumentOpen(player, InstrumentOpen::isItem);
+    }
+
+    private static final boolean getInstrumentOpen(Player player, Function<InstrumentOpen, Boolean> ifExists) {
         final LazyOptional<InstrumentOpen> lazyOpen = player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN);
-        return lazyOpen.isPresent() && lazyOpen.resolve().get().isOpen();
+        return lazyOpen.isPresent() && ifExists.apply(lazyOpen.resolve().get());
     }
 }

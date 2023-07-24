@@ -230,8 +230,13 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     @Override
     public void onClose() {
-        InstrumentOpenProvider.setOpen(minecraft.player, false);
-        ModPacketHandler.sendToServer(new CloseInstrumentPacket());
+        onClose(true);
+    }
+    public void onClose(final boolean notify) {
+        if (notify) {
+            InstrumentOpenProvider.setClosed(minecraft.player);
+            ModPacketHandler.sendToServer(new CloseInstrumentPacket());
+        }
 
         super.onClose();
     }

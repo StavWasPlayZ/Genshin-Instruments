@@ -1,5 +1,7 @@
 package com.cstav.genshinstrument;
 
+import com.cstav.genshinstrument.block.ModBlockEntities;
+import com.cstav.genshinstrument.block.ModBlocks;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.item.ModItems;
 import com.cstav.genshinstrument.sound.ModSounds;
@@ -19,11 +21,15 @@ public class GInstrumentMod
 {
     public static final String MODID = "genshinstrument";
 
+
     public GInstrumentMod()
     {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         
         ModItems.register(bus);
+        ModBlocks.register(bus);
+        ModBlockEntities.register(bus);
+
         ModSounds.register(bus);
         ModCreativeModeTabs.regsiter(bus);
 

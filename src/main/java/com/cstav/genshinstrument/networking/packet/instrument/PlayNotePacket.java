@@ -68,7 +68,7 @@ public class PlayNotePacket implements ModPacket {
         supplier.get().enqueueWork(() ->
 
             sound.playAtPos(
-                pitch, playerUUID.orElse(null), hand.orElse(null),
+                pitch, playerUUID.orElse(null), hand,
                 instrumentId, noteIdentifier, blockPos
             )
             

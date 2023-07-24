@@ -10,6 +10,7 @@ import com.cstav.genshinstrument.networking.OpenInstrumentPacketSender;
 import com.cstav.genshinstrument.networking.buttonidentifier.DefaultNoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.packet.instrument.NotifyInstrumentOpenPacket;
+import com.cstav.genshinstrument.networking.packet.instrument.OpenInstrumentPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.PlayNotePacket;
 import com.cstav.genshinstrument.sound.NoteSound;
 
@@ -34,12 +35,12 @@ public class ServerUtil {
      * Sends {@link PlayNotePacket}s in the specified {@link ServerUtil#PLAY_DISTANCE}.
      * This method treats the sound as it was produced by a player.
      * @param player The player producing the sounds
-     * @param hand The hand of the player producing the sounds
+     * @param hand The hand of the player producing the sounds. Empty for when it was not a player.
      * @param sound The sound to initiate
      * @param instrumentId The ID of the instrument initiating the sound
      * @param pitch The pitch of the sound to initiate
      */
-    public static void sendPlayNotePackets(ServerPlayer player, InteractionHand hand,
+    public static void sendPlayNotePackets(ServerPlayer player, Optional<InteractionHand> hand,
             NoteSound sound, ResourceLocation instrumentId, int pitch) {
 
         sendPlayNotePackets(player, hand, sound, instrumentId, new DefaultNoteButtonIdentifier(sound), pitch);
@@ -48,13 +49,13 @@ public class ServerUtil {
      * Sends {@link PlayNotePacket}s in the specified {@link ServerUtil#PLAY_DISTANCE}.
      * This method treats the sound as it was produced by a player.
      * @param player The player producing the sounds
-     * @param hand The hand of the player producing the sounds
+     * @param hand The hand of the player producing the sounds. Empty for when it was not a player.
      * @param sound The sound to initiate
      * @param instrumentId The ID of the instrument initiating the sound
      * @param noteIdentifier The identifier of the note
      * @param pitch The pitch of the sound to initiate
      */
-    public static void sendPlayNotePackets(ServerPlayer player, InteractionHand hand,
+    public static void sendPlayNotePackets(ServerPlayer player, Optional<InteractionHand> hand,
             NoteSound sound, ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, int pitch) {
 
         for (final Player listener : noteListeners(player.level(), player.blockPosition()))
@@ -62,7 +63,7 @@ public class ServerUtil {
                 new PlayNotePacket(
                     player.blockPosition(), sound, pitch,
                     instrumentId, noteIdentifier,
-                    Optional.of(player.getUUID()), Optional.of(hand)
+                    Optional.of(player.getUUID()), hand
                 ),
                 (ServerPlayer)listener
             );
@@ -161,24 +162,41 @@ public class ServerUtil {
     }
 
 
-
-    public static boolean sendOpenRequest(ServerPlayer player, InteractionHand usedHand, OpenInstrumentPacketSender onOpenRequest) {
-        if (InstrumentOpenProvider.isOpen(player))
-            return false;
-
+    // Item/block stuff
+    /**
+     * Sends an instrument open packet as an item
+     */
+    public static boolean sendOpenPacket(ServerPlayer player, InteractionHand usedHand, OpenInstrumentPacketSender onOpenRequest) {
+        return sendOpenPacket(player, usedHand, onOpenRequest, true);
+    }
+    /**
+     * Sends an instrument open packet as a block
+     */
+    public static boolean sendOpenPacket(ServerPlayer player, OpenInstrumentPacketSender onOpenRequest) {
+        return sendOpenPacket(player, null, onOpenRequest, false);
+    }
+    private static boolean sendOpenPacket(ServerPlayer player, InteractionHand usedHand, OpenInstrumentPacketSender onOpenRequest,
+            boolean isItem) {
 
         onOpenRequest.send(player, usedHand);
 
         // Update the the capabilty on server
-        InstrumentOpenProvider.setOpen(player, true);
+        InstrumentOpenProvider.setOpen(player, true, isItem);
         // And clients
         player.level().players().forEach((nearbyPlayer) ->
             ModPacketHandler.sendToClient(
-                new NotifyInstrumentOpenPacket(player.getUUID(), true),
+                new NotifyInstrumentOpenPacket(player.getUUID(), true, isItem),
                 (ServerPlayer)nearbyPlayer
             )
         );
 
         return true;
+    }
+
+    /**
+     * @apiNote This method should only be used by the internal Genshin Instruments mod!
+     */
+    public static void sendInternalOpenPacket(ServerPlayer player, InteractionHand hand, String instrumentType) {
+        ModPacketHandler.sendToClient(new OpenInstrumentPacket(instrumentType, hand), player);
     }
 }

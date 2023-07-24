@@ -7,8 +7,9 @@ import net.minecraftforge.common.util.LazyOptional;
 
 @AutoRegisterCapability
 public class InstrumentOpen {
-    public static final String NBT_KEY = "instrumentOpen";
-    private boolean isOpen = false;
+    public static final String OPEN_TAG = "instrumentOpen";
+    public static final String IS_ITEM_TAG = "isItem";
+    private boolean isOpen = false, isItem = false;
 
     public static boolean isOpen(final Player player) {
         final LazyOptional<InstrumentOpen> oIsOpen = player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN);
@@ -20,14 +21,25 @@ public class InstrumentOpen {
         return isOpen;
     }
     
-    public void setOpen(final boolean isOpen) {
+    public void setOpen(final boolean isOpen, final boolean isItem) {
         this.isOpen = isOpen;
+        this.isItem = isItem;
+    }
+    public void setClosed() {
+        isOpen = false;
     }
 
+    public boolean isItem() {
+        return isItem;
+    }
+
+
     public void saveNBTData(final CompoundTag nbt) {
-        nbt.putBoolean(NBT_KEY, isOpen);
+        nbt.putBoolean(OPEN_TAG, isOpen);
+        nbt.putBoolean(IS_ITEM_TAG, isOpen);
     }
     public void loadNBTData(final CompoundTag nbt) {
-        isOpen = nbt.getBoolean(NBT_KEY);
+        isOpen = nbt.getBoolean(OPEN_TAG);
+        isItem = nbt.getBoolean(IS_ITEM_TAG);
     }
 }

@@ -1,5 +1,6 @@
 package com.cstav.genshinstrument.networking.packet.instrument;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpen;
@@ -20,7 +21,7 @@ public class InstrumentPacket implements ModPacket {
 
 
     private final NoteSound sound;
-    private final InteractionHand hand;
+    private final Optional<InteractionHand> hand;
     private final int pitch;
 
     private final ResourceLocation instrumentId;
@@ -29,7 +30,7 @@ public class InstrumentPacket implements ModPacket {
     public InstrumentPacket(NoteSound sound, int pitch, InteractionHand hand,
             ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier) {
         this.sound = sound;
-        this.hand = hand;
+        this.hand = Optional.ofNullable(hand);
         this.pitch = pitch;
 
         this.instrumentId = instrumentId;
@@ -37,7 +38,7 @@ public class InstrumentPacket implements ModPacket {
     }
     public InstrumentPacket(FriendlyByteBuf buf) {
         sound = NoteSound.readFromNetwork(buf);
-        hand = buf.readEnum(InteractionHand.class);
+        hand = buf.readOptional((fbb) -> buf.readEnum(InteractionHand.class));
         pitch = buf.readInt();
 
         instrumentId = buf.readResourceLocation();
@@ -47,7 +48,7 @@ public class InstrumentPacket implements ModPacket {
     @Override
     public void toBytes(final FriendlyByteBuf buf) {
         sound.writeToNetwork(buf);
-        buf.writeEnum(hand);
+        buf.writeOptional(hand, FriendlyByteBuf::writeEnum);
         buf.writeInt(pitch);
 
         buf.writeResourceLocation(instrumentId);

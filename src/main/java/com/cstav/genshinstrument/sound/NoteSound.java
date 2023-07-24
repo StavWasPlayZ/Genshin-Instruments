@@ -129,7 +129,7 @@ public class NoteSound {
      * @param pos The position at which the sound was fired from
      */
     @OnlyIn(Dist.CLIENT)
-    public void playAtPos(int pitch, UUID playerUUID, InteractionHand hand,
+    public void playAtPos(int pitch, UUID playerUUID, Optional<InteractionHand> hand,
             ResourceLocation instrumentId, NoteButtonIdentifier buttonIdentifier, BlockPos pos) {
         final Minecraft minecraft = Minecraft.getInstance();
         final Player player = minecraft.player;

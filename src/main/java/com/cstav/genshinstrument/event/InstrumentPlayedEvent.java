@@ -1,5 +1,7 @@
 package com.cstav.genshinstrument.event;
 
+import java.util.Optional;
+
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
 
@@ -46,21 +48,31 @@ public class InstrumentPlayedEvent extends Event {
     @Cancelable
     public static class ByPlayer extends InstrumentPlayedEvent {
         public final Player player;
-        /** The instrument held by the player who initiated the sound */
-        public final ItemStack instrument;
-        public final InteractionHand hand;
 
-        public ByPlayer(NoteSound sound, Player player, InteractionHand hand,
+        // The values below will only be supplied if initiated from an item
+
+        /** The instrument held by the player who initiated the sound */
+        public final Optional<ItemStack> instrument;
+        /** The hand holding the instrument played by this player */
+        public final Optional<InteractionHand> hand;
+
+
+        public ByPlayer(NoteSound sound, Player player, Optional<InteractionHand> hand,
                 ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, boolean isClientSide) {
             super(sound, player.level(), player.blockPosition(), instrumentId, noteIdentifier, isClientSide);
             this.player = player;
-            this.hand = hand;
 
-            instrument = (hand == null) ? null : player.getItemInHand(hand);
-
-            // Handle provided unmatching id
-            if (!instrumentId.equals(ForgeRegistries.ITEMS.getKey(instrument.getItem())))
-                setCanceled(true);
+            // Handle instrument items
+            if (hand == null) {
+                this.hand = hand;
+                instrument = Optional.of((hand == null) ? null : player.getItemInHand(hand.get()));
+                
+                if (!instrumentId.equals(ForgeRegistries.ITEMS.getKey(instrument.get().getItem())))
+                    setCanceled(true);
+            } else {
+                instrument = Optional.empty();
+                this.hand = Optional.empty();
+            }
         }
     }
     

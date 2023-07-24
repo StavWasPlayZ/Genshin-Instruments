@@ -4,9 +4,7 @@ import java.util.function.Consumer;
 
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.item.clientExtensions.ClientInstrumentItem;
-import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.OpenInstrumentPacketSender;
-import com.cstav.genshinstrument.networking.packet.instrument.OpenInstrumentPacket;
 import com.cstav.genshinstrument.util.ServerUtil;
 
 import net.minecraft.server.level.ServerPlayer;
@@ -44,17 +42,13 @@ public class InstrumentItem extends Item {
         super(properties.stacksTo(1));
         this.onOpenRequest = onOpenRequest;
     }
-
-    static void sendOpenPacket(ServerPlayer player, InteractionHand hand, String instrumentType) {
-        ModPacketHandler.sendToClient(new OpenInstrumentPacket(instrumentType, hand), player);
-    }
     
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         return pLevel.isClientSide ? InteractionResultHolder.pass(pPlayer.getItemInHand(pUsedHand))
 
-            : ServerUtil.sendOpenRequest((ServerPlayer)pPlayer, pUsedHand, onOpenRequest)
+            : ServerUtil.sendOpenPacket((ServerPlayer)pPlayer, pUsedHand, onOpenRequest)
                 ? InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand))
                 : InteractionResultHolder.fail(pPlayer.getItemInHand(pUsedHand));
     }

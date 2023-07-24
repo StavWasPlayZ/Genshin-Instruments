@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument.networking.packet.instrument;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -30,21 +31,21 @@ public class OpenInstrumentPacket implements ModPacket {
 
 
     private final String instrumentType;
-    private final InteractionHand hand;
+    private final Optional<InteractionHand> hand;
     public OpenInstrumentPacket(final String instrumentScreen, final InteractionHand hand) {
         this.instrumentType = instrumentScreen;
-        this.hand = hand;
+        this.hand = Optional.ofNullable(hand);
     }
 
     public OpenInstrumentPacket(FriendlyByteBuf buf) {
         instrumentType = buf.readUtf();
-        hand = buf.readEnum(InteractionHand.class);
+        hand = buf.readOptional((fbb) -> fbb.readEnum(InteractionHand.class));
     }
 
     @Override
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeUtf(instrumentType);
-        buf.writeEnum(hand);
+        buf.writeOptional(hand, FriendlyByteBuf::writeEnum);
     }
 
 
@@ -54,7 +55,7 @@ public class OpenInstrumentPacket implements ModPacket {
 
         context.enqueueWork(() -> {
             DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
-                Minecraft.getInstance().setScreen(OPEN_INSTRUMENT.get(instrumentType).get().apply(hand)));
+                Minecraft.getInstance().setScreen(OPEN_INSTRUMENT.get(instrumentType).get().apply(hand.orElse(null))));
         });
 
         return true;
