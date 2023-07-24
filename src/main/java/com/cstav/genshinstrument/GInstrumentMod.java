@@ -1,7 +1,5 @@
 package com.cstav.genshinstrument;
 
-import com.cstav.genshinstrument.block.ModBlockEntities;
-import com.cstav.genshinstrument.block.ModBlocks;
 import com.cstav.genshinstrument.client.ModArmPose;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.item.ModItems;
@@ -30,8 +28,8 @@ public class GInstrumentMod
         bus.addListener(GInstrumentMod::clientSetup);
         
         ModItems.register(bus);
-        ModBlocks.register(bus);
-        ModBlockEntities.register(bus);
+        // ModBlocks.register(bus);
+        // ModBlockEntities.register(bus);
 
         ModSounds.register(bus);
         ModCreativeModeTabs.regsiter(bus);
