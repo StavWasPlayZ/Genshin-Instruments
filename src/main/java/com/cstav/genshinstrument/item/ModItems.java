@@ -1,6 +1,6 @@
 package com.cstav.genshinstrument.item;
 
-import com.cstav.genshinstrument.Main;
+import com.cstav.genshinstrument.GInstrumentMod;
 
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
@@ -13,10 +13,10 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-@EventBusSubscriber(modid = Main.MODID, bus = Bus.MOD)
+@EventBusSubscriber(modid = GInstrumentMod.MODID, bus = Bus.MOD)
 public class ModItems {
     
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Main.MODID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, GInstrumentMod.MODID);
     public static void register(final IEventBus bus) {
         ITEMS.register(bus);
     }

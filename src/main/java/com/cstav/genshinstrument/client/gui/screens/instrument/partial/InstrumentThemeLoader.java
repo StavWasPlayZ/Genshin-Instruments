@@ -8,7 +8,7 @@ import java.util.function.Function;
 
 import org.slf4j.Logger;
 
-import com.cstav.genshinstrument.Main;
+import com.cstav.genshinstrument.GInstrumentMod;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -35,7 +35,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
  * This class must be initialized during mod setup.
  */
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(modid = Main.MODID, bus = Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = GInstrumentMod.MODID, bus = Bus.MOD, value = Dist.CLIENT)
 public class InstrumentThemeLoader {
     private static final Logger LOGGER = LogUtils.getLogger();
 
@@ -121,8 +121,10 @@ public class InstrumentThemeLoader {
                                 resourceManager.getResource(styleLocation).get().openAsReader()
                             ).getAsJsonObject());
 
+                        LOGGER.info("Loaded instrument style from "+styleLocation);
+
                     } catch (IOException e) {
-                        LOGGER.error("Error retrieving instrument styler from "+styleLocation, e);
+                        LOGGER.error("Unable to load instrument styler from "+styleLocation, e);
                         continue;
                     }
                 }

@@ -3,7 +3,7 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import com.cstav.genshinstrument.Main;
+import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
@@ -104,7 +104,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
 
     @Override
     public ResourceLocation getNotesLocation() {
-        return new ResourceLocation(Main.MODID, getGlobalRootPath() + "grid_notes.png");
+        return new ResourceLocation(GInstrumentMod.MODID, getGlobalRootPath() + "grid_notes.png");
     }
     
 

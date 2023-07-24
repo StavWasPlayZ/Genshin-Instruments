@@ -14,12 +14,12 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
  * 
  * @author StavWasPlayZ
  */
-@Mod(Main.MODID)
-public class Main
+@Mod(GInstrumentMod.MODID)
+public class GInstrumentMod
 {
     public static final String MODID = "genshinstrument";
 
-    public Main()
+    public GInstrumentMod()
     {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         

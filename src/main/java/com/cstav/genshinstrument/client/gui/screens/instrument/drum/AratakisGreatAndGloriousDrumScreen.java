@@ -3,7 +3,7 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.drum;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.cstav.genshinstrument.Main;
+import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
@@ -32,7 +32,7 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
     }
     @Override
     public ResourceLocation getInstrumentId() {
-        return new ResourceLocation(Main.MODID, INSTRUMENT_ID);
+        return new ResourceLocation(GInstrumentMod.MODID, INSTRUMENT_ID);
     }
 
     @Override
@@ -105,7 +105,7 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
     }
     
 
-    private static final InstrumentThemeLoader THEME_LOADER = initThemeLoader(Main.MODID, INSTRUMENT_ID);
+    private static final InstrumentThemeLoader THEME_LOADER = initThemeLoader(GInstrumentMod.MODID, INSTRUMENT_ID);
     @Override
     public InstrumentThemeLoader getThemeLoader() {
         return THEME_LOADER;

@@ -2,7 +2,7 @@ package com.cstav.genshinstrument.client.gui.screens.options.instrument;
 
 import java.util.function.BiFunction;
 
-import com.cstav.genshinstrument.Main;
+import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
@@ -25,7 +25,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(bus = Bus.MOD, modid = Main.MODID, value = Dist.CLIENT)
+@EventBusSubscriber(bus = Bus.MOD, modid = GInstrumentMod.MODID, value = Dist.CLIENT)
 public class GridInstrumentOptionsScreen extends AbstractInstrumentOptionsScreen {
 
     public GridInstrumentOptionsScreen(final AbstractGridInstrumentScreen screen) {

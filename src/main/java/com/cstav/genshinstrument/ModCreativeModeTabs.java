@@ -12,10 +12,10 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
-@EventBusSubscriber(modid = Main.MODID, bus = Bus.MOD)
+@EventBusSubscriber(modid = GInstrumentMod.MODID, bus = Bus.MOD)
 public class ModCreativeModeTabs {
 
-    private static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Main.MODID);
+    private static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, GInstrumentMod.MODID);
 
     public static void regsiter(final IEventBus bus) {
         TABS.register(bus);

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 
-import com.cstav.genshinstrument.Main;
+import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.networking.buttonidentifier.DrumNoteIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
@@ -28,7 +28,7 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 
-@EventBusSubscriber(modid = Main.MODID, bus = Bus.MOD)
+@EventBusSubscriber(modid = GInstrumentMod.MODID, bus = Bus.MOD)
 public class ModPacketHandler {
     private static final Logger LOGGER = LogUtils.getLogger();
 
@@ -57,7 +57,7 @@ public class ModPacketHandler {
     private static int id;
 
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
-        new ResourceLocation(Main.MODID, "main"),
+        new ResourceLocation(GInstrumentMod.MODID, "main"),
         () -> PROTOCOL_VERSION,
         PROTOCOL_VERSION::equals,
         PROTOCOL_VERSION::equals
