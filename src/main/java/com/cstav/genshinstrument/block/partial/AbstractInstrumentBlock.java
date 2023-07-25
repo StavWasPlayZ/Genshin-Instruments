@@ -2,14 +2,15 @@ package com.cstav.genshinstrument.block.partial;
 
 import java.util.function.Consumer;
 
-import com.cstav.genshinstrument.block.partial.client.IClientBlockArmPose;
-import com.cstav.genshinstrument.block.partial.client.InstrumentClientBlockArmPose;
+import com.cstav.genshinstrument.block.partial.client.IClientArmPoseProvider;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
+import com.cstav.genshinstrument.client.ModArmPose;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.OpenInstrumentPacketSender;
 import com.cstav.genshinstrument.networking.packet.instrument.NotifyInstrumentClosedPacket;
 import com.cstav.genshinstrument.util.ServerUtil;
 
+import net.minecraft.client.model.HumanoidModel.ArmPose;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -45,15 +46,16 @@ public abstract class AbstractInstrumentBlock extends BaseEntityBlock {
     public abstract InstrumentBlockEntity newBlockEntity(BlockPos pPos, BlockState pState);
     
     /**
-     * An instance of {@link IClientBlockArmPose} as defined in {@link AbstractInstrumentBlock#initClientBlockUseAnim}
+     * An instance of {@link IClientArmPoseProvider} as defined in {@link AbstractInstrumentBlock#initClientBlockUseAnim}
      */
     private Object clientBlockArmPose;
-    protected void initClientBlockUseAnim(final Consumer<IClientBlockArmPose> consumer) {
-        consumer.accept(new InstrumentClientBlockArmPose());
+    protected void initClientBlockUseAnim(final Consumer<ArmPose> consumer) {
+        consumer.accept(ModArmPose.PLAYING_BLOCK_INSTRUMENT);
     }
+
     @OnlyIn(Dist.CLIENT)
-    public IClientBlockArmPose getClientBlockArmPose() {
-        return (IClientBlockArmPose)clientBlockArmPose;
+    public ArmPose getClientBlockArmPose() {
+        return (ArmPose)clientBlockArmPose;
     }
 
 

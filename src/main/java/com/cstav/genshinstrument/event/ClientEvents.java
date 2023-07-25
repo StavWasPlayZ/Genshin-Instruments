@@ -32,7 +32,7 @@ public class ClientEvents {
     public static void onClientTick(final ClientTickEvent event) {
         AbstractInstrumentScreen.getCurrentScreen(MINECRAFT).ifPresent(AbstractInstrumentScreen::handleAbruptClosing);
     }
-    
+
 
     // Handle block instrument arm pose
     @SubscribeEvent
@@ -49,7 +49,7 @@ public class ClientEvents {
 
         final AbstractInstrumentBlock instrumentBlock = (AbstractInstrumentBlock) block;
         final PlayerModel<AbstractClientPlayer> model = event.getRenderer().getModel();
-        model.leftArmPose = model.rightArmPose = instrumentBlock.getClientBlockArmPose().getArmPose();
+        model.leftArmPose = model.rightArmPose = instrumentBlock.getClientBlockArmPose();
     }
 
     
