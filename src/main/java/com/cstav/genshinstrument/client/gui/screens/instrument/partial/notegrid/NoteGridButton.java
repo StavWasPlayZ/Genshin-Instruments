@@ -47,6 +47,12 @@ public class NoteGridButton extends NoteButton {
 
     @Override
     protected NoteButtonRenderer initNoteRenderer() {
-        return new NoteButtonRenderer(this, row, AbstractGridInstrumentScreen.DEF_ROWS);
+        return new NoteButtonRenderer(this, LabelUtil.getABCOffset(this), LabelUtil.ABC.length);
+    }
+
+    @Override
+    public void updateNoteLabel() {
+        super.updateNoteLabel();
+        noteRenderer.noteTextureRow = LabelUtil.getABCOffset(this);
     }
 }

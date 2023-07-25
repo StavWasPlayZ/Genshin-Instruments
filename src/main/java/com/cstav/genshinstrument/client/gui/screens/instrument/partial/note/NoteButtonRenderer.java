@@ -32,7 +32,8 @@ public class NoteButtonRenderer {
         noteLocation, noteBgLocation, accidentalsLocation;
 
     // Texture properties
-    protected final int noteTextureRow, rowsInNoteTexture;
+    public int noteTextureRow;
+    protected final int rowsInNoteTexture;
 
     // Animations
     public final NoteAnimationController noteAnimation;

@@ -60,7 +60,7 @@ public abstract class NoteButton extends AbstractButton {
     private NoteSound sound;
     private NoteLabelSupplier labelSupplier;
 
-    private NoteButtonRenderer noteRenderer;
+    protected NoteButtonRenderer noteRenderer;
     protected abstract NoteButtonRenderer initNoteRenderer();
 
 

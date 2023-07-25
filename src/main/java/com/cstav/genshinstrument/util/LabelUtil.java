@@ -5,17 +5,21 @@ import static java.util.Map.entry;
 import java.util.Map;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.NoteGridButton;
+import com.mojang.logging.LogUtils;
 
 public abstract class LabelUtil {
     
     public static final String[]
         DO_RE_MI = {
             "do", "re", "mi", "fa", "so", "la", "ti"
-        },
+        }
+    ;
+    public static final char[]
         ABC = {
-            "C", "D", "E", "F", "G", "A", "B"
+            'C', 'D', 'E', 'F', 'G', 'A', 'B'
         }
     ;
 
@@ -72,9 +76,11 @@ public abstract class LabelUtil {
         final AbstractGridInstrumentScreen screen = (AbstractGridInstrumentScreen) gridButton.instrumentScreen;
         return getNoteName(
             screen.optionsScreen.isPitchSliderEnabled() ? screen.getPitch() : 0,
-            screen.noteLayout(),
-            gridButton.row + gridButton.column * screen.rows()
+            screen.noteLayout(), getNoteOffset(gridButton)
         );
+    }
+    public static int getNoteOffset(final NoteGridButton gridButton) {
+        return gridButton.row + gridButton.column * ((AbstractGridInstrumentScreen)gridButton.instrumentScreen).rows();
     }
 
     public static String getCutNoteName(final NoteGridButton gridButton) {
@@ -86,6 +92,22 @@ public abstract class LabelUtil {
 
         return noteName;
     }
+
+
+    public static int getABCOffset(final char note, final AbstractInstrumentScreen screen) {
+        for (int i = 0; i < ABC.length; i++) {
+            if (note == ABC[i])
+                return i;
+        }
+
+        LogUtils.getLogger().warn("Could not get note letter "+note+" for "+screen.getInstrumentId()+"!");
+        return 0;
+    }
+    public static int getABCOffset(final NoteGridButton gridButton) {
+        return getABCOffset(getNoteName(gridButton).charAt(0), gridButton.instrumentScreen);
+    }
+
+    
 
     /**
      * Provides a similar behaviour to python's indexing,
