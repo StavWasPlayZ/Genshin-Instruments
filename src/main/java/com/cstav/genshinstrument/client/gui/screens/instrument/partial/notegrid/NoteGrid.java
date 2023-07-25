@@ -40,18 +40,19 @@ public class NoteGrid implements Iterable<NoteButton> {
     public final boolean isSSTI;
 
     /**
-     * @param isSSTI Is a singular sound-type instrument; Should the pitch scale by 1 for each instrument?
-     * @param startingNote The note to start the linear pitch increment
-     * @param noteSkip The amount of notes to skip for each note button
+     * @param begginingNote The note to start the linear pitch increment. Only gets used if this is an SSTI instrument.
+     * @param noteSkip The amount of pitch to skip for each note button. Only gets used if this is an SSTI instrument.
      */
-    public NoteGrid(int rows, int columns, NoteSound[] noteSounds, AbstractGridInstrumentScreen instrumentScreen,
-            boolean isSSTI, int begginingNote, int noteSkip) {
+    public NoteGrid(NoteSound[] noteSounds, AbstractGridInstrumentScreen instrumentScreen,
+            int begginingNote, int noteSkip) {
 
         this.instrumentScreen = instrumentScreen;
-        this.rows = rows;
-        this.columns = columns;
+        rows = instrumentScreen.rows();
+        columns = instrumentScreen.columns();
+
         this.noteSounds = noteSounds;
-        this.isSSTI = isSSTI;
+        this.isSSTI = instrumentScreen.isSSTI();
+
 
         // Construct the note grid
         notes = new NoteButton[columns][rows];
@@ -68,14 +69,14 @@ public class NoteGrid implements Iterable<NoteButton> {
             notes[i] = buttonRow;
         }
     }
-    public NoteGrid(int rows, int columns, NoteSound[] noteSounds, AbstractGridInstrumentScreen instrumentScreen) {
-        this(rows, columns, noteSounds, instrumentScreen, false, 0, 0);
+    public NoteGrid(NoteSound[] noteSounds, AbstractGridInstrumentScreen instrumentScreen) {
+        this(noteSounds, instrumentScreen, 0, 0);
     }
     /**
-     * Creates a new SSTI-type note grid that begins from {@code begginingNote} and jumps 1 pitch unit every iteration.
+     * @param begginingNote The note to start the linear pitch increment. Only gets used if this is an SSTI instrument.
      */
-    public NoteGrid(int rows, int columns, NoteSound[] noteSounds, AbstractGridInstrumentScreen instrumentScreen, int begginingNote) {
-        this(rows, columns, noteSounds, instrumentScreen, true, begginingNote, 1);
+    public NoteGrid(NoteSound[] noteSounds, AbstractGridInstrumentScreen instrumentScreen, int begginingNote) {
+        this(noteSounds, instrumentScreen, begginingNote, 1);
     }
     
     /**

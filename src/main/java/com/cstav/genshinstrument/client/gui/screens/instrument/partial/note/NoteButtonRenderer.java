@@ -18,8 +18,8 @@ public class NoteButtonRenderer {
     private static final Minecraft MINECRAFT = Minecraft.getInstance();
 
     private static final double
-        FLAT_TEXTURE_HEIGHT_MULTIPLIER = 3.7f/1.3f,
-        FLAT_TEXTURE_WIDTH_MULTIPLIER = 1.7f/1.3f,
+        FLAT_TEXTURE_HEIGHT_MULTIPLIER = 3.7/1.3,
+        FLAT_TEXTURE_WIDTH_MULTIPLIER = 1.7/1.3,
         SHARP_MULTIPLIER = .8f,
         DOUBLE_SHARP_MULTIPLIER = .9f
     ;
@@ -176,9 +176,9 @@ public class NoteButtonRenderer {
 
         gui.blit(accidentalsLocation,
             noteButton.getX() - 9 + offsetX, noteButton.getY() - 6 + offsetY,
-            noteButton.isPlaying() ? textureWidth/2 : 0, (spritePartHeight) * index - index,
+            noteButton.isPlaying() ? textureWidth/2 : 0, spritePartHeight * index - index,
             
-            textureWidth/2,  spritePartHeight + ((index == 1) ? 3 : 0),
+            textureWidth/2,  spritePartHeight,
             textureWidth - (((index != 0) && noteButton.isPlaying()) ? 1 : 0), textureHeight
         );
     }

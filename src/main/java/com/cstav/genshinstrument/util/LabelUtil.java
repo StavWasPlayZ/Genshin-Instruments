@@ -74,10 +74,7 @@ public abstract class LabelUtil {
 
     public static String getNoteName(final NoteGridButton gridButton) {
         final AbstractGridInstrumentScreen screen = (AbstractGridInstrumentScreen) gridButton.instrumentScreen;
-        return getNoteName(
-            screen.optionsScreen.isPitchSliderEnabled() ? screen.getPitch() : 0,
-            screen.noteLayout(), getNoteOffset(gridButton)
-        );
+        return getNoteName(screen.getPitch(), screen.noteLayout(), getNoteOffset(gridButton));
     }
     public static int getNoteOffset(final NoteGridButton gridButton) {
         return gridButton.row + gridButton.column * ((AbstractGridInstrumentScreen)gridButton.instrumentScreen).rows();

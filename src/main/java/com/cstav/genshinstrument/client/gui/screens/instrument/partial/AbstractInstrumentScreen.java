@@ -3,6 +3,7 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
@@ -38,13 +39,17 @@ public abstract class AbstractInstrumentScreen extends Screen {
     /**
      * The set pitch of all note buttons in this screen
      */
-    private int pitch = ModClientConfigs.PITCH.get().intValue();
+    private int pitch;
     public int getPitch() {
         return pitch;
     }
     public void setPitch(int pitch) {
         this.pitch = NoteSound.clampPitch(pitch);
         notesIterable().forEach((note) -> note.setPitch(this.pitch));
+    }
+
+    protected void initPitch(final Consumer<Integer> pitchConsumer) {
+        pitchConsumer.accept(ModClientConfigs.PITCH.get().intValue());
     }
 
 
@@ -186,6 +191,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     @Override
     protected void init() {
+        initPitch((pitch) -> this.pitch = pitch);
         optionsScreen.init(minecraft, width, height);
 
         if (isGenshinInstrument() && !ModClientConfigs.ACCEPTED_GENSHIN_CONSENT.get())

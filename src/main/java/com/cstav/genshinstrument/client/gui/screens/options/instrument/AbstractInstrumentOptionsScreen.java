@@ -84,14 +84,16 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
     protected final @Nullable INoteLabel[] labels;
     protected final @Nullable INoteLabel currLabel;
+
     /**
-     * Override to {@code false} tp disable the pitch slider from the optins.
-     * @apiNote SSTI type instruments do not want a pitch slider.
+     * Override to {@code false} tp disable the pitch slider from the options.
+     * @apiNote SSTI-type instruments do not want a pitch slider. They tend to max out from beginning to end.
      */
     public boolean isPitchSliderEnabled() {
         return true;
     }
     
+
     public final @Nullable AbstractInstrumentScreen instrumentScreen;
 
     public AbstractInstrumentOptionsScreen(@Nullable AbstractInstrumentScreen screen) {

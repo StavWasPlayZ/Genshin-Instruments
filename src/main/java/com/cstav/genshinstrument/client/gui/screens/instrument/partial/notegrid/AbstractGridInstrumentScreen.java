@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid
 
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.function.Consumer;
 
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
@@ -50,6 +51,27 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
      */
     public abstract NoteSound[] getSounds();
 
+    /**
+     * <p>
+     * An SSTI instrument is a Singular Sound-Type Instrument, such that
+     * only the <b>first</b> note in {@link AbstractGridInstrumentScreen#getSounds} will get used.
+     * </p><p>
+     * Notes will start with the {@link NoteSound#MIN_PITCH set minimum pitch},
+     * and increment their pitch up by 1 for every new instance.
+     * </p>
+     * This behaviour can be changed by overriding {@link AbstractGridInstrumentScreen#initNoteGrid}.
+     */
+    public boolean isSSTI() {
+        return false;
+    }
+    @Override
+    protected void initPitch(Consumer<Integer> pitchConsumer) {
+        if (isSSTI())
+            pitchConsumer.accept(0);
+        else
+            super.initPitch(pitchConsumer);
+    }
+
 
     /**
      * <p>
@@ -83,9 +105,9 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
      * @return The new Note Grid
      */
     public NoteGrid initNoteGrid() {
-        return new NoteGrid(
-            rows(), columns(), getSounds(), this
-        );
+        return isSSTI()
+            ? new NoteGrid(getSounds(), this, NoteSound.MIN_PITCH)
+            : new NoteGrid(getSounds(), this);
     }
 
 

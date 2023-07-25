@@ -53,6 +53,12 @@ public class GridInstrumentOptionsScreen extends AbstractInstrumentOptionsScreen
 
 
     @Override
+    public boolean isPitchSliderEnabled() {
+        return !((AbstractGridInstrumentScreen)instrumentScreen).isSSTI();
+    }
+
+
+    @Override
     protected void initVisualsSection(GridLayout grid, RowHelper rowHelper) {
         final CycleButton<Boolean> renderBackground = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(ModClientConfigs.RENDER_BACKGROUND.get())
