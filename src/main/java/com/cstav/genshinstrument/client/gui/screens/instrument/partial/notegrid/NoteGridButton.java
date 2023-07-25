@@ -47,7 +47,7 @@ public class NoteGridButton extends NoteButton {
 
     @Override
     protected NoteButtonRenderer initNoteRenderer() {
-        return new NoteButtonRenderer(this, LabelUtil.getABCOffset(this), LabelUtil.ABC.length);
+        return new NoteButtonRenderer(this, row, LabelUtil.ABC.length);
     }
 
     @Override

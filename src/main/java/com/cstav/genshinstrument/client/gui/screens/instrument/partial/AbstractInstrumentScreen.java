@@ -20,7 +20,6 @@ import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.platform.InputConstants.Type;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -97,11 +96,6 @@ public abstract class AbstractInstrumentScreen extends Screen {
         return true;
     }
 
-
-    @Override
-    public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
-        super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
-    }
     /**
      * Handles this instrument being closed by either recieving a false signal from {@link InstrumentOpenProvider#isOpen}
      * or, if it is an item, if the item has been ripped out of the player's hands.
@@ -202,7 +196,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     @Override
     protected void init() {
-        initPitch((pitch) -> this.pitch = pitch);
+        initPitch((pitch) -> this.pitch = NoteSound.clampPitch(pitch));
         optionsScreen.init(minecraft, width, height);
 
         if (isGenshinInstrument() && !ModClientConfigs.ACCEPTED_GENSHIN_CONSENT.get())

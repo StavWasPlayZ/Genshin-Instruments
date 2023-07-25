@@ -64,11 +64,16 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
     public boolean isSSTI() {
         return false;
     }
+    
+    @Override
+    public void setPitch(int pitch) {
+        if (!isSSTI())
+            super.setPitch(pitch);
+    }
+
     @Override
     protected void initPitch(Consumer<Integer> pitchConsumer) {
-        if (isSSTI())
-            pitchConsumer.accept(0);
-        else
+        if (!isSSTI())
             super.initPitch(pitchConsumer);
     }
 
