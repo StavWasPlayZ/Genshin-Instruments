@@ -164,7 +164,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
      * Renders the background of this grid instrument.
      */
     protected void renderInstrumentBackground(final GuiGraphics gui) {
-        final int clefX = grid.getX() - NoteButton.getSize() + 8;
+        final int clefX = grid.getX() - getNoteSize() + 8;
 
         for (int i = 0; i < columns(); i++) {
             renderClef(gui, i, clefX);
@@ -184,8 +184,8 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
         gui.blit(getInternalResourceFromGlob("background/staff.png"),
             grid.getX() + 2, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index),
             0, 0,
-            grid.getWidth() - 5, NoteButton.getSize(),
-            grid.getWidth() - 5, NoteButton.getSize()
+            grid.getWidth() - 5, getNoteSize(),
+            grid.getWidth() - 5, getNoteSize()
         );
     }
 
@@ -193,7 +193,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
      * Used for background rendering while determining how deep to go down
      */
     protected int getLayerAddition(final int index) {
-        return index * (NoteButton.getSize() + NoteGrid.getPaddingVert()*2);
+        return index * (getNoteSize() + NoteGrid.getPaddingVert()*2);
     }
 
 }

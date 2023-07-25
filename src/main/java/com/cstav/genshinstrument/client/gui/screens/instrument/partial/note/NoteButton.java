@@ -28,21 +28,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * @param <T> The type of this button's identifier
  */
 @OnlyIn(Dist.CLIENT)
-public abstract class NoteButton extends AbstractButton {
-
-    @SuppressWarnings("resource")
-    public static int getSize() {
-        final int guiScale = Minecraft.getInstance().options.guiScale().get();
-
-        return switch (guiScale) {
-            case 0 -> 40;
-            case 1 -> 35;
-            case 2 -> 46;
-            case 3 -> 48;
-            default -> guiScale * 18;
-        };
-    }
-    
+public abstract class NoteButton extends AbstractButton {    
 
     protected final Minecraft minecraft = Minecraft.getInstance();
 
@@ -67,7 +53,9 @@ public abstract class NoteButton extends AbstractButton {
     public NoteButton(NoteSound sound,
             NoteLabelSupplier labelSupplier, AbstractInstrumentScreen instrumentScreen, int pitch) {
 
-        super(0, 0, getSize(), getSize(), null);
+        super(0, 0, 42, 42, null);
+
+        width = height = instrumentScreen.getNoteSize();
 
         this.sound = sound;
         this.labelSupplier = labelSupplier;
@@ -125,7 +113,7 @@ public abstract class NoteButton extends AbstractButton {
     }
 
     public Point getCenter() {
-        return ClientUtil.getInitCenter(initX, initY, getSize(), width);
+        return ClientUtil.getInitCenter(initX, initY, instrumentScreen.getNoteSize(), width);
     }
     public void moveToCenter() {
         final Point center = getCenter();

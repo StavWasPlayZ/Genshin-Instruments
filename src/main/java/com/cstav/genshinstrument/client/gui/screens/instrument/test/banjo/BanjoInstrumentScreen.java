@@ -7,6 +7,7 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.
 import com.cstav.genshinstrument.sound.ModSounds;
 import com.cstav.genshinstrument.sound.NoteSound;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
@@ -24,6 +25,20 @@ public class BanjoInstrumentScreen extends AbstractGridInstrumentScreen {
     @Override
     public int rows() {
         return 8;
+    }
+
+    @SuppressWarnings("resource")
+    public int getNoteSize() {
+        final int guiScale = Minecraft.getInstance().options.guiScale().get();
+
+        return switch (guiScale) {
+            case 0 -> 40;
+            case 1 -> 35;
+            case 2 -> 41;
+            case 3 -> 48;
+            case 4 -> 41;
+            default -> guiScale * 18;
+        };
     }
 
 
