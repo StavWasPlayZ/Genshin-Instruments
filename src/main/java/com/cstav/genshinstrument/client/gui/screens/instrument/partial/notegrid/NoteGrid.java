@@ -23,7 +23,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  */
 @OnlyIn(Dist.CLIENT)
 public class NoteGrid implements Iterable<NoteButton> {
-    public static final int PADDING_HORZ = 9, PADDING_VERT = 7;
+
+    public static int getPaddingHorz() {
+        return 9;
+    }
+    public static int getPaddingVert() {
+        return 7;
+    }
 
     
     public final AbstractGridInstrumentScreen instrumentScreen;
@@ -103,7 +109,7 @@ public class NoteGrid implements Iterable<NoteButton> {
      */
     public AbstractLayout initNoteGridLayout(final float vertAlignment, final int screenWidth, final int screenHeight) {
         final GridLayout grid = new GridLayout();
-        grid.defaultCellSetting().padding(PADDING_HORZ, PADDING_VERT);
+        grid.defaultCellSetting().padding(getPaddingHorz(), getPaddingVert());
 
         final RowHelper rowHelper = grid.createRowHelper(rows);
         forEach(rowHelper::addChild);

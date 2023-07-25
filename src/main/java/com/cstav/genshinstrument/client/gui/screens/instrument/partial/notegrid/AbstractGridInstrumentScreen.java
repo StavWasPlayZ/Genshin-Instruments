@@ -152,20 +152,26 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
 
     protected void renderClef(final GuiGraphics gui, final int index, final int x) {
         gui.blit(getResourceFromGlob("background/clefs.png"),
-            x, grid.getY() + (NoteButton.getSize() + 16) * index,
+            x, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index) - 6,
             index * CLEF_WIDTH, 0,
             CLEF_WIDTH, CLEF_HEIGHT,
             CLEF_WIDTH*3, CLEF_HEIGHT
         );
     }
-
     protected void renderStaff(final GuiGraphics gui, final int index) {
         gui.blit(getResourceFromGlob("background/staff.png"),
-            grid.getX() + 2, grid.getY() + 8 + ((NoteButton.getSize() + NoteGrid.PADDING_VERT + 6) * index),
+            grid.getX() + 2, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index),
             0, 0,
             grid.getWidth() - 5, NoteButton.getSize(),
             grid.getWidth() - 5, NoteButton.getSize()
         );
+    }
+
+    /**
+     * Used for background rendering while determining how deep to go down
+     */
+    protected int getLayerAddition(final int index) {
+        return index * (NoteButton.getSize() + NoteGrid.getPaddingVert()*2);
     }
 
 }
