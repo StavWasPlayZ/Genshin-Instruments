@@ -97,10 +97,7 @@ public abstract class LabelUtil {
      * Wraps the index around an array
      */
     private static int wrapAround(int index, final int arrLength) {
-        while (index >= arrLength)
-            index -= arrLength;
-
-        return index;
+        return index % arrLength;
     }
     /**
      * Performs both {@link LabelUtil#pyWrap} and {@link LabelUtil#wrapAround}

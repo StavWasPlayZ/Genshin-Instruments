@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -25,6 +26,13 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class ClientEvents {
 
     private static final Minecraft MINECRAFT = Minecraft.getInstance();
+
+
+    @SubscribeEvent
+    public static void onClientTick(final ClientTickEvent event) {
+        AbstractInstrumentScreen.getCurrentScreen(MINECRAFT).ifPresent(AbstractInstrumentScreen::handleAbruptClosing);
+    }
+    
 
     // Handle block instrument arm pose
     @SubscribeEvent

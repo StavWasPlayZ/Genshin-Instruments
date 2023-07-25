@@ -95,14 +95,13 @@ public abstract class AbstractInstrumentScreen extends Screen {
     @Override
     public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
-        handleAbruptClosing();
     }
     /**
      * Handles this instrument being closed by either recieving a false signal from {@link InstrumentOpenProvider#isOpen}
      * or, if it is an item, if the item has been ripped out of the player's hands.
      * @return Whether the instrument has closed as a result of this method
      */
-    protected boolean handleAbruptClosing() {
+    public boolean handleAbruptClosing() {
         final Player player = minecraft.player;
 
         if (!InstrumentOpenProvider.isOpen(player)) {
@@ -256,11 +255,20 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
 
+    private boolean isOptionsScreenActive;
+    public boolean isOptionsScreenActive() {
+        return isOptionsScreenActive;
+    }
+
     public void onOptionsOpen() {
         setFocused(null);
         minecraft.pushGuiLayer(optionsScreen);
+
+        isOptionsScreenActive = true;
     }
-    public void onOptionsClose() {}
+    public void onOptionsClose() {
+        isOptionsScreenActive = false;
+    }
 
 
     @Override
@@ -273,6 +281,8 @@ public abstract class AbstractInstrumentScreen extends Screen {
             ModPacketHandler.sendToServer(new CloseInstrumentPacket());
         }
 
+        if (isOptionsScreenActive)
+            optionsScreen.onClose();
         super.onClose();
     }
 
