@@ -73,6 +73,12 @@ public abstract class NoteButton extends AbstractButton {
         this.labelSupplier = labelSupplier;
         this.instrumentScreen = instrumentScreen;
     }
+    public NoteButton(NoteSound sound,
+            NoteLabelSupplier labelSupplier, AbstractInstrumentScreen instrumentScreen, int pitch) {
+                
+        this(sound, labelSupplier, instrumentScreen);
+        this.pitch = pitch;
+    }
 
 
     public void setLabelSupplier(final NoteLabelSupplier labelSupplier) {
@@ -126,7 +132,14 @@ public abstract class NoteButton extends AbstractButton {
         setPosition(center.x, center.y);
     }
 
-
+    private int pitch;
+    public int getPitch() {
+        return pitch;
+    }
+    public void setPitch(final int pitch) {
+        this.pitch = NoteSound.clampPitch(pitch);
+        updateNoteLabel();
+    }
     
     public NoteNotation getNotation() {
         return NoteNotation.NONE;
@@ -155,7 +168,7 @@ public abstract class NoteButton extends AbstractButton {
         if (locked)
             return;
         
-        sound.playLocally(instrumentScreen.getPitch());
+        sound.playLocally(getPitch());
 
 
         final Player player = minecraft.player;
@@ -167,7 +180,7 @@ public abstract class NoteButton extends AbstractButton {
         // Send sound packet to server
         ModPacketHandler.sendToServer(
             new InstrumentPacket(pos,
-                sound, instrumentScreen.getPitch(),
+                sound, getPitch(),
                 instrumentScreen.interactionHand,
                 instrumentScreen.getInstrumentId(), getIdentifier()
             )

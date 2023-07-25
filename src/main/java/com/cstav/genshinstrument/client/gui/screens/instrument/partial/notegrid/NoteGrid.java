@@ -38,7 +38,14 @@ public class NoteGrid implements Iterable<NoteButton> {
 
     public final int rows, columns;
 
-    public NoteGrid(int rows, int columns, NoteSound[] noteSounds, AbstractGridInstrumentScreen instrumentScreen) {
+    /**
+     * @param linearPitch Should the pitch scale by 1 for each instrument?
+     * @param begginingNote The note to start the linear pitch increment
+     * @param noteSkip The amount of notes to skip for each note button
+     */
+    public NoteGrid(int rows, int columns, NoteSound[] noteSounds, AbstractGridInstrumentScreen instrumentScreen,
+            boolean linearPitch, int begginingNote, int noteSkip) {
+
         this.instrumentScreen = instrumentScreen;
         this.rows = rows;
         this.columns = columns;
@@ -50,17 +57,29 @@ public class NoteGrid implements Iterable<NoteButton> {
             final NoteButton[] buttonRow = new NoteButton[rows];
 
             for (int j = 0; j < rows; j++)
-                buttonRow[j] = createNote(j, i);
+                if (linearPitch) {
+                    buttonRow[j] = createNote(j, i, begginingNote);
+                    begginingNote += noteSkip;
+                } else
+                    buttonRow[j] = createNote(j, i);
 
             notes[i] = buttonRow;
         }
     }
+    public NoteGrid(int rows, int columns, NoteSound[] noteSounds, AbstractGridInstrumentScreen instrumentScreen) {
+        this(rows, columns, noteSounds, instrumentScreen, false, 0, 0);
+    }
     
-    protected NoteButton createNote(int row, int column) {
+    protected NoteButton createNote(int row, int column, int pitch) {
         return new NoteGridButton(row, column,
             getSoundAt(noteSounds, row, column), getLabelSupplier()
-        , instrumentScreen);
+        , instrumentScreen, pitch);
     }
+    protected NoteButton createNote(int row, int column) {
+        return createNote(row, column, ModClientConfigs.PITCH.get());
+    }
+
+
     /**
      * Evaulates the sound at the given indexes, and returns it
      * @param sounds The sound array of this instrument

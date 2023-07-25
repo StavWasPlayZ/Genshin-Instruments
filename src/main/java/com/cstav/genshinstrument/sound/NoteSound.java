@@ -206,7 +206,8 @@ public class NoteSound {
      * </a>
      */
     public static float getPitchByNoteOffset(final int pitch) {
-        return (float)Math.pow(2, (double)pitch/LabelUtil.NOTES_PER_SCALE);
+        return (float)Math.pow(2, (double)pitch / LabelUtil.NOTES_PER_SCALE);
+        // (float)Math.pow(2.0D, (double)(pNote - 12) / 12.0D)
     }
 
 

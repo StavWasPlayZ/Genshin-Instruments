@@ -44,7 +44,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
     public void setPitch(int pitch) {
         this.pitch = NoteSound.clampPitch(pitch);
-        notesIterable().forEach(NoteButton::updateNoteLabel);
+        notesIterable().forEach((note) -> note.setPitch(this.pitch));
     }
 
 

@@ -84,6 +84,9 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
     protected final @Nullable INoteLabel[] labels;
     protected final @Nullable INoteLabel currLabel;
+    protected boolean enablePitchSlider() {
+        return true;
+    }
     
     public final @Nullable AbstractInstrumentScreen instrumentScreen;
 
@@ -154,35 +157,37 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
                 getBigButtonWidth(), 20, Component.translatable(SOUND_CHANNEL_KEY), this::onChannelTypeChanged);
         rowHelper.addChild(instrumentChannel, 2);
 
-        final AbstractSliderButton pitchSlider = new AbstractSliderButton(0, 0, getSmallButtonWidth(), 20,
-            CommonComponents.EMPTY,
-            Mth.clampedMap(getPitch(), NoteSound.MIN_PITCH, NoteSound.MAX_PITCH, 0, 1)) {
-
-            final DecimalFormat format = new DecimalFormat("0.00");
-            {
-                pitch = getPitch();
-                updateMessage();
-            }
-
-            private int pitch;
-
-            @Override
-            protected void updateMessage() {
-                this.setMessage(
-                    Component.translatable("button.genshinstrument.pitch").append(": "
-                        + LabelUtil.getNoteName(pitch, AbstractInstrumentScreen.DEFAULT_NOTE_LAYOUT, 0)
-                        + " ("+format.format(NoteSound.getPitchByNoteOffset(pitch))+")"
-                    )
-                );
-            }
-            
-            @Override
-            protected void applyValue() {
-                pitch = (int)Mth.clampedLerp(NoteSound.MIN_PITCH, NoteSound.MAX_PITCH, value);
-                onPitchChanged(this, pitch);
-            }
-        };
-        rowHelper.addChild(pitchSlider);
+        if (enablePitchSlider()) {
+            final AbstractSliderButton pitchSlider = new AbstractSliderButton(0, 0, getSmallButtonWidth(), 20,
+                CommonComponents.EMPTY,
+                Mth.clampedMap(getPitch(), NoteSound.MIN_PITCH, NoteSound.MAX_PITCH, 0, 1)) {
+    
+                final DecimalFormat format = new DecimalFormat("0.00");
+                {
+                    pitch = getPitch();
+                    updateMessage();
+                }
+    
+                private int pitch;
+    
+                @Override
+                protected void updateMessage() {
+                    this.setMessage(
+                        Component.translatable("button.genshinstrument.pitch").append(": "
+                            + LabelUtil.getNoteName(pitch, AbstractInstrumentScreen.DEFAULT_NOTE_LAYOUT, 0)
+                            + " ("+format.format(NoteSound.getPitchByNoteOffset(pitch))+")"
+                        )
+                    );
+                }
+                
+                @Override
+                protected void applyValue() {
+                    pitch = (int)Mth.clampedLerp(NoteSound.MIN_PITCH, NoteSound.MAX_PITCH, value);
+                    onPitchChanged(this, pitch);
+                }
+            };
+            rowHelper.addChild(pitchSlider);
+        }
 
         final CycleButton<Boolean> stopMusic = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(ModClientConfigs.STOP_MUSIC_ON_PLAY.get())

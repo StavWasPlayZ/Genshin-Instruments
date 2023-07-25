@@ -24,6 +24,13 @@ public class NoteGridButton extends NoteButton {
         this.row = row;
         this.column = column;
     }
+    public NoteGridButton(int row, int column, NoteSound sound, NoteLabelSupplier labelSupplier,
+            AbstractGridInstrumentScreen instrumentScreen, int pitch) {
+        super(sound, labelSupplier, instrumentScreen, pitch);
+
+        this.row = row;
+        this.column = column;
+    }
 
     @Override
     public NoteGridButtonIdentifier getIdentifier() {
