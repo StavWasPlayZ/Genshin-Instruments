@@ -53,7 +53,7 @@ public class BanjoInstrumentScreen extends AbstractGridInstrumentScreen {
         return new GridInstrumentOptionsScreen(this) {
             
             @Override
-            protected boolean enablePitchSlider() {
+            public boolean isPitchSliderEnabled() {
                 return false;
             }
 

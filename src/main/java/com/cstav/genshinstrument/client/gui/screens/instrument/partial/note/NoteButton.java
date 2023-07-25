@@ -65,19 +65,19 @@ public abstract class NoteButton extends AbstractButton {
 
 
     public NoteButton(NoteSound sound,
-            NoteLabelSupplier labelSupplier, AbstractInstrumentScreen instrumentScreen) {
+            NoteLabelSupplier labelSupplier, AbstractInstrumentScreen instrumentScreen, int pitch) {
 
         super(0, 0, getSize(), getSize(), null);
 
         this.sound = sound;
         this.labelSupplier = labelSupplier;
         this.instrumentScreen = instrumentScreen;
+        this.pitch = pitch;
     }
     public NoteButton(NoteSound sound,
-            NoteLabelSupplier labelSupplier, AbstractInstrumentScreen instrumentScreen, int pitch) {
+            NoteLabelSupplier labelSupplier, AbstractInstrumentScreen instrumentScreen) {
                 
-        this(sound, labelSupplier, instrumentScreen);
-        this.pitch = pitch;
+        this(sound, labelSupplier, instrumentScreen, instrumentScreen.getPitch());
     }
 
 

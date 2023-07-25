@@ -66,21 +66,25 @@ public abstract class LabelUtil {
         final String[] scale = NOTE_SCALES.get(baseNote);
         return scale[(doublyPyWrap(pitch, scale.length))];
     }
+
+
     public static String getNoteName(final NoteGridButton gridButton) {
         final AbstractGridInstrumentScreen screen = (AbstractGridInstrumentScreen) gridButton.instrumentScreen;
         return getNoteName(
-            screen.getPitch(), screen.noteLayout(),
+            screen.optionsScreen.isPitchSliderEnabled() ? screen.getPitch() : 0,
+            screen.noteLayout(),
             gridButton.row + gridButton.column * screen.rows()
         );
     }
 
     public static String getCutNoteName(final NoteGridButton gridButton) {
-        String result = LabelUtil.getNoteName(gridButton);
-
+        return getCutNoteName(LabelUtil.getNoteName(gridButton));
+    }
+    public static String getCutNoteName(String noteName) {
         if (ModClientConfigs.ACCURATE_ACCIDENTALS.get())
-            result = String.valueOf(result.charAt(0));
+            noteName = String.valueOf(noteName.charAt(0));
 
-        return result;
+        return noteName;
     }
 
     /**

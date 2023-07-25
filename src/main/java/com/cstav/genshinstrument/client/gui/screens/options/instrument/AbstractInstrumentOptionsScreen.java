@@ -88,7 +88,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
      * Override to {@code false} tp disable the pitch slider from the optins.
      * @apiNote SSTI type instruments do not want a pitch slider.
      */
-    protected boolean enablePitchSlider() {
+    public boolean isPitchSliderEnabled() {
         return true;
     }
     
@@ -161,7 +161,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
                 getBigButtonWidth(), 20, Component.translatable(SOUND_CHANNEL_KEY), this::onChannelTypeChanged);
         rowHelper.addChild(instrumentChannel, 2);
 
-        if (enablePitchSlider()) {
+        if (isPitchSliderEnabled()) {
             final AbstractSliderButton pitchSlider = new AbstractSliderButton(0, 0, getSmallButtonWidth(), 20,
                 CommonComponents.EMPTY,
                 Mth.clampedMap(getPitch(), NoteSound.MIN_PITCH, NoteSound.MAX_PITCH, 0, 1)) {
