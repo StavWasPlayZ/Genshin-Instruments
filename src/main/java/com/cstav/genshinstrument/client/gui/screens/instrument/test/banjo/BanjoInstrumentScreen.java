@@ -23,6 +23,12 @@ public class BanjoInstrumentScreen extends AbstractGridInstrumentScreen {
     public static final String[] NOTES_LAYOUT = {"F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F"};
 
 
+    @Override
+    public int rows() {
+        return 8;
+    }
+
+
     public BanjoInstrumentScreen(InteractionHand hand) {
         super(hand);
     }

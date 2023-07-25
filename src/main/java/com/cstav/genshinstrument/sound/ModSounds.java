@@ -9,7 +9,7 @@ import com.cstav.genshinstrument.GInstrumentMod;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -36,7 +36,7 @@ public class ModSounds {
 
         //TODO remove after tests
         BANJO = new NoteSound[] {
-            new NoteSound(SoundEvents.NOTE_BLOCK_BANJO.get(), Optional.empty())
+            new NoteSound(NoteBlockInstrument.BANJO.getSoundEvent().get(), Optional.empty())
         }
     ;
 

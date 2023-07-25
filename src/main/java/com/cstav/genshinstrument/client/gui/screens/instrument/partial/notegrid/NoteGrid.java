@@ -124,8 +124,8 @@ public class NoteGrid implements Iterable<NoteButton> {
     public HashMap<Key, NoteButton> genKeyboardMap(final Key[][] keyMap) {
         final HashMap<Key, NoteButton> result = new HashMap<>(rows * columns);
 
-        for (int i = 0; i < keyMap.length; i++)
-            for (int j = 0; j < keyMap[0].length; j++)
+        for (int i = 0; i < columns; i++)
+            for (int j = 0; j < rows; j++)
                 result.put(keyMap[i][j], notes[i][j]);
                 
         return result;
