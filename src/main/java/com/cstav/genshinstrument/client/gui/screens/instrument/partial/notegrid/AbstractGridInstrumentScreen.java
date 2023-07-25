@@ -135,13 +135,8 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
 
     /**
      * Renders the background of this grid instrument.
-     * This render method will only work for a 3-column instrument. Overwrite it
-     * to customize the background.
      */
     protected void renderInstrumentBackground(final GuiGraphics gui) {
-        if (columns() != 3)
-            return;
-
         final int clefX = grid.getX() - NoteButton.getSize() + 8;
 
         for (int i = 0; i < columns(); i++) {
@@ -152,7 +147,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
 
     protected void renderClef(final GuiGraphics gui, final int index, final int x) {
         gui.blit(getResourceFromGlob("background/clefs.png"),
-            x, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index) - 6,
+            x, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index) - 5,
             index * CLEF_WIDTH, 0,
             CLEF_WIDTH, CLEF_HEIGHT,
             CLEF_WIDTH*3, CLEF_HEIGHT
