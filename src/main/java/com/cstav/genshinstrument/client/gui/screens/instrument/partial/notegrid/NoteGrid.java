@@ -37,27 +37,29 @@ public class NoteGrid implements Iterable<NoteButton> {
     private NoteSound[] noteSounds;
 
     public final int rows, columns;
+    public final boolean isSSTI;
 
     /**
-     * @param linearPitch Should the pitch scale by 1 for each instrument?
-     * @param begginingNote The note to start the linear pitch increment
+     * @param isSSTI Is a singular sound-type instrument; Should the pitch scale by 1 for each instrument?
+     * @param startingNote The note to start the linear pitch increment
      * @param noteSkip The amount of notes to skip for each note button
      */
     public NoteGrid(int rows, int columns, NoteSound[] noteSounds, AbstractGridInstrumentScreen instrumentScreen,
-            boolean linearPitch, int begginingNote, int noteSkip) {
+            boolean isSSTI, int begginingNote, int noteSkip) {
 
         this.instrumentScreen = instrumentScreen;
         this.rows = rows;
         this.columns = columns;
         this.noteSounds = noteSounds;
+        this.isSSTI = isSSTI;
 
         // Construct the note grid
         notes = new NoteButton[columns][rows];
-        for (int i = 0; i < columns; i++) {
+        for (int i = columns - 1; i >= 0; i--) {
             final NoteButton[] buttonRow = new NoteButton[rows];
 
             for (int j = 0; j < rows; j++)
-                if (linearPitch) {
+                if (isSSTI) {
                     buttonRow[j] = createNote(j, i, begginingNote);
                     begginingNote += noteSkip;
                 } else
@@ -69,14 +71,25 @@ public class NoteGrid implements Iterable<NoteButton> {
     public NoteGrid(int rows, int columns, NoteSound[] noteSounds, AbstractGridInstrumentScreen instrumentScreen) {
         this(rows, columns, noteSounds, instrumentScreen, false, 0, 0);
     }
+    /**
+     * Creates a new SSTI-type note grid that begins from {@code begginingNote} and jumps 1 pitch unit every iteration.
+     */
+    public NoteGrid(int rows, int columns, NoteSound[] noteSounds, AbstractGridInstrumentScreen instrumentScreen, int begginingNote) {
+        this(rows, columns, noteSounds, instrumentScreen, true, begginingNote, 1);
+    }
     
+    /**
+     * Creates a note with for a singular sound type instrument
+     */
     protected NoteButton createNote(int row, int column, int pitch) {
         return new NoteGridButton(row, column,
-            getSoundAt(noteSounds, row, column), getLabelSupplier()
+            noteSounds[0], getLabelSupplier()
         , instrumentScreen, pitch);
     }
     protected NoteButton createNote(int row, int column) {
-        return createNote(row, column, ModClientConfigs.PITCH.get());
+        return new NoteGridButton(row, column,
+            getSoundAt(noteSounds, row, column), getLabelSupplier()
+        , instrumentScreen);
     }
 
 
@@ -104,7 +117,7 @@ public class NoteGrid implements Iterable<NoteButton> {
 
         for (int i = 0; i < columns; i++)
             for (int j = 0; j < rows; j++)
-                notes[i][j].setSound(getSoundAt(noteSounds, j, i));
+                notes[i][j].setSound(isSSTI ? noteSounds[0] : getSoundAt(noteSounds, j, i));
     }
 
 

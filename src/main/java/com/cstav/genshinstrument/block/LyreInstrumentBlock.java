@@ -8,6 +8,8 @@ import com.cstav.genshinstrument.util.ServerUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
+
+//TODO remove after tests
 public class LyreInstrumentBlock extends AbstractInstrumentBlock {
 
     public LyreInstrumentBlock(Properties pProperties) {

@@ -1,10 +1,12 @@
-package com.cstav.genshinstrument.client.gui.screens.instrument.floralzither;
+package com.cstav.genshinstrument.client.gui.screens.instrument.test.banjo;
 
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.NoteGrid;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
-import com.cstav.genshinstrument.client.gui.screens.options.instrument.FloralZitherOptionsScreen;
+import com.cstav.genshinstrument.client.gui.screens.options.instrument.GridInstrumentOptionsScreen;
+import com.cstav.genshinstrument.sound.ModSounds;
 import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraft.resources.ResourceLocation;
@@ -13,36 +15,55 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
+//TODO remove after tests
 @OnlyIn(Dist.CLIENT)
-//NOTE: There just to make it load on mod setup
 @EventBusSubscriber(Dist.CLIENT)
-public class FloralZitherScreen extends AbstractGridInstrumentScreen {
-    public static final String INSTRUMENT_ID = "floral_zither";
-    
-    public FloralZitherScreen(InteractionHand hand) {
+public class BanjoInstrumentScreen extends AbstractGridInstrumentScreen {
+    public static final String INSTRUMENT_ID = "banjo";
+    public static final String[] NOTES_LAYOUT = {"F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F"};
+
+
+    public BanjoInstrumentScreen(InteractionHand hand) {
         super(hand);
     }
     @Override
     public ResourceLocation getInstrumentId() {
         return new ResourceLocation(GInstrumentMod.MODID, INSTRUMENT_ID);
     }
-
     
+
     @Override
     public NoteSound[] getSounds() {
-        return ((FloralZitherOptionsScreen)optionsScreen).getPerferredSoundType().soundArr().get();
+        return ModSounds.BANJO;
+    }
+
+    @Override
+    public String[] noteLayout() {
+        return NOTES_LAYOUT;
+    }
+
+
+    @Override
+    public NoteGrid initNoteGrid() {
+        return new NoteGrid(rows(), columns(), getSounds(), this, NoteSound.MIN_PITCH);
     }
 
     @Override
     protected AbstractInstrumentOptionsScreen initInstrumentOptionsScreen() {
-        return new FloralZitherOptionsScreen(this);
+        return new GridInstrumentOptionsScreen(this) {
+            
+            @Override
+            protected boolean enablePitchSlider() {
+                return false;
+            }
+
+        };
     }
 
-    
+
     private static final InstrumentThemeLoader THEME_LOADER = initThemeLoader(GInstrumentMod.MODID, INSTRUMENT_ID);
     @Override
     public InstrumentThemeLoader getThemeLoader() {
         return THEME_LOADER;
     }
-    
 }
