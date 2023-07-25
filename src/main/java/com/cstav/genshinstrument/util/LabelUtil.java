@@ -84,7 +84,7 @@ public abstract class LabelUtil {
         return getCutNoteName(LabelUtil.getNoteName(gridButton));
     }
     public static String getCutNoteName(String noteName) {
-        if (ModClientConfigs.ACCURATE_ACCIDENTALS.get())
+        if (ModClientConfigs.ACCURATE_NOTES.get())
             noteName = String.valueOf(noteName.charAt(0));
 
         return noteName;

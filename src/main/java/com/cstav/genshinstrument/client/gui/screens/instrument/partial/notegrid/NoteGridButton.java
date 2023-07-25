@@ -39,7 +39,7 @@ public class NoteGridButton extends NoteButton {
 
     @Override
     public NoteNotation getNotation() {
-        return ModClientConfigs.ACCURATE_ACCIDENTALS.get()
+        return ModClientConfigs.ACCURATE_NOTES.get()
             ? NoteNotation.getNotation(LabelUtil.getNoteName(this))
             : NoteNotation.NONE;
     }
@@ -53,6 +53,7 @@ public class NoteGridButton extends NoteButton {
     @Override
     public void updateNoteLabel() {
         super.updateNoteLabel();
-        noteRenderer.noteTextureRow = LabelUtil.getABCOffset(this);
+        noteRenderer.noteTextureRow = ModClientConfigs.ACCURATE_NOTES.get()
+            ? LabelUtil.getABCOffset(this) : row;
     }
 }

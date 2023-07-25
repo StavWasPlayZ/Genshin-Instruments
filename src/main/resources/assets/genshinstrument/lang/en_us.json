@@ -35,8 +35,8 @@
     "button.genshinstrument.shared_instrument": "Shared Instrument Screen",
 
     "button.genshinstrument.render_background": "Show Background Visuals",
-    "button.genshinstrument.accurate_accidentals": "Accurate Accidentals",
-    "button.genshinstrument.accurate_accidentals.tooltip": "When on, provides a pitch-accurate representation of the accidentals used by this instrument's layout",
+    "button.genshinstrument.accurate_notes": "Accurate Notes",
+    "button.genshinstrument.accurate_notes.tooltip": "When on, provides a pitch-accurate representation of the notes symbols and accidentals used by this instrument's layout",
     
 
 
