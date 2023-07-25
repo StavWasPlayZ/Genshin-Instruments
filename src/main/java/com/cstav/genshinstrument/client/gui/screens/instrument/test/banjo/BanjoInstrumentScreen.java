@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.test.banjo;
 
 import com.cstav.genshinstrument.GInstrumentMod;
+import com.cstav.genshinstrument.client.gui.screens.instrument.floralzither.FloralZitherScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.sound.ModSounds;
@@ -33,6 +34,12 @@ public class BanjoInstrumentScreen extends AbstractGridInstrumentScreen {
     public ResourceLocation getInstrumentId() {
         return new ResourceLocation(GInstrumentMod.MODID, INSTRUMENT_ID);
     }
+
+
+    @Override
+    protected ResourceLocation getSourcePath() {
+        return new ResourceLocation(GInstrumentMod.MODID, FloralZitherScreen.INSTRUMENT_ID);
+    }
     
 
     @Override
@@ -51,7 +58,7 @@ public class BanjoInstrumentScreen extends AbstractGridInstrumentScreen {
     }
 
 
-    private static final InstrumentThemeLoader THEME_LOADER = initThemeLoader(GInstrumentMod.MODID, INSTRUMENT_ID);
+    private static final InstrumentThemeLoader THEME_LOADER = initThemeLoader(GInstrumentMod.MODID, FloralZitherScreen.INSTRUMENT_ID);
     @Override
     public InstrumentThemeLoader getThemeLoader() {
         return THEME_LOADER;

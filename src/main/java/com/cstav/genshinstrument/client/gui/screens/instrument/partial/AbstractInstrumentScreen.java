@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.GenshinConsentScreen;
@@ -154,13 +155,23 @@ public abstract class AbstractInstrumentScreen extends Screen {
         return "textures/gui/instrument/";
     }
     public ResourceLocation getResourceFromGlob(final String path) {
-        return new ResourceLocation(getModId(), getGlobalRootPath() + path);
+        return getSourcePath().withPath(getGlobalRootPath() + path);
+    }
+    public static ResourceLocation getInternalResourceFromGlob(final String path) {
+        return new ResourceLocation(GInstrumentMod.MODID, getGlobalRootPath() + path);
     }
     /**
      * Shorthand for {@code getRootPath() + getInstrumentId()}
      */
     protected String getPath() {
-        return getGlobalRootPath() + getInstrumentId().getPath() + "/";
+        return getGlobalRootPath() + getSourcePath().getPath() + "/";
+    }
+
+    /**
+     * Override this method if you want to reference another directory for resources
+     */
+    protected ResourceLocation getSourcePath() {
+        return getInstrumentId();
     }
 
     public String getModId() {
@@ -175,7 +186,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * @see {@link AbstractInstrumentScreen#getResourceFrom(ResourceLocation, String)}
      */
     public ResourceLocation getResourceFromRoot(final String path) {
-        return new ResourceLocation(getModId(), getPath() + path);
+        return getSourcePath().withPath(getPath() + path);
     }
 
 

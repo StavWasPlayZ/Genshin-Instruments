@@ -168,7 +168,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
     }
 
     protected void renderClef(final GuiGraphics gui, final int index, final int x) {
-        gui.blit(getResourceFromGlob("background/clefs.png"),
+        gui.blit(getInternalResourceFromGlob("background/clefs.png"),
             x, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index) - 5,
             index * CLEF_WIDTH, 0,
             CLEF_WIDTH, CLEF_HEIGHT,
@@ -176,7 +176,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
         );
     }
     protected void renderStaff(final GuiGraphics gui, final int index) {
-        gui.blit(getResourceFromGlob("background/staff.png"),
+        gui.blit(getInternalResourceFromGlob("background/staff.png"),
             grid.getX() + 2, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index),
             0, 0,
             grid.getWidth() - 5, NoteButton.getSize(),
