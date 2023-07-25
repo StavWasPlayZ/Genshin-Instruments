@@ -46,7 +46,7 @@ public class InstrumentPacket implements ModPacket {
         pitch = buf.readInt();
 
         instrumentId = buf.readResourceLocation();
-        noteIdentifier = NoteButtonIdentifier.readIdentifier(buf);
+        noteIdentifier = NoteButtonIdentifier.readFromNetwork(buf);
     }
 
     @Override

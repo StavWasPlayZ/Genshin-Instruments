@@ -44,7 +44,7 @@ public class PlayNotePacket implements ModPacket {
         sound = NoteSound.readFromNetwork(buf);
         pitch = buf.readInt();
         instrumentId = buf.readResourceLocation();
-        noteIdentifier = NoteButtonIdentifier.readIdentifier(buf);
+        noteIdentifier = NoteButtonIdentifier.readFromNetwork(buf);
 
         playerUUID = buf.readOptional(FriendlyByteBuf::readUUID);
         hand = buf.readOptional((fbb) -> fbb.readEnum(InteractionHand.class));

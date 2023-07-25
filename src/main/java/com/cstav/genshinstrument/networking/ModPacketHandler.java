@@ -14,7 +14,6 @@ import com.cstav.genshinstrument.networking.packet.instrument.NotifyInstrumentCl
 import com.cstav.genshinstrument.networking.packet.instrument.NotifyInstrumentOpenPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.OpenInstrumentPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.PlayNotePacket;
-import com.cstav.genshinstrument.util.ServerUtil;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -41,20 +40,12 @@ public class ModPacketHandler {
 
 
     @SuppressWarnings("unchecked")
-    private static final List<Class<? extends NoteButtonIdentifier>> ACCEPTABLE_IDENTIFIERS = List.of(new Class[] {
+    public static final List<Class<? extends NoteButtonIdentifier>> ACCEPTABLE_IDENTIFIERS = List.of(new Class[] {
         NoteButtonIdentifier.class, NoteGridButtonIdentifier.class, DrumNoteIdentifier.class
     });
 
-    /**
-     * @see ServerUtil#getValidNoteIdentifier
-     */
-    public static Class<? extends NoteButtonIdentifier> getValidIdentifier(String classType)
-            throws ClassNotFoundException {
-        return ServerUtil.getValidNoteIdentifier(classType, ACCEPTABLE_IDENTIFIERS);
-    }
 
-
-    private static final String PROTOCOL_VERSION = "4.2";
+    private static final String PROTOCOL_VERSION = "4.3";
     private static int id;
 
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
