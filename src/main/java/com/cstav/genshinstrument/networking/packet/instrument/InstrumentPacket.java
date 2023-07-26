@@ -4,8 +4,8 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpen;
-import com.cstav.genshinstrument.networking.ModPacket;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
+import com.cstav.genshinstrument.networking.packet.INoteIdentifierSender;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.ServerUtil;
 
@@ -17,7 +17,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class InstrumentPacket implements ModPacket {
+public class InstrumentPacket implements INoteIdentifierSender {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_SERVER;
 
 
@@ -46,7 +46,7 @@ public class InstrumentPacket implements ModPacket {
         pitch = buf.readInt();
 
         instrumentId = buf.readResourceLocation();
-        noteIdentifier = NoteButtonIdentifier.readFromNetwork(buf);
+        noteIdentifier = readNoteIdentifierFromNetwork(buf);
     }
 
     @Override

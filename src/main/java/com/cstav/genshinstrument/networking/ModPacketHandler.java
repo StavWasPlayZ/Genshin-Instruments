@@ -34,7 +34,7 @@ public class ModPacketHandler {
     private static final Logger LOGGER = LogUtils.getLogger();
 
     @SuppressWarnings("unchecked")
-    private static final List<Class<ModPacket>> ACCEPTABLE_PACKETS = List.of(new Class[] {
+    private static final List<Class<IModPacket>> ACCEPTABLE_PACKETS = List.of(new Class[] {
         InstrumentPacket.class, PlayNotePacket.class, OpenInstrumentPacket.class, CloseInstrumentPacket.class,
         NotifyInstrumentOpenPacket.class, NotifyInstrumentClosedPacket.class
     });
@@ -71,8 +71,8 @@ public class ModPacketHandler {
     }
 
 
-    public static void registerModPackets(final SimpleChannel sc, final List<Class<ModPacket>> acceptablePackets) {
-        for (final Class<ModPacket> packetType : acceptablePackets)
+    public static void registerModPackets(final SimpleChannel sc, final List<Class<IModPacket>> acceptablePackets) {
+        for (final Class<IModPacket> packetType : acceptablePackets)
             try {
                 
                 sc.messageBuilder(packetType, id++, (NetworkDirection)packetType.getField("NETWORK_DIRECTION").get(null))
@@ -84,8 +84,8 @@ public class ModPacketHandler {
                             return null;
                         }
                     })
-                    .encoder(ModPacket::toBytes)
-                    .consumerMainThread(ModPacket::handle)
+                    .encoder(IModPacket::toBytes)
+                    .consumerMainThread(IModPacket::handle)
                 .add();
 
             } catch (Exception e) {

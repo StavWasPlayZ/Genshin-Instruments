@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.function.Function;
 
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
-import com.cstav.genshinstrument.networking.ModPacketHandler;
+import com.cstav.genshinstrument.networking.packet.INoteIdentifierSender;
 import com.cstav.genshinstrument.util.ServerUtil;
 import com.mojang.logging.LogUtils;
 
@@ -43,12 +43,10 @@ public abstract class NoteButtonIdentifier {
         return false;
     }
 
-
-    /** @apiNote This method should only be used by the internal Genshin Instruments mod! */
-    public static NoteButtonIdentifier readFromNetwork(FriendlyByteBuf buf) {
-        return readFromNetwork(buf, ModPacketHandler.ACCEPTABLE_IDENTIFIERS);
-    }
-
+    /**
+     * @apiNote Consider implementing {@link INoteIdentifierSender}
+     * and using the {@link INoteIdentifierSender#readNoteIdentifierFromNetwork} instead.
+     */
     public static NoteButtonIdentifier readFromNetwork(FriendlyByteBuf buf,
             List<Class<? extends NoteButtonIdentifier>> acceptableIdentifiers) {
 

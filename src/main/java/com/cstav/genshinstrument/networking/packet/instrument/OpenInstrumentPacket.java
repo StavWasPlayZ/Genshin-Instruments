@@ -2,16 +2,14 @@ package com.cstav.genshinstrument.networking.packet.instrument;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.cstav.genshinstrument.client.gui.screens.instrument.drum.AratakisGreatAndGloriousDrumScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.floralzither.FloralZitherScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screens.instrument.test.banjo.BanjoInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.vintagelyre.VintageLyreScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.windsonglyre.WindsongLyreScreen;
-import com.cstav.genshinstrument.networking.ModPacket;
+import com.cstav.genshinstrument.networking.IModPacket;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -21,17 +19,18 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class OpenInstrumentPacket implements ModPacket {
+public class OpenInstrumentPacket implements IModPacket {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_CLIENT;
-    private static final Map<String, Supplier<Function<InteractionHand, AbstractInstrumentScreen>>> OPEN_INSTRUMENT = Map.of(
+    private static final Map<String, Supplier<ScreenOpenDelegate>> INSTRUMENT_MAP = Map.of(
         "windsong_lyre", () -> WindsongLyreScreen::new,
         "vintage_lyre", () -> VintageLyreScreen::new,
         "floral_zither", () -> FloralZitherScreen::new,
-        "glorious_drum", () -> AratakisGreatAndGloriousDrumScreen::new,
-
-        //TODO remove after tests
-        "banjo", () -> BanjoInstrumentScreen::new
+        "glorious_drum", () -> AratakisGreatAndGloriousDrumScreen::new
     );
+
+    protected Map<String, Supplier<ScreenOpenDelegate>> getInstrumentMap() {
+        return INSTRUMENT_MAP;
+    }
 
 
     private final String instrumentType;
@@ -59,9 +58,15 @@ public class OpenInstrumentPacket implements ModPacket {
 
         context.enqueueWork(() -> {
             DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
-                Minecraft.getInstance().setScreen(OPEN_INSTRUMENT.get(instrumentType).get().apply(hand.orElse(null))));
+                Minecraft.getInstance().setScreen(getInstrumentMap().get(instrumentType).get().open(hand.orElse(null))));
         });
 
         return true;
+    }
+
+
+    @FunctionalInterface
+    protected static interface ScreenOpenDelegate {
+        AbstractInstrumentScreen open(final InteractionHand hand);
     }
 }
