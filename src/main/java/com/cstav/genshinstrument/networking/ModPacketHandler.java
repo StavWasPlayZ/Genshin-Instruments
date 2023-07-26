@@ -63,35 +63,38 @@ public class ModPacketHandler {
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), packet);
     }
 
-
     @SubscribeEvent
     public static void registerPackets(final FMLCommonSetupEvent event) {
-        event.enqueueWork(() -> {
+        event.enqueueWork(() -> registerModPackets(INSTANCE));
+    }
 
-            for (final Class<ModPacket> packetType : ACCEPTABLE_PACKETS)
-                try {
-                    
-                    INSTANCE.messageBuilder(packetType, id++, (NetworkDirection)packetType.getField("NETWORK_DIRECTION").get(null))
-                        .decoder((buf) -> {
-                            try {
-                                return packetType.getDeclaredConstructor(FriendlyByteBuf.class).newInstance(buf);
-                            } catch (Exception e) {
-                                LOGGER.error("Error constructing packet of type "+packetType.getName(), e);
-                                return null;
-                            }
-                        })
-                        .encoder(ModPacket::toBytes)
-                        .consumerMainThread(ModPacket::handle)
-                    .add();
 
-                } catch (Exception e) {
-                    LOGGER.error(
-                        "Error registring packet of type "+packetType.getName()
-                            +". Make sure to have a NETWORK_DIRECTION static field of type NetworkDirection."
-                    , e);
-                }
+    public static void registerModPackets(final SimpleChannel sc) {
+        registerModPackets(sc, ACCEPTABLE_PACKETS);
+    }
+    public static void registerModPackets(final SimpleChannel sc, final List<Class<ModPacket>> acceptablePackets) {
+        for (final Class<ModPacket> packetType : acceptablePackets)
+            try {
+                
+                sc.messageBuilder(packetType, id++, (NetworkDirection)packetType.getField("NETWORK_DIRECTION").get(null))
+                    .decoder((buf) -> {
+                        try {
+                            return packetType.getDeclaredConstructor(FriendlyByteBuf.class).newInstance(buf);
+                        } catch (Exception e) {
+                            LOGGER.error("Error constructing packet of type "+packetType.getName(), e);
+                            return null;
+                        }
+                    })
+                    .encoder(ModPacket::toBytes)
+                    .consumerMainThread(ModPacket::handle)
+                .add();
 
-        });
+            } catch (Exception e) {
+                LOGGER.error(
+                    "Error registring packet of type "+packetType.getName()
+                        +". Make sure to have a NETWORK_DIRECTION static field of type NetworkDirection."
+                , e);
+            }
     }
 
 }

@@ -22,7 +22,7 @@ public class ModCreativeModeTabs {
     }
 
     public static final RegistryObject<CreativeModeTab>
-        instrumentsTab = TABS.register("instruments_tab",
+        INSTRUMENTS_TAB = TABS.register("instruments_tab",
             () -> CreativeModeTab.builder()
 
                 .title(Component.translatable("genshinstrument.itemGroup.instruments"))

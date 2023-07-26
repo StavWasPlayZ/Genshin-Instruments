@@ -209,7 +209,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     @Override
     protected void init() {
-        initPitch((pitch) -> this.pitch = NoteSound.clampPitch(pitch));
+        initPitch(this::setPitch);
         optionsScreen.init(minecraft, width, height);
 
         if (isGenshinInstrument() && !ModClientConfigs.ACCEPTED_GENSHIN_CONSENT.get())

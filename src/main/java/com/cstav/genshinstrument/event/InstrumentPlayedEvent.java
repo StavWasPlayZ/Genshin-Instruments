@@ -70,14 +70,14 @@ public class InstrumentPlayedEvent extends Event {
 
             // Handle instrument items
             if (hand == null) {
+                instrument = Optional.empty();
+                this.hand = Optional.empty();
+            } else {
                 this.hand = hand;
                 instrument = Optional.of((hand == null) ? null : player.getItemInHand(hand.get()));
                 
                 if (!instrumentId.equals(ForgeRegistries.ITEMS.getKey(instrument.get().getItem())))
                     setCanceled(true);
-            } else {
-                instrument = Optional.empty();
-                this.hand = Optional.empty();
             }
         }
     }
