@@ -67,13 +67,10 @@ public class ModPacketHandler {
 
     @SubscribeEvent
     public static void registerPackets(final FMLCommonSetupEvent event) {
-        event.enqueueWork(() -> registerModPackets(INSTANCE));
+        event.enqueueWork(() -> registerModPackets(INSTANCE, ACCEPTABLE_PACKETS));
     }
 
 
-    public static void registerModPackets(final SimpleChannel sc) {
-        registerModPackets(sc, ACCEPTABLE_PACKETS);
-    }
     public static void registerModPackets(final SimpleChannel sc, final List<Class<ModPacket>> acceptablePackets) {
         for (final Class<ModPacket> packetType : acceptablePackets)
             try {
