@@ -13,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * An event fired when an instrument sound has been produced.
@@ -64,16 +63,12 @@ public class InstrumentPlayedEvent extends Event {
             super(sound, pitch, player.level(), pos, instrumentId, noteIdentifier, isClientSide);
             this.player = player;
 
-            // Handle instrument items
             if (hand == null) {
                 instrument = Optional.empty();
                 this.hand = Optional.empty();
             } else {
                 this.hand = hand;
                 instrument = Optional.of((hand == null) ? null : player.getItemInHand(hand.get()));
-                
-                if (!instrumentId.equals(ForgeRegistries.ITEMS.getKey(instrument.get().getItem())))
-                    setCanceled(true);
             }
         }
     }
