@@ -45,10 +45,6 @@ public class InstrumentPlayedEvent extends Event {
 
         this.instrumentId = instrumentId;
         this.noteIdentifier = noteIdentifier;
-
-        // Handle provided invalid id
-        if (!ForgeRegistries.ITEMS.containsKey(instrumentId))
-            setCanceled(true);
     }
 
     @Cancelable
