@@ -77,7 +77,7 @@ public class ServerUtil {
         );
 
         MinecraftForge.EVENT_BUS.post(
-            new InstrumentPlayedEvent.ByPlayer(sound, player, pos, hand, instrumentId, noteIdentifier, false)
+            new InstrumentPlayedEvent.ByPlayer(sound, pitch, player, pos, hand, instrumentId, noteIdentifier, false)
         );
     }
 
@@ -130,7 +130,7 @@ public class ServerUtil {
 
 
         MinecraftForge.EVENT_BUS.post(
-            new InstrumentPlayedEvent(sound, (ServerLevel)level, pos, instrumentId, noteIdentifier, false)
+            new InstrumentPlayedEvent(sound, pitch, (ServerLevel)level, pos, instrumentId, noteIdentifier, false)
         );
     }
 

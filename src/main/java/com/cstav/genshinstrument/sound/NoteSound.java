@@ -144,10 +144,10 @@ public class NoteSound {
         
         MinecraftForge.EVENT_BUS.post((playerUUID == null)
             ? new InstrumentPlayedEvent(
-                this, level, pos, instrumentId, buttonIdentifier, true
+                this, pitch, level, pos, instrumentId, buttonIdentifier, true
             )
             : new InstrumentPlayedEvent.ByPlayer(
-                this, level.getPlayerByUUID(playerUUID), pos, hand,
+                this, pitch, level.getPlayerByUUID(playerUUID), pos, hand,
                 instrumentId, buttonIdentifier, true
             )
         );

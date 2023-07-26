@@ -23,6 +23,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class InstrumentPlayedEvent extends Event {
 
     public final NoteSound sound;
+    public final int pitch;
+
     public final Level level;
     public final boolean isClientSide;
     
@@ -31,12 +33,16 @@ public class InstrumentPlayedEvent extends Event {
     public final BlockPos pos;
     
 
-    public InstrumentPlayedEvent(NoteSound sound, Level level, BlockPos pos,
+    public InstrumentPlayedEvent(NoteSound sound, int pitch, Level level, BlockPos pos,
             ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, boolean isClientSide) {
+
         this.sound = sound;
+        this.pitch = pitch;
+
         this.level = level;
         this.pos = pos;
         this.isClientSide = isClientSide;
+
         this.instrumentId = instrumentId;
         this.noteIdentifier = noteIdentifier;
 
@@ -57,9 +63,9 @@ public class InstrumentPlayedEvent extends Event {
         public final Optional<InteractionHand> hand;
 
 
-        public ByPlayer(NoteSound sound, Player player, BlockPos pos, Optional<InteractionHand> hand,
+        public ByPlayer(NoteSound sound, int pitch, Player player, BlockPos pos, Optional<InteractionHand> hand,
                 ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, boolean isClientSide) {
-            super(sound, player.level(), pos, instrumentId, noteIdentifier, isClientSide);
+            super(sound, pitch, player.level(), pos, instrumentId, noteIdentifier, isClientSide);
             this.player = player;
 
             // Handle instrument items
