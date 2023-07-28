@@ -2,16 +2,17 @@ package com.cstav.genshinstrument.networking.packet.instrument;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.cstav.genshinstrument.client.gui.screens.instrument.drum.AratakisGreatAndGloriousDrumScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.floralzither.FloralZitherScreen;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.vintagelyre.VintageLyreScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.windsonglyre.WindsongLyreScreen;
 import com.cstav.genshinstrument.networking.IModPacket;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
@@ -21,14 +22,14 @@ import net.minecraftforge.network.NetworkEvent.Context;
 
 public class OpenInstrumentPacket implements IModPacket {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_CLIENT;
-    private static final Map<String, Supplier<ScreenOpenDelegate>> INSTRUMENT_MAP = Map.of(
+    private static final Map<String, Supplier<Function<InteractionHand, Screen>>> INSTRUMENT_MAP = Map.of(
         "windsong_lyre", () -> WindsongLyreScreen::new,
         "vintage_lyre", () -> VintageLyreScreen::new,
         "floral_zither", () -> FloralZitherScreen::new,
         "glorious_drum", () -> AratakisGreatAndGloriousDrumScreen::new
     );
 
-    protected Map<String, Supplier<ScreenOpenDelegate>> getInstrumentMap() {
+    protected Map<String, Supplier<Function<InteractionHand, Screen>>> getInstrumentMap() {
         return INSTRUMENT_MAP;
     }
 
@@ -58,15 +59,9 @@ public class OpenInstrumentPacket implements IModPacket {
 
         context.enqueueWork(() -> {
             DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
-                Minecraft.getInstance().setScreen(getInstrumentMap().get(instrumentType).get().open(hand.orElse(null))));
+                Minecraft.getInstance().setScreen(getInstrumentMap().get(instrumentType).get().apply(hand.orElse(null))));
         });
 
         return true;
-    }
-
-
-    @FunctionalInterface
-    public static interface ScreenOpenDelegate {
-        AbstractInstrumentScreen open(final InteractionHand hand);
     }
 }
