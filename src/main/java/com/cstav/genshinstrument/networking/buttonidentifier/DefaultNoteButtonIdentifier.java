@@ -14,27 +14,38 @@ public class DefaultNoteButtonIdentifier extends NoteButtonIdentifier {
     
     private final NoteSound sound;
     private final int pitch;
+    private final boolean identifyByPitch;
 
+    public DefaultNoteButtonIdentifier(final NoteSound sound, final int pitch, final boolean identifyByPitch) {
+        this.sound = sound;
+        this.pitch = pitch;
+        this.identifyByPitch = identifyByPitch;
+    }
     public DefaultNoteButtonIdentifier(final NoteSound sound, final int pitch) {
         this.sound = sound;
         this.pitch = pitch;
+        this.identifyByPitch = true;
     }
+    
     @OnlyIn(Dist.CLIENT)
-    public DefaultNoteButtonIdentifier(final NoteButton note) {
-        this(note.getSound(), note.getPitch());
+    public DefaultNoteButtonIdentifier(final NoteButton note, final boolean identifyByPitch) {
+        this(note.getSound(), note.getPitch(), identifyByPitch);
     }
 
 
     public DefaultNoteButtonIdentifier(final FriendlyByteBuf buf) {
         sound = NoteSound.readFromNetwork(buf);
         pitch = buf.readInt();
+        identifyByPitch = buf.readBoolean();
     }
 
     @Override
     public void writeToNetwork(FriendlyByteBuf buf) {
         super.writeToNetwork(buf);
+
         sound.writeToNetwork(buf);
         buf.writeInt(pitch);
+        buf.writeBoolean(identifyByPitch);
     }
 
     
@@ -42,7 +53,8 @@ public class DefaultNoteButtonIdentifier extends NoteButtonIdentifier {
         return MatchType.forceMatch(other, this::matchSound);
     }
     private boolean matchSound(final DefaultNoteButtonIdentifier other) {
-        return other.sound.equals(sound) && (pitch == other.pitch);
+        return other.sound.equals(sound)
+            && ((identifyByPitch && other.identifyByPitch) ? (pitch == other.pitch) : true);
     }
     
 }

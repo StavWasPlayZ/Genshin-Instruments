@@ -36,7 +36,7 @@ public abstract class NoteButton extends AbstractButton {
      * Returns the UI identifier of this button.
      */
     public NoteButtonIdentifier getIdentifier() {
-        return new DefaultNoteButtonIdentifier(getSound(), getPitch());
+        return new DefaultNoteButtonIdentifier(getSound(), getPitch(), false);
     }
 
 

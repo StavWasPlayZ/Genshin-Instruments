@@ -1,5 +1,6 @@
 package com.cstav.genshinstrument.networking.buttonidentifier;
 
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.NoteGridButton;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -11,7 +12,7 @@ public class NoteGridButtonIdentifier extends DefaultNoteButtonIdentifier {
     public final int row, column;
     @OnlyIn(Dist.CLIENT)
     public NoteGridButtonIdentifier(final NoteGridButton button) {
-        super(button);
+        super(button, ((AbstractGridInstrumentScreen)button.instrumentScreen).isSSTI());
         this.row = button.row;
         this.column = button.column;
     }
