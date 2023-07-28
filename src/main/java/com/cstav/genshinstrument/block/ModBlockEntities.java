@@ -1,13 +1,11 @@
 package com.cstav.genshinstrument.block;
 
 import com.cstav.genshinstrument.GInstrumentMod;
-import com.cstav.genshinstrument.block.partial.InstrumentBlockEntity;
 
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 
 public abstract class ModBlockEntities {
     
@@ -16,9 +14,9 @@ public abstract class ModBlockEntities {
         BETS.register(bus);
     }
 
-    //TODO remove after tests
-    public static final RegistryObject<BlockEntityType<InstrumentBlockEntity>> INSTRUMENT_BE = BETS.register("instrument_be", () -> 
-        BlockEntityType.Builder.of((pos, state) -> new InstrumentBlockEntity(pos, state), ModBlocks.LYRE_BLOCK.get())
-            .build(null)
-    );
+    // //TODO remove after tests
+    // public static final RegistryObject<BlockEntityType<InstrumentBlockEntity>> INSTRUMENT_BE = BETS.register("instrument_be", () -> 
+    //     BlockEntityType.Builder.of((pos, state) -> new InstrumentBlockEntity(pos, state), ModBlocks.LYRE_BLOCK.get())
+    //         .build(null)
+    // );
 }

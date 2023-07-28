@@ -43,7 +43,10 @@ public class ServerUtil {
     public static void sendPlayNotePackets(ServerPlayer player, Optional<InteractionHand> hand,
             NoteSound sound, ResourceLocation instrumentId, int pitch) {
 
-        sendPlayNotePackets(player, player.blockPosition(), hand, sound, instrumentId, new DefaultNoteButtonIdentifier(sound), pitch);
+        sendPlayNotePackets(
+            player, player.blockPosition(), hand,
+            sound, instrumentId, new DefaultNoteButtonIdentifier(sound, pitch), pitch
+        );
     }
     /**
      * Sends {@link PlayNotePacket}s in the specified {@link ServerUtil#PLAY_DISTANCE}.
@@ -91,7 +94,7 @@ public class ServerUtil {
      * @param pitch The pitch of the sound to initiate
      */
     public static void sendPlayNotePackets(Level level, BlockPos pos, NoteSound sound, ResourceLocation instrumentId, int pitch) {
-        sendPlayNotePackets(level, pos, sound, instrumentId, new DefaultNoteButtonIdentifier(sound), pitch);
+        sendPlayNotePackets(level, pos, sound, instrumentId, new DefaultNoteButtonIdentifier(sound, pitch), pitch);
     }
     /**
      * Sends {@link PlayNotePacket}s in the specified {@link ServerUtil#PLAY_DISTANCE}.

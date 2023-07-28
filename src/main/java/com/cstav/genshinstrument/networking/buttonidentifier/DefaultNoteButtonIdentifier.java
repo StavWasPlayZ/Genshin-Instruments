@@ -11,30 +11,30 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * The default note button identifier. Uses a button's {@link NoteSound} as an identifier.
  */
 public class DefaultNoteButtonIdentifier extends NoteButtonIdentifier {
+    
+    private final NoteSound sound;
+    private final int pitch;
 
-    private NoteSound sound;
-
-    public DefaultNoteButtonIdentifier(final NoteSound sound) {
+    public DefaultNoteButtonIdentifier(final NoteSound sound, final int pitch) {
         this.sound = sound;
+        this.pitch = pitch;
     }
     @OnlyIn(Dist.CLIENT)
     public DefaultNoteButtonIdentifier(final NoteButton note) {
-        this(note.getSound());
-    }
-
-    public void setSound(NoteSound sound) {
-        this.sound = sound;
+        this(note.getSound(), note.getPitch());
     }
 
 
     public DefaultNoteButtonIdentifier(final FriendlyByteBuf buf) {
         sound = NoteSound.readFromNetwork(buf);
+        pitch = buf.readInt();
     }
 
     @Override
     public void writeToNetwork(FriendlyByteBuf buf) {
         super.writeToNetwork(buf);
         sound.writeToNetwork(buf);
+        buf.writeInt(pitch);
     }
 
     
@@ -42,7 +42,7 @@ public class DefaultNoteButtonIdentifier extends NoteButtonIdentifier {
         return MatchType.forceMatch(other, this::matchSound);
     }
     private boolean matchSound(final DefaultNoteButtonIdentifier other) {
-        return other.sound.equals(sound);
+        return other.sound.equals(sound) && (pitch == other.pitch);
     }
     
 }

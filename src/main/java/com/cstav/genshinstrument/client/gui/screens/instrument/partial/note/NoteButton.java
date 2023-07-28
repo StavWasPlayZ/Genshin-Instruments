@@ -33,11 +33,10 @@ public abstract class NoteButton extends AbstractButton {
     protected final Minecraft minecraft = Minecraft.getInstance();
 
     /**
-     * <p>Returns the identifier of this button.</p>
-     * You may use the {@link DefaultNoteButtonIdentifier default implementation} if you're too lazy.
+     * Returns the UI identifier of this button.
      */
     public NoteButtonIdentifier getIdentifier() {
-        return new DefaultNoteButtonIdentifier(getSound());
+        return new DefaultNoteButtonIdentifier(getSound(), getPitch());
     }
 
 
@@ -85,10 +84,6 @@ public abstract class NoteButton extends AbstractButton {
     }
     public void setSound(NoteSound sound) {
         this.sound = sound;
-
-        // Update the sound for the sound (default) identifier
-        if (getIdentifier() instanceof DefaultNoteButtonIdentifier)
-            ((DefaultNoteButtonIdentifier)getIdentifier()).setSound(sound);
     }
 
 

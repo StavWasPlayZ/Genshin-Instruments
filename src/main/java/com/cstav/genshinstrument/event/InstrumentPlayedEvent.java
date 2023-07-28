@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.event;
 
 import java.util.Optional;
 
+import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
 
@@ -11,6 +12,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
 
@@ -51,12 +53,12 @@ public class InstrumentPlayedEvent extends Event {
         public final Player player;
 
         // The values below will only be supplied if initiated from an item
-
         /** The instrument held by the player who initiated the sound */
-        public final Optional<ItemStack> instrument;
+        public final Optional<ItemStack> itemInstrument;
         /** The hand holding the instrument played by this player */
         public final Optional<InteractionHand> hand;
 
+        public final Optional<BlockState> blockInstrument;
 
         public ByPlayer(NoteSound sound, int pitch, Player player, BlockPos pos, Optional<InteractionHand> hand,
                 ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, boolean isClientSide) {
@@ -64,11 +66,18 @@ public class InstrumentPlayedEvent extends Event {
             this.player = player;
 
             if (hand == null) {
-                instrument = Optional.empty();
+                itemInstrument = Optional.empty();
                 this.hand = Optional.empty();
+
+                final BlockPos instrumentBlockPos = InstrumentOpenProvider.getBlockPos(player);
+                blockInstrument = (instrumentBlockPos != null)
+                    ? Optional.of(player.level().getBlockState(instrumentBlockPos))
+                    : Optional.empty();
             } else {
                 this.hand = hand;
-                instrument = Optional.of((hand == null) ? null : player.getItemInHand(hand.get()));
+                itemInstrument = Optional.of((hand == null) ? null : player.getItemInHand(hand.get()));
+
+                blockInstrument = Optional.empty();
             }
         }
     }
