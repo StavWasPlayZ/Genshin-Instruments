@@ -27,7 +27,6 @@ public class ModCreativeModeTabs {
 
                 .title(Component.translatable("genshinstrument.itemGroup.instruments"))
                 .icon(() -> new ItemStack(ModItems.FLORAL_ZITHER.get()))
-                .noScrollBar()
                 
                 .displayItems((displayParams, out) ->
                     ModItems.ITEMS.getEntries().forEach((item) ->

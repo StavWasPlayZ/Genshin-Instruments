@@ -65,10 +65,10 @@ public abstract class LabelUtil {
     
 
     public static String getNoteName(final int pitch, final String[] noteLayout, final int offset) {
-        final String baseNote = noteLayout[wrapAround(offset, noteLayout.length)];
+        final String baseNote = noteLayout[CommonUtil.wrapAround(offset, noteLayout.length)];
 
         final String[] scale = NOTE_SCALES.get(baseNote);
-        return scale[(doublyPyWrap(pitch, scale.length))];
+        return scale[(CommonUtil.doublyPyWrap(pitch, scale.length))];
     }
 
 
@@ -102,31 +102,6 @@ public abstract class LabelUtil {
     }
     public static int getABCOffset(final NoteGridButton gridButton) {
         return getABCOffset(getNoteName(gridButton).charAt(0), gridButton.instrumentScreen);
-    }
-
-    
-
-    /**
-     * Provides a similar behaviour to python's indexing,
-     * where negatives are counted backwards.
-     */
-    private static int pyWrap(int index, final int arrLength) {
-        while (index < 0)
-            index += arrLength;
-
-        return index;
-    }
-    /**
-     * Wraps the index around an array
-     */
-    private static int wrapAround(int index, final int arrLength) {
-        return index % arrLength;
-    }
-    /**
-     * Performs both {@link LabelUtil#pyWrap} and {@link LabelUtil#wrapAround}
-     */
-    private static int doublyPyWrap(int index, final int arrLength) {
-        return wrapAround(pyWrap(index, arrLength), arrLength);
     }
 
 }
