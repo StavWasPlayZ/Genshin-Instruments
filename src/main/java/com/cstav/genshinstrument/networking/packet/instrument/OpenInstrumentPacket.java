@@ -66,7 +66,7 @@ public class OpenInstrumentPacket implements IModPacket {
 
 
     @FunctionalInterface
-    protected static interface ScreenOpenDelegate {
+    public static interface ScreenOpenDelegate {
         AbstractInstrumentScreen open(final InteractionHand hand);
     }
 }
