@@ -12,7 +12,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
 
@@ -58,7 +57,7 @@ public class InstrumentPlayedEvent extends Event {
         /** The hand holding the instrument played by this player */
         public final Optional<InteractionHand> hand;
 
-        public final Optional<BlockState> blockInstrument;
+        public final Optional<BlockPos> blockInstrumentPos;
 
         public ByPlayer(NoteSound sound, int pitch, Player player, BlockPos pos, Optional<InteractionHand> hand,
                 ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, boolean isClientSide) {
@@ -69,15 +68,12 @@ public class InstrumentPlayedEvent extends Event {
                 itemInstrument = Optional.empty();
                 this.hand = Optional.empty();
 
-                final BlockPos instrumentBlockPos = InstrumentOpenProvider.getBlockPos(player);
-                blockInstrument = (instrumentBlockPos != null)
-                    ? Optional.of(player.level().getBlockState(instrumentBlockPos))
-                    : Optional.empty();
+                blockInstrumentPos = Optional.ofNullable(InstrumentOpenProvider.getBlockPos(player));
             } else {
                 this.hand = hand;
                 itemInstrument = Optional.of((hand == null) ? null : player.getItemInHand(hand.get()));
 
-                blockInstrument = Optional.empty();
+                blockInstrumentPos = Optional.empty();
             }
         }
     }
