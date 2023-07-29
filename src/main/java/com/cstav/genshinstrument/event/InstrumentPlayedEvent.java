@@ -64,16 +64,16 @@ public class InstrumentPlayedEvent extends Event {
             super(sound, pitch, player.level(), pos, instrumentId, noteIdentifier, isClientSide);
             this.player = player;
 
-            if (hand == null) {
-                itemInstrument = Optional.empty();
-                this.hand = Optional.empty();
-
-                blockInstrumentPos = Optional.ofNullable(InstrumentOpenProvider.getBlockPos(player));
-            } else {
+            if (hand.isPresent()) {
                 this.hand = hand;
                 itemInstrument = Optional.of((hand == null) ? null : player.getItemInHand(hand.get()));
 
                 blockInstrumentPos = Optional.empty();
+            } else {
+                itemInstrument = Optional.empty();
+                this.hand = Optional.empty();
+
+                blockInstrumentPos = Optional.ofNullable(InstrumentOpenProvider.getBlockPos(player));
             }
         }
     }
