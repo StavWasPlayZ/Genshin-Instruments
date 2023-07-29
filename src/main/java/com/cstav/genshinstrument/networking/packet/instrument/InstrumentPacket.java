@@ -29,11 +29,11 @@ public class InstrumentPacket implements INoteIdentifierSender {
     private final ResourceLocation instrumentId;
     private final NoteButtonIdentifier noteIdentifier;
 
-    public InstrumentPacket(BlockPos pos, NoteSound sound, int pitch, InteractionHand hand,
+    public InstrumentPacket(BlockPos pos, NoteSound sound, int pitch, Optional<InteractionHand> hand,
             ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier) {
         this.pos = pos;
         this.sound = sound;
-        this.hand = Optional.ofNullable(hand);
+        this.hand = hand;
         this.pitch = pitch;
 
         this.instrumentId = instrumentId;

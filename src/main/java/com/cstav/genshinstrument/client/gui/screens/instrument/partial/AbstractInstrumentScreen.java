@@ -125,8 +125,8 @@ public abstract class AbstractInstrumentScreen extends Screen {
         // Handle item not in hand seperately
         // This is done like so because there is no event (that I know of) for when an item is moved/removed
         if (
-            InstrumentOpenProvider.isItem(player)
-            && !(player.getItemInHand(interactionHand).getItem() instanceof InstrumentItem)
+            (InstrumentOpenProvider.isItem(player) && interactionHand.isPresent())
+            && !(player.getItemInHand(interactionHand.get()).getItem() instanceof InstrumentItem)
         ) {
             onClose(true);
             return true;
@@ -199,11 +199,11 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     public final AbstractInstrumentOptionsScreen optionsScreen = initInstrumentOptionsScreen();
     
-    public final InteractionHand interactionHand;
+    public final Optional<InteractionHand> interactionHand;
     public AbstractInstrumentScreen(final InteractionHand hand) {
         super(CommonComponents.EMPTY);
 
-        interactionHand = hand;
+        interactionHand = Optional.ofNullable(hand);
     }
 
 
