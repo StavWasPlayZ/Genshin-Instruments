@@ -53,7 +53,7 @@ public abstract class NoteButton extends AbstractButton {
     public NoteButton(NoteSound sound,
             NoteLabelSupplier labelSupplier, AbstractInstrumentScreen instrumentScreen, int pitch) {
 
-        super(0, 0, 42, 42, null);
+        super(0, 0, 42, 42, Component.empty());
 
         width = height = instrumentScreen.getNoteSize();
 
@@ -78,14 +78,6 @@ public abstract class NoteButton extends AbstractButton {
     }
     public void updateNoteLabel() {
         setMessage(getLabelSupplier().get(this));
-    }
-
-    // Handle incompatibility with some mods that perform early loading of widgets
-    // *cough cough* no names *cough* Visual Overhaul *cough*
-    @Override
-    public Component getMessage() {
-        final Component message = super.getMessage();
-        return (message == null) ? Component.empty() : message;
     }
 
 
