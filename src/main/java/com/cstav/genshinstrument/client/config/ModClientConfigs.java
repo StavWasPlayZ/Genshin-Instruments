@@ -69,6 +69,6 @@ public class ModClientConfigs {
 
     @SubscribeEvent
     public static void registerConfigs(final FMLConstructModEvent event) {
-        ModLoadingContext.get().registerConfig(Type.CLIENT, ModClientConfigs.CONFIGS, "instrument_configs.toml");
+        ModLoadingContext.get().registerConfig(Type.CLIENT, CONFIGS, "instrument_configs.toml");
     }
 }
