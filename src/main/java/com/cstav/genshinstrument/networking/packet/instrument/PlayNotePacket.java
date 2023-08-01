@@ -4,8 +4,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import com.cstav.genshinstrument.networking.ModPacket;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
+import com.cstav.genshinstrument.networking.packet.INoteIdentifierSender;
 import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraft.core.BlockPos;
@@ -15,7 +15,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class PlayNotePacket implements ModPacket {
+public class PlayNotePacket implements INoteIdentifierSender {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_CLIENT;
 
 
@@ -44,7 +44,7 @@ public class PlayNotePacket implements ModPacket {
         sound = NoteSound.readFromNetwork(buf);
         pitch = buf.readInt();
         instrumentId = buf.readResourceLocation();
-        noteIdentifier = NoteButtonIdentifier.readIdentifier(buf);
+        noteIdentifier = readNoteIdentifierFromNetwork(buf);
 
         playerUUID = buf.readOptional(FriendlyByteBuf::readUUID);
         hand = buf.readOptional((fbb) -> fbb.readEnum(InteractionHand.class));
@@ -68,7 +68,7 @@ public class PlayNotePacket implements ModPacket {
         supplier.get().enqueueWork(() ->
 
             sound.playAtPos(
-                pitch, playerUUID.orElse(null), hand.orElse(null),
+                pitch, playerUUID.orElse(null), hand,
                 instrumentId, noteIdentifier, blockPos
             )
             

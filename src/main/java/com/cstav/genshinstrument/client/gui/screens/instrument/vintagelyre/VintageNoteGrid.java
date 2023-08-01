@@ -10,8 +10,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class VintageNoteGrid extends NoteGrid {
 
-    public VintageNoteGrid(int rows, int columns, NoteSound[] sounds, VintageLyreScreen instrumentScreen) {
-        super(rows, columns, sounds, instrumentScreen);
+    public VintageNoteGrid(NoteSound[] sounds, VintageLyreScreen instrumentScreen) {
+        super(sounds, instrumentScreen);
     }
 
     @Override

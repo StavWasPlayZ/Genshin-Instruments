@@ -2,7 +2,7 @@ package com.cstav.genshinstrument.criteria;
 
 import static net.minecraft.advancements.CriteriaTriggers.register;
 
-import com.cstav.genshinstrument.Main;
+import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 
 import net.minecraft.server.level.ServerPlayer;
@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.registries.ForgeRegistries;
 
 //NOTE: There to make it load on setup too
-@EventBusSubscriber(bus = Bus.FORGE, modid = Main.MODID)
+@EventBusSubscriber(bus = Bus.FORGE, modid = GInstrumentMod.MODID)
 public class ModCriteria {
 
     public static final InstrumentPlayedTrigger INSTRUMENT_PLAYED_TRIGGER = register(new InstrumentPlayedTrigger());

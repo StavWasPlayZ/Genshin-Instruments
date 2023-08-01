@@ -11,7 +11,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
-@EventBusSubscriber(modid = Main.MODID, bus = Bus.MOD)
+@EventBusSubscriber(modid = GInstrumentMod.MODID, bus = Bus.MOD)
 public class ModCreativeModeTabs {
 
     private static CreativeModeTab instrumentsTab;
@@ -22,10 +22,9 @@ public class ModCreativeModeTabs {
     @SubscribeEvent
     public static void registerCreativeModeTabs(final CreativeModeTabEvent.Register event) {
         
-        instrumentsTab = event.registerCreativeModeTab(new ResourceLocation(Main.MODID, "instruments_tab"), (builder) -> builder
+        instrumentsTab = event.registerCreativeModeTab(new ResourceLocation(GInstrumentMod.MODID, "instruments_tab"), (builder) -> builder
                 .title(Component.translatable("genshinstrument.itemGroup.instruments"))
                 .icon(() -> new ItemStack(ModItems.FLORAL_ZITHER.get()))
-                .noScrollBar()
                 
                 .displayItems((displayParams, out) ->
                     ModItems.ITEMS.getEntries().forEach((item) ->

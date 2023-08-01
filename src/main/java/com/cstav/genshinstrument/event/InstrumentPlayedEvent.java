@@ -1,5 +1,8 @@
 package com.cstav.genshinstrument.event;
 
+import java.util.Optional;
+
+import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
 
@@ -11,7 +14,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * An event fired when an instrument sound has been produced.
@@ -21,6 +23,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class InstrumentPlayedEvent extends Event {
 
     public final NoteSound sound;
+    public final int pitch;
+
     public final Level level;
     public final boolean isClientSide;
     
@@ -29,38 +33,48 @@ public class InstrumentPlayedEvent extends Event {
     public final BlockPos pos;
     
 
-    public InstrumentPlayedEvent(NoteSound sound, Level level, BlockPos pos,
+    public InstrumentPlayedEvent(NoteSound sound, int pitch, Level level, BlockPos pos,
             ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, boolean isClientSide) {
+
         this.sound = sound;
+        this.pitch = pitch;
+
         this.level = level;
         this.pos = pos;
         this.isClientSide = isClientSide;
+
         this.instrumentId = instrumentId;
         this.noteIdentifier = noteIdentifier;
-
-        // Handle provided invalid id
-        if (!ForgeRegistries.ITEMS.containsKey(instrumentId))
-            setCanceled(true);
     }
 
     @Cancelable
     public static class ByPlayer extends InstrumentPlayedEvent {
         public final Player player;
+
+        // The values below will only be supplied if initiated from an item
         /** The instrument held by the player who initiated the sound */
-        public final ItemStack instrument;
-        public final InteractionHand hand;
+        public final Optional<ItemStack> itemInstrument;
+        /** The hand holding the instrument played by this player */
+        public final Optional<InteractionHand> hand;
 
-        public ByPlayer(NoteSound sound, Player player, InteractionHand hand,
+        public final Optional<BlockPos> blockInstrumentPos;
+
+        public ByPlayer(NoteSound sound, int pitch, Player player, BlockPos pos, Optional<InteractionHand> hand,
                 ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, boolean isClientSide) {
-            super(sound, player.getLevel(), player.blockPosition(), instrumentId, noteIdentifier, isClientSide);
+            super(sound, pitch, player.getLevel(), pos, instrumentId, noteIdentifier, isClientSide);
             this.player = player;
-            this.hand = hand;
 
-            instrument = (hand == null) ? null : player.getItemInHand(hand);
+            if (hand.isPresent()) {
+                this.hand = hand;
+                itemInstrument = Optional.of((hand == null) ? null : player.getItemInHand(hand.get()));
 
-            // Handle provided unmatching id
-            if (!instrumentId.equals(ForgeRegistries.ITEMS.getKey(instrument.getItem())))
-                setCanceled(true);
+                blockInstrumentPos = Optional.empty();
+            } else {
+                itemInstrument = Optional.empty();
+                this.hand = Optional.empty();
+
+                blockInstrumentPos = Optional.ofNullable(InstrumentOpenProvider.getBlockPos(player));
+            }
         }
     }
     

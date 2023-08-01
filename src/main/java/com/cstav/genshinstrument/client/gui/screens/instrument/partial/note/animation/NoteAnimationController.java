@@ -37,9 +37,9 @@ public class NoteAnimationController extends AnimationController {
     protected void resetAnimVars() {
         super.resetAnimVars();
 
-        button.setWidth(NoteButton.getSize());
-        button.setHeight(NoteButton.getSize());
-        dSize = NoteButton.getSize();
+        button.setWidth(button.instrumentScreen.getNoteSize());
+        button.setHeight(button.instrumentScreen.getNoteSize());
+        dSize = button.instrumentScreen.getNoteSize();
 
         button.setPosition(button.getInitX(), button.getInitY());
     }

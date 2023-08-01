@@ -1,6 +1,6 @@
 package com.cstav.genshinstrument.capability;
 
-import com.cstav.genshinstrument.Main;
+import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 
 import net.minecraft.resources.ResourceLocation;
@@ -11,7 +11,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
-@EventBusSubscriber(bus = Bus.FORGE, modid = Main.MODID)
+@EventBusSubscriber(bus = Bus.FORGE, modid = GInstrumentMod.MODID)
 public class ModCapabilities {
 
     @SubscribeEvent
@@ -19,7 +19,7 @@ public class ModCapabilities {
         if (event.getObject() instanceof Player) {
 
             if (!event.getObject().getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).isPresent())
-                event.addCapability(new ResourceLocation(Main.MODID, "instrument_caps"), new InstrumentOpenProvider());
+                event.addCapability(new ResourceLocation(GInstrumentMod.MODID, "instrument_caps"), new InstrumentOpenProvider());
 
         }
     }
