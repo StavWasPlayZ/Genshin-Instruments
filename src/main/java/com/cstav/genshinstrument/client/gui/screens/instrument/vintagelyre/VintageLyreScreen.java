@@ -1,6 +1,6 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.vintagelyre;
 
-import com.cstav.genshinstrument.Main;
+import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.NoteGrid;
@@ -12,11 +12,10 @@ import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @OnlyIn(Dist.CLIENT)
 //NOTE: There just to make it load on mod setup
-@EventBusSubscriber(bus = Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(Dist.CLIENT)
 public class VintageLyreScreen extends AbstractGridInstrumentScreen {
     public static final String INSTRUMENT_ID = "vintage_lyre";
     public static final String[] VINTAGE_LYRE_LAYOUT = new String[] {
@@ -30,7 +29,7 @@ public class VintageLyreScreen extends AbstractGridInstrumentScreen {
     }
     @Override
     public ResourceLocation getInstrumentId() {
-        return new ResourceLocation(Main.MODID, INSTRUMENT_ID);
+        return new ResourceLocation(GInstrumentMod.MODID, INSTRUMENT_ID);
     }
 
 
@@ -46,13 +45,11 @@ public class VintageLyreScreen extends AbstractGridInstrumentScreen {
 
     @Override
     public NoteGrid initNoteGrid() {
-        return new VintageNoteGrid(
-            rows(), columns(), getSounds(), this
-        );
+        return new VintageNoteGrid(getSounds(), this);
     }
     
     
-    private static final InstrumentThemeLoader THEME_LOADER = initThemeLoader(Main.MODID, INSTRUMENT_ID);
+    private static final InstrumentThemeLoader THEME_LOADER = initThemeLoader(GInstrumentMod.MODID, INSTRUMENT_ID);
     @Override
     public InstrumentThemeLoader getThemeLoader() {
         return THEME_LOADER;

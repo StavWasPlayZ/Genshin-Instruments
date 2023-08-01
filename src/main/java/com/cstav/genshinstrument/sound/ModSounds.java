@@ -3,7 +3,7 @@ package com.cstav.genshinstrument.sound;
 import static com.cstav.genshinstrument.sound.NoteSoundRegistrer.createInstrumentNotes;
 import static com.cstav.genshinstrument.sound.NoteSoundRegistrer.registerNote;
 
-import com.cstav.genshinstrument.Main;
+import com.cstav.genshinstrument.GInstrumentMod;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -13,7 +13,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class ModSounds {
     
-    public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Main.MODID);
+    public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, GInstrumentMod.MODID);
     public static void register(final IEventBus bus) {
         SOUNDS.register(bus);
     }
@@ -30,13 +30,18 @@ public class ModSounds {
             registerNote(SOUNDS, loc("glorious_drum_don")),
             registerNote(SOUNDS, loc("glorious_drum_ka"), true)
         }
+
+        //TODO remove after tests
+        // BANJO = new NoteSound[] {
+        //     new NoteSound(NoteBlockInstrument.BANJO.getSoundEvent().get(), Optional.empty())
+        // }
     ;
 
     /**
      * Shorthand for {@code new ResourceLocation(Main.MODID, name)}
      */
     private static ResourceLocation loc(final String name) {
-        return new ResourceLocation(Main.MODID, name);
+        return new ResourceLocation(GInstrumentMod.MODID, name);
     }
 
 }

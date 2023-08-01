@@ -12,9 +12,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class KeyMappings {
     
     public static final Key[][] GRID_INSTRUMENT_MAPPINGS = createInstrumentMaps(new int[][] {
-        {81, 87, 69, 82, 84, 89, 85},
-        {65, 83, 68, 70, 71, 72, 74},
-        {90, 88, 67, 86, 66, 78, 77}
+        {81, 87, 69, 82, 84, 89, 85, 73},
+        {65, 83, 68, 70, 71, 72, 74, 75},
+        {90, 88, 67, 86, 66, 78, 77, 44}
     });
 
     // Glorious drum

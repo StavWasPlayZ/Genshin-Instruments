@@ -3,12 +3,15 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.function.Consumer;
 
+import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.GenshinConsentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
+import com.cstav.genshinstrument.item.InstrumentItem;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.packet.instrument.CloseInstrumentPacket;
@@ -24,6 +27,7 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -31,17 +35,34 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public abstract class AbstractInstrumentScreen extends Screen {
     public static final String[] DEFAULT_NOTE_LAYOUT = new String[] {"C", "D", "E", "F", "G", "A", "B"};
     
+    @SuppressWarnings("resource")
+    public int getNoteSize() {
+        final int guiScale = Minecraft.getInstance().options.guiScale().get();
+
+        return switch (guiScale) {
+            case 0 -> 40;
+            case 1 -> 35;
+            case 2 -> 46;
+            case 3 -> 48;
+            case 4 -> 41;
+            default -> guiScale * 18;
+        };
+    }
     
     /**
      * The set pitch of all note buttons in this screen
      */
-    private int pitch = ModClientConfigs.PITCH.get().intValue();
+    private int pitch;
     public int getPitch() {
         return pitch;
     }
     public void setPitch(int pitch) {
         this.pitch = NoteSound.clampPitch(pitch);
-        notesIterable().forEach(NoteButton::updateNoteLabel);
+        notesIterable().forEach((note) -> note.setPitch(this.pitch));
+    }
+
+    protected void initPitch(final Consumer<Integer> pitchConsumer) {
+        pitchConsumer.accept(ModClientConfigs.PITCH.get().intValue());
     }
 
 
@@ -65,22 +86,14 @@ public abstract class AbstractInstrumentScreen extends Screen {
     /**
      * @return The location of all labels present in this instrument
      */
-    public abstract ResourceLocation getNotesLocation();
+    public abstract ResourceLocation getNoteSymbolsLocation();
 
-    
-    /**
-     * <p>Gets the sound array used by this instrument.
-     * Its length must be equal to this Note Grid's {@code row*column}.</p>
-     * Each sound is used on press by the their index on the grid.
-     * @return The array of sounds used by this instruments.
-     */
-    public abstract NoteSound[] getSounds();
 
     /**
      * @return The layout of the note names accross the instrument's rows.
-     * @apiNote All built-in instruments' layouts are derived from
+     * @implNote All built-in instruments' layouts are derived from
      * <a href=https://github.com/Specy/genshin-music/blob/19dfe0e2fb8081508bd61dd47289dcb2d89ad5e3/src/Config.ts#L114>
-     * Genshin Music app configs
+     * Specy's Genshin Music app
      * </a>
      */
     public String[] noteWidget() {
@@ -94,6 +107,32 @@ public abstract class AbstractInstrumentScreen extends Screen {
      */
     public boolean isGenshinInstrument() {
         return true;
+    }
+
+    /**
+     * Handles this instrument being closed by either recieving a false signal from {@link InstrumentOpenProvider#isOpen}
+     * or, if it is an item, if the item has been ripped out of the player's hands.
+     * @return Whether the instrument has closed as a result of this method
+     */
+    public boolean handleAbruptClosing() {
+        final Player player = minecraft.player;
+
+        if (!InstrumentOpenProvider.isOpen(player)) {
+            onClose(false);
+            return true;
+        }
+
+        // Handle item not in hand seperately
+        // This is done like so because there is no event (that I know of) for when an item is moved/removed
+        if (
+            (InstrumentOpenProvider.isItem(player) && interactionHand.isPresent())
+            && !(player.getItemInHand(interactionHand.get()).getItem() instanceof InstrumentItem)
+        ) {
+            onClose(true);
+            return true;
+        }
+
+        return false;
     }
 
 
@@ -123,13 +162,23 @@ public abstract class AbstractInstrumentScreen extends Screen {
         return "textures/gui/instrument/";
     }
     public ResourceLocation getResourceFromGlob(final String path) {
-        return new ResourceLocation(getModId(), getGlobalRootPath() + path);
+        return getSourcePath().withPath(getGlobalRootPath() + path);
+    }
+    public static ResourceLocation getInternalResourceFromGlob(final String path) {
+        return new ResourceLocation(GInstrumentMod.MODID, getGlobalRootPath() + path);
     }
     /**
      * Shorthand for {@code getRootPath() + getInstrumentId()}
      */
     protected String getPath() {
-        return getGlobalRootPath() + getInstrumentId().getPath() + "/";
+        return getGlobalRootPath() + getSourcePath().getPath() + "/";
+    }
+
+    /**
+     * Override this method if you want to reference another directory for resources
+     */
+    protected ResourceLocation getSourcePath() {
+        return getInstrumentId();
     }
 
     public String getModId() {
@@ -144,22 +193,23 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * @see {@link AbstractInstrumentScreen#getResourceFrom(ResourceLocation, String)}
      */
     public ResourceLocation getResourceFromRoot(final String path) {
-        return new ResourceLocation(getModId(), getPath() + path);
+        return getSourcePath().withPath(getPath() + path);
     }
 
 
     public final AbstractInstrumentOptionsScreen optionsScreen = initInstrumentOptionsScreen();
     
-    public final InteractionHand interactionHand;
+    public final Optional<InteractionHand> interactionHand;
     public AbstractInstrumentScreen(final InteractionHand hand) {
         super(CommonComponents.EMPTY);
 
-        interactionHand = hand;
+        interactionHand = Optional.ofNullable(hand);
     }
 
 
     @Override
     protected void init() {
+        initPitch(this::setPitch);
         optionsScreen.init(minecraft, width, height);
 
         if (isGenshinInstrument() && !ModClientConfigs.ACCEPTED_GENSHIN_CONSENT.get())
@@ -245,20 +295,34 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
 
+    private boolean isOptionsScreenActive;
+    public boolean isOptionsScreenActive() {
+        return isOptionsScreenActive;
+    }
+
     public void onOptionsOpen() {
         setFocused(null);
         minecraft.pushGuiLayer(optionsScreen);
+
+        isOptionsScreenActive = true;
     }
-    public void onOptionsClose() {}
+    public void onOptionsClose() {
+        isOptionsScreenActive = false;
+    }
 
 
     @Override
     public void onClose() {
-        minecraft.player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((instrumentOpen) ->
-            instrumentOpen.setOpen(false)
-        );
-        ModPacketHandler.sendToServer(new CloseInstrumentPacket());
+        onClose(true);
+    }
+    public void onClose(final boolean notify) {
+        if (notify) {
+            InstrumentOpenProvider.setClosed(minecraft.player);
+            ModPacketHandler.sendToServer(new CloseInstrumentPacket());
+        }
 
+        if (isOptionsScreenActive)
+            optionsScreen.onClose();
         super.onClose();
     }
 
