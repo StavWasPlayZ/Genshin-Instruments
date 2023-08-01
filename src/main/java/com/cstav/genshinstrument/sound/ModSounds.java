@@ -3,13 +3,10 @@ package com.cstav.genshinstrument.sound;
 import static com.cstav.genshinstrument.sound.NoteSoundRegistrer.createInstrumentNotes;
 import static com.cstav.genshinstrument.sound.NoteSoundRegistrer.registerNote;
 
-import java.util.Optional;
-
 import com.cstav.genshinstrument.GInstrumentMod;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -32,12 +29,12 @@ public class ModSounds {
         GLORIOUS_DRUM = new NoteSound[] {
             registerNote(SOUNDS, loc("glorious_drum_don")),
             registerNote(SOUNDS, loc("glorious_drum_ka"), true)
-        },
+        }
 
         //TODO remove after tests
-        BANJO = new NoteSound[] {
-            new NoteSound(NoteBlockInstrument.BANJO.getSoundEvent().get(), Optional.empty())
-        }
+        // BANJO = new NoteSound[] {
+        //     new NoteSound(NoteBlockInstrument.BANJO.getSoundEvent().get(), Optional.empty())
+        // }
     ;
 
     /**
