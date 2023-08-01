@@ -61,7 +61,8 @@
         
         "3.0": "- New pitch-accurate accidentals system! Support for flats, sharps, and their doubly variants\n- Added Note Label type\n- Re-implemented pitch names in slider\n- Fixed ABC label type\n- Partial Arabic language support",
         "3.1": "Changes:\n- Improves instrument textures\n- Pitch is now determined by accurate note scales (fixing inaccurate representations of note labels & accidentals)\n- Implemented instrument options as the config screen for Forge's mod menu\n\nFixed:\n- Zither's sound type button overflowing to the Done button\n- Left-hand display of instruments\n- Note buttons' text labels overflowing to the instrument options",
-        "3.1.1": "- Fixed shared notes not displaying when options are open"
+        "3.1.1": "- Fixed shared notes not displaying when options are open",
+        "3.2": "Changes:\n- The Glorious Drum is now more similar to Genshin's\n- Pitch now affects the representation of notes in addition to accidentals, resulting in super accurate notes!\n\nFixed:\n- Incompatibility with Visual Overhaul mod\n- Note sumboles being offset and sometimes funky\n- Game crashing upon having instrument options open & clearing one's inventory"
     },
 
     
@@ -79,7 +80,7 @@
         "1.20-latest": "3.1",
         "1.20-recommended": "3.1",
 
-        "1.20.1-latest": "3.1.1",
-        "1.20.1-recommended": "3.1.1"
+        "1.20.1-latest": "3.2",
+        "1.20.1-recommended": "3.2"
     }
 }
