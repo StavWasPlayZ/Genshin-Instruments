@@ -2,7 +2,7 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note;
 
 import java.awt.Point;
 
-import com.cstav.genshinstrument.Main;
+import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.ClientUtil;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.animation.RingAnimationController;
@@ -16,7 +16,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class NoteRing {
     public static final String RING_GLOB_FILENAME = "ring.png";
 
-    protected final RingAnimationController ringAnimation = new RingAnimationController(.3f, 40, this);
+    protected final RingAnimationController ringAnimation;
 
     public final NoteButton note;
     public int size;
@@ -24,7 +24,9 @@ public class NoteRing {
 
     public NoteRing(final NoteButton note, final boolean isForeign) {
         this.note = note;
+        ringAnimation = new RingAnimationController(.3f, 40, this);
 
+        // Immediately play
         if (isForeign)
             ringAnimation.play(-.4f);
         else
@@ -38,13 +40,13 @@ public class NoteRing {
 
         ringAnimation.update();
 
-        final Point ringCenter = ClientUtil.getInitCenter(note.getInitX(), note.getInitY(), NoteButton.getSize(), size);
+        final Point ringCenter = ClientUtil.getInitCenter(note.getInitX(), note.getInitY(), note.instrumentScreen.getNoteSize(), size);
 
 
         ClientUtil.setShaderColor(note.instrumentScreen.getThemeLoader().getNoteTheme(), alpha);
 
         gui.blit(
-            new ResourceLocation(Main.MODID, AbstractInstrumentScreen.getGlobalRootPath() + RING_GLOB_FILENAME),
+            new ResourceLocation(GInstrumentMod.MODID, AbstractInstrumentScreen.getGlobalRootPath() + RING_GLOB_FILENAME),
             ringCenter.x, ringCenter.y,
             0, 0,
             size, size,

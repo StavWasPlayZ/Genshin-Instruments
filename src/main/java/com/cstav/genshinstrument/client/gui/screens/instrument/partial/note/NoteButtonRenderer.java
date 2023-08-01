@@ -18,8 +18,8 @@ public class NoteButtonRenderer {
     private static final Minecraft MINECRAFT = Minecraft.getInstance();
 
     private static final double
-        FLAT_TEXTURE_HEIGHT_MULTIPLIER = 3.7f/1.3f,
-        FLAT_TEXTURE_WIDTH_MULTIPLIER = 1.7f/1.3f,
+        FLAT_TEXTURE_HEIGHT_MULTIPLIER = 3.7/1.3,
+        FLAT_TEXTURE_WIDTH_MULTIPLIER = 1.7/1.3,
         SHARP_MULTIPLIER = .8f,
         DOUBLE_SHARP_MULTIPLIER = .9f
     ;
@@ -32,10 +32,8 @@ public class NoteButtonRenderer {
         noteLocation, noteBgLocation, accidentalsLocation;
 
     // Texture properties
-    protected final int noteTextureRow, rowsInNoteTexture;
-    private final int noteTextureWidth;
-    //FIXME Actually figure out a formula instead of guessing
-    private final float randomAssMultiplier1, randomAssMultiplier2;
+    public int noteTextureRow;
+    protected final int rowsInNoteTexture;
 
     // Animations
     public final NoteAnimationController noteAnimation;
@@ -43,8 +41,7 @@ public class NoteButtonRenderer {
     protected final ArrayList<NoteRing> rings = new ArrayList<>();
 
 
-    public NoteButtonRenderer(NoteButton noteButton, int noteTextureRow, int rowsInNoteTexture,
-            int noteTextureWidth, float randomAssMultiplier1, float randomAssMultiplier2) {
+    public NoteButtonRenderer(NoteButton noteButton, int noteTextureRow, int rowsInNoteTexture) {
         this.noteButton = noteButton;
         instrumentScreen = noteButton.instrumentScreen;
 
@@ -57,15 +54,9 @@ public class NoteButtonRenderer {
 
         rootLocation = instrumentScreen.getResourceFromRoot("note");
 
-        noteLocation = instrumentScreen.getNotesLocation();
+        noteLocation = instrumentScreen.getNoteSymbolsLocation();
         noteBgLocation = getResourceFromRoot("note_bg.png");
         accidentalsLocation = getResourceFromRoot("accidentals.png");
-
-
-
-        this.noteTextureWidth = noteTextureWidth;
-        this.randomAssMultiplier1 = randomAssMultiplier1;
-        this.randomAssMultiplier2 = randomAssMultiplier2;
     }
 
 
@@ -117,12 +108,10 @@ public class NoteButtonRenderer {
 
         gui.blit(noteLocation,
             noteButton.getX() + noteWidth/2, noteButton.getY() + noteHeight/2,
-            //NOTE: I have no clue whatsoever how on earth these 1.025 and .9 multipliers actually work.
-            // Like seriously wtf why fkuaherjgaeorg i hate maths
-            //NOTE: Moved said numbers to the randomAss vars
-            noteWidth * noteTextureRow * randomAssMultiplier2, 0,
+            noteWidth * noteTextureRow, 0,
+
             noteWidth, noteHeight,
-            (int)(noteWidth * (noteTextureWidth / rowsInNoteTexture) * randomAssMultiplier1), noteButton.getHeight()/2
+            noteWidth * rowsInNoteTexture, noteButton.getHeight()/2
         );
 
         ClientUtil.resetShaderColor();
@@ -187,9 +176,9 @@ public class NoteButtonRenderer {
 
         gui.blit(accidentalsLocation,
             noteButton.getX() - 9 + offsetX, noteButton.getY() - 6 + offsetY,
-            noteButton.isPlaying() ? textureWidth/2 : 0, (spritePartHeight) * index - index,
+            noteButton.isPlaying() ? textureWidth/2 : 0, spritePartHeight * index - index,
             
-            textureWidth/2,  spritePartHeight + ((index == 1) ? 3 : 0),
+            textureWidth/2,  spritePartHeight,
             textureWidth - (((index != 0) && noteButton.isPlaying()) ? 1 : 0), textureHeight
         );
     }

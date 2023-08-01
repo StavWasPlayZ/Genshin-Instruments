@@ -24,6 +24,13 @@ public class NoteGridButton extends NoteButton {
         this.row = row;
         this.column = column;
     }
+    public NoteGridButton(int row, int column, NoteSound sound, NoteLabelSupplier labelSupplier,
+            AbstractGridInstrumentScreen instrumentScreen, int pitch) {
+        super(sound, labelSupplier, instrumentScreen, pitch);
+
+        this.row = row;
+        this.column = column;
+    }
 
     @Override
     public NoteGridButtonIdentifier getIdentifier() {
@@ -32,7 +39,7 @@ public class NoteGridButton extends NoteButton {
 
     @Override
     public NoteNotation getNotation() {
-        return ModClientConfigs.ACCURATE_ACCIDENTALS.get()
+        return ModClientConfigs.ACCURATE_NOTES.get()
             ? NoteNotation.getNotation(LabelUtil.getNoteName(this))
             : NoteNotation.NONE;
     }
@@ -40,9 +47,13 @@ public class NoteGridButton extends NoteButton {
 
     @Override
     protected NoteButtonRenderer initNoteRenderer() {
-        return new NoteButtonRenderer(this,
-            row, ((AbstractGridInstrumentScreen)instrumentScreen).rows(),
-            57, .9f, 1.025f
-        );
+        return new NoteButtonRenderer(this, row, LabelUtil.ABC.length);
+    }
+
+    @Override
+    public void updateNoteLabel() {
+        super.updateNoteLabel();
+        noteRenderer.noteTextureRow = ModClientConfigs.ACCURATE_NOTES.get()
+            ? LabelUtil.getABCOffset(this) : row;
     }
 }

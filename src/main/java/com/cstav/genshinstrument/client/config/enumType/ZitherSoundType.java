@@ -5,6 +5,10 @@ import java.util.function.Supplier;
 import com.cstav.genshinstrument.sound.ModSounds;
 import com.cstav.genshinstrument.sound.NoteSound;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+@OnlyIn(Dist.CLIENT)
 public enum ZitherSoundType {
     OLD(() -> ModSounds.ZITHER_OLD_NOTE_SOUNDS),
     NEW(() -> ModSounds.ZITHER_NEW_NOTE_SOUNDS);

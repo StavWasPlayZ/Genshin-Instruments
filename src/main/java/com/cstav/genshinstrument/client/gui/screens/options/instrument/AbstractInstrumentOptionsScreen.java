@@ -84,7 +84,16 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
     protected final @Nullable INoteLabel[] labels;
     protected final @Nullable INoteLabel currLabel;
+
+    /**
+     * Override to {@code false} tp disable the pitch slider from the options.
+     * @apiNote SSTI-type instruments do not want a pitch slider. They tend to max out from beginning to end.
+     */
+    public boolean isPitchSliderEnabled() {
+        return true;
+    }
     
+
     public final @Nullable AbstractInstrumentScreen instrumentScreen;
 
     public AbstractInstrumentOptionsScreen(@Nullable AbstractInstrumentScreen screen) {
@@ -154,35 +163,37 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
                 getBigButtonWidth(), 20, Component.translatable(SOUND_CHANNEL_KEY), this::onChannelTypeChanged);
         rowHelper.addChild(instrumentChannel, 2);
 
-        final AbstractSliderButton pitchSlider = new AbstractSliderButton(0, 0, getSmallButtonWidth(), 20,
-            CommonComponents.EMPTY,
-            Mth.clampedMap(getPitch(), NoteSound.MIN_PITCH, NoteSound.MAX_PITCH, 0, 1)) {
-
-            final DecimalFormat format = new DecimalFormat("0.00");
-            {
-                pitch = getPitch();
-                updateMessage();
-            }
-
-            private int pitch;
-
-            @Override
-            protected void updateMessage() {
-                this.setMessage(
-                    Component.translatable("button.genshinstrument.pitch").append(": "
-                        + LabelUtil.getNoteName(pitch, AbstractInstrumentScreen.DEFAULT_NOTE_LAYOUT, 0)
-                        + " ("+format.format(NoteSound.getPitchByNoteOffset(pitch))+")"
-                    )
-                );
-            }
-            
-            @Override
-            protected void applyValue() {
-                pitch = (int)Mth.clampedLerp(NoteSound.MIN_PITCH, NoteSound.MAX_PITCH, value);
-                onPitchChanged(this, pitch);
-            }
-        };
-        rowHelper.addChild(pitchSlider);
+        if (isPitchSliderEnabled()) {
+            final AbstractSliderButton pitchSlider = new AbstractSliderButton(0, 0, getSmallButtonWidth(), 20,
+                CommonComponents.EMPTY,
+                Mth.clampedMap(getPitch(), NoteSound.MIN_PITCH, NoteSound.MAX_PITCH, 0, 1)) {
+    
+                final DecimalFormat format = new DecimalFormat("0.00");
+                {
+                    pitch = getPitch();
+                    updateMessage();
+                }
+    
+                private int pitch;
+    
+                @Override
+                protected void updateMessage() {
+                    this.setMessage(
+                        Component.translatable("button.genshinstrument.pitch").append(": "
+                            + LabelUtil.getNoteName(pitch, AbstractInstrumentScreen.DEFAULT_NOTE_LAYOUT, 0)
+                            + " ("+format.format(NoteSound.getPitchByNoteOffset(pitch))+")"
+                        )
+                    );
+                }
+                
+                @Override
+                protected void applyValue() {
+                    pitch = (int)Mth.clampedLerp(NoteSound.MIN_PITCH, NoteSound.MAX_PITCH, value);
+                    onPitchChanged(this, pitch);
+                }
+            };
+            rowHelper.addChild(pitchSlider);
+        }
 
         final CycleButton<Boolean> stopMusic = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(ModClientConfigs.STOP_MUSIC_ON_PLAY.get())
@@ -214,11 +225,11 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         rowHelper.addChild(sharedInstrument);
 
         final CycleButton<Boolean> accurateAccidentals = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
-            .withInitialValue(ModClientConfigs.ACCURATE_ACCIDENTALS.get())
-            .withTooltip((value) -> Tooltip.create(Component.translatable("button.genshinstrument.accurate_accidentals.tooltip")))
+            .withInitialValue(ModClientConfigs.ACCURATE_NOTES.get())
+            .withTooltip((value) -> Tooltip.create(Component.translatable("button.genshinstrument.accurate_notes.tooltip")))
             .create(0, 0,
                 getSmallButtonWidth(), getButtonHeight(),
-                Component.translatable("button.genshinstrument.accurate_accidentals"), this::onAccurateAccidentalsChanged
+                Component.translatable("button.genshinstrument.accurate_notes"), this::onAccurateAccidentalsChanged
             );
         rowHelper.addChild(accurateAccidentals);
 
@@ -290,7 +301,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         ModClientConfigs.SHARED_INSTRUMENT.set(value);
     }
     protected void onAccurateAccidentalsChanged(final CycleButton<Boolean> button, final boolean value) {
-        ModClientConfigs.ACCURATE_ACCIDENTALS.set(value);
+        ModClientConfigs.ACCURATE_NOTES.set(value);
 
         if (isOverlay)
             instrumentScreen.notesIterable().forEach(NoteButton::updateNoteLabel);
@@ -332,18 +343,19 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
     // Make pressing notes possible with keyboard
     @Override
-    public boolean keyPressed(int p_96552_, int p_96553_, int p_96554_) {
-        if (isOverlay && p_96552_ != 256)
-            instrumentScreen.keyPressed(p_96552_, p_96553_, p_96554_);
+    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
+        // Only pass when it is a note key
+        if (isOverlay && (instrumentScreen.getNoteByKey(pKeyCode) != null))
+            instrumentScreen.keyPressed(pKeyCode, pScanCode, pModifiers);
 
-        return super.keyPressed(p_96552_, p_96553_, p_96554_);
+        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
     }
     @Override
-    public boolean keyReleased(int p_94715_, int p_94716_, int p_94717_) {
-        if (isOverlay && p_94715_ != 256)
-            instrumentScreen.keyReleased(p_94715_, p_94716_, p_94717_);
+    public boolean keyReleased(int pKeyCode, int pScanCode, int pModifiers) {
+        if (isOverlay && (instrumentScreen.getNoteByKey(pKeyCode) != null))
+            instrumentScreen.keyReleased(pKeyCode, pScanCode, pModifiers);
 
-        return super.keyReleased(p_94715_, p_94716_, p_94717_);
+        return super.keyReleased(pKeyCode, pScanCode, pModifiers);
     }
 
 

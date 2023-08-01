@@ -1,9 +1,11 @@
 package com.cstav.genshinstrument.networking.buttonidentifier;
 
+import java.util.List;
 import java.util.function.Function;
 
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
-import com.cstav.genshinstrument.networking.ModPacketHandler;
+import com.cstav.genshinstrument.networking.packet.INoteIdentifierSender;
+import com.cstav.genshinstrument.util.ServerUtil;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -41,10 +43,15 @@ public abstract class NoteButtonIdentifier {
         return false;
     }
 
+    /**
+     * @apiNote Consider implementing {@link INoteIdentifierSender}
+     * and using the {@link INoteIdentifierSender#readNoteIdentifierFromNetwork} instead.
+     */
+    public static NoteButtonIdentifier readFromNetwork(FriendlyByteBuf buf,
+            List<Class<? extends NoteButtonIdentifier>> acceptableIdentifiers) {
 
-    public static NoteButtonIdentifier readIdentifier(FriendlyByteBuf buf) {
         try {
-            return ModPacketHandler.getValidIdentifier(buf.readUtf())
+            return ServerUtil.getValidNoteIdentifier(buf.readUtf(), acceptableIdentifiers)
                 .getDeclaredConstructor(FriendlyByteBuf.class).newInstance(buf);
         } catch (Exception e) {
             LogUtils.getLogger().error("Error initializing button identifier", e);
