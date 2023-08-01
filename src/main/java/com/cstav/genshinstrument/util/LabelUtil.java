@@ -5,17 +5,21 @@ import static java.util.Map.entry;
 import java.util.Map;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.NoteGridButton;
+import com.mojang.logging.LogUtils;
 
 public abstract class LabelUtil {
     
     public static final String[]
         DO_RE_MI = {
             "do", "re", "mi", "fa", "so", "la", "ti"
-        },
+        }
+    ;
+    public static final char[]
         ABC = {
-            "C", "D", "E", "F", "G", "A", "B"
+            'C', 'D', 'E', 'F', 'G', 'A', 'B'
         }
     ;
 
@@ -61,52 +65,43 @@ public abstract class LabelUtil {
     
 
     public static String getNoteName(final int pitch, final String[] noteLayout, final int offset) {
-        final String baseNote = noteLayout[wrapAround(offset, noteLayout.length)];
+        final String baseNote = noteLayout[CommonUtil.wrapAround(offset, noteLayout.length)];
 
         final String[] scale = NOTE_SCALES.get(baseNote);
-        return scale[(doublyPyWrap(pitch, scale.length))];
+        return scale[(CommonUtil.doublyPyWrap(pitch, scale.length))];
     }
+
+
     public static String getNoteName(final NoteGridButton gridButton) {
         final AbstractGridInstrumentScreen screen = (AbstractGridInstrumentScreen) gridButton.instrumentScreen;
-        return getNoteName(
-            screen.getPitch(), screen.noteLayout(),
-            gridButton.row + gridButton.column * screen.rows()
-        );
+        return getNoteName(screen.getPitch(), screen.noteLayout(), getNoteOffset(gridButton));
+    }
+    public static int getNoteOffset(final NoteGridButton gridButton) {
+        return gridButton.row + gridButton.column * ((AbstractGridInstrumentScreen)gridButton.instrumentScreen).rows();
     }
 
     public static String getCutNoteName(final NoteGridButton gridButton) {
-        String result = LabelUtil.getNoteName(gridButton);
+        return getCutNoteName(LabelUtil.getNoteName(gridButton));
+    }
+    public static String getCutNoteName(String noteName) {
+        if (ModClientConfigs.ACCURATE_NOTES.get())
+            noteName = String.valueOf(noteName.charAt(0));
 
-        if (ModClientConfigs.ACCURATE_ACCIDENTALS.get())
-            result = String.valueOf(result.charAt(0));
-
-        return result;
+        return noteName;
     }
 
-    /**
-     * Provides a similar behaviour to python's indexing,
-     * where negatives are counted backwards.
-     */
-    private static int pyWrap(int index, final int arrLength) {
-        while (index < 0)
-            index += arrLength;
 
-        return index;
-    }
-    /**
-     * Wraps the index around an array
-     */
-    private static int wrapAround(int index, final int arrLength) {
-        while (index >= arrLength)
-            index -= arrLength;
+    public static int getABCOffset(final char note, final AbstractInstrumentScreen screen) {
+        for (int i = 0; i < ABC.length; i++) {
+            if (note == ABC[i])
+                return i;
+        }
 
-        return index;
+        LogUtils.getLogger().warn("Could not get note letter "+note+" for "+screen.getInstrumentId()+"!");
+        return 0;
     }
-    /**
-     * Performs both {@link LabelUtil#pyWrap} and {@link LabelUtil#wrapAround}
-     */
-    private static int doublyPyWrap(int index, final int arrLength) {
-        return wrapAround(pyWrap(index, arrLength), arrLength);
+    public static int getABCOffset(final NoteGridButton gridButton) {
+        return getABCOffset(getNoteName(gridButton).charAt(0), gridButton.instrumentScreen);
     }
 
 }

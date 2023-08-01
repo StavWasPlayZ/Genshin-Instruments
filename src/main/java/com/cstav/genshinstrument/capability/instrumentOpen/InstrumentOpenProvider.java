@@ -1,8 +1,11 @@
 package com.cstav.genshinstrument.capability.instrumentOpen;
 
+import java.util.function.Function;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
@@ -43,9 +46,38 @@ public class InstrumentOpenProvider implements ICapabilityProvider, INBTSerializ
     }
     
 
-    public static void setOpen(final Player player, final boolean isOpen) {
+    public static void setOpen(final Player player, final BlockPos pos) {
         player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((instrumentOpen) ->
-            instrumentOpen.setOpen(isOpen)
+            instrumentOpen.setOpen(pos)
         );
+    }
+    public static void setOpen(Player player) {
+        player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((instrumentOpen) ->
+            instrumentOpen.setOpen()
+        );
+    }
+    public static void setClosed(Player player) {
+        player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((instrumentOpen) ->
+            instrumentOpen.setClosed()
+        );
+    }
+
+
+    public static boolean isOpen(final Player player) {
+        return getInstrumentOpen(player, InstrumentOpen::isOpen, false);
+    }
+    public static boolean isItem(final Player player) {
+        return getInstrumentOpen(player, InstrumentOpen::isItem, false);
+    }
+    public static BlockPos getBlockPos(final Player player) {
+        return getInstrumentOpen(player, InstrumentOpen::getBlockPos, null);
+    }
+
+    private static final <T> T getInstrumentOpen(Player player, Function<InstrumentOpen, T> ifExists, T elseVal) {
+        final LazyOptional<InstrumentOpen> lazyOpen = player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN);
+
+        return lazyOpen.isPresent()
+            ? ifExists.apply(lazyOpen.resolve().get())
+            : elseVal;
     }
 }

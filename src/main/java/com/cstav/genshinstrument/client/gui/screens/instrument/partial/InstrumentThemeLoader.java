@@ -1,14 +1,14 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.partial;
 
 import java.awt.Color;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.slf4j.Logger;
 
-import com.cstav.genshinstrument.Main;
+import com.cstav.genshinstrument.GInstrumentMod;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -35,9 +35,11 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
  * This class must be initialized during mod setup.
  */
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(modid = Main.MODID, bus = Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = GInstrumentMod.MODID, bus = Bus.MOD, value = Dist.CLIENT)
 public class InstrumentThemeLoader {
     private static final Logger LOGGER = LogUtils.getLogger();
+
+    private static final HashMap<ResourceLocation, JsonObject> CACHES = new HashMap<>();
 
 
     private static final ArrayList<InstrumentThemeLoader> LOADERS = new ArrayList<>();
@@ -113,19 +115,41 @@ public class InstrumentThemeLoader {
             public void onResourceManagerReload(ResourceManager resourceManager) {
                 for (final InstrumentThemeLoader instrumentLoader : LOADERS) {
                     final ResourceLocation styleLocation = instrumentLoader.getInstrumentStyleLocation();
+                    
                     try {
+                        JsonObject styleInfo;
+
+                        // If it is already cached, then let it be
+                        if (CACHES.containsKey(styleLocation)) {
+                            styleInfo = CACHES.get(styleLocation);
+
+                            for (final Consumer<JsonObject> listener : instrumentLoader.listeners)
+                                listener.accept(styleInfo);
+
+                            LOGGER.info("Loaded instrument style from the already cached "+styleLocation);
+                            continue;
+                        }
+
+
+                        styleInfo = JsonParser.parseReader(
+                            resourceManager.getResource(styleLocation).get().openAsReader()
+                        ).getAsJsonObject();
 
                         // Call all load listeners on the current loader
                         for (final Consumer<JsonObject> listener : instrumentLoader.listeners)
-                            listener.accept(JsonParser.parseReader(
-                                resourceManager.getResource(styleLocation).get().openAsReader()
-                            ).getAsJsonObject());
+                            listener.accept(styleInfo);
 
-                    } catch (IOException e) {
-                        LOGGER.error("Error retrieving instrument styler from "+styleLocation, e);
+                        
+                        CACHES.put(styleLocation, styleInfo);
+                        LOGGER.info("Loaded and cached instrument style from "+styleLocation);
+
+                    } catch (Exception e) {
+                        LOGGER.error("Met an exception upon loading the instrument styler from "+styleLocation, e);
                         continue;
                     }
                 }
+
+                CACHES.clear();
             }
             
         });
