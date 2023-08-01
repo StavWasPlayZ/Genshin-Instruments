@@ -22,7 +22,7 @@ public class ModCreativeModeTabs {
     @SubscribeEvent
     public static void registerCreativeModeTabs(final CreativeModeTabEvent.Register event) {
         
-        instrumentsTab = event.registerCreativeModeTab(new ResourceLocation(Main.MODID, "instruments_tab"), (builder) -> builder
+        instrumentsTab = event.registerCreativeModeTab(new ResourceLocation(GInstrumentMod.MODID, "instruments_tab"), (builder) -> builder
                 .title(Component.translatable("genshinstrument.itemGroup.instruments"))
                 .icon(() -> new ItemStack(ModItems.FLORAL_ZITHER.get()))
                 

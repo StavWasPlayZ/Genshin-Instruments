@@ -96,7 +96,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * Specy's Genshin Music app
      * </a>
      */
-    public String[] noteWidget() {
+    public String[] noteLayout() {
         return DEFAULT_NOTE_LAYOUT;
     }
 

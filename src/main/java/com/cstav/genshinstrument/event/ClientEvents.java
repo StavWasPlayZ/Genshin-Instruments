@@ -43,7 +43,7 @@ public class ClientEvents {
             return;
 
 
-        final Block block = player.level().getBlockState(InstrumentOpenProvider.getBlockPos(player)).getBlock();
+        final Block block = player.getLevel().getBlockState(InstrumentOpenProvider.getBlockPos(player)).getBlock();
         if (!(block instanceof AbstractInstrumentBlock))
             return;
 
