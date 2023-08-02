@@ -7,5 +7,5 @@ import net.minecraftforge.network.NetworkEvent.Context;
 
 public interface IModPacket {
     public default void toBytes(final FriendlyByteBuf buf) {}
-    public boolean handle(final Supplier<Context> supplier);
+    public void handle(final Supplier<Context> supplier);
 }

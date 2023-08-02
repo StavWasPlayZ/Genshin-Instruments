@@ -20,7 +20,7 @@ public class CloseInstrumentPacket implements IModPacket {
 
 
     @Override
-    public boolean handle(final Supplier<Context> supplier) {
+    public void handle(final Supplier<Context> supplier) {
         final Context context = supplier.get();
 
         context.enqueueWork(() -> {
@@ -31,7 +31,7 @@ public class CloseInstrumentPacket implements IModPacket {
                 ModPacketHandler.sendToClient(new NotifyInstrumentClosedPacket(player.getUUID()), (ServerPlayer)oPlayer);
         });
 
-        return true;
+        context.setPacketHandled(true);
     }
     
 }
