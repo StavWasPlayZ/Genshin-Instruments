@@ -174,7 +174,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
     }
 
     protected void renderClef(final PoseStack stack, final int index, final int x) {
-        ClientUtil.displaySprite(getResourceFromGlob("background/clefs.png"));
+        ClientUtil.displaySprite(getInternalResourceFromGlob("background/clefs.png"));
 
         blit(stack,
             x, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index) - 5,
@@ -185,7 +185,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
     }
 
     protected void renderStaff(final PoseStack stack, final int index) {
-        ClientUtil.displaySprite(getResourceFromGlob("background/staff.png"));
+        ClientUtil.displaySprite(getInternalResourceFromGlob("background/staff.png"));
         
         blit(stack,
             grid.getX() + 2, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index),
