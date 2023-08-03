@@ -7,13 +7,13 @@ import net.minecraft.world.item.ItemStack;
 
 public class ModCreativeModeTabs {
 
-    public static final CreativeModeTab instrumentsTab = (new CreativeModeTab("genshinstrument.instruments") {
+    public static final CreativeModeTab instrumentsTab = new CreativeModeTab("genshinstrument.instruments") {
 
         @Override
         public ItemStack makeIcon() {
             return new ItemStack(ModItems.FLORAL_ZITHER.get());
         }
 
-    });
+    };
 
 }
