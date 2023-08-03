@@ -30,14 +30,14 @@ public class NotifyInstrumentClosedPacket implements IModPacket {
 
 
     @Override
-    public boolean handle(Supplier<Context> supplier) {
+    public void handle(Supplier<Context> supplier) {
         final Context context = supplier.get();
 
         context.enqueueWork(() ->
             InstrumentOpenProvider.setClosed(Minecraft.getInstance().level.getPlayerByUUID(playerUUID))
         );
 
-        return true;
+        context.setPacketHandled(true);
     }
     
 }

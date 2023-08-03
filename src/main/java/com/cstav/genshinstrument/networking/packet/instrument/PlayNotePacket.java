@@ -64,8 +64,10 @@ public class PlayNotePacket implements INoteIdentifierSender {
 
 
     @Override
-    public boolean handle(final Supplier<Context> supplier) {
-        supplier.get().enqueueWork(() ->
+    public void handle(final Supplier<Context> supplier) {
+        final Context context = supplier.get();
+
+        context.enqueueWork(() ->
 
             sound.playAtPos(
                 pitch, playerUUID.orElse(null), hand,
@@ -74,6 +76,6 @@ public class PlayNotePacket implements INoteIdentifierSender {
             
         );
 
-        return true;
+        context.setPacketHandled(true);
     }
 }

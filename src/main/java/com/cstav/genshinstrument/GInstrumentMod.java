@@ -3,6 +3,7 @@ package com.cstav.genshinstrument;
 import com.cstav.genshinstrument.client.ModArmPose;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.item.ModItems;
+import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.sound.ModSounds;
 
 import net.minecraftforge.common.MinecraftForge;
@@ -25,6 +26,7 @@ public class GInstrumentMod
     public GInstrumentMod()
     {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        ModPacketHandler.registerPackets();
         bus.addListener(GInstrumentMod::clientSetup);
         
         ModItems.register(bus);
