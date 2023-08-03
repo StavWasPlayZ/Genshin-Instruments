@@ -177,7 +177,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
         ClientUtil.displaySprite(getResourceFromGlob("background/clefs.png"));
 
         blit(stack,
-            x, grid.getY() + (getNoteSize() + 16) * index,
+            x, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index) - 5,
             index * CLEF_WIDTH, 0,
             CLEF_WIDTH, CLEF_HEIGHT,
             CLEF_WIDTH*3, CLEF_HEIGHT
@@ -188,7 +188,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
         ClientUtil.displaySprite(getResourceFromGlob("background/staff.png"));
         
         blit(stack,
-            grid.getX() + 2, grid.getY() + 8 + ((getNoteSize() + NoteGrid.getPaddingVert() + 6) * index),
+            grid.getX() + 2, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index),
             0, 0,
             grid.getWidth() - 5, getNoteSize(),
             grid.getWidth() - 5, getNoteSize()
