@@ -27,11 +27,6 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 
 public abstract class AbstractInstrumentBlock extends BaseEntityBlock {
 
-    /**
-     * @param onOpenRequest A server-side event fired when the player has requested to interact
-     * with the instrument.
-     * It should should send a packet to the given player for opening this instrument's screen.
-     */
     public AbstractInstrumentBlock(Properties pProperties) {
         super(pProperties);
 
