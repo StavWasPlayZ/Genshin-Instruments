@@ -62,7 +62,7 @@ public class InstrumentPacket implements INoteIdentifierSender {
 
 
     @Override
-    public boolean handle(final Supplier<Context> supplier) {
+    public void handle(final Supplier<Context> supplier) {
         final Context context = supplier.get();
         
         context.enqueueWork(() -> {
@@ -74,7 +74,7 @@ public class InstrumentPacket implements INoteIdentifierSender {
             ServerUtil.sendPlayNotePackets(player, pos, hand, sound, instrumentId, noteIdentifier, pitch);
         });
 
-        return true;
+        context.setPacketHandled(true);
     }
     
 }

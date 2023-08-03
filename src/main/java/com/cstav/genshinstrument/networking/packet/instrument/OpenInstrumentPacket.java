@@ -54,7 +54,7 @@ public class OpenInstrumentPacket implements IModPacket {
 
 
     @Override
-    public boolean handle(final Supplier<Context> supplier) {
+    public void handle(final Supplier<Context> supplier) {
         final Context context = supplier.get();
 
         context.enqueueWork(() -> {
@@ -62,6 +62,6 @@ public class OpenInstrumentPacket implements IModPacket {
                 Minecraft.getInstance().setScreen(getInstrumentMap().get(instrumentType).get().apply(hand.orElse(null))));
         });
 
-        return true;
+        context.setPacketHandled(true);
     }
 }

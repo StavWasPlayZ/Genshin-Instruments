@@ -2,9 +2,13 @@ package com.cstav.genshinstrument.util;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
+
+import org.slf4j.Logger;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
+import com.cstav.genshinstrument.networking.IModPacket;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.OpenInstrumentPacketSender;
 import com.cstav.genshinstrument.networking.buttonidentifier.DefaultNoteButtonIdentifier;
@@ -13,8 +17,10 @@ import com.cstav.genshinstrument.networking.packet.instrument.NotifyInstrumentOp
 import com.cstav.genshinstrument.networking.packet.instrument.OpenInstrumentPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.PlayNotePacket;
 import com.cstav.genshinstrument.sound.NoteSound;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,8 +32,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.network.NetworkDirection;
+import net.minecraftforge.network.simple.SimpleChannel;
 
 public class ServerUtil {
+    private static final Logger LOGGER = LogUtils.getLogger();
     public static final int PLAY_DISTANCE = 16;
 
     
@@ -205,5 +214,31 @@ public class ServerUtil {
      */
     public static void sendInternalOpenPacket(ServerPlayer player, InteractionHand hand, String instrumentType) {
         ModPacketHandler.sendToClient(new OpenInstrumentPacket(instrumentType, hand), player);
+    }
+
+
+    public static void registerModPackets(SimpleChannel sc, List<Class<IModPacket>> acceptablePackets, Supplier<Integer> id) {
+        for (final Class<IModPacket> packetType : acceptablePackets)
+            try {
+                
+                sc.registerMessage(id.get(), packetType, IModPacket::toBytes, (buf) -> {
+                    try {
+                        return packetType.getDeclaredConstructor(FriendlyByteBuf.class).newInstance(buf);
+                    } catch (Exception e) {
+                        LOGGER.error("Error constructing packet of type "+packetType.getName(), e);
+                        return null;
+                    }
+                }, IModPacket::handle, getDirection(packetType));
+
+            } catch (Exception e) {
+                LOGGER.error(
+                    "Error registring packet of type "+packetType.getName()
+                        +". Make sure to have a NETWORK_DIRECTION static field of type NetworkDirection."
+                , e);
+            }
+    }
+    private static Optional<NetworkDirection> getDirection(final Class<IModPacket> packetType)
+            throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
+        return Optional.of((NetworkDirection)packetType.getField("NETWORK_DIRECTION").get(null));
     }
 }
