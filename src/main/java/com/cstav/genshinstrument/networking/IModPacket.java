@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public interface ModPacket {
+public interface IModPacket {
     public default void toBytes(final FriendlyByteBuf buf) {}
-    public boolean handle(final Supplier<Context> supplier);
+    public void handle(final Supplier<Context> supplier);
 }

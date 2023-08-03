@@ -2,15 +2,25 @@ package com.cstav.genshinstrument.util;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
+import org.slf4j.Logger;
+
+import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
+import com.cstav.genshinstrument.networking.IModPacket;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
+import com.cstav.genshinstrument.networking.OpenInstrumentPacketSender;
 import com.cstav.genshinstrument.networking.buttonidentifier.DefaultNoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
+import com.cstav.genshinstrument.networking.packet.instrument.NotifyInstrumentOpenPacket;
+import com.cstav.genshinstrument.networking.packet.instrument.OpenInstrumentPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.PlayNotePacket;
 import com.cstav.genshinstrument.sound.NoteSound;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,8 +32,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.network.NetworkDirection;
+import net.minecraftforge.network.simple.SimpleChannel;
 
 public class ServerUtil {
+    private static final Logger LOGGER = LogUtils.getLogger();
     public static final int PLAY_DISTANCE = 16;
 
     
@@ -31,35 +44,39 @@ public class ServerUtil {
      * Sends {@link PlayNotePacket}s in the specified {@link ServerUtil#PLAY_DISTANCE}.
      * This method treats the sound as it was produced by a player.
      * @param player The player producing the sounds
-     * @param hand The hand of the player producing the sounds
+     * @param hand The hand of the player producing the sounds. Empty for when it was not a player.
      * @param sound The sound to initiate
      * @param instrumentId The ID of the instrument initiating the sound
      * @param pitch The pitch of the sound to initiate
      */
-    public static void sendPlayNotePackets(ServerPlayer player, InteractionHand hand,
+    public static void sendPlayNotePackets(ServerPlayer player, Optional<InteractionHand> hand,
             NoteSound sound, ResourceLocation instrumentId, int pitch) {
 
-        sendPlayNotePackets(player, hand, sound, instrumentId, new DefaultNoteButtonIdentifier(sound), pitch);
+        sendPlayNotePackets(
+            player, player.blockPosition(), hand,
+            sound, instrumentId, new DefaultNoteButtonIdentifier(sound, pitch), pitch
+        );
     }
     /**
      * Sends {@link PlayNotePacket}s in the specified {@link ServerUtil#PLAY_DISTANCE}.
      * This method treats the sound as it was produced by a player.
      * @param player The player producing the sounds
-     * @param hand The hand of the player producing the sounds
+     * @param pos The position of the sound being produced
+     * @param hand The hand of the player producing the sounds. Empty for when it was not a player.
      * @param sound The sound to initiate
      * @param instrumentId The ID of the instrument initiating the sound
      * @param noteIdentifier The identifier of the note
      * @param pitch The pitch of the sound to initiate
      */
-    public static void sendPlayNotePackets(ServerPlayer player, InteractionHand hand,
+    public static void sendPlayNotePackets(ServerPlayer player, BlockPos pos, Optional<InteractionHand> hand,
             NoteSound sound, ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, int pitch) {
 
         for (final Player listener : noteListeners(player.getLevel(), player.blockPosition()))
             ModPacketHandler.sendToClient(
                 new PlayNotePacket(
-                    player.blockPosition(), sound, pitch,
+                    pos, sound, pitch,
                     instrumentId, noteIdentifier,
-                    Optional.of(player.getUUID()), Optional.of(hand)
+                    Optional.of(player.getUUID()), hand
                 ),
                 (ServerPlayer)listener
             );
@@ -67,12 +84,12 @@ public class ServerUtil {
         // Trigger an instrument game event
         // This is done so that sculk sensors can pick up the instrument's sound
         player.getLevel().gameEvent(
-            GameEvent.INSTRUMENT_PLAY, player.blockPosition(),
+            GameEvent.INSTRUMENT_PLAY, pos,
             GameEvent.Context.of(player)
         );
 
         MinecraftForge.EVENT_BUS.post(
-            new InstrumentPlayedEvent.ByPlayer(sound, player, hand, instrumentId, noteIdentifier, false)
+            new InstrumentPlayedEvent.ByPlayer(sound, pitch, player, pos, hand, instrumentId, noteIdentifier, false)
         );
     }
 
@@ -86,7 +103,7 @@ public class ServerUtil {
      * @param pitch The pitch of the sound to initiate
      */
     public static void sendPlayNotePackets(Level level, BlockPos pos, NoteSound sound, ResourceLocation instrumentId, int pitch) {
-        sendPlayNotePackets(level, pos, sound, instrumentId, new DefaultNoteButtonIdentifier(sound), pitch);
+        sendPlayNotePackets(level, pos, sound, instrumentId, new DefaultNoteButtonIdentifier(sound, pitch), pitch);
     }
     /**
      * Sends {@link PlayNotePacket}s in the specified {@link ServerUtil#PLAY_DISTANCE}.
@@ -125,7 +142,7 @@ public class ServerUtil {
 
 
         MinecraftForge.EVENT_BUS.post(
-            new InstrumentPlayedEvent(sound, (ServerLevel)level, pos, instrumentId, noteIdentifier, false)
+            new InstrumentPlayedEvent(sound, pitch, (ServerLevel)level, pos, instrumentId, noteIdentifier, false)
         );
     }
 
@@ -157,4 +174,71 @@ public class ServerUtil {
         throw new ClassNotFoundException("Class type "+classType+" could not be evaluated as part of the acceptable identifiers");
     }
 
+
+    // Item/block stuff
+    /**
+     * Sends an instrument open packet as an item
+     */
+    public static boolean sendOpenPacket(ServerPlayer player, InteractionHand usedHand, OpenInstrumentPacketSender onOpenRequest) {
+        return sendOpenPacket(player, usedHand, onOpenRequest, null);
+    }
+    /**
+     * Sends an instrument open packet as a block
+     */
+    public static boolean sendOpenPacket(ServerPlayer player, OpenInstrumentPacketSender onOpenRequest, BlockPos pos) {
+        return sendOpenPacket(player, null, onOpenRequest, pos);
+    }
+    private static boolean sendOpenPacket(ServerPlayer player, InteractionHand usedHand, OpenInstrumentPacketSender onOpenRequest,
+            BlockPos pos) {
+
+        onOpenRequest.send(player, usedHand);
+
+        // Update the the capabilty on server
+        InstrumentOpenProvider.setOpen(player, pos);
+        
+        // And clients
+        final Optional<BlockPos> playPos = Optional.ofNullable(pos);
+
+        player.getLevel().players().forEach((nearbyPlayer) ->
+            ModPacketHandler.sendToClient(
+                new NotifyInstrumentOpenPacket(player.getUUID(), true, playPos),
+                (ServerPlayer)nearbyPlayer
+            )
+        );
+
+        return true;
+    }
+
+    /**
+     * @apiNote This method should only be used by the internal Genshin Instruments mod!
+     */
+    public static void sendInternalOpenPacket(ServerPlayer player, InteractionHand hand, String instrumentType) {
+        ModPacketHandler.sendToClient(new OpenInstrumentPacket(instrumentType, hand), player);
+    }
+
+
+    public static void registerModPackets(SimpleChannel sc, List<Class<IModPacket>> acceptablePackets, Supplier<Integer> id) {
+        for (final Class<IModPacket> packetType : acceptablePackets)
+            try {
+                
+                sc.registerMessage(id.get(), packetType, IModPacket::toBytes, (buf) -> {
+                    try {
+                        return packetType.getDeclaredConstructor(FriendlyByteBuf.class).newInstance(buf);
+                    } catch (Exception e) {
+                        LOGGER.error("Error constructing packet of type "+packetType.getName(), e);
+                        return null;
+                    }
+                }, IModPacket::handle, getDirection(packetType));
+
+            } catch (Exception e) {
+                LOGGER.error(
+                    "Error registring packet of type "+packetType.getName()
+                        +". Make sure to have a NETWORK_DIRECTION static field of type NetworkDirection."
+                , e);
+            }
+    }
+    private static Optional<NetworkDirection> getDirection(final Class<IModPacket> packetType)
+            throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
+        return Optional.of((NetworkDirection)packetType.getField("NETWORK_DIRECTION").get(null));
+    }
 }

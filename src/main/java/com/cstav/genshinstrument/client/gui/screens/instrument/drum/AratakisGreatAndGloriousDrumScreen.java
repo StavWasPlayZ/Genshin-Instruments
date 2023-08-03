@@ -3,7 +3,7 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.drum;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.cstav.genshinstrument.Main;
+import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
@@ -11,8 +11,6 @@ import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractI
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.DrumOptionsScren;
 import com.cstav.genshinstrument.client.gui.widget.copied.LinearLayoutWidget;
 import com.cstav.genshinstrument.client.gui.widget.copied.LinearLayoutWidget.Orientation;
-import com.cstav.genshinstrument.sound.ModSounds;
-import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 
 import net.minecraft.resources.ResourceLocation;
@@ -20,11 +18,10 @@ import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @OnlyIn(Dist.CLIENT)
 //NOTE: There just to make it load on mod setup
-@EventBusSubscriber(bus = Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(Dist.CLIENT)
 // ikik im funny, long name, thank you
 public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen {
     public static final String INSTRUMENT_ID = "glorious_drum";
@@ -34,11 +31,11 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
     }
     @Override
     public ResourceLocation getInstrumentId() {
-        return new ResourceLocation(Main.MODID, INSTRUMENT_ID);
+        return new ResourceLocation(GInstrumentMod.MODID, INSTRUMENT_ID);
     }
 
     @Override
-    public ResourceLocation getNotesLocation() {
+    public ResourceLocation getNoteSymbolsLocation() {
         return getResourceFromRoot("note/notes.png");
     }
 
@@ -62,8 +59,8 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
     protected void init() {
         initOptionsButton(height/2 + 25);
 
-        final LinearLayoutWidget layout1 = createRow(DrumButtonType.DON, 2.25f),
-            layout2 = createRow(DrumButtonType.KA, 1.5f);
+        final LinearLayoutWidget layout1 = createRow(DrumButtonType.DON, 2),
+            layout2 = createRow(DrumButtonType.KA, 1.3f);
 
         // Make layout magic
         layout1.pack();
@@ -72,7 +69,7 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
         layout1.x = (width - layout1.getWidth()) / 2;
         layout1.y = (int)(height * .8f);
         layout2.x = (width - layout2.getWidth()) / 2;
-        layout2.y = layout1.y - layout1.getHeight();
+        layout2.y = layout1.y - layout1.getHeight()/2;
 
         layout1.pack();
         layout2.pack();
@@ -90,7 +87,7 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
     private LinearLayoutWidget createRow(DrumButtonType type, float widthPercent) {
         final LinearLayoutWidget layout = new LinearLayoutWidget(
             0, 0,
-            (int)(width/widthPercent), NoteButton.getSize(),
+            (int)(width/widthPercent), getNoteSize(),
             Orientation.HORIZONTAL
         );
 
@@ -107,14 +104,9 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
 
         return btn;
     }
+    
 
-
-    @Override
-    public NoteSound[] getSounds() {
-        return ModSounds.GLORIOUS_DRUM;
-    }
-
-    private static final InstrumentThemeLoader THEME_LOADER = initThemeLoader(Main.MODID, INSTRUMENT_ID);
+    private static final InstrumentThemeLoader THEME_LOADER = initThemeLoader(GInstrumentMod.MODID, INSTRUMENT_ID);
     @Override
     public InstrumentThemeLoader getThemeLoader() {
         return THEME_LOADER;

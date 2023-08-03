@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note;
 
 import java.awt.Point;
 
+import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.ClientUtil;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
@@ -17,6 +18,9 @@ import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.sounds.SoundManager;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -25,30 +29,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * @param <T> The type of this button's identifier
  */
 @OnlyIn(Dist.CLIENT)
-public abstract class NoteButton extends AbstractButton {
-
-    @SuppressWarnings("resource")
-    public static int getSize() {
-        final int guiScale = Minecraft.getInstance().options.guiScale().get();
-
-        return switch (guiScale) {
-            case 0 -> 40;
-            case 1 -> 35;
-            case 2 -> 46;
-            case 3 -> 48;
-            default -> guiScale * 18;
-        };
-    }
-    
+public abstract class NoteButton extends AbstractButton {    
 
     protected final Minecraft minecraft = Minecraft.getInstance();
 
     /**
-     * <p>Returns the identifier of this button.</p>
-     * You may use the {@link DefaultNoteButtonIdentifier default implementation} if you're too lazy.
+     * Returns the UI identifier of this button.
      */
     public NoteButtonIdentifier getIdentifier() {
-        return new DefaultNoteButtonIdentifier(getSound());
+        return new DefaultNoteButtonIdentifier(getSound(), getPitch(), false);
     }
 
 
@@ -57,18 +46,26 @@ public abstract class NoteButton extends AbstractButton {
     private NoteSound sound;
     private NoteLabelSupplier labelSupplier;
 
-    private NoteButtonRenderer noteRenderer;
+    protected NoteButtonRenderer noteRenderer;
     protected abstract NoteButtonRenderer initNoteRenderer();
 
 
     public NoteButton(NoteSound sound,
-            NoteLabelSupplier labelSupplier, AbstractInstrumentScreen instrumentScreen) {
+            NoteLabelSupplier labelSupplier, AbstractInstrumentScreen instrumentScreen, int pitch) {
 
-        super(0, 0, getSize(), getSize(), null);
+        super(0, 0, 42, 42, Component.empty());
+
+        width = height = instrumentScreen.getNoteSize();
 
         this.sound = sound;
         this.labelSupplier = labelSupplier;
         this.instrumentScreen = instrumentScreen;
+        this.pitch = pitch;
+    }
+    public NoteButton(NoteSound sound,
+            NoteLabelSupplier labelSupplier, AbstractInstrumentScreen instrumentScreen) {
+                
+        this(sound, labelSupplier, instrumentScreen, instrumentScreen.getPitch());
     }
 
 
@@ -83,15 +80,12 @@ public abstract class NoteButton extends AbstractButton {
         setMessage(getLabelSupplier().get(this));
     }
 
+
     public NoteSound getSound() {
         return sound;
     }
     public void setSound(NoteSound sound) {
         this.sound = sound;
-
-        // Update the sound for the sound (default) identifier
-        if (getIdentifier() instanceof DefaultNoteButtonIdentifier)
-            ((DefaultNoteButtonIdentifier)getIdentifier()).setSound(sound);
     }
 
 
@@ -116,7 +110,7 @@ public abstract class NoteButton extends AbstractButton {
     }
 
     public Point getCenter() {
-        return ClientUtil.getInitCenter(initX, initY, getSize(), width);
+        return ClientUtil.getInitCenter(initX, initY, instrumentScreen.getNoteSize(), width);
     }
     public void moveToCenter() {
         final Point center = getCenter();
@@ -124,7 +118,14 @@ public abstract class NoteButton extends AbstractButton {
         y = center.y;
     }
 
-
+    private int pitch;
+    public int getPitch() {
+        return pitch;
+    }
+    public void setPitch(final int pitch) {
+        this.pitch = NoteSound.clampPitch(pitch);
+        updateNoteLabel();
+    }
     
     public NoteNotation getNotation() {
         return NoteNotation.NONE;
@@ -153,12 +154,19 @@ public abstract class NoteButton extends AbstractButton {
         if (locked)
             return;
         
-        sound.playLocally(instrumentScreen.getPitch());
+        sound.playLocally(getPitch());
+
+
+        final Player player = minecraft.player;
+
+        final BlockPos pos = InstrumentOpenProvider.isItem(player)
+            ? player.blockPosition()
+            : InstrumentOpenProvider.getBlockPos(player);
 
         // Send sound packet to server
         ModPacketHandler.sendToServer(
-            new InstrumentPacket(
-                sound, instrumentScreen.getPitch(),
+            new InstrumentPacket(pos,
+                sound, getPitch(),
                 instrumentScreen.interactionHand,
                 instrumentScreen.getInstrumentId(), getIdentifier()
             )

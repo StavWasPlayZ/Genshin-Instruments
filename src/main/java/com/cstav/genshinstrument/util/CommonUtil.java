@@ -38,4 +38,27 @@ public abstract class CommonUtil {
     public static ResourceLocation withSuffix(final ResourceLocation resource, final String suffix) {
         return new ResourceLocation(resource.getNamespace(), resource.getPath()+suffix);
     }
+
+    /**
+     * Provides a similar behaviour to python's indexing,
+     * where negatives are counted backwards.
+     */
+    public static int pyWrap(int index, final int arrLength) {
+        while (index < 0)
+            index += arrLength;
+
+        return index;
+    }
+    /**
+     * Wraps the index around an array
+     */
+    public static int wrapAround(int index, final int arrLength) {
+        return index % arrLength;
+    }
+    /**
+     * Performs both {@link LabelUtil#pyWrap} and {@link LabelUtil#wrapAround}
+     */
+    public static int doublyPyWrap(int index, final int arrLength) {
+        return wrapAround(pyWrap(index, arrLength), arrLength);
+    }
 }

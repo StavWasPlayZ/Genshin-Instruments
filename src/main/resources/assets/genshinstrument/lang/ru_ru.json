@@ -25,8 +25,8 @@
     "button.genshinstrument.shared_instrument": "Экран общего инструмента",
 
     "button.genshinstrument.render_background": "Показать фоновые визуальные",
-    "button.genshinstrument.accurate_accidentals": "Точные случайности",
-    "button.genshinstrument.accurate_accidentals.tooltip": "Во включенном состоянии обеспечивает точное отображение питч-аккомпанемента, используемого в схеме данного инструмента",
+    "button.genshinstrument.accurate_notes": "Точные примечания",
+    "button.genshinstrument.accurate_notes.tooltip": "Во включенном состоянии обеспечивает точное отображение нотных символов и аккомпанементов, используемых в раскладке данного инструмента",
 
     
     "button.genshinstrument.instrumentOptions": "Варианты инструментов",

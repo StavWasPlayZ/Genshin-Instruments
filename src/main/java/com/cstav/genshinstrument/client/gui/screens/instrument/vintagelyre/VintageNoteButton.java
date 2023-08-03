@@ -26,7 +26,7 @@ public class VintageNoteButton extends NoteGridButton {
 
     @Override
     public NoteNotation getNotation() {
-        return ModClientConfigs.ACCURATE_ACCIDENTALS.get()
+        return ModClientConfigs.ACCURATE_NOTES.get()
             ? super.getNotation()
             : isDefaultFlat() ? NoteNotation.FLAT : NoteNotation.NONE;
     }
