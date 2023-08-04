@@ -229,7 +229,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
             .withTooltip((value) -> Tooltip.create(Component.translatable("button.genshinstrument.accurate_notes.tooltip")))
             .create(0, 0,
                 getSmallButtonWidth(), getButtonHeight(),
-                Component.translatable("button.genshinstrument.accurate_notes"), this::onAccurateAccidentalsChanged
+                Component.translatable("button.genshinstrument.accurate_notes"), this::onAccurateNotesChanged
             );
         rowHelper.addChild(accurateNotes);
 
@@ -300,7 +300,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     protected void onSharedInstrumentChanged(final CycleButton<Boolean> button, final boolean value) {
         ModClientConfigs.SHARED_INSTRUMENT.set(value);
     }
-    protected void onAccurateAccidentalsChanged(final CycleButton<Boolean> button, final boolean value) {
+    protected void onAccurateNotesChanged(final CycleButton<Boolean> button, final boolean value) {
         ModClientConfigs.ACCURATE_NOTES.set(value);
 
         if (isOverlay)
