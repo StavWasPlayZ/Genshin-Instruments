@@ -194,7 +194,10 @@ public class ServerUtil {
         onOpenRequest.send(player, usedHand);
 
         // Update the the capabilty on server
-        InstrumentOpenProvider.setOpen(player, pos);
+        if (pos == null)
+            InstrumentOpenProvider.setOpen(player);
+        else
+            InstrumentOpenProvider.setOpen(player, pos);
         
         // And clients
         final Optional<BlockPos> playPos = Optional.ofNullable(pos);
