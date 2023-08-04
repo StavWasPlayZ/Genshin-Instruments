@@ -224,14 +224,14 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
             );
         rowHelper.addChild(sharedInstrument);
 
-        final CycleButton<Boolean> accurateAccidentals = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
+        final CycleButton<Boolean> accurateNotes = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(ModClientConfigs.ACCURATE_NOTES.get())
             .withTooltip((value) -> Tooltip.create(Component.translatable("button.genshinstrument.accurate_notes.tooltip")))
             .create(0, 0,
                 getSmallButtonWidth(), getButtonHeight(),
                 Component.translatable("button.genshinstrument.accurate_notes"), this::onAccurateAccidentalsChanged
             );
-        rowHelper.addChild(accurateAccidentals);
+        rowHelper.addChild(accurateNotes);
 
 
         if (labels != null) {
