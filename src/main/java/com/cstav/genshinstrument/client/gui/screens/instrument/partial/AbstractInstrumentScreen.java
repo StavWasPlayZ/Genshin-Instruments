@@ -306,7 +306,9 @@ public abstract class AbstractInstrumentScreen extends Screen {
     public void onClose() {
         onClose(true);
     }
+    //TODO Remove this method
     public void onClose(final boolean notify) {
+        // This should always be false after the above move to server todo is implemented
         if (notify) {
             InstrumentOpenProvider.setClosed(minecraft.player);
             ModPacketHandler.sendToServer(new CloseInstrumentPacket());
