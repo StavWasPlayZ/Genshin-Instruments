@@ -307,6 +307,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
         onClose(true);
     }
     //TODO Remove this method
+    @Deprecated(forRemoval = true)
     public void onClose(final boolean notify) {
         // This should always be false after the above move to server todo is implemented
         if (notify) {
