@@ -204,7 +204,7 @@ public class ServerUtil {
 
         player.level().players().forEach((nearbyPlayer) ->
             ModPacketHandler.sendToClient(
-                new NotifyInstrumentOpenPacket(player.getUUID(), true, playPos),
+                new NotifyInstrumentOpenPacket(player.getUUID(), playPos),
                 (ServerPlayer)nearbyPlayer
             )
         );

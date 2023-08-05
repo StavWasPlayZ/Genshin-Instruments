@@ -7,7 +7,7 @@ import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvide
 import com.cstav.genshinstrument.client.ModArmPose;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.OpenInstrumentPacketSender;
-import com.cstav.genshinstrument.networking.packet.instrument.NotifyInstrumentClosedPacket;
+import com.cstav.genshinstrument.networking.packet.instrument.NotifyInstrumentOpenPacket;
 import com.cstav.genshinstrument.util.ServerUtil;
 
 import net.minecraft.client.model.HumanoidModel.ArmPose;
@@ -91,7 +91,7 @@ public abstract class AbstractInstrumentBlock extends BaseEntityBlock {
         for (final Player player : pLevel.players()) {
             ibe.users.forEach((user) -> {
                 InstrumentOpenProvider.setClosed(pLevel.getPlayerByUUID(user));
-                ModPacketHandler.sendToClient(new NotifyInstrumentClosedPacket(user), (ServerPlayer)player);
+                ModPacketHandler.sendToClient(new NotifyInstrumentOpenPacket(user, false), (ServerPlayer)player);
             });
         }
     }
