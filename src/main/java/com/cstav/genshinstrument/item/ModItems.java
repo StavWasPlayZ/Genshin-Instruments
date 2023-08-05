@@ -44,14 +44,6 @@ public class ModItems {
                 (player, hand) -> sendInternalOpenPacket(player, hand, "glorious_drum")
             )
         )
-
-
-        // //TODO remove after tests
-        // BANJO = ITEMS.register("banjo", () ->
-        //     new InstrumentItem(
-        //         (player, hand) -> sendInternalOpenPacket(player, hand, "banjo")
-        //     )
-        // )
     ;
 
 
