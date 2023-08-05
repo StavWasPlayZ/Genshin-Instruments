@@ -168,7 +168,9 @@ public abstract class AbstractInstrumentScreen extends Screen {
         return new ResourceLocation(GInstrumentMod.MODID, getGlobalRootPath() + path);
     }
     /**
-     * Shorthand for {@code getRootPath() + getInstrumentId()}
+     * Gets the resource path under this instrument.
+     * It will usually be {@code textures/gui/instrument/<instrument>/}.
+     * {@code instrument} is as specified by {@link AbstractInstrumentScreen#getSourcePath getSourcePath}.
      */
     protected String getPath() {
         return getGlobalRootPath() + getSourcePath().getPath() + "/";
@@ -177,7 +179,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
     /**
      * Override this method if you want to reference another directory for resources
      */
-    protected ResourceLocation getSourcePath() {
+    public ResourceLocation getSourcePath() {
         return getInstrumentId();
     }
 
