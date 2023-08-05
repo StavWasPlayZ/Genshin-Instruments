@@ -122,14 +122,19 @@ public abstract class AbstractInstrumentScreen extends Screen {
             return true;
         }
 
+        //TODO handle the below server-side
+
         // Handle item not in hand seperately
         // This is done like so because there is no event (that I know of) for when an item is moved/removed
-        if (
-            (InstrumentOpenProvider.isItem(player) && interactionHand.isPresent())
-            && !(player.getItemInHand(interactionHand.get()).getItem() instanceof InstrumentItem)
-        ) {
-            onClose(true);
-            return true;
+        if (InstrumentOpenProvider.isItem(player)) {
+            if (interactionHand.isPresent()
+                && !(player.getItemInHand(interactionHand.get()).getItem() instanceof InstrumentItem)
+            ) {
+                onClose(true);
+                return true;
+            }
+        } else {
+            //TODO add rule for block instruments to be in a distance of NoteSound.LOCAL_RANGE to play
         }
 
         return false;
