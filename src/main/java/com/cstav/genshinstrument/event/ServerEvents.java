@@ -33,7 +33,7 @@ public abstract class ServerEvents {
                 ServerUtil.setInstrumentClosed(player);
         } else {
             // Close an instrument block if the player is too far away
-            if (!InstrumentOpenProvider.getBlockPos(player).closerToCenterThan(player.position(), 5))
+            if (!InstrumentOpenProvider.getBlockPos(player).closerToCenterThan(player.position(), 6))
                 ServerUtil.setInstrumentClosed(player);
         }
     }
