@@ -41,7 +41,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
             case 2 -> 46;
             case 3 -> 48;
             case 4 -> 40;
-            default -> 40;
+            default -> 36;
         };
     }
     
