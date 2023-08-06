@@ -15,7 +15,7 @@ import net.minecraft.world.phys.AABB;
 public abstract class CommonUtil {
 
     @SuppressWarnings("unchecked")
-    public static <T extends Item> Optional<T> getItemInHands(final Class<T> item, final Player player) {
+    public static <T> Optional<T> getItemInHands(final Class<T> item, final Player player) {
         final Item mainItem = player.getItemInHand(InteractionHand.MAIN_HAND).getItem(),
             offItem = player.getItemInHand(InteractionHand.OFF_HAND).getItem();
 
