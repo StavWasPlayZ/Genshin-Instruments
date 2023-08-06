@@ -54,7 +54,8 @@ public class GridInstrumentOptionsScreen extends AbstractInstrumentOptionsScreen
 
     @Override
     public boolean isPitchSliderEnabled() {
-        return !((AbstractGridInstrumentScreen)instrumentScreen).isSSTI();
+        return (instrumentScreen == null) ||
+            !((AbstractGridInstrumentScreen)instrumentScreen).isSSTI();
     }
 
 

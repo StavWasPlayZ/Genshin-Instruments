@@ -9,7 +9,6 @@ import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifie
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.networking.packet.instrument.CloseInstrumentPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.InstrumentPacket;
-import com.cstav.genshinstrument.networking.packet.instrument.NotifyInstrumentClosedPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.NotifyInstrumentOpenPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.OpenInstrumentPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.PlayNotePacket;
@@ -28,7 +27,7 @@ public class ModPacketHandler {
     @SuppressWarnings("unchecked")
     public static final List<Class<IModPacket>> ACCEPTABLE_PACKETS = List.of(new Class[] {
         InstrumentPacket.class, PlayNotePacket.class, OpenInstrumentPacket.class, CloseInstrumentPacket.class,
-        NotifyInstrumentOpenPacket.class, NotifyInstrumentClosedPacket.class
+        NotifyInstrumentOpenPacket.class
     });
 
     private static int id = 0;
@@ -44,7 +43,7 @@ public class ModPacketHandler {
     });
 
 
-    private static final String PROTOCOL_VERSION = "4.5";
+    private static final String PROTOCOL_VERSION = "4.6";
 
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
         new ResourceLocation(GInstrumentMod.MODID, "main"),

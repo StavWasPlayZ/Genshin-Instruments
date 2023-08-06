@@ -30,11 +30,6 @@ public class ModSounds {
             registerNote(SOUNDS, loc("glorious_drum_don")),
             registerNote(SOUNDS, loc("glorious_drum_ka"), true)
         }
-
-        //TODO remove after tests
-        // BANJO = new NoteSound[] {
-        //     new NoteSound(NoteBlockInstrument.BANJO.getSoundEvent().get(), Optional.empty())
-        // }
     ;
 
     /**

@@ -41,7 +41,7 @@ public class ModClientConfigs {
     
 
         PITCH = configBuilder.defineInRange("instrument_pitch",
-            1, NoteSound.MIN_PITCH, NoteSound.MAX_PITCH
+            0, NoteSound.MIN_PITCH, NoteSound.MAX_PITCH
         );
         GRID_LABEL_TYPE = configBuilder.defineEnum("label_type", NoteGridLabel.KEYBOARD_LAYOUT);
         CHANNEL_TYPE = configBuilder.defineEnum("channel_type", InstrumentChannelType.MIXED);
