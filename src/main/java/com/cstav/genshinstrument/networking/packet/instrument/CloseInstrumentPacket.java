@@ -28,7 +28,7 @@ public class CloseInstrumentPacket implements IModPacket {
             InstrumentOpenProvider.setClosed(player);
 
             for (final Player oPlayer : player.getLevel().players())
-                ModPacketHandler.sendToClient(new NotifyInstrumentClosedPacket(player.getUUID()), (ServerPlayer)oPlayer);
+                ModPacketHandler.sendToClient(new NotifyInstrumentOpenPacket(player.getUUID(), false), (ServerPlayer)oPlayer);
         });
 
         context.setPacketHandled(true);
