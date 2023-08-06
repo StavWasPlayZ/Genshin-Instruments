@@ -14,7 +14,6 @@ public abstract class ModBlockEntities {
         BETS.register(bus);
     }
 
-    // //TODO remove after tests
     // public static final RegistryObject<BlockEntityType<InstrumentBlockEntity>> INSTRUMENT_BE = BETS.register("instrument_be", () -> 
     //     BlockEntityType.Builder.of((pos, state) -> new InstrumentBlockEntity(pos, state), ModBlocks.LYRE_BLOCK.get())
     //         .build(null)

@@ -37,15 +37,11 @@ public abstract class AbstractInstrumentScreen extends Screen {
     
     @SuppressWarnings("resource")
     public int getNoteSize() {
-        final int guiScale = Minecraft.getInstance().options.guiScale().get();
-
-        return switch (guiScale) {
-            case 0 -> 40;
+        return switch (Minecraft.getInstance().options.guiScale().get()) {
             case 1 -> 35;
             case 2 -> 46;
             case 3 -> 48;
-            case 4 -> 41;
-            default -> guiScale * 18;
+            default -> 40;
         };
     }
     
@@ -122,14 +118,19 @@ public abstract class AbstractInstrumentScreen extends Screen {
             return true;
         }
 
+        //TODO handle the below server-side
+
         // Handle item not in hand seperately
         // This is done like so because there is no event (that I know of) for when an item is moved/removed
-        if (
-            (InstrumentOpenProvider.isItem(player) && interactionHand.isPresent())
-            && !(player.getItemInHand(interactionHand.get()).getItem() instanceof InstrumentItem)
-        ) {
-            onClose(true);
-            return true;
+        if (InstrumentOpenProvider.isItem(player)) {
+            if (interactionHand.isPresent()
+                && !(player.getItemInHand(interactionHand.get()).getItem() instanceof InstrumentItem)
+            ) {
+                onClose(true);
+                return true;
+            }
+        } else {
+            //TODO add rule for block instruments to be in a distance of NoteSound.LOCAL_RANGE to play
         }
 
         return false;
@@ -168,7 +169,9 @@ public abstract class AbstractInstrumentScreen extends Screen {
         return new ResourceLocation(GInstrumentMod.MODID, getGlobalRootPath() + path);
     }
     /**
-     * Shorthand for {@code getRootPath() + getInstrumentId()}
+     * Gets the resource path under this instrument.
+     * It will usually be {@code textures/gui/instrument/<instrument>/}.
+     * {@code instrument} is as specified by {@link AbstractInstrumentScreen#getSourcePath getSourcePath}.
      */
     protected String getPath() {
         return getGlobalRootPath() + getSourcePath().getPath() + "/";
@@ -177,7 +180,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
     /**
      * Override this method if you want to reference another directory for resources
      */
-    protected ResourceLocation getSourcePath() {
+    public ResourceLocation getSourcePath() {
         return getInstrumentId();
     }
 
@@ -299,7 +302,10 @@ public abstract class AbstractInstrumentScreen extends Screen {
     public void onClose() {
         onClose(true);
     }
+    //TODO Remove this method
+    @Deprecated(forRemoval = true)
     public void onClose(final boolean notify) {
+        // This should always be false after the above move to server todo is implemented
         if (notify) {
             InstrumentOpenProvider.setClosed(minecraft.player);
             ModPacketHandler.sendToServer(new CloseInstrumentPacket());

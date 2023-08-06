@@ -22,11 +22,23 @@ public class NotifyInstrumentOpenPacket implements IModPacket {
     private final boolean isOpen;
     private final Optional<BlockPos> pos;
     
-    public NotifyInstrumentOpenPacket(UUID playerUUID, boolean isOpen, Optional<BlockPos> pos) {
+    public NotifyInstrumentOpenPacket(UUID playerUUID, final boolean isOpen) {
         this.playerUUID = playerUUID;
+
         this.isOpen = isOpen;
+        this.pos = Optional.empty();
+    }
+    /**
+     * Constructs a {@link NotifyInstrumentOpenPacket} that notifies of an open state
+     * with an optional instrument block position.
+     */
+    public NotifyInstrumentOpenPacket(UUID playerUUID, Optional<BlockPos> pos) {
+        this.playerUUID = playerUUID;
+
+        this.isOpen = true;
         this.pos = pos;
     }
+    
     public NotifyInstrumentOpenPacket(final FriendlyByteBuf buf) {
         playerUUID = buf.readUUID();
         isOpen = buf.readBoolean();
