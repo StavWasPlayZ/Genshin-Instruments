@@ -11,7 +11,6 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.GenshinConsentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
-import com.cstav.genshinstrument.item.InstrumentItem;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.packet.instrument.CloseInstrumentPacket;
@@ -27,7 +26,6 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -110,30 +108,9 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * or, if it is an item, if the item has been ripped out of the player's hands.
      * @return Whether the instrument has closed as a result of this method
      */
-    public boolean handleAbruptClosing() {
-        final Player player = minecraft.player;
-
-        if (!InstrumentOpenProvider.isOpen(player)) {
+    public void handleAbruptClosing() {
+        if (!InstrumentOpenProvider.isOpen(minecraft.player))
             onClose(false);
-            return true;
-        }
-
-        //TODO handle the below server-side
-
-        // Handle item not in hand seperately
-        // This is done like so because there is no event (that I know of) for when an item is moved/removed
-        if (InstrumentOpenProvider.isItem(player)) {
-            if (interactionHand.isPresent()
-                && !(player.getItemInHand(interactionHand.get()).getItem() instanceof InstrumentItem)
-            ) {
-                onClose(true);
-                return true;
-            }
-        } else {
-            //TODO add rule for block instruments to be in a distance of NoteSound.LOCAL_RANGE to play
-        }
-
-        return false;
     }
 
 
@@ -302,8 +279,6 @@ public abstract class AbstractInstrumentScreen extends Screen {
     public void onClose() {
         onClose(true);
     }
-    //TODO Remove this method
-    @Deprecated(forRemoval = true)
     public void onClose(final boolean notify) {
         // This should always be false after the above move to server todo is implemented
         if (notify) {
