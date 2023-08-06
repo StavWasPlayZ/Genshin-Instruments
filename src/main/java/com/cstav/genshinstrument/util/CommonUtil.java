@@ -33,7 +33,7 @@ public abstract class CommonUtil {
     public static List<Player> getPlayersInArea(final Level level, final AABB area) {
         final List<Player> list = Lists.newArrayList();
 
-        for(Player player : level.players())
+        for (Player player : level.players())
             if (area.contains(player.getX(), player.getY(), player.getZ()))
                 list.add(player);
 
