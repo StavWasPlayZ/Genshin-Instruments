@@ -80,7 +80,7 @@ public class NoteGrid implements Iterable<NoteButton> {
     }
     
     /**
-     * Creates a note with for a singular sound type instrument
+     * Creates a note for a singular sound type instrument
      */
     protected NoteButton createNote(int row, int column, int pitch) {
         return new NoteGridButton(row, column,
