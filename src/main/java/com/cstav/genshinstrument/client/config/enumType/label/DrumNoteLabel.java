@@ -4,7 +4,7 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.drum.DrumNoteButt
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
-import com.cstav.genshinstrument.client.keyMaps.KeyMappings.DrumKeys;
+import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings.DrumKeys;
 
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;

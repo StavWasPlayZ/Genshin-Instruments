@@ -1,8 +1,8 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.drum;
 
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
-import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
-import com.cstav.genshinstrument.client.keyMaps.KeyMappings.DrumKeys;
+import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
+import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings.DrumKeys;
 import com.cstav.genshinstrument.sound.ModSounds;
 import com.cstav.genshinstrument.sound.NoteSound;
 
@@ -35,7 +35,7 @@ public enum DrumButtonType {
     // Seperated for server compatibility
     @OnlyIn(Dist.CLIENT)
     public DrumKeys getKeys() {
-        return (this == DON) ? KeyMappings.DON : KeyMappings.KA;
+        return (this == DON) ? InstrumentKeyMappings.DON : InstrumentKeyMappings.KA;
     }
 
 }
