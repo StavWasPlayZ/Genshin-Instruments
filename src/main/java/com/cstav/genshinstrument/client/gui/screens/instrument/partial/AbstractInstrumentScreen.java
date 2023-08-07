@@ -251,11 +251,13 @@ public abstract class AbstractInstrumentScreen extends Screen {
     private boolean pitchChanged;
     protected boolean checkPitchInstrumentUp(int pKeyCode, int pScanCode) {
         if (!pitchChanged && KeyMappings.PITCH_UP_MODIFIER.get().matches(pKeyCode, pScanCode)) {
-            pitchInstrumentUp(true);
+            setPitch(getPitch() + 1);
+            pitchChanged = true;
             return true;
         }
         if (!pitchChanged && KeyMappings.PITCH_DOWN_MODIFIER.get().matches(pKeyCode, pScanCode)) {
-            pitchInstrumentDown(true);
+            setPitch(getPitch() - 1);
+            pitchChanged = true;
             return true;
         }
 
@@ -263,24 +265,17 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
     protected boolean checkPitchInstrumentDown(int pKeyCode, int pScanCode) {
         if (pitchChanged && KeyMappings.PITCH_UP_MODIFIER.get().matches(pKeyCode, pScanCode)) {
-            pitchInstrumentDown(false);
+            initPitch(this::setPitch);
+            pitchChanged = false;
             return true;
         }
         if (pitchChanged && KeyMappings.PITCH_DOWN_MODIFIER.get().matches(pKeyCode, pScanCode)) {
-            pitchInstrumentUp(false);
+            initPitch(this::setPitch);
+            pitchChanged = false;
             return true;
         }
 
         return false;
-    }
-
-    private void pitchInstrumentUp(final boolean pressed) {
-        setPitch(getPitch() + 1);
-        pitchChanged = pressed;
-    }
-    private void pitchInstrumentDown(final boolean pressed) {
-        setPitch(getPitch() - 1);
-        pitchChanged = pressed;
     }
 
 
@@ -313,6 +308,8 @@ public abstract class AbstractInstrumentScreen extends Screen {
     public void onOptionsOpen() {
         setFocused(null);
         minecraft.pushGuiLayer(optionsScreen);
+
+        initPitch(this::setPitch);
 
         isOptionsScreenActive = true;
     }
