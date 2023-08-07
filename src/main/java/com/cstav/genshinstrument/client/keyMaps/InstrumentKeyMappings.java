@@ -22,7 +22,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(bus = Bus.MOD, modid = GInstrumentMod.MODID, value = Dist.CLIENT)
-public class KeyMappings {
+public class InstrumentKeyMappings {
     public static final String CATEGORY = GInstrumentMod.MODID+".keymaps";
 
     public static final IKeyConflictContext INSTRUMENT_KEY_CONFLICT_CONTEXT = new IKeyConflictContext() {

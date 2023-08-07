@@ -11,7 +11,7 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.GenshinConsentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
-import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
+import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.packet.instrument.CloseInstrumentPacket;
@@ -250,12 +250,12 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     private boolean pitchChanged;
     protected boolean checkPitchInstrumentUp(int pKeyCode, int pScanCode) {
-        if (!pitchChanged && KeyMappings.PITCH_UP_MODIFIER.get().matches(pKeyCode, pScanCode)) {
+        if (!pitchChanged && InstrumentKeyMappings.PITCH_UP_MODIFIER.get().matches(pKeyCode, pScanCode)) {
             setPitch(getPitch() + 1);
             pitchChanged = true;
             return true;
         }
-        if (!pitchChanged && KeyMappings.PITCH_DOWN_MODIFIER.get().matches(pKeyCode, pScanCode)) {
+        if (!pitchChanged && InstrumentKeyMappings.PITCH_DOWN_MODIFIER.get().matches(pKeyCode, pScanCode)) {
             setPitch(getPitch() - 1);
             pitchChanged = true;
             return true;
@@ -264,12 +264,12 @@ public abstract class AbstractInstrumentScreen extends Screen {
         return false;
     }
     protected boolean checkPitchInstrumentDown(int pKeyCode, int pScanCode) {
-        if (pitchChanged && KeyMappings.PITCH_UP_MODIFIER.get().matches(pKeyCode, pScanCode)) {
+        if (pitchChanged && InstrumentKeyMappings.PITCH_UP_MODIFIER.get().matches(pKeyCode, pScanCode)) {
             initPitch(this::setPitch);
             pitchChanged = false;
             return true;
         }
-        if (pitchChanged && KeyMappings.PITCH_DOWN_MODIFIER.get().matches(pKeyCode, pScanCode)) {
+        if (pitchChanged && InstrumentKeyMappings.PITCH_DOWN_MODIFIER.get().matches(pKeyCode, pScanCode)) {
             initPitch(this::setPitch);
             pitchChanged = false;
             return true;
