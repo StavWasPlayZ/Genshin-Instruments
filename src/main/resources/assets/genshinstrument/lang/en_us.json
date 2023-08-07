@@ -1,7 +1,7 @@
 {
     "genshinstrument.keymaps": "Instruments GUI",
-    "genshinstrument.keymaps.pitch_down_modifier": "Pitch Instrument Down",
-    "genshinstrument.keymaps.pitch_up_modifier": "Pitch Instrument Up",
+    "genshinstrument.keymaps.transpose_up_modifier": "Transpose Instrument Up",
+    "genshinstrument.keymaps.transpose_down_modifier": "Transpose Instrument Down",
 
 
     "genshinstrument.itemGroup.instruments": "Instruments",

@@ -222,7 +222,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     @Override
     public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
-        if (checkPitchInstrumentUp(pKeyCode, pScanCode))
+        if (checkPitchTransposeUp(pKeyCode, pScanCode))
             return true;
 
         final NoteButton note = getNoteByKey(pKeyCode);
@@ -236,7 +236,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
     @Override
     public boolean keyReleased(int pKeyCode, int pScanCode, int pModifiers) {
-        if (checkPitchInstrumentDown(pKeyCode, pScanCode))
+        if (checkTransposeDown(pKeyCode, pScanCode))
             return true;
 
         unlockFocused();
@@ -249,13 +249,13 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
     private boolean pitchChanged;
-    protected boolean checkPitchInstrumentUp(int pKeyCode, int pScanCode) {
-        if (!pitchChanged && InstrumentKeyMappings.PITCH_UP_MODIFIER.get().matches(pKeyCode, pScanCode)) {
+    protected boolean checkPitchTransposeUp(int pKeyCode, int pScanCode) {
+        if (!pitchChanged && InstrumentKeyMappings.TRANSPOSE_UP_MODIFIER.get().matches(pKeyCode, pScanCode)) {
             setPitch(getPitch() + 1);
             pitchChanged = true;
             return true;
         }
-        if (!pitchChanged && InstrumentKeyMappings.PITCH_DOWN_MODIFIER.get().matches(pKeyCode, pScanCode)) {
+        if (!pitchChanged && InstrumentKeyMappings.TRANSPOSE_DOWN_MODIFIER.get().matches(pKeyCode, pScanCode)) {
             setPitch(getPitch() - 1);
             pitchChanged = true;
             return true;
@@ -263,13 +263,13 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
         return false;
     }
-    protected boolean checkPitchInstrumentDown(int pKeyCode, int pScanCode) {
-        if (pitchChanged && InstrumentKeyMappings.PITCH_UP_MODIFIER.get().matches(pKeyCode, pScanCode)) {
+    protected boolean checkTransposeDown(int pKeyCode, int pScanCode) {
+        if (pitchChanged && InstrumentKeyMappings.TRANSPOSE_UP_MODIFIER.get().matches(pKeyCode, pScanCode)) {
             initPitch(this::setPitch);
             pitchChanged = false;
             return true;
         }
-        if (pitchChanged && InstrumentKeyMappings.PITCH_DOWN_MODIFIER.get().matches(pKeyCode, pScanCode)) {
+        if (pitchChanged && InstrumentKeyMappings.TRANSPOSE_DOWN_MODIFIER.get().matches(pKeyCode, pScanCode)) {
             initPitch(this::setPitch);
             pitchChanged = false;
             return true;

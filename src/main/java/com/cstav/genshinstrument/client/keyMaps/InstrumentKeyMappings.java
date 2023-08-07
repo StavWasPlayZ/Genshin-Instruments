@@ -41,15 +41,15 @@ public class InstrumentKeyMappings {
     };
 
     
-    public static final Lazy<KeyMapping> PITCH_UP_MODIFIER = Lazy.of(
-        () -> new KeyMapping(CATEGORY+".pitch_up_modifier",
+    public static final Lazy<KeyMapping> TRANSPOSE_UP_MODIFIER = Lazy.of(
+        () -> new KeyMapping(CATEGORY+".transpose_up_modifier",
             INSTRUMENT_KEY_CONFLICT_CONTEXT,
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_RIGHT_SHIFT
         , CATEGORY)
     );
-    public static final Lazy<KeyMapping> PITCH_DOWN_MODIFIER = Lazy.of(
-        () -> new KeyMapping(CATEGORY+".pitch_down_modifier",
+    public static final Lazy<KeyMapping> TRANSPOSE_DOWN_MODIFIER = Lazy.of(
+        () -> new KeyMapping(CATEGORY+".transpose_down_modifier",
             INSTRUMENT_KEY_CONFLICT_CONTEXT,
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_LEFT_SHIFT
@@ -59,8 +59,8 @@ public class InstrumentKeyMappings {
 
     @SubscribeEvent
     public static void registerKeybinds(final RegisterKeyMappingsEvent event) {
-        event.register(PITCH_UP_MODIFIER.get());
-        event.register(PITCH_DOWN_MODIFIER.get());
+        event.register(TRANSPOSE_UP_MODIFIER.get());
+        event.register(TRANSPOSE_DOWN_MODIFIER.get());
     }
     
 

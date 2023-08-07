@@ -1,7 +1,7 @@
 {
     "genshinstrument.keymaps": "כלי נגינה",
-    "genshinstrument.keymaps.pitch_down_modifier": "המנך גובה צליל",
-    "genshinstrument.keymaps.pitch_up_modifier": "הגבהה גובה צליל",
+    "genshinstrument.keymaps.transpose_down_modifier": "המנך גובה צליל",
+    "genshinstrument.keymaps.transpose_up_modifier": "הגבהה גובה צליל",
 
 
     "genshinstrument.itemGroup.instruments": "כלי נגינה",
