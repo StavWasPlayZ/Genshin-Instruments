@@ -5,7 +5,7 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.labe
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.NoteGridButton;
-import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
+import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.util.LabelUtil;
 
 import net.minecraft.network.chat.Component;
@@ -17,7 +17,7 @@ import net.minecraft.network.chat.Component;
  */
 public enum NoteGridLabel implements INoteLabel {
     KEYBOARD_LAYOUT((note) -> INoteLabel.upperComponent(
-        KeyMappings.GRID_INSTRUMENT_MAPPINGS[ng(note).column][ng(note).row].getDisplayName()
+        InstrumentKeyMappings.GRID_INSTRUMENT_MAPPINGS[ng(note).column][ng(note).row].getDisplayName()
     )),
     NOTE_NAME((note) -> Component.literal(
         LabelUtil.getCutNoteName(ng(note))
