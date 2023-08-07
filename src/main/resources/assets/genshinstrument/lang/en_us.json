@@ -1,4 +1,9 @@
 {
+    "genshinstrument.keymaps": "Instruments GUI",
+    "genshinstrument.keymaps.pitch_down_modifier": "Pitch Instrument Down",
+    "genshinstrument.keymaps.pitch_up_modifier": "Pitch Instrument Up",
+
+
     "genshinstrument.itemGroup.instruments": "Instruments",
 
     "item.genshinstrument.windsong_lyre": "Windsong Lyre",

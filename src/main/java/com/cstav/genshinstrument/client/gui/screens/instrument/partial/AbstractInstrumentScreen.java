@@ -11,6 +11,7 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.GenshinConsentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
+import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.packet.instrument.CloseInstrumentPacket;
@@ -219,9 +220,11 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
 
-
     @Override
     public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
+        if (checkPitchInstrumentUp(pKeyCode, pScanCode))
+            return true;
+
         final NoteButton note = getNoteByKey(pKeyCode);
         
         if (note != null) {
@@ -233,6 +236,9 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
     @Override
     public boolean keyReleased(int pKeyCode, int pScanCode, int pModifiers) {
+        if (checkPitchInstrumentDown(pKeyCode, pScanCode))
+            return true;
+
         unlockFocused();
 
         final NoteButton note = getNoteByKey(pKeyCode);
@@ -241,6 +247,42 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
         return super.keyReleased(pKeyCode, pScanCode, pModifiers);
     }
+
+    private boolean pitchChanged;
+    protected boolean checkPitchInstrumentUp(int pKeyCode, int pScanCode) {
+        if (!pitchChanged && KeyMappings.PITCH_UP_MODIFIER.get().matches(pKeyCode, pScanCode)) {
+            pitchInstrumentUp(true);
+            return true;
+        }
+        if (!pitchChanged && KeyMappings.PITCH_DOWN_MODIFIER.get().matches(pKeyCode, pScanCode)) {
+            pitchInstrumentDown(true);
+            return true;
+        }
+
+        return false;
+    }
+    protected boolean checkPitchInstrumentDown(int pKeyCode, int pScanCode) {
+        if (pitchChanged && KeyMappings.PITCH_UP_MODIFIER.get().matches(pKeyCode, pScanCode)) {
+            pitchInstrumentDown(false);
+            return true;
+        }
+        if (pitchChanged && KeyMappings.PITCH_DOWN_MODIFIER.get().matches(pKeyCode, pScanCode)) {
+            pitchInstrumentUp(false);
+            return true;
+        }
+
+        return false;
+    }
+
+    private void pitchInstrumentUp(final boolean pressed) {
+        setPitch(getPitch() + 1);
+        pitchChanged = pressed;
+    }
+    private void pitchInstrumentDown(final boolean pressed) {
+        setPitch(getPitch() - 1);
+        pitchChanged = pressed;
+    }
+
 
     @Override
     public boolean mouseReleased(double pMouseX, double pMouseY, int pButton) {

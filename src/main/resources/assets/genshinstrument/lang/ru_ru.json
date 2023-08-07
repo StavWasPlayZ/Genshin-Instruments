@@ -1,4 +1,9 @@
 {
+    "genshinstrument.keymaps": "инструменты",
+    "genshinstrument.keymaps.pitch_down_modifier": "Уменьшение высоты инструмента",
+    "genshinstrument.keymaps.pitch_up_modifier": "Повышение высоты инструмента",
+
+
     "genshinstrument.itemGroup.instruments": "инструменты",
 
     "item.genshinstrument.windsong_lyre": "Лира ветров",
