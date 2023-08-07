@@ -1,4 +1,9 @@
 {
+    "genshinstrument.keymaps": "כלי נגינה",
+    "genshinstrument.keymaps.transpose_down_modifier": "המנך גובה צליל",
+    "genshinstrument.keymaps.transpose_up_modifier": "הגבהה גובה צליל",
+
+
     "genshinstrument.itemGroup.instruments": "כלי נגינה",
 
     "item.genshinstrument.windsong_lyre": "נבל הרוחות",

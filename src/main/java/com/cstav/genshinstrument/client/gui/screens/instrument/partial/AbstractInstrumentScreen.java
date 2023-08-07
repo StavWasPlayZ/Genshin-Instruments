@@ -11,6 +11,7 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.GenshinConsentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
+import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.packet.instrument.CloseInstrumentPacket;
@@ -219,9 +220,11 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
 
-
     @Override
     public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
+        if (checkPitchTransposeUp(pKeyCode, pScanCode))
+            return true;
+
         final NoteButton note = getNoteByKey(pKeyCode);
         
         if (note != null) {
@@ -233,6 +236,9 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
     @Override
     public boolean keyReleased(int pKeyCode, int pScanCode, int pModifiers) {
+        if (checkTransposeDown(pKeyCode, pScanCode))
+            return true;
+
         unlockFocused();
 
         final NoteButton note = getNoteByKey(pKeyCode);
@@ -241,6 +247,37 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
         return super.keyReleased(pKeyCode, pScanCode, pModifiers);
     }
+
+    private boolean pitchChanged;
+    protected boolean checkPitchTransposeUp(int pKeyCode, int pScanCode) {
+        if (!pitchChanged && InstrumentKeyMappings.TRANSPOSE_UP_MODIFIER.get().matches(pKeyCode, pScanCode)) {
+            setPitch(getPitch() + 1);
+            pitchChanged = true;
+            return true;
+        }
+        if (!pitchChanged && InstrumentKeyMappings.TRANSPOSE_DOWN_MODIFIER.get().matches(pKeyCode, pScanCode)) {
+            setPitch(getPitch() - 1);
+            pitchChanged = true;
+            return true;
+        }
+
+        return false;
+    }
+    protected boolean checkTransposeDown(int pKeyCode, int pScanCode) {
+        if (pitchChanged && InstrumentKeyMappings.TRANSPOSE_UP_MODIFIER.get().matches(pKeyCode, pScanCode)) {
+            initPitch(this::setPitch);
+            pitchChanged = false;
+            return true;
+        }
+        if (pitchChanged && InstrumentKeyMappings.TRANSPOSE_DOWN_MODIFIER.get().matches(pKeyCode, pScanCode)) {
+            initPitch(this::setPitch);
+            pitchChanged = false;
+            return true;
+        }
+
+        return false;
+    }
+
 
     @Override
     public boolean mouseReleased(double pMouseX, double pMouseY, int pButton) {
@@ -271,6 +308,8 @@ public abstract class AbstractInstrumentScreen extends Screen {
     public void onOptionsOpen() {
         setFocused(null);
         minecraft.pushGuiLayer(optionsScreen);
+
+        initPitch(this::setPitch);
 
         isOptionsScreenActive = true;
     }

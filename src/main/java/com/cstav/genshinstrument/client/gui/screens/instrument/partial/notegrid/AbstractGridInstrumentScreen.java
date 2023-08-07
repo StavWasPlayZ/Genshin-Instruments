@@ -10,7 +10,7 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractI
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.GridInstrumentOptionsScreen;
-import com.cstav.genshinstrument.client.keyMaps.KeyMappings;
+import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
@@ -118,7 +118,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
 
     public final NoteGrid noteGrid = initNoteGrid();
     
-    private final Map<Key, NoteButton> noteMap = noteGrid.genKeyboardMap(KeyMappings.GRID_INSTRUMENT_MAPPINGS);
+    private final Map<Key, NoteButton> noteMap = noteGrid.genKeyboardMap(InstrumentKeyMappings.GRID_INSTRUMENT_MAPPINGS);
     @Override
     public Map<Key, NoteButton> noteMap() {
         return noteMap;
