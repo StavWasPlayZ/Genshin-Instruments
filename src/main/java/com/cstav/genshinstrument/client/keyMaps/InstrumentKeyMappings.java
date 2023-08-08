@@ -41,20 +41,22 @@ public class InstrumentKeyMappings {
     };
 
     
-    public static final Lazy<KeyMapping> TRANSPOSE_UP_MODIFIER = Lazy.of(
-        () -> new KeyMapping(CATEGORY+".transpose_up_modifier",
-            INSTRUMENT_KEY_CONFLICT_CONTEXT,
-            InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_RIGHT_SHIFT
-        , CATEGORY)
-    );
-    public static final Lazy<KeyMapping> TRANSPOSE_DOWN_MODIFIER = Lazy.of(
-        () -> new KeyMapping(CATEGORY+".transpose_down_modifier",
-            INSTRUMENT_KEY_CONFLICT_CONTEXT,
-            InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_LEFT_SHIFT
-        , CATEGORY)
-    );
+    public static final Lazy<KeyMapping>
+        TRANSPOSE_UP_MODIFIER = Lazy.of(
+            () -> new KeyMapping(CATEGORY+".transpose_up_modifier",
+                INSTRUMENT_KEY_CONFLICT_CONTEXT,
+                InputConstants.Type.KEYSYM,
+                GLFW.GLFW_KEY_RIGHT_SHIFT
+            , CATEGORY)
+        ),
+        TRANSPOSE_DOWN_MODIFIER = Lazy.of(
+            () -> new KeyMapping(CATEGORY+".transpose_down_modifier",
+                INSTRUMENT_KEY_CONFLICT_CONTEXT,
+                InputConstants.Type.KEYSYM,
+                GLFW.GLFW_KEY_LEFT_SHIFT
+            , CATEGORY)
+        )
+    ;
 
 
     @SubscribeEvent
