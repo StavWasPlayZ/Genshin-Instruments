@@ -45,7 +45,7 @@ public class InstrumentKeyMappings {
         () -> new KeyMapping(CATEGORY+".transpose_up_modifier",
             INSTRUMENT_KEY_CONFLICT_CONTEXT,
             InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_RIGHT_ALT
+            GLFW.GLFW_KEY_LEFT_SHIFT
         , CATEGORY)
     );
     public static final Lazy<KeyMapping> TRANSPOSE_DOWN_MODIFIER = Lazy.of(
