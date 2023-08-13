@@ -4,6 +4,7 @@ import java.awt.Point;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.ClientUtil;
+import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
@@ -11,6 +12,7 @@ import com.cstav.genshinstrument.networking.buttonidentifier.DefaultNoteButtonId
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.packet.instrument.InstrumentPacket;
 import com.cstav.genshinstrument.sound.NoteSound;
+import com.cstav.genshinstrument.util.LabelUtil;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -124,8 +126,18 @@ public abstract class NoteButton extends AbstractButton {
         updateNoteLabel();
     }
     
+    // Note labeling
     public NoteNotation getNotation() {
-        return NoteNotation.NONE;
+        return ModClientConfigs.ACCURATE_NOTES.get()
+            ? NoteNotation.getNotation(getNoteName())
+            : NoteNotation.NONE;
+    }
+
+    public String getCutNoteName() {
+        return LabelUtil.getCutNoteName(getNoteName());
+    }
+    public String getNoteName() {
+        return "";
     }
 
 

@@ -3,7 +3,6 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButtonRenderer;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteNotation;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
@@ -37,13 +36,6 @@ public class NoteGridButton extends NoteButton {
         return new NoteGridButtonIdentifier(this);
     }
 
-    @Override
-    public NoteNotation getNotation() {
-        return ModClientConfigs.ACCURATE_NOTES.get()
-            ? NoteNotation.getNotation(LabelUtil.getNoteName(this))
-            : NoteNotation.NONE;
-    }
-
 
     @Override
     protected NoteButtonRenderer initNoteRenderer() {
@@ -54,6 +46,18 @@ public class NoteGridButton extends NoteButton {
     public void updateNoteLabel() {
         super.updateNoteLabel();
         noteRenderer.noteTextureRow = ModClientConfigs.ACCURATE_NOTES.get()
-            ? LabelUtil.getABCOffset(this) : row;
+            ? getABCOffset() : row;
+    }
+
+
+    public String getNoteName() {
+        final AbstractGridInstrumentScreen screen = (AbstractGridInstrumentScreen) instrumentScreen;
+        return LabelUtil.getNoteName(screen.getPitch(), screen.noteLayout(),
+            row + column * screen.rows()
+        );
+    }
+
+    public int getABCOffset() {
+        return LabelUtil.getABCOffset(getNoteName().charAt(0), instrumentScreen);
     }
 }

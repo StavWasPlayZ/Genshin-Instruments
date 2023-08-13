@@ -20,12 +20,12 @@ public enum NoteGridLabel implements INoteLabel {
         InstrumentKeyMappings.GRID_INSTRUMENT_MAPPINGS[ng(note).column][ng(note).row].getDisplayName()
     )),
     NOTE_NAME((note) -> Component.literal(
-        LabelUtil.getCutNoteName(ng(note))
+        note.getCutNoteName()
     )),
     DO_RE_MI((note) ->
         Component.translatable(
             INoteLabel.TRANSLATABLE_PATH + LabelUtil.DO_RE_MI[ng(note).row % gs(note).rows()]
-        ).append(LabelUtil.getCutNoteName(ng(note)).substring(1))
+        ).append(note.getCutNoteName().substring(1))
     ),
     ABC_1((note) -> Component.literal(
         String.valueOf(LabelUtil.ABC[ng(note).row]) + (gs(note).columns() - ng(note).column)

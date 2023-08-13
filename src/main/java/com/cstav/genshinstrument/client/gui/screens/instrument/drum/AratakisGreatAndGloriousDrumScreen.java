@@ -25,6 +25,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 // ikik im funny, long name, thank you
 public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen {
     public static final String INSTRUMENT_ID = "glorious_drum";
+    public static final String[] NOTE_LAYOUT = {"D", "G"};
 
     public AratakisGreatAndGloriousDrumScreen(InteractionHand hand) {
         super(hand);
@@ -103,6 +104,11 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
         return btn;
     }
     
+
+    @Override
+    public String[] noteLayout() {
+        return NOTE_LAYOUT;
+    }
 
     private static final InstrumentThemeLoader THEME_LOADER = initThemeLoader(GInstrumentMod.MODID, INSTRUMENT_ID);
     @Override

@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 @EventBusSubscriber(Dist.CLIENT)
 public class VintageLyreScreen extends AbstractGridInstrumentScreen {
     public static final String INSTRUMENT_ID = "vintage_lyre";
-    public static final String[] VINTAGE_LYRE_LAYOUT = new String[] {
+    public static final String[] NOTE_LAYOUT = {
         "C", "Db", "Eb", "F", "G", "Ab", "Bb",
         "C", "D", "Eb", "F", "G", "A", "Bb",
         "C", "D", "Eb", "F", "G", "A", "Bb"
@@ -40,7 +40,7 @@ public class VintageLyreScreen extends AbstractGridInstrumentScreen {
 
     @Override
     public String[] noteLayout() {
-        return VINTAGE_LYRE_LAYOUT;
+        return NOTE_LAYOUT;
     }
 
     @Override

@@ -5,11 +5,7 @@ import static java.util.Map.entry;
 import java.util.Map;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
-import com.cstav.genshinstrument.client.gui.screens.instrument.drum.DrumButtonType;
-import com.cstav.genshinstrument.client.gui.screens.instrument.drum.DrumNoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.NoteGridButton;
 import com.mojang.logging.LogUtils;
 
 public abstract class LabelUtil {
@@ -74,30 +70,10 @@ public abstract class LabelUtil {
     }
 
 
-    public static String getNoteName(final NoteGridButton gridButton) {
-        final AbstractGridInstrumentScreen screen = (AbstractGridInstrumentScreen) gridButton.instrumentScreen;
-        return getNoteName(screen.getPitch(), screen.noteLayout(), getNoteOffset(gridButton));
-    }
-    public static int getNoteOffset(final NoteGridButton gridButton) {
-        return gridButton.row + gridButton.column * ((AbstractGridInstrumentScreen)gridButton.instrumentScreen).rows();
-    }
-
-    public static String getNoteName(final DrumNoteButton drumButton) {
-        final AbstractInstrumentScreen screen = drumButton.instrumentScreen;
-        return getNoteName(screen.getPitch(),
-            new String[] {"D", "G"},
-            (drumButton.btnType == DrumButtonType.DON) ? 0 : 1
-        );
-    }
-
-
-    public static String getCutNoteName(final NoteGridButton gridButton) {
-        return getCutNoteName(LabelUtil.getNoteName(gridButton));
-    }
-    public static String getCutNoteName(final DrumNoteButton drumButton) {
-        return getCutNoteName(LabelUtil.getNoteName(drumButton));
-    }
     public static String getCutNoteName(String noteName) {
+        if (noteName.isEmpty())
+            return "";
+            
         if (ModClientConfigs.ACCURATE_NOTES.get())
             noteName = String.valueOf(noteName.charAt(0));
 
@@ -113,9 +89,6 @@ public abstract class LabelUtil {
 
         LogUtils.getLogger().warn("Could not get note letter "+note+" for "+screen.getInstrumentId()+"!");
         return 0;
-    }
-    public static int getABCOffset(final NoteGridButton gridButton) {
-        return getABCOffset(getNoteName(gridButton).charAt(0), gridButton.instrumentScreen);
     }
 
 }

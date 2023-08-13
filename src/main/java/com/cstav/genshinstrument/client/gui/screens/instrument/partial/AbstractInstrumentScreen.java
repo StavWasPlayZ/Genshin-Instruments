@@ -32,7 +32,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractInstrumentScreen extends Screen {
-    public static final String[] DEFAULT_NOTE_LAYOUT = new String[] {"C", "D", "E", "F", "G", "A", "B"};
+    public static final String[] DEFAULT_NOTE_LAYOUT = {"C", "D", "E", "F", "G", "A", "B"};
     
     @SuppressWarnings("resource")
     public int getNoteSize() {
