@@ -5,6 +5,7 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.Note
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings.DrumKeys;
+import com.cstav.genshinstrument.util.LabelUtil;
 
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
@@ -12,15 +13,18 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public enum DrumNoteLabel implements INoteLabel {
-	DON_KA((note) ->
-		Component.translatable(dn(note).btnType.getTransKey())
-	),
 	KEYBOARD_LAYOUT((note) -> {
 		final DrumNoteButton dnb = dn(note);
 		final DrumKeys keys = dnb.btnType.getKeys();
 
 		return INoteLabel.upperComponent((dnb.isRight ? keys.right : keys.left).getDisplayName());
 	}),
+	DON_KA((note) ->
+		Component.translatable(dn(note).btnType.getTransKey())
+	),
+	NOTE_NAME((note) -> Component.literal(
+		LabelUtil.getCutNoteName(dn(note))
+	)),
     NONE(NoteLabelSupplier.EMPTY);
 
 

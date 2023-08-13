@@ -5,6 +5,8 @@ import static java.util.Map.entry;
 import java.util.Map;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
+import com.cstav.genshinstrument.client.gui.screens.instrument.drum.DrumButtonType;
+import com.cstav.genshinstrument.client.gui.screens.instrument.drum.DrumNoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.NoteGridButton;
@@ -80,8 +82,20 @@ public abstract class LabelUtil {
         return gridButton.row + gridButton.column * ((AbstractGridInstrumentScreen)gridButton.instrumentScreen).rows();
     }
 
+    public static String getNoteName(final DrumNoteButton drumButton) {
+        final AbstractInstrumentScreen screen = drumButton.instrumentScreen;
+        return getNoteName(screen.getPitch(),
+            new String[] {"D", "G"},
+            (drumButton.btnType == DrumButtonType.DON) ? 0 : 1
+        );
+    }
+
+
     public static String getCutNoteName(final NoteGridButton gridButton) {
         return getCutNoteName(LabelUtil.getNoteName(gridButton));
+    }
+    public static String getCutNoteName(final DrumNoteButton drumButton) {
+        return getCutNoteName(LabelUtil.getNoteName(drumButton));
     }
     public static String getCutNoteName(String noteName) {
         if (ModClientConfigs.ACCURATE_NOTES.get())
