@@ -5,14 +5,18 @@ import static java.util.Map.entry;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
 public abstract class LabelUtil {
+    private static final Logger LOGGER = LogUtils.getLogger();
     
     public static final String[]
         DO_RE_MI = {
@@ -94,15 +98,24 @@ public abstract class LabelUtil {
     }
 
     public static Component toDoReMi(final String noteName) {
+        if (noteName.isEmpty()) {
+            LOGGER.warn("Cannot convert empty note to Do Re Mi!");
+            return Component.empty();
+        }
+
         return Component.translatable(INoteLabel.TRANSLATABLE_PATH + ABC_TO_DO_RE_MI.get(noteName.charAt(0)))
             .append(noteName.substring(1));
     }
 
 
     public static int getABCOffset(final NoteButton noteButton) {
+        final ResourceLocation instrumentId = noteButton.instrumentScreen.getInstrumentId();
         final String noteName = noteButton.getNoteName();
-        if (noteName.isEmpty())
+
+        if (noteName.isEmpty()) {
+            LOGGER.warn("Cannot get ABC offset for an instrument without a note layout! ("+instrumentId+")");
             return 0;
+        }
 
         final char note = noteName.charAt(0);
 
@@ -110,7 +123,7 @@ public abstract class LabelUtil {
             if (note == ABC[i])
                 return i;
 
-        LogUtils.getLogger().warn("Could not get note "+note+" for instrument "+noteButton.instrumentScreen.getInstrumentId()+"!");
+        LOGGER.warn("Could not get note "+note+" for instrument "+noteButton.instrumentScreen.getInstrumentId()+"!");
         return 0;
     }
 
