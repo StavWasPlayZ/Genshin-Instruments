@@ -48,16 +48,13 @@ public class NoteGridButton extends NoteButton {
         noteRenderer.noteTextureRow = ModClientConfigs.ACCURATE_NOTES.get()
             ? getABCOffset() : row;
     }
-
-
-    public String getNoteName() {
-        final AbstractGridInstrumentScreen screen = (AbstractGridInstrumentScreen) instrumentScreen;
-        return LabelUtil.getNoteName(screen.getPitch(), screen.noteLayout(),
-            row + column * screen.rows()
-        );
-    }
-
     public int getABCOffset() {
         return LabelUtil.getABCOffset(getNoteName().charAt(0), instrumentScreen);
+    }
+
+
+    @Override
+    public int getNoteOffset() {
+        return row + column * ((AbstractGridInstrumentScreen)instrumentScreen).rows();
     }
 }

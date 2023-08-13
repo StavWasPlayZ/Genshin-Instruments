@@ -137,8 +137,15 @@ public abstract class NoteButton extends AbstractButton {
         return LabelUtil.getCutNoteName(getNoteName());
     }
     public String getNoteName() {
-        return "";
+        if (instrumentScreen.noteLayout() == null)
+            return "";
+
+        return LabelUtil.getNoteName(instrumentScreen.getPitch(), instrumentScreen.noteLayout(), getNoteOffset());
     }
+    /**
+     * Defines the offset of this note relative to the this screen's {@link AbstractInstrumentScreen#noteLayout() note layout}
+     */
+    public abstract int getNoteOffset();
 
 
     public void init() {

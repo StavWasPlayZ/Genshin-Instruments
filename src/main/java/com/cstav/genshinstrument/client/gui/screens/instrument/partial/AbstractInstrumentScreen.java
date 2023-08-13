@@ -90,6 +90,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     /**
      * @return The layout of the note names accross the instrument's rows.
+     * Null for when this instrument does not support note names.
      * @implNote All built-in instruments' layouts are derived from
      * <a href=https://github.com/Specy/genshin-music/blob/19dfe0e2fb8081508bd61dd47289dcb2d89ad5e3/src/Config.ts#L114>
      * Specy's Genshin Music app
