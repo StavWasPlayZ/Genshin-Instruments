@@ -25,6 +25,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScreen {
+    public static final String[] NOTE_LAYOUT = {"C", "D", "E", "F", "G", "A", "B"};
+
     public static final int DEF_ROWS = 7, DEF_COLUMNS = 3,
         CLEF_WIDTH = 26, CLEF_HEIGHT = 52;
 
@@ -136,6 +138,10 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
     @Override
     public ResourceLocation getNoteSymbolsLocation() {
         return new ResourceLocation(GInstrumentMod.MODID, getGlobalRootPath() + "grid_notes.png");
+    }
+
+    public static String[] getNoteLayout() {
+        return NOTE_LAYOUT;
     }
     
 

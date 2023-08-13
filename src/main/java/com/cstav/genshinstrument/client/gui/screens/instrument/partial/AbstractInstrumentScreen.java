@@ -31,9 +31,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public abstract class AbstractInstrumentScreen extends Screen {
-    public static final String[] DEFAULT_NOTE_LAYOUT = {"C", "D", "E", "F", "G", "A", "B"};
-    
+public abstract class AbstractInstrumentScreen extends Screen {    
     @SuppressWarnings("resource")
     public int getNoteSize() {
         return switch (Minecraft.getInstance().options.guiScale().get()) {
@@ -97,7 +95,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * </a>
      */
     public String[] noteLayout() {
-        return DEFAULT_NOTE_LAYOUT;
+        return null;
     }
 
     /**
