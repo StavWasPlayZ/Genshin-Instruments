@@ -90,9 +90,9 @@ public abstract class LabelUtil {
         String result = String.valueOf(noteName.charAt(0));
         if (!ModClientConfigs.ACCURATE_NOTES.get())
             result += noteName.substring(1)
+                .replaceAll("##", "\u00D7")
                 .replaceAll("#", "♯")
-                .replaceAll("b", "\u266D")
-                .replaceAll("##", "\u00D7");
+                .replaceAll("b", "\u266D");
 
         return result;
     }

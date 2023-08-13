@@ -25,7 +25,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScreen {
-    public static final String[] NOTE_LAYOUT = {"C", "D", "E", "F", "G", "A", "B"};
+    //FIXME for test purposes
+    public static final String[] NOTE_LAYOUT = {"B#", "D", "E", "F", "G", "A", "B"};
 
     public static final int DEF_ROWS = 7, DEF_COLUMNS = 3,
         CLEF_WIDTH = 26, CLEF_HEIGHT = 52;
