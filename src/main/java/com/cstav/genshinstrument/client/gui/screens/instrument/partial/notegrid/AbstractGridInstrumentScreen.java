@@ -140,7 +140,8 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
         return new ResourceLocation(GInstrumentMod.MODID, getGlobalRootPath() + "grid_notes.png");
     }
 
-    public static String[] getNoteLayout() {
+    @Override
+    public String[] noteLayout() {
         return NOTE_LAYOUT;
     }
     
