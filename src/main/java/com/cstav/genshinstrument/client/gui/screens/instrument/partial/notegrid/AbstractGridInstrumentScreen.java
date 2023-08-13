@@ -142,7 +142,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
 
     @Override
     public String[] noteLayout() {
-        return NOTE_LAYOUT;
+        return null;
     }
     
 

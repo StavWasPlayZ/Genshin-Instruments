@@ -100,12 +100,15 @@ public abstract class LabelUtil {
 
 
     public static int getABCOffset(final NoteButton noteButton) {
-        final char note = noteButton.getNoteName().charAt(0);
+        final String noteName = noteButton.getNoteName();
+        if (noteName.isEmpty())
+            return 0;
 
-        for (int i = 0; i < ABC.length; i++) {
+        final char note = noteName.charAt(0);
+
+        for (int i = 0; i < ABC.length; i++)
             if (note == ABC[i])
                 return i;
-        }
 
         LogUtils.getLogger().warn("Could not get note "+note+" for instrument "+noteButton.instrumentScreen.getInstrumentId()+"!");
         return 0;
