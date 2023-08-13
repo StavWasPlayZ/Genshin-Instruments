@@ -79,14 +79,18 @@ public abstract class LabelUtil {
         return scale[(CommonUtil.doublyPyWrap(pitch, scale.length))];
     }
 
-    public static String getCutNoteName(String noteName) {
+    public static String getCutNoteName(final String noteName) {
         if (noteName.isEmpty())
             return "";
             
-        if (ModClientConfigs.ACCURATE_NOTES.get())
-            noteName = String.valueOf(noteName.charAt(0));
+        String result = String.valueOf(noteName.charAt(0));
+        if (!ModClientConfigs.ACCURATE_NOTES.get())
+            result += noteName.substring(1)
+                .replaceAll("#", "♯")
+                .replaceAll("b", "\u266D")
+                .replaceAll("##", "\u00D7");
 
-        return noteName;
+        return result;
     }
 
     public static Component toDoReMi(final String noteName) {
