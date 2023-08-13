@@ -23,9 +23,7 @@ public enum NoteGridLabel implements INoteLabel {
         note.getCutNoteName()
     )),
     DO_RE_MI((note) ->
-        Component.translatable(
-            INoteLabel.TRANSLATABLE_PATH + LabelUtil.DO_RE_MI[ng(note).row % gs(note).rows()]
-        ).append(note.getCutNoteName().substring(1))
+        LabelUtil.toDoReMi(note.getCutNoteName())
     ),
     ABC_1((note) -> Component.literal(
         String.valueOf(LabelUtil.ABC[ng(note).row]) + (gs(note).columns() - ng(note).column)

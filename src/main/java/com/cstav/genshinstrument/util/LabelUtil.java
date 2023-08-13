@@ -2,11 +2,15 @@ package com.cstav.genshinstrument.util;
 
 import static java.util.Map.entry;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
 import com.mojang.logging.LogUtils;
+
+import net.minecraft.network.chat.Component;
 
 public abstract class LabelUtil {
     
@@ -20,6 +24,12 @@ public abstract class LabelUtil {
             'C', 'D', 'E', 'F', 'G', 'A', 'B'
         }
     ;
+
+    private static final HashMap<Character, String> ABC_TO_DO_RE_MI = new HashMap<>();
+    static {
+        for (int i = 0; i < ABC.length; i++)
+            ABC_TO_DO_RE_MI.put(ABC[i], DO_RE_MI[i]);
+    }
 
 
     // Pitch system implementation
@@ -69,7 +79,6 @@ public abstract class LabelUtil {
         return scale[(CommonUtil.doublyPyWrap(pitch, scale.length))];
     }
 
-
     public static String getCutNoteName(String noteName) {
         if (noteName.isEmpty())
             return "";
@@ -78,6 +87,11 @@ public abstract class LabelUtil {
             noteName = String.valueOf(noteName.charAt(0));
 
         return noteName;
+    }
+
+    public static Component toDoReMi(final String noteName) {
+        return Component.translatable(INoteLabel.TRANSLATABLE_PATH + ABC_TO_DO_RE_MI.get(noteName.charAt(0)))
+            .append(noteName.substring(1));
     }
 
 
