@@ -341,6 +341,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
     // Make pressing notes possible with keyboard
     //TODO make a property on AbstractInstrumentScreen to define allowed keys
+    // Then allow the pitch up/down keys by default
     @Override
     public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
         // Only pass when it is a note key

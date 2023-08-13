@@ -17,12 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 public class NoteButtonRenderer {
     private static final Minecraft MINECRAFT = Minecraft.getInstance();
 
-    private static final double
-        FLAT_TEXTURE_HEIGHT_MULTIPLIER = 3.7/1.3,
-        FLAT_TEXTURE_WIDTH_MULTIPLIER = 1.7/1.3,
-        SHARP_MULTIPLIER = .8f,
-        DOUBLE_SHARP_MULTIPLIER = .9f
-    ;
+    private static final double SHARP_MULTIPLIER = .9;
     
     public final NoteButton noteButton;
     protected final AbstractInstrumentScreen instrumentScreen;
@@ -164,22 +159,23 @@ public class NoteButtonRenderer {
         renderAccidental(gui, index, 0, 0);
     }
     protected void renderAccidental(GuiGraphics gui, int index, int offsetX, int offsetY) {
-        // Handle sharp imperfections
-        final int textureWidth = (int)(noteButton.getWidth() * FLAT_TEXTURE_WIDTH_MULTIPLIER * (
-            (index == 1) ? SHARP_MULTIPLIER : (index == 2) ? DOUBLE_SHARP_MULTIPLIER : 1
-        )),
-        textureHeight = (int)(noteButton.getHeight() * FLAT_TEXTURE_HEIGHT_MULTIPLIER * (
-            (index == 1) ? SHARP_MULTIPLIER : (index == 2) ? DOUBLE_SHARP_MULTIPLIER : 1
-        ));
+        final double textureMultiplier = noteButton.getWidth() * (
+            // Handle sharp size
+            (index == 1) ? SHARP_MULTIPLIER : 1
+        ) * 2;
 
-        final int spritePartHeight = textureHeight/3;
+        final int textureWidth = (int)(textureMultiplier),
+            textureHeight = (int)(textureMultiplier) - 1;
+
+        final int spritePartWidth = textureWidth/3 + 1;
+
 
         gui.blit(accidentalsLocation,
             noteButton.getX() - 9 + offsetX, noteButton.getY() - 6 + offsetY,
-            noteButton.isPlaying() ? textureWidth/2 : 0, spritePartHeight * index - index,
+            spritePartWidth * index, noteButton.isPlaying() ? (textureHeight + 1)/2 : 0,
             
-            textureWidth/2,  spritePartHeight,
-            textureWidth - (((index != 0) && noteButton.isPlaying()) ? 1 : 0), textureHeight
+            spritePartWidth - 1, textureHeight/2,
+            textureWidth, textureHeight
         );
     }
 
