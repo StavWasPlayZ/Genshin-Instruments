@@ -49,7 +49,7 @@ public class NoteGridButton extends NoteButton {
             ? getABCOffset() : row;
     }
     public int getABCOffset() {
-        return LabelUtil.getABCOffset(getNoteName().charAt(0), instrumentScreen);
+        return LabelUtil.getABCOffset(this);
     }
 
 

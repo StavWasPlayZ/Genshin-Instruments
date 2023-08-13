@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
 import com.mojang.logging.LogUtils;
 
@@ -99,13 +99,15 @@ public abstract class LabelUtil {
     }
 
 
-    public static int getABCOffset(final char note, final AbstractInstrumentScreen screen) {
+    public static int getABCOffset(final NoteButton noteButton) {
+        final char note = noteButton.getNoteName().charAt(0);
+
         for (int i = 0; i < ABC.length; i++) {
             if (note == ABC[i])
                 return i;
         }
 
-        LogUtils.getLogger().warn("Could not get note letter "+note+" for "+screen.getInstrumentId()+"!");
+        LogUtils.getLogger().warn("Could not get note "+note+" for instrument "+noteButton.instrumentScreen.getInstrumentId()+"!");
         return 0;
     }
 
