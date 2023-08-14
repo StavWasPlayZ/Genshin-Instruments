@@ -9,7 +9,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class DrumOptionsScren extends AbstractInstrumentOptionsScreen {
+public class DrumOptionsScren extends BaseInstrumentOptionsScreen {
 
     public DrumOptionsScren(AratakisGreatAndGloriousDrumScreen screen) {
         super(screen);

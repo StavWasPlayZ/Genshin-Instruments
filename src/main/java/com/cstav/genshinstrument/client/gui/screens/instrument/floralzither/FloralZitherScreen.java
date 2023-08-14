@@ -3,7 +3,7 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.floralzither;
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
+import com.cstav.genshinstrument.client.gui.screens.options.instrument.BaseInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.FloralZitherOptionsScreen;
 import com.cstav.genshinstrument.sound.NoteSound;
 
@@ -34,7 +34,7 @@ public class FloralZitherScreen extends AbstractGridInstrumentScreen {
     }
 
     @Override
-    protected AbstractInstrumentOptionsScreen initInstrumentOptionsScreen() {
+    protected BaseInstrumentOptionsScreen initInstrumentOptionsScreen() {
         return new FloralZitherOptionsScreen(this);
     }
 

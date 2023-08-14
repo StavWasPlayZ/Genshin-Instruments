@@ -10,7 +10,7 @@ import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvide
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.GenshinConsentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
-import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
+import com.cstav.genshinstrument.client.gui.screens.options.instrument.BaseInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
@@ -61,6 +61,9 @@ public abstract class AbstractInstrumentScreen extends Screen {
     protected void initPitch(final Consumer<Integer> pitchConsumer) {
         pitchConsumer.accept(ModClientConfigs.PITCH.get().intValue());
     }
+    public void resetPitch() {
+        initPitch(this::setPitch);
+    }
 
 
     /**
@@ -78,7 +81,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
 
     public abstract ResourceLocation getInstrumentId();
-    protected abstract AbstractInstrumentOptionsScreen initInstrumentOptionsScreen();
+    protected abstract BaseInstrumentOptionsScreen initInstrumentOptionsScreen();
 
     /**
      * @return The location of all labels present in this instrument
@@ -181,7 +184,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
 
-    public final AbstractInstrumentOptionsScreen optionsScreen = initInstrumentOptionsScreen();
+    public final BaseInstrumentOptionsScreen optionsScreen = initInstrumentOptionsScreen();
     
     public final Optional<InteractionHand> interactionHand;
     public AbstractInstrumentScreen(final InteractionHand hand) {
@@ -193,7 +196,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     @Override
     protected void init() {
-        initPitch(this::setPitch);
+        resetPitch();
         optionsScreen.init(minecraft, width, height);
 
         if (isGenshinInstrument() && !ModClientConfigs.ACCEPTED_GENSHIN_CONSENT.get())
@@ -249,12 +252,15 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     private boolean pitchChanged;
     protected boolean checkPitchTransposeUp(int pKeyCode, int pScanCode) {
-        if (!pitchChanged && InstrumentKeyMappings.TRANSPOSE_UP_MODIFIER.get().matches(pKeyCode, pScanCode)) {
+        if (pitchChanged)
+            return false;
+
+        if (checkTranposeUpKey(pKeyCode, pScanCode)) {
             setPitch(getPitch() + 1);
             pitchChanged = true;
             return true;
         }
-        if (!pitchChanged && InstrumentKeyMappings.TRANSPOSE_DOWN_MODIFIER.get().matches(pKeyCode, pScanCode)) {
+        else if (checkTranposeDownKey(pKeyCode, pScanCode)) {
             setPitch(getPitch() - 1);
             pitchChanged = true;
             return true;
@@ -263,18 +269,40 @@ public abstract class AbstractInstrumentScreen extends Screen {
         return false;
     }
     protected boolean checkTransposeDown(int pKeyCode, int pScanCode) {
-        if (pitchChanged && InstrumentKeyMappings.TRANSPOSE_UP_MODIFIER.get().matches(pKeyCode, pScanCode)) {
-            initPitch(this::setPitch);
-            pitchChanged = false;
-            return true;
-        }
-        if (pitchChanged && InstrumentKeyMappings.TRANSPOSE_DOWN_MODIFIER.get().matches(pKeyCode, pScanCode)) {
-            initPitch(this::setPitch);
+        if (!pitchChanged)
+            return false;
+
+        if (checkTranposeUpKey(pKeyCode, pScanCode) || checkTranposeDownKey(pKeyCode, pScanCode)) {
+            resetPitch();
             pitchChanged = false;
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * @return Whether this instrument's pitch is being tranposed up/down as requested by the keybinds
+     */
+    public boolean isTranposed() {
+        return pitchChanged;
+    }
+
+
+    /**
+     * @return {@code true} if the given key is being used by this instrument.
+     * Otherwise, {@code false}.
+     */
+    public boolean isKeyConsumed(final int keyCode, final int scanCode) {
+        return (getNoteByKey(keyCode) != null)
+            || checkTranposeDownKey(keyCode, scanCode) || checkTranposeUpKey(keyCode, scanCode);
+    }
+
+    protected boolean checkTranposeDownKey(final int keyCode, final int scanCode) {
+        return InstrumentKeyMappings.TRANSPOSE_DOWN_MODIFIER.get().matches(keyCode, scanCode);
+    }
+    protected boolean checkTranposeUpKey(final int keyCode, final int scanCode) {
+        return InstrumentKeyMappings.TRANSPOSE_UP_MODIFIER.get().matches(keyCode, scanCode);
     }
 
 
@@ -308,7 +336,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
         setFocused(null);
         minecraft.pushGuiLayer(optionsScreen);
 
-        initPitch(this::setPitch);
+        resetPitch();
 
         isOptionsScreenActive = true;
     }
@@ -341,8 +369,8 @@ public abstract class AbstractInstrumentScreen extends Screen {
         if (minecraft.screen instanceof AbstractInstrumentScreen)
             return Optional.of((AbstractInstrumentScreen)minecraft.screen);
 
-        if (minecraft.screen instanceof AbstractInstrumentOptionsScreen) {
-            final AbstractInstrumentOptionsScreen instrumentOptionsScreen = (AbstractInstrumentOptionsScreen)minecraft.screen;
+        if (minecraft.screen instanceof BaseInstrumentOptionsScreen) {
+            final BaseInstrumentOptionsScreen instrumentOptionsScreen = (BaseInstrumentOptionsScreen)minecraft.screen;
             if (instrumentOptionsScreen.isOverlay)
                 return Optional.of(instrumentOptionsScreen.instrumentScreen);
         }

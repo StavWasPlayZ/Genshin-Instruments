@@ -26,7 +26,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(bus = Bus.MOD, modid = GInstrumentMod.MODID, value = Dist.CLIENT)
-public class GridInstrumentOptionsScreen extends AbstractInstrumentOptionsScreen {
+public class GridInstrumentOptionsScreen extends BaseInstrumentOptionsScreen {
 
     public GridInstrumentOptionsScreen(final AbstractGridInstrumentScreen screen) {
         super(screen);

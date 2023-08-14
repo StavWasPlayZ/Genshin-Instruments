@@ -33,15 +33,15 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public abstract class AbstractInstrumentOptionsScreen extends Screen {
+public abstract class BaseInstrumentOptionsScreen extends Screen {
 
     private static final String SOUND_CHANNEL_KEY = "button.genshinstrument.audioChannels",
         STOP_MUSIC_KEY = "button.genshinstrument.stop_music_on_play";
 
     protected final HashMap<String, Runnable> APPLIED_OPTIONS = new HashMap<>();
     /**
-     * Queues the given option to later be saved,
-     * such that when the client closes this screen - the given runnable will run.
+     * Queues the given option to later be saved.
+     * Most notably, a save occures when the client closes this screen.
      * @param optionKey A unique identifier of this option. If a duplicate entry
      * exists, it will be overwritten.
      * @param saveRunnable The runnable for saving the option
@@ -96,7 +96,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
     public final @Nullable AbstractInstrumentScreen instrumentScreen;
 
-    public AbstractInstrumentOptionsScreen(@Nullable AbstractInstrumentScreen screen) {
+    public BaseInstrumentOptionsScreen(@Nullable AbstractInstrumentScreen screen) {
         super(Component.translatable("button.genshinstrument.instrumentOptions"));
         
         this.isOverlay = true;
@@ -105,7 +105,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
         labels = getLabels();
     }
-    public AbstractInstrumentOptionsScreen(final Screen lastScreen) {
+    public BaseInstrumentOptionsScreen(final Screen lastScreen) {
         super(Component.translatable("button.genshinstrument.instrumentOptions"));
         
         this.isOverlay = false;
@@ -278,8 +278,12 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         if (isOverlay)
             instrumentScreen.setPitch(pitch);
 
-            
-        queueToSave("pitch", () -> savePitch(pitch));
+        // Directly save the pitch if it is being modified
+        if (isOverlay && instrumentScreen.isTranposed()) {
+            savePitch(pitch);
+            ModClientConfigs.CONFIGS.save();
+        } else
+            queueToSave("pitch", () -> savePitch(pitch));
     }
     protected void savePitch(final int newPitch) {
         ModClientConfigs.PITCH.set(newPitch);
@@ -340,19 +344,17 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
 
     // Make pressing notes possible with keyboard
-    //TODO make a property on AbstractInstrumentScreen to define allowed keys
-    // Then allow the pitch up/down keys by default
     @Override
     public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
         // Only pass when it is a note key
-        if (isOverlay && (instrumentScreen.getNoteByKey(pKeyCode) != null))
+        if (isOverlay && instrumentScreen.isKeyConsumed(pKeyCode, pScanCode))
             instrumentScreen.keyPressed(pKeyCode, pScanCode, pModifiers);
 
         return super.keyPressed(pKeyCode, pScanCode, pModifiers);
     }
     @Override
     public boolean keyReleased(int pKeyCode, int pScanCode, int pModifiers) {
-        if (isOverlay && (instrumentScreen.getNoteByKey(pKeyCode) != null))
+        if (isOverlay && instrumentScreen.isKeyConsumed(pKeyCode, pScanCode))
             instrumentScreen.keyReleased(pKeyCode, pScanCode, pModifiers);
 
         return super.keyReleased(pKeyCode, pScanCode, pModifiers);
