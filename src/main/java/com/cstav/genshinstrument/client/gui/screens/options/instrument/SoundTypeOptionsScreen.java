@@ -38,6 +38,7 @@ public abstract class SoundTypeOptionsScreen<T extends SoundType> extends GridIn
     protected abstract T[] values();
 
     protected abstract String soundTypeButtonKey();
+    protected abstract String optionsLabelKey();
 
 
     private int heightBefore;
@@ -67,7 +68,7 @@ public abstract class SoundTypeOptionsScreen<T extends SoundType> extends GridIn
         super.render(gui, pMouseX, pMouseY, pPartialTick);
         
         gui.drawCenteredString(font,
-            Component.translatable("label.genshinstrument.zither_options"),
+            Component.translatable(optionsLabelKey()),
             width/2, heightBefore + SPACE_BEFORE
         , Color.WHITE.getRGB());
     }

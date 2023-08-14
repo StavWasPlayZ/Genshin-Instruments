@@ -10,10 +10,21 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class FloralZitherOptionsScreen extends SoundTypeOptionsScreen<ZitherSoundType> {
-    private static final String SOUND_TYPE_KEY = "button.genshinstrument.zither.soundType";
+    private static final String SOUND_TYPE_KEY = "button.genshinstrument.zither.soundType",
+        OPTIONS_LABEL_KEY = "label.genshinstrument.zither_options";
     
     public FloralZitherOptionsScreen(final AbstractGridInstrumentScreen screen) {
         super(screen);
+    }
+    
+
+    @Override
+    protected String soundTypeButtonKey() {
+        return SOUND_TYPE_KEY;
+    }
+    @Override
+    protected String optionsLabelKey() {
+        return OPTIONS_LABEL_KEY;
     }
 
 
@@ -25,11 +36,6 @@ public class FloralZitherOptionsScreen extends SoundTypeOptionsScreen<ZitherSoun
     @Override
     protected ZitherSoundType[] values() {
         return ZitherSoundType.values();
-    }
-
-    @Override
-    protected String soundTypeButtonKey() {
-        return SOUND_TYPE_KEY;
     }
 
     @Override
