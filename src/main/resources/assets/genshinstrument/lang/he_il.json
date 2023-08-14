@@ -56,6 +56,14 @@
     "button.genshinstrument.label.do_re_mi": "דו רה מי",
     "button.genshinstrument.label.note_name": "שם תו",
 
+    "genshinstrument.label.do": "דו",
+    "genshinstrument.label.re": "רה",
+    "genshinstrument.label.mi": "מי",
+    "genshinstrument.label.fa": "פה",
+    "genshinstrument.label.so": "סול",
+    "genshinstrument.label.la": "לה",
+    "genshinstrument.label.ti": "טי",
+
 
     "button.genshinstrument.label.keyboard_layout": "מקלדת",
     "button.genshinstrument.label.none": "ללא תגית",

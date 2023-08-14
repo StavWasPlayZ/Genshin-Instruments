@@ -48,13 +48,13 @@
 
     "button.genshinstrument.label.do_re_mi": "До Ре Ми",
 
-    "genshinstrument.label.do": "До",
-    "genshinstrument.label.re": "Ре",
-    "genshinstrument.label.mi": "Ми",
-    "genshinstrument.label.fa": "Фа",
-    "genshinstrument.label.so": "Со",
-    "genshinstrument.label.la": "Ла",
-    "genshinstrument.label.ti": "Ти",
+    "genshinstrument.label.do": "до",
+    "genshinstrument.label.re": "ре",
+    "genshinstrument.label.mi": "ми",
+    "genshinstrument.label.fa": "фа",
+    "genshinstrument.label.so": "соль",
+    "genshinstrument.label.la": "ля",
+    "genshinstrument.label.ti": "ти",
 
 
     "button.genshinstrument.label.keyboard_layout": "Клавиатура",

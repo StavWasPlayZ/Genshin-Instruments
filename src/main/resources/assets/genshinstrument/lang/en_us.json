@@ -55,13 +55,13 @@
 
     "button.genshinstrument.label.do_re_mi": "Do Re Mi",
 
-    "genshinstrument.label.do": "Do",
-    "genshinstrument.label.re": "Re",
-    "genshinstrument.label.mi": "Mi",
-    "genshinstrument.label.fa": "Fa",
-    "genshinstrument.label.so": "So",
-    "genshinstrument.label.la": "La",
-    "genshinstrument.label.ti": "Ti",
+    "genshinstrument.label.do": "do",
+    "genshinstrument.label.re": "re",
+    "genshinstrument.label.mi": "mi",
+    "genshinstrument.label.fa": "fa",
+    "genshinstrument.label.so": "sol",
+    "genshinstrument.label.la": "la",
+    "genshinstrument.label.ti": "ti",
 
     "genshinstrument.label.glorious_drum.ka": "Ka",
     "genshinstrument.label.glorious_drum.don": "Don",
