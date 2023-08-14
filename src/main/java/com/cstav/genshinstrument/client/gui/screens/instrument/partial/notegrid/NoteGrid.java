@@ -3,9 +3,7 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid
 import java.util.HashMap;
 import java.util.Iterator;
 
-import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 
@@ -33,11 +31,10 @@ public class NoteGrid implements Iterable<NoteButton> {
 
     
     public final AbstractGridInstrumentScreen instrumentScreen;
-    protected final NoteButton[][] notes;
+    protected final NoteGridButton[][] notes;
     private NoteSound[] noteSounds;
 
     public final int rows, columns;
-    public final boolean isSSTI;
 
     /**
      * @param begginingNote The note to start the linear pitch increment. Only gets used if this is an SSTI instrument.
@@ -51,20 +48,19 @@ public class NoteGrid implements Iterable<NoteButton> {
         columns = instrumentScreen.columns();
 
         this.noteSounds = noteSounds;
-        this.isSSTI = instrumentScreen.isSSTI();
 
 
         // Construct the note grid
-        notes = new NoteButton[columns][rows];
+        notes = new NoteGridButton[columns][rows];
         for (int i = columns - 1; i >= 0; i--) {
-            final NoteButton[] buttonRow = new NoteButton[rows];
+            final NoteGridButton[] buttonRow = new NoteGridButton[rows];
 
             for (int j = 0; j < rows; j++)
-                if (isSSTI) {
-                    buttonRow[j] = createNote(j, i, begginingNote);
+                if (instrumentScreen.isSSTI()) {
+                    buttonRow[j] = instrumentScreen.createNote(j, i, begginingNote);
                     begginingNote += noteSkip;
                 } else
-                    buttonRow[j] = createNote(j, i);
+                    buttonRow[j] = instrumentScreen.createNote(j, i);
 
             notes[i] = buttonRow;
         }
@@ -78,37 +74,6 @@ public class NoteGrid implements Iterable<NoteButton> {
     public NoteGrid(NoteSound[] noteSounds, AbstractGridInstrumentScreen instrumentScreen, int begginingNote) {
         this(noteSounds, instrumentScreen, begginingNote, 1);
     }
-    
-    /**
-     * Creates a note for a singular sound type instrument
-     */
-    protected NoteButton createNote(int row, int column, int pitch) {
-        return new NoteGridButton(row, column,
-            noteSounds[0], getLabelSupplier()
-        , instrumentScreen, pitch);
-    }
-    protected NoteButton createNote(int row, int column) {
-        return new NoteGridButton(row, column,
-            getSoundAt(noteSounds, row, column), getLabelSupplier()
-        , instrumentScreen);
-    }
-
-
-    /**
-     * Evaulates the sound at the given indexes, and returns it
-     * @param sounds The sound array of this instrument
-     * @param row The row of the note
-     * @param column The column of the note
-     */
-    public NoteSound getSoundAt(final NoteSound[] sounds, final int row, final int column) {
-        return sounds[row + column * instrumentScreen.rows()];
-    }
-    /**
-     * @return The perferred label supplier specified in this mod's configs
-     */
-    protected static NoteLabelSupplier getLabelSupplier() {
-        return ModClientConfigs.GRID_LABEL_TYPE.get().getLabelSupplier();
-    }
 
     public NoteSound[] getNoteSounds() {
         return noteSounds;
@@ -118,7 +83,7 @@ public class NoteGrid implements Iterable<NoteButton> {
 
         for (int i = 0; i < columns; i++)
             for (int j = 0; j < rows; j++)
-                notes[i][j].setSound(isSSTI ? noteSounds[0] : getSoundAt(noteSounds, j, i));
+                notes[i][j].setSoundFromArr(noteSounds);
     }
 
 
@@ -167,7 +132,7 @@ public class NoteGrid implements Iterable<NoteButton> {
 
     @Override
     public Iterator<NoteButton> iterator() {
-         // This is a basic 2x2 matrix iterator
+        // This is a basic 2x2 matrix iterator
         return new Iterator<NoteButton>() {
 
             private int i, j;

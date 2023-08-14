@@ -29,7 +29,7 @@ public class FloralZitherScreen extends AbstractGridInstrumentScreen {
 
     
     @Override
-    public NoteSound[] getSounds() {
+    public NoteSound[] getInitSounds() {
         return ((FloralZitherOptionsScreen)optionsScreen).getPerferredSoundType().getSoundArr().get();
     }
 

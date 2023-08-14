@@ -8,6 +8,7 @@ import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.BaseInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.GridInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
@@ -51,7 +52,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
      * Each sound is used on press by the their index on the grid.
      * @return The array of sounds used by this instruments.
      */
-    public abstract NoteSound[] getSounds();
+    public abstract NoteSound[] getInitSounds();
 
     /**
      * <p>
@@ -105,6 +106,40 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
     public NoteButton getNoteButton(final int row, final int column) throws IndexOutOfBoundsException {
         return noteGrid.getNoteButton(row, column);
     }
+
+
+    /**
+     * Creates a note for a singular sound type instrument
+     */
+    public NoteGridButton createNote(int row, int column, int pitch) {
+        return new NoteGridButton(row, column,
+            getInitSounds()[0], this, pitch
+        );
+    }
+    public NoteGridButton createNote(int row, int column) {
+        return new NoteGridButton(row, column, this);
+    }
+
+    /**
+     * @return The perferred label supplier specified in this mod's configs
+     */
+    protected NoteLabelSupplier getInitLabelSupplier() {
+        return ModClientConfigs.GRID_LABEL_TYPE.get().getLabelSupplier();
+    }
+
+    // /**
+    //  * Evaulates the sound at the given indexes, and returns it
+    //  * @param row The row of the note
+    //  * @param column The column of the note
+    //  */
+    // public NoteSound getSoundAt(final int row, final int column) {
+    //     final NoteSound[] sounds = noteGrid.getNoteSounds();
+    //     return NoteGridButton.getSoundFromArr(
+    //         (sounds == null) ? getInitSounds() : sounds,
+    //         row, column, rows()
+    //     );
+    // }
+
     
     // Abstract implementations
     /**
@@ -113,8 +148,8 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
      */
     public NoteGrid initNoteGrid() {
         return isSSTI()
-            ? new NoteGrid(getSounds(), this, NoteSound.MIN_PITCH)
-            : new NoteGrid(getSounds(), this);
+            ? new NoteGrid(getInitSounds(), this, NoteSound.MIN_PITCH)
+            : new NoteGrid(getInitSounds(), this);
     }
 
 

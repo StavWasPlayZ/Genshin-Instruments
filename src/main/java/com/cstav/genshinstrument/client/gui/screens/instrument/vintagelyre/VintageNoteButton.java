@@ -14,8 +14,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class VintageNoteButton extends NoteGridButton {
 
     public VintageNoteButton(int row, int column,
-            NoteSound sound, NoteLabelSupplier labelSupplier, AbstractGridInstrumentScreen instrumentScreen) {
-        super(row, column, sound, labelSupplier, instrumentScreen);
+            NoteSound[] sound, NoteLabelSupplier labelSupplier, AbstractGridInstrumentScreen instrumentScreen) {
+        super(row, column, instrumentScreen);
     }
 
     

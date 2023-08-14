@@ -3,7 +3,6 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.vintagelyre;
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.NoteGrid;
 import com.cstav.genshinstrument.sound.ModSounds;
 import com.cstav.genshinstrument.sound.NoteSound;
 
@@ -34,7 +33,7 @@ public class VintageLyreScreen extends AbstractGridInstrumentScreen {
 
 
     @Override
-    public NoteSound[] getSounds() {
+    public NoteSound[] getInitSounds() {
         return ModSounds.VINTAGE_LYRE_NOTE_SOUNDS;
     }
 
@@ -44,8 +43,11 @@ public class VintageLyreScreen extends AbstractGridInstrumentScreen {
     }
 
     @Override
-    public NoteGrid initNoteGrid() {
-        return new VintageNoteGrid(getSounds(), this);
+    public VintageNoteButton createNote(int row, int column) {
+        return new VintageNoteButton(row, column, 
+            getInitSounds(), getInitLabelSupplier(),
+            this
+        );
     }
     
     

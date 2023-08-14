@@ -3,7 +3,6 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButtonRenderer;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.LabelUtil;
@@ -16,20 +15,46 @@ public class NoteGridButton extends NoteButton {
 
     public final int row, column;
 
-    public NoteGridButton(int row, int column, NoteSound sound, NoteLabelSupplier labelSupplier,
-            AbstractGridInstrumentScreen instrumentScreen) {
-        super(sound, labelSupplier, instrumentScreen);
+    public NoteGridButton(int row, int column, AbstractGridInstrumentScreen instrumentScreen) {
+        super(
+            getSoundFromArr(instrumentScreen.getInitSounds(), row, column, instrumentScreen.rows()),
+            instrumentScreen.getInitLabelSupplier(), instrumentScreen
+        );
         
         this.row = row;
         this.column = column;
     }
-    public NoteGridButton(int row, int column, NoteSound sound, NoteLabelSupplier labelSupplier,
-            AbstractGridInstrumentScreen instrumentScreen, int pitch) {
-        super(sound, labelSupplier, instrumentScreen, pitch);
+    /**
+     * Creates a button for an SSTI-type instrument
+     */
+    public NoteGridButton(int row, int column, NoteSound sound, AbstractGridInstrumentScreen instrumentScreen,
+            int pitch) {
+        super(sound, instrumentScreen.getInitLabelSupplier(), instrumentScreen, pitch);
 
         this.row = row;
         this.column = column;
     }
+
+    /**
+     * Evaulates the sound at the current position, and sets it as this note's sound
+     * @param sounds The sound array to set for this instrument
+     */
+    public void setSoundFromArr(final NoteSound[] sounds) {
+        if (!(instrumentScreen instanceof AbstractGridInstrumentScreen gridInstrument))
+            return;
+
+        setSound(gridInstrument.isSSTI() ? sounds[0]
+            : getSoundFromArr(sounds, row, column, gridInstrument.rows())
+        );
+    }
+    /**
+     * Evaulates the sound at the current position, and sets it as this note's sound
+     * @param sounds The sound array of the instrument
+     */
+    public static NoteSound getSoundFromArr(NoteSound[] sounds, int row, int column, int rows) {
+        return sounds[row + column * rows];
+    }
+
 
     @Override
     public NoteGridButtonIdentifier getIdentifier() {
