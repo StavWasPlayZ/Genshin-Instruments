@@ -17,7 +17,7 @@ public class NoteGridButton extends NoteButton {
 
     public NoteGridButton(int row, int column, AbstractGridInstrumentScreen instrumentScreen) {
         super(
-            getSoundFromArr(instrumentScreen.getInitSounds(), row, column, instrumentScreen.rows()),
+            getSoundFromArr(instrumentScreen, instrumentScreen.getInitSounds(), row, column),
             instrumentScreen.getInitLabelSupplier(), instrumentScreen
         );
         
@@ -35,24 +35,23 @@ public class NoteGridButton extends NoteButton {
         this.column = column;
     }
 
-    /**
-     * Evaulates the sound at the current position, and sets it as this note's sound
-     * @param sounds The sound array to set for this instrument
-     */
-    public void setSoundFromArr(final NoteSound[] sounds) {
+    public void updateSoundArr() {
         if (!(instrumentScreen instanceof AbstractGridInstrumentScreen gridInstrument))
             return;
 
+        final NoteGrid grid = gridInstrument.noteGrid;
+        final NoteSound[] sounds = grid.getNoteSounds();
+
         setSound(gridInstrument.isSSTI() ? sounds[0]
-            : getSoundFromArr(sounds, row, column, gridInstrument.rows())
+            : getSoundFromArr(gridInstrument, sounds, row, column)
         );
     }
     /**
      * Evaulates the sound at the current position, and sets it as this note's sound
      * @param sounds The sound array of the instrument
      */
-    public static NoteSound getSoundFromArr(NoteSound[] sounds, int row, int column, int rows) {
-        return sounds[row + column * rows];
+    public static NoteSound getSoundFromArr(AbstractGridInstrumentScreen gridInstrument, NoteSound[] sounds, int row, int column) {
+        return sounds[row + NoteGrid.getFlippedColumn(column, gridInstrument.columns()) * gridInstrument.rows()];
     }
 
 

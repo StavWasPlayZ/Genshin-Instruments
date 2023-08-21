@@ -125,19 +125,6 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
         return ModClientConfigs.GRID_LABEL_TYPE.get().getLabelSupplier();
     }
 
-    // /**
-    //  * Evaulates the sound at the given indexes, and returns it
-    //  * @param row The row of the note
-    //  * @param column The column of the note
-    //  */
-    // public NoteSound getSoundAt(final int row, final int column) {
-    //     final NoteSound[] sounds = noteGrid.getNoteSounds();
-    //     return NoteGridButton.getSoundFromArr(
-    //         (sounds == null) ? getInitSounds() : sounds,
-    //         row, column, rows()
-    //     );
-    // }
-
     
     // Abstract implementations
     /**
@@ -146,8 +133,8 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
      */
     public NoteGrid initNoteGrid() {
         return isSSTI()
-            ? new NoteGrid(getInitSounds(), this, NoteSound.MIN_PITCH)
-            : new NoteGrid(getInitSounds(), this);
+            ? new NoteGrid(this, NoteSound.MIN_PITCH)
+            : new NoteGrid(this);
     }
 
 

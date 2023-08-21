@@ -20,7 +20,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * All fields are described in there.
  */
 @OnlyIn(Dist.CLIENT)
-public class NoteGrid implements Iterable<NoteButton> {
+public class NoteGrid implements Iterable<NoteGridButton> {
 
     public static int getPaddingHorz() {
         return 9;
@@ -36,13 +36,13 @@ public class NoteGrid implements Iterable<NoteButton> {
 
     public final int rows, columns;
 
-    public NoteGrid(NoteSound[] noteSounds, AbstractGridInstrumentScreen instrumentScreen, SSTIPitchProvider pitchProvider) {
-
+    public NoteGrid(AbstractGridInstrumentScreen instrumentScreen, SSTIPitchProvider pitchProvider) {
         this.instrumentScreen = instrumentScreen;
+        
         rows = instrumentScreen.rows();
         columns = instrumentScreen.columns();
-
-        this.noteSounds = noteSounds;
+        
+        noteSounds = instrumentScreen.getInitSounds();
 
 
         // Construct the note grid
@@ -61,16 +61,17 @@ public class NoteGrid implements Iterable<NoteButton> {
             notes[getFlippedColumn(i)] = buttonRow;
         }
     }
-    public NoteGrid(NoteSound[] noteSounds, AbstractGridInstrumentScreen instrumentScreen) {
-        this(noteSounds, instrumentScreen, null);
+    public NoteGrid(AbstractGridInstrumentScreen instrumentScreen) {
+        this(instrumentScreen, null);
     }
+
     /**
      * Constructs a linearly increasing pitch note grid for an SSTI-type instrument.
      * @param begginingNote The note to start the linear pitch increment.
      * @param noteSkip The amount of pitch to skip over every note in the linear pitch increment.
      */
-    public NoteGrid(NoteSound[] noteSounds, AbstractGridInstrumentScreen instrumentScreen, int begginingNote, int noteSkip) {
-        this(noteSounds, instrumentScreen, (row, column) -> begginingNote +
+    public NoteGrid(AbstractGridInstrumentScreen instrumentScreen, int begginingNote, int noteSkip) {
+        this(instrumentScreen, (row, column) -> begginingNote +
                 (noteSkip * (row + column * instrumentScreen.rows()))
         );
     }
@@ -78,8 +79,8 @@ public class NoteGrid implements Iterable<NoteButton> {
      * Constructs a linearly increasing pitch note grid for an SSTI-type instrument. The increement is set to 1.
      * @param begginingNote The note to start the linear pitch increment.
      */
-    public NoteGrid(NoteSound[] noteSounds, AbstractGridInstrumentScreen instrumentScreen, int begginingNote) {
-        this(noteSounds, instrumentScreen, begginingNote, 1);
+    public NoteGrid(AbstractGridInstrumentScreen instrumentScreen, int begginingNote) {
+        this(instrumentScreen, begginingNote, 1);
     }
 
     public NoteSound[] getNoteSounds() {
@@ -87,10 +88,7 @@ public class NoteGrid implements Iterable<NoteButton> {
     }
     public void setNoteSounds(final NoteSound[] noteSounds) {
         this.noteSounds = noteSounds;
-
-        for (int i = 0; i < columns; i++)
-            for (int j = 0; j < rows; j++)
-                notes[i][j].setSoundFromArr(noteSounds);
+        forEach(NoteGridButton::updateSoundArr);
     }
 
 
@@ -99,7 +97,7 @@ public class NoteGrid implements Iterable<NoteButton> {
 
         for (int i = 0; i < columns; i++)
             for (int j = 0; j < rows; j++)
-                result.put(keyMap[i][j], notes[i][j]);
+                result.put(keyMap[i][j], notes[getFlippedColumn(i)][j]);
                 
         return result;
     }
@@ -132,7 +130,7 @@ public class NoteGrid implements Iterable<NoteButton> {
 
 
     public NoteButton getNoteButton(final int row, final int column) throws IndexOutOfBoundsException {
-        return notes[column][row];
+        return notes[getFlippedColumn(column)][row];
     }
 
     /**
@@ -140,6 +138,13 @@ public class NoteGrid implements Iterable<NoteButton> {
      * @return The flipped column of {@code column}
      */
     public int getFlippedColumn(final int column) {
+        return getFlippedColumn(column, columns);
+    }
+    /**
+     * Maps an array column to a note grid column by flipping it
+     * @return The flipped column of {@code column}
+     */
+    public static int getFlippedColumn(final int column, final int columns) {
         return columns - 1 - column;
     }
 
@@ -150,9 +155,9 @@ public class NoteGrid implements Iterable<NoteButton> {
     }
 
     @Override
-    public Iterator<NoteButton> iterator() {
+    public Iterator<NoteGridButton> iterator() {
         // This is a basic 2x2 matrix iterator
-        return new Iterator<NoteButton>() {
+        return new Iterator<NoteGridButton>() {
 
             private int i, j;
 
@@ -162,8 +167,8 @@ public class NoteGrid implements Iterable<NoteButton> {
             }
 
             @Override
-            public NoteButton next() {
-                final NoteButton btn = notes[i][j];
+            public NoteGridButton next() {
+                final NoteGridButton btn = notes[getFlippedColumn(i)][j];
 
                 if (j >= (rows - 1)) {
                     j = 0;
