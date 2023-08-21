@@ -25,13 +25,12 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 /**
- * <p>Responsible for loading and processing the instrument style JSON object
- * (commonly used as {@code instrument_style.json}).</p>
- * It contains:
- * <ul>
- * <li><b>note_theme</b> - An array representing RGB values. Used for the Note Grid's text.</li>
- * <li><b>note_pressed_theme</b> - An array representing RGB values. Used for the Note Grid's text when pressed.</li>
- * </ul>
+ * <p>
+ * Responsible for loading and processing the instrument style JSON object
+ * (commonly used as {@code instrument_style.json}).
+ * See {@link InstrumentThemeLoader#loadColorTheme(JsonObject) implementations} to learn more about built-in properties.
+ * </p>
+ * 
  * This class must be initialized during mod setup.
  */
 @OnlyIn(Dist.CLIENT)
