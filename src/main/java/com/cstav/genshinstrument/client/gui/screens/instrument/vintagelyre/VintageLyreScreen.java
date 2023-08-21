@@ -44,10 +44,7 @@ public class VintageLyreScreen extends AbstractGridInstrumentScreen {
 
     @Override
     public VintageNoteButton createNote(int row, int column) {
-        return new VintageNoteButton(row, column, 
-            getInitSounds(), getInitLabelSupplier(),
-            this
-        );
+        return new VintageNoteButton(row, column, this);
     }
     
     

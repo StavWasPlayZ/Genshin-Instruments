@@ -79,7 +79,6 @@ public class NoteGridButton extends NoteButton {
 
     @Override
     public int getNoteOffset() {
-        final AbstractGridInstrumentScreen gridInstrument = (AbstractGridInstrumentScreen)instrumentScreen;
-        return row + gridInstrument.noteGrid.getFlippedColumn(column) * gridInstrument.rows();
+        return row + column * ((AbstractGridInstrumentScreen)instrumentScreen).rows();
     }
 }
