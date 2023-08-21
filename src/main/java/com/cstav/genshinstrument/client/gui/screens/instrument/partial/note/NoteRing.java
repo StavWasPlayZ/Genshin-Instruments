@@ -2,14 +2,12 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note;
 
 import java.awt.Point;
 
-import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.ClientUtil;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.animation.RingAnimationController;
 
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -47,7 +45,7 @@ public class NoteRing {
         ClientUtil.setShaderColor(themeLoader.getNoteRingTheme(), alpha);
 
         gui.blit(
-            new ResourceLocation(GInstrumentMod.MODID, AbstractInstrumentScreen.getGlobalRootPath() + RING_GLOB_FILENAME),
+            AbstractInstrumentScreen.getInternalResourceFromGlob(RING_GLOB_FILENAME),
             ringCenter.x, ringCenter.y,
             0, 0,
             size, size,

@@ -190,6 +190,7 @@ public class NoteButtonRenderer {
 
 
     /**
+     * Obtains a resource from this instrument's directory.
      * @param path The resource to obtain from this note's directory
      * @see {@link AbstractInstrumentScreen#getResourceFrom(ResourceLocation, String)}
      */

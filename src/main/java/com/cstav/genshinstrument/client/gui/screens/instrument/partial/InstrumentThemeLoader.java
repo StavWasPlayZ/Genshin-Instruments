@@ -39,6 +39,17 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class InstrumentThemeLoader {
     private static final Logger LOGGER = LogUtils.getLogger();
 
+    public static final ResourceLocation
+        INSTRUMENTS_META_LOC = AbstractInstrumentScreen.getInternalResourceFromGlob("instruments.meta.json"),
+        GLOBAL_LOC = AbstractInstrumentScreen.getInternalResourceFromGlob("global/")
+    ;
+
+    private static boolean isGlobalThemed;
+    public static boolean isGlobalThemed() {
+        return isGlobalThemed;
+    }
+        
+
     private static final HashMap<ResourceLocation, JsonObject> CACHES = new HashMap<>();
 
 
@@ -114,8 +125,18 @@ public class InstrumentThemeLoader {
 
             @Override
             public void onResourceManagerReload(ResourceManager resourceManager) {
+                // Handle global resource packs
+                isGlobalThemed = false;
+
+                try {
+                    isGlobalThemed = JsonParser.parseReader(resourceManager.getResource(INSTRUMENTS_META_LOC).get().openAsReader())
+                        .getAsJsonObject().get("is_global_pack").getAsBoolean();
+                } catch (Exception e) {}
+
+
                 for (final InstrumentThemeLoader instrumentLoader : LOADERS) {
-                    final ResourceLocation styleLocation = instrumentLoader.getInstrumentStyleLocation();
+                    final ResourceLocation styleLocation = isGlobalThemed
+                        ? GLOBAL_LOC.withSuffix("instrument_style.json") : instrumentLoader.getInstrumentStyleLocation();
                     
                     try {
                         JsonObject styleInfo;

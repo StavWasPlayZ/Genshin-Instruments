@@ -22,7 +22,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 @OnlyIn(Dist.CLIENT)
 //NOTE: There just to make it load on mod setup
 @EventBusSubscriber(Dist.CLIENT)
-// ikik im funny, long name, thank you
 public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen {
     public static final String INSTRUMENT_ID = "glorious_drum";
     public static final String[] NOTE_LAYOUT = {"D", "G"};
@@ -37,7 +36,7 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
 
     @Override
     public ResourceLocation getNoteSymbolsLocation() {
-        return getResourceFromRoot("note/notes.png");
+        return getResourceFromRoot("note/notes.png", false);
     }
 
     

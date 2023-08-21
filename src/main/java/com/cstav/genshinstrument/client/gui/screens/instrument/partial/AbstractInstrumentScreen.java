@@ -175,12 +175,25 @@ public abstract class AbstractInstrumentScreen extends Screen {
     
     /**
      * @param path The desired path to obtain from the root directory
+     * @param considerGlobal If {@link InstrumentThemeLoader#isGlobalThemed() a global resource pack is enabled}, take the resource from there
+     * @return The resource contained in this instrument's root directory
+     * @see {@link AbstractInstrumentScreen#getInstrumentResourcesLocation()}
+     * @see {@link AbstractInstrumentScreen#getResourceFrom(ResourceLocation, String)}
+     */
+    public ResourceLocation getResourceFromRoot(final String path, final boolean considerGlobal) {
+        return (considerGlobal && InstrumentThemeLoader.isGlobalThemed())
+            ? InstrumentThemeLoader.GLOBAL_LOC.withSuffix(path)
+            : getSourcePath().withPath(getPath() + path);
+    }
+    /**
+     * Gets The desired path to obtain from either the root or global directory.
+     * The global directory will be used if {@link InstrumentThemeLoader#isGlobalThemed()} is true.
      * @return The resource contained in this instrument's root directory
      * @see {@link AbstractInstrumentScreen#getInstrumentResourcesLocation()}
      * @see {@link AbstractInstrumentScreen#getResourceFrom(ResourceLocation, String)}
      */
     public ResourceLocation getResourceFromRoot(final String path) {
-        return getSourcePath().withPath(getPath() + path);
+        return getResourceFromRoot(path, true);
     }
 
 
