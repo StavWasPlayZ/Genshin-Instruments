@@ -49,16 +49,22 @@ public class NoteGrid implements Iterable<NoteGridButton> {
         notes = new NoteGridButton[columns][rows];
         for (int i = 0; i < columns; i++) {
             final NoteGridButton[] buttonRow = new NoteGridButton[rows];
+            // Columns should start from the bottom/lowest pitch, unlike how an array axis' structure is sorted.
+            // Hence, we flip the Y index:
+            final int column = getFlippedColumn(i);
 
             for (int j = 0; j < rows; j++)
                 if (instrumentScreen.isSSTI()) {
-                    buttonRow[j] = instrumentScreen.createNote(j, i, pitchProvider.get(j, i));
+                    buttonRow[j] = instrumentScreen.createNote(j, column,
+                        // Provide the flipped column to the provider
+                        // because the lowest pitch should be at the bottom and not vice-versa
+                        pitchProvider.get(j, i)
+                    );
                 } else
-                    buttonRow[j] = instrumentScreen.createNote(j, i);
+                    buttonRow[j] = instrumentScreen.createNote(j, column);
 
-            // Columns should start from the bottom/lowest pitch, unlike how an array axis' structure is sorted.
-            // Hence, we flip the Y index:
-            notes[getFlippedColumn(i)] = buttonRow;
+            
+            notes[i] = buttonRow;
         }
     }
     public NoteGrid(AbstractGridInstrumentScreen instrumentScreen) {
