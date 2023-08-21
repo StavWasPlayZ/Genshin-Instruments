@@ -61,7 +61,7 @@ public class NoteButtonRenderer {
         RenderSystem.enableDepthTest();
 
         rings.removeIf((ring) -> !ring.isPlaying());
-        rings.forEach((ring) -> ring.render(gui));
+        rings.forEach((ring) -> ring.render(gui, themeLoader));
 
 
         renderNoteButton(gui, themeLoader);

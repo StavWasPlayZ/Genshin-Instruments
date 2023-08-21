@@ -46,12 +46,12 @@ public class InstrumentThemeLoader {
     private static final Color DEF_NOTE_PRESSED_THEME = new Color(255, 249, 239);
 
     private final ResourceLocation InstrumentStyleLocation;
-    private Color noteTheme, pressedNoteTheme, labelTheme;
+    private Color noteTheme, pressedNoteTheme, labelTheme, noteRingTheme;
 
-    private ArrayList<Consumer<JsonObject>> listeners = new ArrayList<>();
+    private final ArrayList<Consumer<JsonObject>> listeners = new ArrayList<>();
     
     /**
-     * Initializes a new Instrument Theme Loader and subsribes it to the resource load event.
+     * Initializes a new Instrument Theme Loader and subscribes it to the resource load event.
      * @param instrumentStyleLocation The location of the instrument's JSON styler
      */
     public InstrumentThemeLoader(final ResourceLocation instrumentStyleLocation) {
@@ -70,6 +70,7 @@ public class InstrumentThemeLoader {
         setNoteTheme(getTheme(theme.get("note_theme"), Color.BLACK));
         setLabelTheme(getTheme(theme.get("label_theme"), Color.BLACK));
         setPressedNoteTheme(getTheme(theme.get("note_pressed_theme"), DEF_NOTE_PRESSED_THEME));
+        setNoteRingTheme(getTheme(theme.get("note_ring_theme"), getNoteTheme()));
     }
 
     /**
@@ -179,6 +180,13 @@ public class InstrumentThemeLoader {
     }
     public void setLabelTheme(Color labelTheme) {
         this.labelTheme = labelTheme;
+    }
+
+    public Color getNoteRingTheme() {
+        return noteRingTheme;
+    }
+    public void setNoteRingTheme(Color noteRingTheme) {
+        this.noteRingTheme = noteRingTheme;
     }
 
 }
