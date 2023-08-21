@@ -36,12 +36,7 @@ public class NoteGrid implements Iterable<NoteButton> {
 
     public final int rows, columns;
 
-    /**
-     * @param begginingNote The note to start the linear pitch increment. Only gets used if this is an SSTI instrument.
-     * @param noteSkip The amount of pitch to skip for each note button. Only gets used if this is an SSTI instrument.
-     */
-    public NoteGrid(NoteSound[] noteSounds, AbstractGridInstrumentScreen instrumentScreen,
-            int begginingNote, int noteSkip) {
+    public NoteGrid(NoteSound[] noteSounds, AbstractGridInstrumentScreen instrumentScreen, SSTIPitchProvider pitchProvider) {
 
         this.instrumentScreen = instrumentScreen;
         rows = instrumentScreen.rows();
@@ -52,24 +47,36 @@ public class NoteGrid implements Iterable<NoteButton> {
 
         // Construct the note grid
         notes = new NoteGridButton[columns][rows];
-        for (int i = columns - 1; i >= 0; i--) {
+        for (int i = 0; i < columns; i++) {
             final NoteGridButton[] buttonRow = new NoteGridButton[rows];
 
             for (int j = 0; j < rows; j++)
                 if (instrumentScreen.isSSTI()) {
-                    buttonRow[j] = instrumentScreen.createNote(j, i, begginingNote);
-                    begginingNote += noteSkip;
+                    buttonRow[j] = instrumentScreen.createNote(j, i, pitchProvider.get(j, i));
                 } else
                     buttonRow[j] = instrumentScreen.createNote(j, i);
 
-            notes[i] = buttonRow;
+            // Columns should start from the bottom/lowest pitch, unlike how an array axis' structure is sorted.
+            // Hence, we flip the Y index:
+            notes[getFlippedColumn(i)] = buttonRow;
         }
     }
     public NoteGrid(NoteSound[] noteSounds, AbstractGridInstrumentScreen instrumentScreen) {
-        this(noteSounds, instrumentScreen, 0, 0);
+        this(noteSounds, instrumentScreen, null);
     }
     /**
-     * @param begginingNote The note to start the linear pitch increment. Only gets used if this is an SSTI instrument.
+     * Constructs a linearly increasing pitch note grid for an SSTI-type instrument.
+     * @param begginingNote The note to start the linear pitch increment.
+     * @param noteSkip The amount of pitch to skip over every note in the linear pitch increment.
+     */
+    public NoteGrid(NoteSound[] noteSounds, AbstractGridInstrumentScreen instrumentScreen, int begginingNote, int noteSkip) {
+        this(noteSounds, instrumentScreen, (row, column) -> begginingNote +
+                (noteSkip * (row + column * instrumentScreen.rows()))
+        );
+    }
+    /**
+     * Constructs a linearly increasing pitch note grid for an SSTI-type instrument. The increement is set to 1.
+     * @param begginingNote The note to start the linear pitch increment.
      */
     public NoteGrid(NoteSound[] noteSounds, AbstractGridInstrumentScreen instrumentScreen, int begginingNote) {
         this(noteSounds, instrumentScreen, begginingNote, 1);
@@ -128,7 +135,19 @@ public class NoteGrid implements Iterable<NoteButton> {
         return notes[column][row];
     }
 
+    /**
+     * Maps an array column to a note grid column by flipping it
+     * @return The flipped column of {@code column}
+     */
+    public int getFlippedColumn(final int column) {
+        return columns - 1 - column;
+    }
 
+
+    @FunctionalInterface
+    public static interface SSTIPitchProvider {
+        int get(final int row, final int column);
+    }
 
     @Override
     public Iterator<NoteButton> iterator() {

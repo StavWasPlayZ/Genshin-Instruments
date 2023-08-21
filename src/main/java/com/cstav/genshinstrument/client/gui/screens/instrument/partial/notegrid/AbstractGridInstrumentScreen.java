@@ -109,12 +109,10 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
 
 
     /**
-     * Creates a note for a singular sound type instrument
+     * Creates a note for a singular sound type (SSTI) instrument
      */
     public NoteGridButton createNote(int row, int column, int pitch) {
-        return new NoteGridButton(row, column,
-            getInitSounds()[0], this, pitch
-        );
+        return new NoteGridButton(row, column, this, pitch);
     }
     public NoteGridButton createNote(int row, int column) {
         return new NoteGridButton(row, column, this);

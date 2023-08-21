@@ -21,7 +21,7 @@ public class VintageNoteButton extends NoteGridButton {
     
     private boolean isDefaultFlat() {
         return (row == 6) || (row == 2) ||
-            ((row == 1) && (column == 0)) || ((row == 5) && (column == 0));
+            ((column == 2) && ((row == 1) || (row == 5)));
     }
 
     @Override

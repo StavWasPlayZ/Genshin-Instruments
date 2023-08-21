@@ -27,9 +27,9 @@ public class NoteGridButton extends NoteButton {
     /**
      * Creates a button for an SSTI-type instrument
      */
-    public NoteGridButton(int row, int column, NoteSound sound, AbstractGridInstrumentScreen instrumentScreen,
+    public NoteGridButton(int row, int column, AbstractGridInstrumentScreen instrumentScreen,
             int pitch) {
-        super(sound, instrumentScreen.getInitLabelSupplier(), instrumentScreen, pitch);
+        super(instrumentScreen.getInitSounds()[0], instrumentScreen.getInitLabelSupplier(), instrumentScreen, pitch);
 
         this.row = row;
         this.column = column;
@@ -81,11 +81,6 @@ public class NoteGridButton extends NoteButton {
     @Override
     public int getNoteOffset() {
         final AbstractGridInstrumentScreen gridInstrument = (AbstractGridInstrumentScreen)instrumentScreen;
-        // SSTIs are flipped; flip columns if SSTI
-        final int nColumn = gridInstrument.isSSTI()
-            ? (gridInstrument.columns() - 1 - column)
-            : column;
-
-        return row + nColumn * gridInstrument.rows();
+        return row + gridInstrument.noteGrid.getFlippedColumn(column) * gridInstrument.rows();
     }
 }
