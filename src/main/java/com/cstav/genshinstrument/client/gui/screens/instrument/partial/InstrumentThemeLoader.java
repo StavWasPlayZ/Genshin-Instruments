@@ -130,6 +130,9 @@ public class InstrumentThemeLoader {
                 try {
                     isGlobalThemed = JsonParser.parseReader(resourceManager.getResource(INSTRUMENTS_META_LOC).get().openAsReader())
                         .getAsJsonObject().get("is_global_pack").getAsBoolean();
+
+                    if (isGlobalThemed)
+                        LOGGER.info("Instrument global themes enabled; loading all instrument resources from "+GLOBAL_LOC);
                 } catch (Exception e) {}
 
 
