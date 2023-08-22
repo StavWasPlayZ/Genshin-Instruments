@@ -56,6 +56,8 @@ public class InstrumentThemeLoader {
     private static final Color DEF_NOTE_PRESSED_THEME = new Color(255, 249, 239);
 
     public final ResourceLocation resourcesRootDir, instrumentId;
+    private final boolean ignoreGlobal;
+
     private Color noteTheme, pressedNoteTheme, labelTheme, noteRingTheme;
 
     private final ArrayList<Consumer<JsonObject>> listeners = new ArrayList<>();
@@ -63,13 +65,22 @@ public class InstrumentThemeLoader {
     /**
      * Initializes a new Instrument Theme Loader and subscribes it to the resource load event.
      * @param resourceRootDir The location of the root resources folder to derive styles from
+     * @param ignoreGlobal When a global resource pack is enabled, defines whether this theme loader ignores it
      */
-    public InstrumentThemeLoader(ResourceLocation resourceRootDir, ResourceLocation instrumentId) {
+    public InstrumentThemeLoader(ResourceLocation resourceRootDir, ResourceLocation instrumentId, boolean ignoreGlobal) {
         this.resourcesRootDir = resourceRootDir;
         this.instrumentId = instrumentId;
+        this.ignoreGlobal = ignoreGlobal;
 
         LOADERS.add(this);
         addListener(this::loadColorTheme);
+    }
+    /**
+     * Initializes a new Instrument Theme Loader and subscribes it to the resource load event.
+     * @param resourceRootDir The location of the root resources folder to derive styles from
+     */
+    public InstrumentThemeLoader(ResourceLocation resourceRootDir, ResourceLocation instrumentId) {
+        this(resourceRootDir, instrumentId, false);
     }
     /**
      * Initializes a new Instrument Theme Loader and subscribes it to the resource load event.
@@ -204,7 +215,7 @@ public class InstrumentThemeLoader {
     }
 
     public ResourceLocation getStylerLocation() {
-        return (isGlobalThemed ? GLOBAL_LOC : getResourcesRootDir())
+        return ((!ignoreGlobal && isGlobalThemed) ? GLOBAL_LOC : getResourcesRootDir())
             .withSuffix(JSON_STYLER_NAME);
     }
 
