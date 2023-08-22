@@ -23,7 +23,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 //NOTE: There just to make it load on mod setup
 @EventBusSubscriber(Dist.CLIENT)
 public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen {
-    public static final String INSTRUMENT_ID = "glorious_drum";
+    public static final ResourceLocation INSTRUMENT_ID = new ResourceLocation(GInstrumentMod.MODID, "glorious_drum");
     public static final String[] NOTE_LAYOUT = {"D", "G"};
 
     public AratakisGreatAndGloriousDrumScreen(InteractionHand hand) {
@@ -31,7 +31,7 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
     }
     @Override
     public ResourceLocation getInstrumentId() {
-        return new ResourceLocation(GInstrumentMod.MODID, INSTRUMENT_ID);
+        return INSTRUMENT_ID;
     }
 
     @Override
@@ -109,7 +109,7 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
         return NOTE_LAYOUT;
     }
 
-    private static final InstrumentThemeLoader THEME_LOADER = initThemeLoader(GInstrumentMod.MODID, INSTRUMENT_ID);
+    private static final InstrumentThemeLoader THEME_LOADER = new InstrumentThemeLoader(INSTRUMENT_ID);
     @Override
     public InstrumentThemeLoader getThemeLoader() {
         return THEME_LOADER;

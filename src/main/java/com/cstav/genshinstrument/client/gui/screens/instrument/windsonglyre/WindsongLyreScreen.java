@@ -16,14 +16,14 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 //NOTE: There just to make it load on mod setup
 @EventBusSubscriber(Dist.CLIENT)
 public class WindsongLyreScreen extends AbstractGridInstrumentScreen {
-    public static final String INSTRUMENT_ID = "windsong_lyre";
+    public static final ResourceLocation INSTRUMENT_ID = new ResourceLocation(GInstrumentMod.MODID, "windsong_lyre");
 
     public WindsongLyreScreen(InteractionHand hand) {
         super(hand);
     }
     @Override
     public ResourceLocation getInstrumentId() {
-        return new ResourceLocation(GInstrumentMod.MODID, INSTRUMENT_ID);
+        return INSTRUMENT_ID;
     }
     
 
@@ -33,7 +33,7 @@ public class WindsongLyreScreen extends AbstractGridInstrumentScreen {
     }
 
 
-    private static final InstrumentThemeLoader THEME_LOADER = initThemeLoader(GInstrumentMod.MODID, INSTRUMENT_ID);
+    private static final InstrumentThemeLoader THEME_LOADER = new InstrumentThemeLoader(INSTRUMENT_ID);
     @Override
     public InstrumentThemeLoader getThemeLoader() {
         return THEME_LOADER;

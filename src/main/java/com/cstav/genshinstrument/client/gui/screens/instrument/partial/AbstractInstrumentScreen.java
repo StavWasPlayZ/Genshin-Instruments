@@ -66,21 +66,9 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
 
-    /**
-     * A method to initialize the theme loader of this instrument.
-     * All subclasses must call this method on game loading.
-     */
-    protected static final InstrumentThemeLoader initThemeLoader(String modId, String instrumentId) {
-        return new InstrumentThemeLoader(
-            new ResourceLocation(modId,
-                getGlobalRootPath() + instrumentId + "/" + "instrument_style.json"
-            )
-        );
-    }
     public abstract InstrumentThemeLoader getThemeLoader();
-
-
     public abstract ResourceLocation getInstrumentId();
+    
     protected abstract BaseInstrumentOptionsScreen initInstrumentOptionsScreen();
 
     /**

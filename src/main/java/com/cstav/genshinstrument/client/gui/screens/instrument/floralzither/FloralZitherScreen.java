@@ -17,14 +17,14 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 //NOTE: There just to make it load on mod setup
 @EventBusSubscriber(Dist.CLIENT)
 public class FloralZitherScreen extends AbstractGridInstrumentScreen {
-    public static final String INSTRUMENT_ID = "floral_zither";
+    public static final ResourceLocation INSTRUMENT_ID = new ResourceLocation(GInstrumentMod.MODID, "floral_zither");
     
     public FloralZitherScreen(InteractionHand hand) {
         super(hand);
     }
     @Override
     public ResourceLocation getInstrumentId() {
-        return new ResourceLocation(GInstrumentMod.MODID, INSTRUMENT_ID);
+        return INSTRUMENT_ID;
     }
 
     
@@ -39,7 +39,7 @@ public class FloralZitherScreen extends AbstractGridInstrumentScreen {
     }
 
     
-    private static final InstrumentThemeLoader THEME_LOADER = initThemeLoader(GInstrumentMod.MODID, INSTRUMENT_ID);
+    private static final InstrumentThemeLoader THEME_LOADER = new InstrumentThemeLoader(INSTRUMENT_ID);
     @Override
     public InstrumentThemeLoader getThemeLoader() {
         return THEME_LOADER;

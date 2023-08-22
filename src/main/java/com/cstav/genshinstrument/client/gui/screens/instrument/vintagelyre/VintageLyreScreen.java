@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 //NOTE: There just to make it load on mod setup
 @EventBusSubscriber(Dist.CLIENT)
 public class VintageLyreScreen extends AbstractGridInstrumentScreen {
-    public static final String INSTRUMENT_ID = "vintage_lyre";
+    public static final ResourceLocation INSTRUMENT_ID = new ResourceLocation(GInstrumentMod.MODID, "vintage_lyre");
     public static final String[] NOTE_LAYOUT = {
         "C", "Db", "Eb", "F", "G", "Ab", "Bb",
         "C", "D", "Eb", "F", "G", "A", "Bb",
@@ -28,7 +28,7 @@ public class VintageLyreScreen extends AbstractGridInstrumentScreen {
     }
     @Override
     public ResourceLocation getInstrumentId() {
-        return new ResourceLocation(GInstrumentMod.MODID, INSTRUMENT_ID);
+        return INSTRUMENT_ID;
     }
 
 
@@ -48,7 +48,7 @@ public class VintageLyreScreen extends AbstractGridInstrumentScreen {
     }
     
     
-    private static final InstrumentThemeLoader THEME_LOADER = initThemeLoader(GInstrumentMod.MODID, INSTRUMENT_ID);
+    private static final InstrumentThemeLoader THEME_LOADER = new InstrumentThemeLoader(INSTRUMENT_ID);
     @Override
     public InstrumentThemeLoader getThemeLoader() {
         return THEME_LOADER;
