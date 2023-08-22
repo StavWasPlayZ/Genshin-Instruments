@@ -78,7 +78,10 @@ public abstract class SoundTypeOptionsScreen<T extends SoundType> extends GridIn
         if ((instrumentScreen instanceof AbstractGridInstrumentScreen gridInstrument) && isValidForSet(gridInstrument))
             gridInstrument.noteGrid.setNoteSounds(soundType.getSoundArr().get());
 
-        queueToSave("zither_sound_type", () -> saveSoundType(soundType));
+        queueToSave("zither_sound_type", () -> {
+            perferredSoundType = soundType;
+            saveSoundType(soundType);
+        });
     }
     protected abstract void saveSoundType(final T soundType);
 
