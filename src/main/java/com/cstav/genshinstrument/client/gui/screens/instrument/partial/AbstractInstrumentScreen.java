@@ -170,7 +170,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
      */
     public ResourceLocation getResourceFromRoot(final String path, final boolean considerGlobal) {
         return (considerGlobal && InstrumentThemeLoader.isGlobalThemed())
-            ? InstrumentThemeLoader.GLOBAL_LOC.withSuffix(path)
+            ? InstrumentThemeLoader.GLOBAL_LOC.withSuffix("/"+path)
             : getSourcePath().withPath(getPath() + path);
     }
     /**

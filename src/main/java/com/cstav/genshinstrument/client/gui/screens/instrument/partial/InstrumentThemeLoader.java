@@ -40,7 +40,7 @@ public class InstrumentThemeLoader {
 
     public static final ResourceLocation
         INSTRUMENTS_META_LOC = AbstractInstrumentScreen.getInternalResourceFromGlob("instruments.meta.json"),
-        GLOBAL_LOC = AbstractInstrumentScreen.getInternalResourceFromGlob("global/")
+        GLOBAL_LOC = AbstractInstrumentScreen.getInternalResourceFromGlob("global")
     ;
 
     private static boolean isGlobalThemed;
@@ -88,10 +88,14 @@ public class InstrumentThemeLoader {
      * as well as the location of the root resources directory to derive styles from
      */
     public InstrumentThemeLoader(ResourceLocation instrumentId) {
-        this(
-            instrumentId.withPath(AbstractInstrumentScreen.getGlobalRootPath() + instrumentId.getPath()+"/"),
-            instrumentId
-        );
+        this(getRootPath(instrumentId), instrumentId);
+    }
+
+    public static InstrumentThemeLoader fromOther(ResourceLocation otherInstrumentId, ResourceLocation instrumentId) {
+        return new InstrumentThemeLoader(getRootPath(otherInstrumentId), instrumentId);
+    }
+    private static ResourceLocation getRootPath(final ResourceLocation instrumentId) {
+        return instrumentId.withPath(AbstractInstrumentScreen.getGlobalRootPath() + instrumentId.getPath());
     }
 
 
@@ -216,7 +220,7 @@ public class InstrumentThemeLoader {
 
     public ResourceLocation getStylerLocation() {
         return ((!ignoreGlobal && isGlobalThemed) ? GLOBAL_LOC : getResourcesRootDir())
-            .withSuffix(JSON_STYLER_NAME);
+            .withSuffix("/"+JSON_STYLER_NAME);
     }
 
     
