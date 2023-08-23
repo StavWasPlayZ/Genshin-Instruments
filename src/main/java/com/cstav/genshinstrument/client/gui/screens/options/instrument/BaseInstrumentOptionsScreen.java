@@ -343,10 +343,9 @@ public abstract class BaseInstrumentOptionsScreen extends Screen {
     }
 
 
-    // Make pressing notes possible with keyboard
     @Override
     public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
-        // Only pass when it is a note key
+        // Pass keys to the instrument screen if they are consumed
         if (isOverlay && instrumentScreen.isKeyConsumed(pKeyCode, pScanCode))
             instrumentScreen.keyPressed(pKeyCode, pScanCode, pModifiers);
 
