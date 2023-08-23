@@ -40,10 +40,6 @@ public enum DrumNoteLabel implements INoteLabel {
 	public NoteLabelSupplier getLabelSupplier() {
         return labelSupplier;
 	}
-	@Override
-	public INoteLabel[] getValues() {
-        return DrumNoteLabel.values();
-	}
 
 
 	private static DrumNoteButton dn(final NoteButton btn) {

@@ -38,7 +38,7 @@ public class GridInstrumentOptionsScreen extends BaseInstrumentOptionsScreen {
 
     @Override
     public NoteGridLabel[] getLabels() {
-        return NoteGridLabel.values();
+        return NoteGridLabel.availableVals();
     }
     @Override
     public NoteGridLabel getCurrentLabel() {
