@@ -58,7 +58,6 @@ public class NoteButtonRenderer {
 
     public void render(GuiGraphics gui, int mouseX, int mouseY, float partialTick, InstrumentThemeLoader themeLoader) {
         RenderSystem.enableBlend();
-        RenderSystem.enableDepthTest();
 
         rings.removeIf((ring) -> !ring.isPlaying());
         rings.forEach((ring) -> ring.render(gui, themeLoader));
@@ -135,6 +134,8 @@ public class NoteButtonRenderer {
 
 
     protected void renderAccidentals(final GuiGraphics gui, final InstrumentThemeLoader themeLoader) {
+        RenderSystem.enableBlend();
+        
         switch (noteButton.getNotation()) {
             case NONE: break;
 
