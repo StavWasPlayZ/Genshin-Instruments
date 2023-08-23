@@ -172,7 +172,7 @@ public class NoteButtonRenderer {
 
 
         gui.blit(accidentalsLocation,
-            noteButton.getX() - 9 + offsetX, noteButton.getY() - 6 + offsetY,
+            noteButton.getX() - 9 + offsetX, noteButton.getY() - 5 + offsetY,
             spritePartWidth * index, noteButton.isPlaying() ? (textureHeight + 1)/2 : 0,
             
             spritePartWidth - 1, textureHeight/2,
