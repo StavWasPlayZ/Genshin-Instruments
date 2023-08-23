@@ -18,6 +18,7 @@ public enum ZitherSoundType implements SoundType {
         this.soundArr = soundType;
     }
 
+    @Override
     public Supplier<NoteSound[]> getSoundArr() {
         return soundArr;
     }
