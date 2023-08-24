@@ -12,7 +12,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
-import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -27,7 +26,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
 public class ModClientConfigs {
     public static final ForgeConfigSpec CONFIGS;
 
-    public static final IntValue PITCH;
+    public static final IntValue PITCH, MIDI_DEVICE_INDEX;
     public static final EnumValue<NoteGridLabel> GRID_LABEL_TYPE;
     public static final EnumValue<InstrumentChannelType> CHANNEL_TYPE;
     public static final BooleanValue STOP_MUSIC_ON_PLAY, EMIT_RING_ANIMATION, SHARED_INSTRUMENT,
@@ -36,8 +35,6 @@ public class ModClientConfigs {
 
     public static final EnumValue<ZitherSoundType> ZITHER_SOUND_TYPE;
     public static final EnumValue<DrumNoteLabel> DRUM_LABEL_TYPE;
-
-    public static final ConfigValue<Integer> MIDI_DEVICE_INDEX;
 
 
     static {
@@ -68,7 +65,7 @@ public class ModClientConfigs {
 
 
         MIDI_ENABLED = configBuilder.define("midi_enabled", false);
-        MIDI_DEVICE_INDEX = configBuilder.define("midi_device_index", -1);
+        MIDI_DEVICE_INDEX = configBuilder.defineInRange("midi_device_index", -1, -1, Integer.MAX_VALUE);
 
         EXTEND_OCTAVES = configBuilder.comment(
             "When a note that is higher/lower than the usual octave range is played, will automatically adjust the pitch to match your playings. Can only extend up to 1 octave per side: high and low C."
