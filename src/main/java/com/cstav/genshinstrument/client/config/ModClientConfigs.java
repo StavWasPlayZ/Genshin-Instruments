@@ -70,7 +70,7 @@ public class ModClientConfigs {
         MIDI_ENABLED = configBuilder.define("midi_enabled", false);
         MIDI_DEVICE_INDEX = configBuilder.define("midi_device_index", -1);
 
-        EXTEND_OCTAVES = configBuilder.define("midi_enabled", true);
+        EXTEND_OCTAVES = configBuilder.define("extend_octaves", true);
 
 
         CONFIGS = configBuilder.build();
