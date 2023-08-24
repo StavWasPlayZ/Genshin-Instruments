@@ -245,6 +245,10 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
             return;
 
 
+        // So we don't do tranposition on a sharpened scale
+        resetTransposition();
+
+
         // -48 to make the left-bottom note the base 0
         int note = stuff[1] - 48;
         
@@ -256,9 +260,6 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
         
         final int layoutNote = note % 12;
 
-        
-        // So we don't do tranposition on a sharpened scale
-        resetTransposition();
 
         //NOTE: Math.abs(getPitch()) was here instead, but transposition seems fair enough
         final int pitch = 0;
