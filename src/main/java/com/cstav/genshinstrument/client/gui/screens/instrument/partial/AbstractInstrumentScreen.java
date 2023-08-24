@@ -13,6 +13,7 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.Note
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.BaseInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.client.midi.MidiController;
+import com.cstav.genshinstrument.event.MidiEvent;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.packet.instrument.CloseInstrumentPacket;
@@ -225,6 +226,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
         return button;
     }
 
+
     protected void loadMidiDevices() {
         final int infoIndex = ModClientConfigs.MIDI_DEVICE_INDEX.get();
 
@@ -233,6 +235,8 @@ public abstract class AbstractInstrumentScreen extends Screen {
             MidiController.openForListen();
         }
     }
+
+    public void onMidi(final MidiEvent event) {}
 
 
     @Override
@@ -269,13 +273,11 @@ public abstract class AbstractInstrumentScreen extends Screen {
             return false;
 
         if (checkTranposeUpKey(pKeyCode, pScanCode)) {
-            setPitch(getPitch() + 1);
-            pitchChanged = true;
+            transposeUp();
             return true;
         }
         else if (checkTranposeDownKey(pKeyCode, pScanCode)) {
-            setPitch(getPitch() - 1);
-            pitchChanged = true;
+            transposeDown();
             return true;
         }
 
@@ -286,12 +288,26 @@ public abstract class AbstractInstrumentScreen extends Screen {
             return false;
 
         if (checkTranposeUpKey(pKeyCode, pScanCode) || checkTranposeDownKey(pKeyCode, pScanCode)) {
-            resetPitch();
-            pitchChanged = false;
+            resetTransposition();
             return true;
         }
 
         return false;
+    }
+
+
+    public void transposeUp() {
+        setPitch(getPitch() + 1);
+        pitchChanged = true;
+    }
+    public void transposeDown() {
+        setPitch(getPitch() - 1);
+        pitchChanged = true;
+    }
+
+    public void resetTransposition() {
+        resetPitch();
+        pitchChanged = false;
     }
 
     /**

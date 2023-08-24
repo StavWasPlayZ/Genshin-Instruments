@@ -67,7 +67,7 @@ public class ModClientConfigs {
         DRUM_LABEL_TYPE = configBuilder.defineEnum("drum_label_type", DrumNoteLabel.KEYBOARD_LAYOUT);
 
 
-        MIDI_ENABLED = configBuilder.define("midi_enabled", true);
+        MIDI_ENABLED = configBuilder.define("midi_enabled", false);
         MIDI_DEVICE_INDEX = configBuilder.define("midi_device_index", -1);
 
 

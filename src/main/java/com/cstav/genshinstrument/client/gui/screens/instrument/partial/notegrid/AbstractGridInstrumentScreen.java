@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 
-import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
@@ -24,12 +23,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(bus = Bus.FORGE, modid = GInstrumentMod.MODID, value = Dist.CLIENT)
 public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScreen {
     public static final String[] NOTE_LAYOUT = {"C", "D", "E", "F", "G", "A", "B"};
 
@@ -231,13 +226,68 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
 
     /* ---------------- Handle MIDI --------------- */
     
-    @SubscribeEvent
-    public static void onMidi(final MidiEvent event) {
-        final byte[] stuff = event.message.getMessage();
+    private NoteButton pressedMidiNote = null;
 
-        System.out.println(
-            stuff[0] +" "+ stuff[1] +" "+ stuff[2]
-        );
+    @Override
+    public void onMidi(final MidiEvent event) {
+        // idk how to handle this, nor do i really care tbh
+        if (rows() != 7)
+            return;
+    
+        // Release previously pressed notes    
+        if (pressedMidiNote != null) {
+            pressedMidiNote.locked = false;
+        }
+            
+        final byte[] stuff = event.message.getMessage();
+        // We only care for presses
+        if (stuff[0] != -112)
+            return;
+
+
+        // -48 to make the left-bottom note the base 0
+        final int note = stuff[1] - 48;
+        final int layoutNote = note % 12;
+
+        
+        // So we don't do tranposition on a sharpened scale
+        resetTransposition();
+
+        final int pitch = Math.abs(getPitch()); // insert actual pitch instead of 0
+
+
+        //#region Do not transpose with pitch logic
+
+        // Much testing and maths later
+        // The logic here is that accidentals only occur when the note number is
+        // the same divisable as the pitch itself
+        boolean shouldSharpen = (layoutNote % 2) != (pitch % 2);
+
+        
+        // Negate logic for notes higher than 3 on the scale
+        final boolean higherThan3 = layoutNote > pitch + 4;
+        if (higherThan3)
+            shouldSharpen = !shouldSharpen;
+
+        // Negate logic for notes beyond the 12th note
+        if (layoutNote < pitch)
+            shouldSharpen = !shouldSharpen;
+
+        //#endregion
+
+        if (shouldSharpen)
+            transposeUp();
+
+        
+        final int playedNote = note - (shouldSharpen ? 1 : 0);
+        // TODO this should make the pitch go down by an octave
+        if (note < 0)
+            return;
+
+        //FIXME 12th note should go to the next column
+        final int currNote = ((playedNote + (higherThan3 ? 1 : 0)) / 2);
+        pressedMidiNote = getNoteButton(currNote % rows(), currNote / rows());
+        pressedMidiNote.play();
     }
 
 }
