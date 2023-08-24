@@ -249,11 +249,15 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
         final int note = stuff[1] - 48;
         final int layoutNote = note % 12;
 
+        if (note < 0)
+            return;
+
         
         // So we don't do tranposition on a sharpened scale
         resetTransposition();
 
-        final int pitch = Math.abs(getPitch()); // insert actual pitch instead of 0
+        //NOTE: Math.abs(getPitch()) was here instead, but transposition seems fair enough
+        final int pitch = 0;
 
 
         //#region Do not transpose with pitch logic
@@ -280,13 +284,14 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
 
         
         final int playedNote = note - (shouldSharpen ? 1 : 0);
-        // TODO this should make the pitch go down by an octave
-        if (note < 0)
-            return;
 
         final int currNote = ((playedNote + (higherThan3 ? 1 : 0)) / 2)
             // 12th note should go to the next column
-            + playedNote / 12;
+            + playedNote / (12 + pitch);
+
+        if ((currNote / rows()) > (columns() - 1))
+            return;
+
         pressedMidiNote = getNoteButton(currNote % rows(), currNote / rows());
         pressedMidiNote.play();
     }
