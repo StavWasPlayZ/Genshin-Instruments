@@ -301,9 +301,6 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
             // 12th note should go to the next column
             + playedNote / (12 + pitch);
 
-        // if ((currNote / rows()) > (columns() - 1))
-        //     return;
-
         pressedMidiNote = getNoteButton(currNote % rows(), currNote / rows());
         pressedMidiNote.play();
     }
