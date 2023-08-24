@@ -284,11 +284,18 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
 
         //#endregion
 
-        if (shouldSharpen)
-            transposeUp();
+        // Minecraft pitch limitations will want us to go down instead of up
+        final boolean shouldFlatten = getPitch() == NoteSound.MAX_PITCH;
+
+        if (shouldSharpen) {
+            if (shouldFlatten)
+                transposeDown();
+            else
+                transposeUp();
+        }
 
         
-        final int playedNote = note - (shouldSharpen ? 1 : 0);
+        final int playedNote = note + (shouldSharpen ? (shouldFlatten ? 1 : -1) : 0);
 
         final int currNote = ((playedNote + (higherThan3 ? 1 : 0)) / 2)
             // 12th note should go to the next column
