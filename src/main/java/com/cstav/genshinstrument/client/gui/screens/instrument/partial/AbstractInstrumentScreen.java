@@ -230,6 +230,11 @@ public abstract class AbstractInstrumentScreen extends Screen {
     protected void loadMidiDevices() {
         final int infoIndex = ModClientConfigs.MIDI_DEVICE_INDEX.get();
 
+        if (infoIndex > MidiController.DEVICES.size()) {
+            ModClientConfigs.MIDI_DEVICE_INDEX.set(-1);
+            return;
+        }
+
         if ((infoIndex != -1) && !MidiController.isLoaded(infoIndex)) {
             MidiController.loadDevice(infoIndex);
             MidiController.openForListen();

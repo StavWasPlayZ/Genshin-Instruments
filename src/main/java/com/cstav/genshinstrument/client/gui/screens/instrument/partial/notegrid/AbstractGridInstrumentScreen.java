@@ -231,7 +231,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
     @Override
     public void onMidi(final MidiEvent event) {
         // idk how to handle this, nor do i really care tbh
-        if (rows() != 7)
+        if ((rows() != 7) || isSSTI())
             return;
     
         // Release previously pressed notes    
@@ -246,12 +246,56 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
 
 
         // -48 to make the left-bottom note the base 0
-        final int note = stuff[1] - 48;
+        int note = stuff[1] - 48;
+
+        final int minPitch = NoteSound.MIN_PITCH, maxPitch = NoteSound.MAX_PITCH;
+
+        //#region Beyond 3 octaves
+
+        // Set the pitch
+        if (note < 0) {
+            // Minecraft pitch limitations
+            if (note < minPitch)
+                return;
+
+            if (getPitch() != minPitch) {
+                setPitch(minPitch);
+                ModClientConfigs.PITCH.set(minPitch);
+            }
+        } else if (note >= maxPitch * 3) {
+            if (note >= (maxPitch * 4))
+                return;
+
+            if (getPitch() != maxPitch) {
+                setPitch(maxPitch);
+                ModClientConfigs.PITCH.set(maxPitch);
+            }
+        }
+
+        if (getPitch() == minPitch) {
+            // Check if we are an octave above
+            if (note >= 0) {
+                // Reset if so
+                setPitch(0);
+                ModClientConfigs.PITCH.set(0);
+            }
+            // Shift the note to the lower octave
+            else
+                note -= minPitch;
+        }
+        else if (getPitch() == maxPitch) {
+            if (note < (maxPitch * 3)) {
+                setPitch(0);
+                ModClientConfigs.PITCH.set(0);
+            }
+            else
+                note -= maxPitch;
+        }
+
+        //#endregion
+        
         final int layoutNote = note % 12;
-
-        if (note < 0)
-            return;
-
+        
         
         // So we don't do tranposition on a sharpened scale
         resetTransposition();
@@ -289,8 +333,8 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
             // 12th note should go to the next column
             + playedNote / (12 + pitch);
 
-        if ((currNote / rows()) > (columns() - 1))
-            return;
+        // if ((currNote / rows()) > (columns() - 1))
+        //     return;
 
         pressedMidiNote = getNoteButton(currNote % rows(), currNote / rows());
         pressedMidiNote.play();

@@ -93,7 +93,7 @@ public abstract class MidiController {
 
 
     public static void openForListen() {
-        if (isTransmitting)
+        if (isTransmitting || (currDevice == null))
             return;
             
         try {
