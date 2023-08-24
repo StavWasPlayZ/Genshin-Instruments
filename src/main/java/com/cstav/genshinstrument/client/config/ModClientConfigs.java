@@ -32,7 +32,7 @@ public class ModClientConfigs {
     public static final EnumValue<InstrumentChannelType> CHANNEL_TYPE;
     public static final BooleanValue STOP_MUSIC_ON_PLAY, EMIT_RING_ANIMATION, SHARED_INSTRUMENT,
         RENDER_BACKGROUND, ACCEPTED_GENSHIN_CONSENT, ACCURATE_NOTES,
-        MIDI_ENABLED;
+        MIDI_ENABLED, EXTEND_OCTAVES;
 
     public static final EnumValue<ZitherSoundType> ZITHER_SOUND_TYPE;
     public static final EnumValue<DrumNoteLabel> DRUM_LABEL_TYPE;
@@ -69,6 +69,8 @@ public class ModClientConfigs {
 
         MIDI_ENABLED = configBuilder.define("midi_enabled", false);
         MIDI_DEVICE_INDEX = configBuilder.define("midi_device_index", -1);
+
+        EXTEND_OCTAVES = configBuilder.define("midi_enabled", true);
 
 
         CONFIGS = configBuilder.build();

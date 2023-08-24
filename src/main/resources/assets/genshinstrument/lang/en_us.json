@@ -48,6 +48,9 @@
     "button.genshinstrument.midiEnabled": "MIDI Enabled",
     "button.genshinstrument.midiDevice": "MIDI Device",
 
+    "button.genshinstrument.extendOctaves": "Extend Octaves",
+    "button.genshinstrument.extendOctaves.tooltip": "When you play a note that is higher/lower than the allowed octaves, will automatically adjust the pitch to match your playings. Can only extend up to 1 octave each side.",
+
     "button.none": "None",
 
 

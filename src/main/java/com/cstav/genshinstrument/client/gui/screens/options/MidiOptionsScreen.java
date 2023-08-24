@@ -10,6 +10,7 @@ import com.cstav.genshinstrument.client.midi.MidiController;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.layouts.GridLayout.RowHelper;
 import net.minecraft.client.gui.screens.Screen;
@@ -60,6 +61,15 @@ public class MidiOptionsScreen extends ModOptionsScreen {
                 Component.translatable("button.genshinstrument.midiEnabled"), this::onMidiEnabledChanged
             );
         rowHelper.addChild(midiEnabled);
+
+        final CycleButton<Boolean> extendOctaves = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
+            .withInitialValue(ModClientConfigs.EXTEND_OCTAVES.get())
+            .withTooltip((value) -> Tooltip.create(Component.translatable("button.genshinstrument.extendOctaves.tooltip")))
+            .create(0, 0,
+                getSmallButtonWidth(), getButtonHeight(),
+                Component.translatable("button.genshinstrument.extendOctaves"), this::onMidiEnabledChanged
+            );
+        rowHelper.addChild(extendOctaves);
 
 
         MidiController.reloadDevices();

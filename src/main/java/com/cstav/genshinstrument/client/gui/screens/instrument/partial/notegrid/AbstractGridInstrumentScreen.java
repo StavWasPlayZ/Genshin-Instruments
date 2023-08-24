@@ -248,8 +248,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
         // -48 to make the left-bottom note the base 0
         int note = stuff[1] - 48;
         
-        //TODO mdd option for beyond 3 ocatves
-        if (true) {
+        if (ModClientConfigs.EXTEND_OCTAVES.get()) {
             note = handleMidiOverflow(note);
             if (note == -1)
                 return;

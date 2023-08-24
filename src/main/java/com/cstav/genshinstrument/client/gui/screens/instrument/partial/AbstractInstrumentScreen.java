@@ -10,6 +10,7 @@ import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvide
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.GenshinConsentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
+import com.cstav.genshinstrument.client.gui.screens.options.ModOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.BaseInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.client.midi.MidiController;
@@ -230,7 +231,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
     protected void loadMidiDevices() {
         final int infoIndex = ModClientConfigs.MIDI_DEVICE_INDEX.get();
 
-        if (infoIndex > MidiController.DEVICES.size()) {
+        if (infoIndex >= MidiController.DEVICES.size()) {
             ModClientConfigs.MIDI_DEVICE_INDEX.set(-1);
             return;
         }
@@ -403,8 +404,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
         if (minecraft.screen instanceof AbstractInstrumentScreen)
             return Optional.of((AbstractInstrumentScreen)minecraft.screen);
 
-        if (minecraft.screen instanceof BaseInstrumentOptionsScreen) {
-            final BaseInstrumentOptionsScreen instrumentOptionsScreen = (BaseInstrumentOptionsScreen)minecraft.screen;
+        if (minecraft.screen instanceof ModOptionsScreen instrumentOptionsScreen) {
             if (instrumentOptionsScreen.isOverlay)
                 return Optional.of(instrumentOptionsScreen.instrumentScreen);
         }
