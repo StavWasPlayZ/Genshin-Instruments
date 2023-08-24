@@ -49,7 +49,7 @@
     "button.genshinstrument.midiDevice": "MIDI Device",
 
     "button.genshinstrument.extendOctaves": "Extend Octaves",
-    "button.genshinstrument.extendOctaves.tooltip": "When you play a note that is higher/lower than the allowed octaves, will automatically adjust the pitch to match your playings. Can only extend up to 1 octave per side: high and low C.\nBlame Minecraft.",
+    "button.genshinstrument.extendOctaves.tooltip": "When you play a note that is higher/lower than the usual octaves, will automatically adjust the pitch to match your playings. Can only extend up to 1 octave per side: high and low C.\nBlame Minecraft.",
 
     "button.none": "None",
 
