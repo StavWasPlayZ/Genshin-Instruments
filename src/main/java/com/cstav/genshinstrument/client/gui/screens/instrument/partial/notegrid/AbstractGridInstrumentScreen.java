@@ -247,55 +247,16 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
 
         // -48 to make the left-bottom note the base 0
         int note = stuff[1] - 48;
-
-        final int minPitch = NoteSound.MIN_PITCH, maxPitch = NoteSound.MAX_PITCH;
-
-        //#region Beyond 3 octaves
-
-        // Set the pitch
-        if (note < 0) {
-            // Minecraft pitch limitations
-            if (note < minPitch)
+        
+        //TODO mdd option for beyond 3 ocatves
+        if (true) {
+            note = handleMidiOverflow(note);
+            if (note == -1)
                 return;
-
-            if (getPitch() != minPitch) {
-                setPitch(minPitch);
-                ModClientConfigs.PITCH.set(minPitch);
-            }
-        } else if (note >= maxPitch * 3) {
-            if (note >= (maxPitch * 4))
-                return;
-
-            if (getPitch() != maxPitch) {
-                setPitch(maxPitch);
-                ModClientConfigs.PITCH.set(maxPitch);
-            }
         }
-
-        if (getPitch() == minPitch) {
-            // Check if we are an octave above
-            if (note >= 0) {
-                // Reset if so
-                setPitch(0);
-                ModClientConfigs.PITCH.set(0);
-            }
-            // Shift the note to the lower octave
-            else
-                note -= minPitch;
-        }
-        else if (getPitch() == maxPitch) {
-            if (note < (maxPitch * 3)) {
-                setPitch(0);
-                ModClientConfigs.PITCH.set(0);
-            }
-            else
-                note -= maxPitch;
-        }
-
-        //#endregion
         
         final int layoutNote = note % 12;
-        
+
         
         // So we don't do tranposition on a sharpened scale
         resetTransposition();
@@ -338,6 +299,58 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
 
         pressedMidiNote = getNoteButton(currNote % rows(), currNote / rows());
         pressedMidiNote.play();
+    }
+
+    /**
+     * Extends the usual limitation of 3 octaves to 5 by adjusting the pitch higher/lower
+     * when necessary
+     * @param note The current note
+     * @return The new note to handle, or -1 if overflows
+     */
+    protected int handleMidiOverflow(int note) {
+        final int minPitch = NoteSound.MIN_PITCH, maxPitch = NoteSound.MAX_PITCH;
+
+        // Set the pitch
+        if (note < 0) {
+            // Minecraft pitch limitations
+            if (note < minPitch)
+                return - 1;
+
+            if (getPitch() != minPitch) {
+                setPitch(minPitch);
+                ModClientConfigs.PITCH.set(minPitch);
+            }
+        } else if (note >= maxPitch * 3) {
+            if (note >= (maxPitch * 4))
+                return - 1;
+
+            if (getPitch() != maxPitch) {
+                setPitch(maxPitch);
+                ModClientConfigs.PITCH.set(maxPitch);
+            }
+        }
+
+        if (getPitch() == minPitch) {
+            // Check if we are an octave above
+            if (note >= 0) {
+                // Reset if so
+                setPitch(0);
+                ModClientConfigs.PITCH.set(0);
+            }
+            // Shift the note to the lower octave
+            else
+                note -= minPitch;
+        }
+        else if (getPitch() == maxPitch) {
+            if (note < (maxPitch * 3)) {
+                setPitch(0);
+                ModClientConfigs.PITCH.set(0);
+            }
+            else
+                note -= maxPitch;
+        }
+
+        return note;
     }
 
 }
