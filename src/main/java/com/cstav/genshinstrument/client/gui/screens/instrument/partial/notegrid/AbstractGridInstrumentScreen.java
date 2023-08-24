@@ -100,7 +100,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
      * Gets a {@link NoteButton} based on the location of the note as described by the given identifier.
      */
     public NoteButton getNoteButton(final NoteGridButtonIdentifier noteIdentifier) throws IndexOutOfBoundsException {
-        return getNoteButton(noteIdentifier.row, noteIdentifier.column);
+        return getNoteButton(noteIdentifier.row, noteGrid.getFlippedColumn(noteIdentifier.column));
     }
 
     public NoteButton getNoteButton(final int row, final int column) throws IndexOutOfBoundsException {

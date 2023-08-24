@@ -136,8 +136,6 @@ public class NoteGrid implements Iterable<NoteGridButton> {
 
 
     public NoteButton getNoteButton(final int row, final int column) throws IndexOutOfBoundsException {
-        // return notes[getFlippedColumn(column)][row];
-        //TODO check shared play screen:
         return notes[column][row];
     }
 
