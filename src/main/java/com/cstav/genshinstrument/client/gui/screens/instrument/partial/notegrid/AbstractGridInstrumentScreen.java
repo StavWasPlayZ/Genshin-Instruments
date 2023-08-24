@@ -284,8 +284,9 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
         if (note < 0)
             return;
 
-        //FIXME 12th note should go to the next column
-        final int currNote = ((playedNote + (higherThan3 ? 1 : 0)) / 2);
+        final int currNote = ((playedNote + (higherThan3 ? 1 : 0)) / 2)
+            // 12th note should go to the next column
+            + playedNote / 12;
         pressedMidiNote = getNoteButton(currNote % rows(), currNote / rows());
         pressedMidiNote.play();
     }
