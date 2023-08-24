@@ -50,6 +50,13 @@ public abstract class MidiController {
         }
     }
 
+    public static boolean reloadIfEmpty() {
+        if (DEVICES.isEmpty())
+            reloadDevices();
+
+        return DEVICES.isEmpty();
+    }
+
     public static List<Integer> getValuesForOption() {
         final List<Integer> result = new ArrayList<>(DEVICES.size() + 1);
         // Include -1 as none
@@ -63,9 +70,7 @@ public abstract class MidiController {
 
 
     public static void loadDevice(final int infoIndex) {
-        if (DEVICES.isEmpty())
-            reloadDevices();
-        else
+        if (!reloadIfEmpty())
             unloadDevice();
 
         info = getInfoFromIndex(infoIndex);
