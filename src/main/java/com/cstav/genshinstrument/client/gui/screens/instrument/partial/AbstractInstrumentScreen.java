@@ -12,6 +12,7 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.GenshinConsentScr
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.BaseInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
+import com.cstav.genshinstrument.client.midi.MidiController;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.packet.instrument.CloseInstrumentPacket;
@@ -197,6 +198,8 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     @Override
     protected void init() {
+        loadMidiDevices();
+
         resetPitch();
         optionsScreen.init(minecraft, width, height);
 
@@ -220,6 +223,15 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
         addRenderableWidget(button);
         return button;
+    }
+
+    protected void loadMidiDevices() {
+        final int infoIndex = ModClientConfigs.MIDI_DEVICE_INDEX.get();
+
+        if ((infoIndex != -1) && !MidiController.isLoaded(infoIndex)) {
+            MidiController.loadDevice(infoIndex);
+            MidiController.openForListen();
+        }
     }
 
 

@@ -16,6 +16,7 @@
 
 
     "button.genshinstrument.instrumentOptions": "Instrument Options",
+    "label.genshinstrument.midiOptions": "MIDI Options",
     "label.genshinstrument.zither_options": "Zither Options",
 
     "genshinstrument.genshin_disclaimer.title": "Disclaimer!",
@@ -43,6 +44,12 @@
     "button.genshinstrument.accurate_notes": "Accurate Notes",
     "button.genshinstrument.accurate_notes.tooltip": "When on, provides a pitch-accurate representation of the note symbols and accidentals used by this instrument's layout",
     
+    
+    "button.genshinstrument.midiEnabled": "MIDI Enabled",
+    "button.genshinstrument.midiDevice": "MIDI Device",
+
+    "button.none": "None",
+
 
 
     "button.genshinstrument.label": "Note Labels Type",

@@ -12,6 +12,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
+import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -30,10 +31,13 @@ public class ModClientConfigs {
     public static final EnumValue<NoteGridLabel> GRID_LABEL_TYPE;
     public static final EnumValue<InstrumentChannelType> CHANNEL_TYPE;
     public static final BooleanValue STOP_MUSIC_ON_PLAY, EMIT_RING_ANIMATION, SHARED_INSTRUMENT,
-        RENDER_BACKGROUND, ACCEPTED_GENSHIN_CONSENT, ACCURATE_NOTES;
+        RENDER_BACKGROUND, ACCEPTED_GENSHIN_CONSENT, ACCURATE_NOTES,
+        MIDI_ENABLED;
 
     public static final EnumValue<ZitherSoundType> ZITHER_SOUND_TYPE;
     public static final EnumValue<DrumNoteLabel> DRUM_LABEL_TYPE;
+
+    public static final ConfigValue<Integer> MIDI_DEVICE_INDEX;
 
 
     static {
@@ -61,6 +65,10 @@ public class ModClientConfigs {
 
         ZITHER_SOUND_TYPE = configBuilder.defineEnum("zither_sound_type", ZitherSoundType.NEW);
         DRUM_LABEL_TYPE = configBuilder.defineEnum("drum_label_type", DrumNoteLabel.KEYBOARD_LAYOUT);
+
+
+        MIDI_ENABLED = configBuilder.define("midi_enabled", true);
+        MIDI_DEVICE_INDEX = configBuilder.define("midi_device_index", -1);
 
 
         CONFIGS = configBuilder.build();

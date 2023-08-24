@@ -2,16 +2,18 @@ package com.cstav.genshinstrument.client.gui.screens.options.instrument;
 
 import java.awt.Color;
 import java.text.DecimalFormat;
-import java.util.HashMap;
 
 import javax.annotation.Nullable;
 
+import com.cstav.genshinstrument.client.ClientUtil;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.options.MidiOptionsScreen;
+import com.cstav.genshinstrument.client.gui.screens.options.ModOptionsScreen;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.LabelUtil;
 
@@ -20,9 +22,10 @@ import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;
-import net.minecraft.client.gui.layouts.FrameLayout;
 import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.layouts.GridLayout.RowHelper;
+import net.minecraft.client.gui.layouts.LinearLayout;
+import net.minecraft.client.gui.layouts.LinearLayout.Orientation;
 import net.minecraft.client.gui.layouts.SpacerElement;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
@@ -33,44 +36,12 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public abstract class BaseInstrumentOptionsScreen extends Screen {
+public abstract class BaseInstrumentOptionsScreen extends ModOptionsScreen {
+    public static final MutableComponent MIDI_OPTIONS = Component.translatable("label.genshinstrument.midiOptions");
 
     private static final String SOUND_CHANNEL_KEY = "button.genshinstrument.audioChannels",
         STOP_MUSIC_KEY = "button.genshinstrument.stop_music_on_play";
 
-    protected final HashMap<String, Runnable> APPLIED_OPTIONS = new HashMap<>();
-    /**
-     * Queues the given option to later be saved.
-     * Most notably, a save occures when the client closes this screen.
-     * @param optionKey A unique identifier of this option. If a duplicate entry
-     * exists, it will be overwritten.
-     * @param saveRunnable The runnable for saving the option
-     */
-    protected void queueToSave(final String optionKey, final Runnable saveRunnable) {
-        if (APPLIED_OPTIONS.containsKey(optionKey))
-            APPLIED_OPTIONS.replace(optionKey, saveRunnable);
-        else
-            APPLIED_OPTIONS.put(optionKey, saveRunnable);
-    }
-
-    
-
-    protected int getHorzPadding() {
-        return 4;
-    }
-    protected int getVertPadding() {
-        return 2;
-    }
-
-    protected int getSmallButtonWidth() {
-        return 190;
-    }
-    protected int getBigButtonWidth() {
-        return (getSmallButtonWidth() + getHorzPadding()) * 2;
-    }
-    protected int getButtonHeight() {
-        return 20;
-    }
 
     public abstract INoteLabel[] getLabels();
     /**
@@ -80,7 +51,6 @@ public abstract class BaseInstrumentOptionsScreen extends Screen {
     
 
     protected final Screen lastScreen;
-    public final boolean isOverlay;
 
     protected final @Nullable INoteLabel[] labels;
     protected @Nullable INoteLabel currLabel;
@@ -92,26 +62,18 @@ public abstract class BaseInstrumentOptionsScreen extends Screen {
     public boolean isPitchSliderEnabled() {
         return true;
     }
-    
 
-    public final @Nullable AbstractInstrumentScreen instrumentScreen;
 
     public BaseInstrumentOptionsScreen(@Nullable AbstractInstrumentScreen screen) {
-        super(Component.translatable("button.genshinstrument.instrumentOptions"));
+        super(Component.translatable("button.genshinstrument.instrumentOptions"), screen);
         
-        this.isOverlay = true;
-        this.instrumentScreen = screen;
         lastScreen = null;
-
         labels = getLabels();
     }
     public BaseInstrumentOptionsScreen(final Screen lastScreen) {
-        super(Component.translatable("button.genshinstrument.instrumentOptions"));
+        super(Component.translatable("button.genshinstrument.instrumentOptions"), null);
         
-        this.isOverlay = false;
-        this.instrumentScreen = null;
         this.lastScreen = lastScreen;
-
         labels = getLabels();
     }
 
@@ -119,29 +81,33 @@ public abstract class BaseInstrumentOptionsScreen extends Screen {
     protected void init() {
         currLabel = getCurrentLabel();
 
-        final GridLayout grid = new GridLayout();
-        grid.defaultCellSetting()
-            .padding(getHorzPadding(), getVertPadding())
-            .alignVertically(.5f)
-            .alignHorizontallyCenter();
-        final RowHelper rowHelper = grid.createRowHelper(2);
+        final GridLayout grid = ClientUtil.createSettingsGrid();
 
-        
-        initOptionsGrid(grid, rowHelper);
+        initOptionsGrid(grid, grid.createRowHelper(2));
         grid.arrangeElements();
 
-        FrameLayout.alignInRectangle(grid, 0, 0, width, height, 0.5f, 0);
-        grid.setY(40);
-        
-        grid.arrangeElements();
+        ClientUtil.alignGrid(grid, width, height);
         grid.visitWidgets(this::addRenderableWidget);
 
 
+        final LinearLayout buttonLayout = new LinearLayout(
+            grid.getX() + 40, ClientUtil.lowerButtonsY(grid.getY(), grid.getHeight(), height),
+            getBigButtonWidth() - 80, getButtonHeight(),
+            Orientation.HORIZONTAL
+        );
+
         final Button doneBtn = Button.builder(CommonComponents.GUI_DONE, (btn) -> onClose())
-            .width(getSmallButtonWidth())
-            .pos((width - getSmallButtonWidth())/2, Math.min(grid.getY() + grid.getHeight() + 50, height - getButtonHeight() - 15))
+            .width(150)
             .build();
-        addRenderableWidget(doneBtn);
+        final Button midiOptions = Button.builder(MIDI_OPTIONS.copy().append("..."), (btn) -> openMidiOptions())
+            .width(150)
+            .build();
+
+        buttonLayout.addChild(midiOptions);
+        buttonLayout.addChild(doneBtn);
+
+        buttonLayout.arrangeElements();
+        buttonLayout.visitWidgets(this::addRenderableWidget);
         
     }
 
@@ -275,13 +241,11 @@ public abstract class BaseInstrumentOptionsScreen extends Screen {
     protected abstract void saveLabel(final INoteLabel newLabel);
 
     protected void onPitchChanged(final AbstractSliderButton slider, final int pitch) {
-        if (isOverlay)
+        if (isOverlay) {
+            // Directly save the pitch if we're on an instrument
+            // Otherwise tranpositions will reset to their previous pitch
             instrumentScreen.setPitch(pitch);
-
-        // Directly save the pitch if it is being modified
-        if (isOverlay && instrumentScreen.isTranposed()) {
             savePitch(pitch);
-            ModClientConfigs.CONFIGS.save();
         } else
             queueToSave("pitch", () -> savePitch(pitch));
     }
@@ -321,6 +285,12 @@ public abstract class BaseInstrumentOptionsScreen extends Screen {
     }
 
 
+    protected void openMidiOptions() {
+        minecraft.popGuiLayer();
+        minecraft.pushGuiLayer(new MidiOptionsScreen(MIDI_OPTIONS, this, instrumentScreen));
+    }
+
+
     @Override
     public void onClose() {
         onSave();
@@ -329,34 +299,11 @@ public abstract class BaseInstrumentOptionsScreen extends Screen {
         if (isOverlay)
             instrumentScreen.onOptionsClose();
     }
-    protected void onSave() {
-        for (final Runnable runnable : APPLIED_OPTIONS.values())
-            runnable.run();
-        
-        ModClientConfigs.CONFIGS.save();
-    }
 
 
     @Override
     public boolean isPauseScreen() {
-        return false;
-    }
-
-
-    @Override
-    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
-        // Pass keys to the instrument screen if they are consumed
-        if (isOverlay && instrumentScreen.isKeyConsumed(pKeyCode, pScanCode))
-            instrumentScreen.keyPressed(pKeyCode, pScanCode, pModifiers);
-
-        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
-    }
-    @Override
-    public boolean keyReleased(int pKeyCode, int pScanCode, int pModifiers) {
-        if (isOverlay && instrumentScreen.isKeyConsumed(pKeyCode, pScanCode))
-            instrumentScreen.keyReleased(pKeyCode, pScanCode, pModifiers);
-
-        return super.keyReleased(pKeyCode, pScanCode, pModifiers);
+        return instrumentScreen == null;
     }
 
 

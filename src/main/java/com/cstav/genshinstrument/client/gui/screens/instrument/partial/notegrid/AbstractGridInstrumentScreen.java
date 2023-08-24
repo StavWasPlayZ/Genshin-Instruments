@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 
+import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
@@ -11,6 +12,7 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.labe
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.BaseInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.GridInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
+import com.cstav.genshinstrument.event.MidiEvent;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
@@ -22,8 +24,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @OnlyIn(Dist.CLIENT)
+@EventBusSubscriber(bus = Bus.FORGE, modid = GInstrumentMod.MODID, value = Dist.CLIENT)
 public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScreen {
     public static final String[] NOTE_LAYOUT = {"C", "D", "E", "F", "G", "A", "B"};
 
@@ -220,6 +226,18 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
      */
     protected int getLayerAddition(final int index) {
         return index * (getNoteSize() + NoteGrid.getPaddingVert()*2);
+    }
+
+
+    /* ---------------- Handle MIDI --------------- */
+    
+    @SubscribeEvent
+    public static void onMidi(final MidiEvent event) {
+        final byte[] stuff = event.message.getMessage();
+
+        System.out.println(
+            stuff[0] +" "+ stuff[1] +" "+ stuff[2]
+        );
     }
 
 }
