@@ -21,6 +21,7 @@ import com.cstav.genshinstrument.networking.packet.instrument.CloseInstrumentPac
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.platform.InputConstants.Type;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -230,14 +231,18 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     protected void loadMidiDevices() {
         final int infoIndex = ModClientConfigs.MIDI_DEVICE_INDEX.get();
+        if (infoIndex == -1)
+            return;
+
 
         MidiController.reloadIfEmpty();
         if (infoIndex > (MidiController.DEVICES.size() - 1)) {
+            LogUtils.getLogger().warn("MIDI device out of range; setting device to none");
             ModClientConfigs.MIDI_DEVICE_INDEX.set(-1);
             return;
         }
 
-        if ((infoIndex != -1) && !MidiController.isLoaded(infoIndex)) {
+        if (!MidiController.isLoaded(infoIndex)) {
             MidiController.loadDevice(infoIndex);
             MidiController.openForListen();
         }
