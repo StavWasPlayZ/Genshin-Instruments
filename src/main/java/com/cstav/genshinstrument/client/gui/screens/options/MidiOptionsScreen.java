@@ -68,7 +68,7 @@ public class MidiOptionsScreen extends ModOptionsScreen {
                 .withTooltip((value) -> Tooltip.create(Component.translatable("button.genshinstrument.extendOctaves.tooltip")))
                 .create(0, 0,
                     getSmallButtonWidth(), getButtonHeight(),
-                    Component.translatable("button.genshinstrument.extendOctaves"), this::onMidiEnabledChanged
+                    Component.translatable("button.genshinstrument.extendOctaves"), this::onExtendOctavesChanged
                 );
             rowHelper.addChild(extendOctaves);
         }
@@ -115,6 +115,10 @@ public class MidiOptionsScreen extends ModOptionsScreen {
     }
     protected void saveMidiDeviceIndex(final int index) {
         ModClientConfigs.MIDI_DEVICE_INDEX.set(index);
+    }
+    
+    protected void onExtendOctavesChanged(final CycleButton<Boolean> button, final boolean value) {
+        ModClientConfigs.EXTEND_OCTAVES.set(value);
     }
 
 
