@@ -518,7 +518,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
      */
     protected int handleMidiOverflow(int note) {
         if (!allowMidiOverflow() || !ModClientConfigs.EXTEND_OCTAVES.get()) {
-            if ((note <= minMidiNote()) || (note >= maxMidiNote()))
+            if ((note < minMidiNote()) || (note >= maxMidiNote()))
                 return -99;
             return note;
         }
