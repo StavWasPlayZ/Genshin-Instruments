@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.cstav.genshinstrument.GInstrumentMod;
+import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
@@ -124,13 +125,13 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
 
     @Override
     protected NoteButton handleMidiPress(int note, int pitch) {
-        final boolean isLeft = note < 12;
+        final boolean isKa = (ddt() == DominentDrumType.KA) || ((ddt() == DominentDrumType.BOTH) && (note >= 12));
 
-        setPitch(note - (isLeft ? 7 : 14));
+        setPitch(note - (isKa ? 19 : 2));
         
         for (final NoteButton noteButton : notesIterable()) {
             final DrumNoteButton dnb = (DrumNoteButton) noteButton;
-            if ((dnb.isRight == !isLeft) && (dnb.btnType == (isLeft ? DrumButtonType.KA : DrumButtonType.DON)))
+            if ((dnb.isRight == !isKa) && (dnb.btnType == (isKa ? DrumButtonType.KA : DrumButtonType.DON)))
                 return dnb;
         }
 
@@ -139,11 +140,18 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
 
     @Override
     protected int minMidiNote() {
-        return -6;
+        return ((ddt() == DominentDrumType.BOTH) || ddt() == DominentDrumType.DON) ? -11 : 6;
     }
     @Override
     protected int maxMidiNote() {
-        return 26;
+        return ((ddt() == DominentDrumType.BOTH) || ddt() == DominentDrumType.KA) ? 31 : 14;
+    }
+
+    /**
+     * Shorthand for {@code ModClientConfigs.DOMINENT_DRUM_TYPE.get()}
+     */
+    private final static DominentDrumType ddt() {
+        return ModClientConfigs.DOMINENT_DRUM_TYPE.get();
     }
 
 }

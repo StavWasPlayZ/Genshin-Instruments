@@ -5,6 +5,7 @@ import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.client.config.enumType.ZitherSoundType;
 import com.cstav.genshinstrument.client.config.enumType.label.DrumNoteLabel;
 import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
+import com.cstav.genshinstrument.client.gui.screens.instrument.drum.DominentDrumType;
 import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraftforge.api.distmarker.Dist;
@@ -35,6 +36,7 @@ public class ModClientConfigs {
 
     public static final EnumValue<ZitherSoundType> ZITHER_SOUND_TYPE;
     public static final EnumValue<DrumNoteLabel> DRUM_LABEL_TYPE;
+    public static final EnumValue<DominentDrumType> DOMINENT_DRUM_TYPE;
 
 
     static {
@@ -70,6 +72,11 @@ public class ModClientConfigs {
         EXTEND_OCTAVES = configBuilder.comment(
             "When a note that is higher/lower than the usual octave range is played, will automatically adjust the pitch to match your playings. Can only extend up to 1 octave per side: high and low C."
         ).define("extend_octaves", true);
+
+
+        DOMINENT_DRUM_TYPE = configBuilder.comment(
+            "Defines the MIDI split behaviour of the Arataki's Great and Glorious Drum"
+        ).defineEnum("dominent_drum_type", DominentDrumType.BOTH);
 
 
         CONFIGS = configBuilder.build();

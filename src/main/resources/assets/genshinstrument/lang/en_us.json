@@ -51,6 +51,15 @@
     "button.genshinstrument.extendOctaves": "Extend Octaves",
     "button.genshinstrument.extendOctaves.tooltip": "When a note that is higher/lower than the usual octave range is played, will automatically adjust the pitch to match your playings. Can only extend up to 1 octave per side: high and low C.\nBlame Minecraft.",
 
+
+    "button.genshinstrument.dominentDrumType": "Dominent Drum Type",
+    "button.genshinstrument.dominentDrumType.both": "Both",
+
+    "button.genshinstrument.dominentDrumType.both.tooltip": "The MIDI keyboard will be split in middle C, such that low C plays Don and high plays Ka",
+    "button.genshinstrument.dominentDrumType.don.tooltip": "The whole keyboard plays Don",
+    "button.genshinstrument.dominentDrumType.ka.tooltip": "The whole keyboard plays Ka",
+
+
     "button.none": "None",
 
 
