@@ -144,7 +144,7 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
     }
     @Override
     protected int maxMidiNote() {
-        return ((ddt() == DominentDrumType.BOTH) || ddt() == DominentDrumType.KA) ? 31 : 14;
+        return ((ddt() == DominentDrumType.BOTH) || ddt() == DominentDrumType.KA) ? 32 : 15;
     }
 
     /**
