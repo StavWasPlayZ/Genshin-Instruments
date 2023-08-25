@@ -38,11 +38,20 @@
     "button.genshinstrument.accurate_notes": "תווים מדוייקים",
     "button.genshinstrument.accurate_notes.tooltip": "כאשר אופציה זו מופעלת, יוצגו התווים ויתקיהם בהתאם לגובה הצליל הנבחר",
     
+    
+    "button.genshinstrument.midiEnabled": "MIDI מופעל",
+    "button.genshinstrument.midiDevice": "מכשיר MIDI",
 
+    "button.genshinstrument.extendOctaves": "הרחב אוקטבות",
+    "button.genshinstrument.extendOctaves.tooltip": "כאשר תו העובר את מגבלת האוקטבות המובנת מתנגן, יעלה/יוריד את גובה הצליל כדיי להתאימו. בגלל איך שמיינקראפט בנוי, יכול להעלות/לרדת עד דו מז'ור.",
+
+    "button.none": "כלום",
+    
 
     
     "button.genshinstrument.instrumentOptions": "אפשרויות כלי נגינה",
     "label.genshinstrument.zither_options": "אפשרויות הציטר",
+    "label.genshinstrument.midiOptions": "אפשרויות MIDI",
 
     
     "button.genshinstrument.label": "תגיות תווים",
