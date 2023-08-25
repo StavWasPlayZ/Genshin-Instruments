@@ -2,6 +2,10 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.drum;
 
 import com.cstav.genshinstrument.client.midi.DrumMidiOptionsScreen;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+@OnlyIn(Dist.CLIENT)
 public enum DominentDrumType {
     DON, KA, BOTH;
 
