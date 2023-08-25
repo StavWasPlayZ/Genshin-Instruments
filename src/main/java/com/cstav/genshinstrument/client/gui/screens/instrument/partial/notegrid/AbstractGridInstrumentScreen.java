@@ -11,7 +11,6 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.labe
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.BaseInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.GridInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
-import com.cstav.genshinstrument.event.MidiEvent;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
@@ -224,137 +223,24 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
     }
 
 
-    /* ---------------- Handle MIDI --------------- */
-    
-    private NoteButton pressedMidiNote = null;
 
     @Override
-    public void onMidi(final MidiEvent event) {
+    public boolean isMidiInstrument() {
         // idk how to handle this, nor do i really care tbh
-        if ((rows() != 7) || isSSTI())
-            return;
+        return (rows() == 7) && !isSSTI();
+    }
     
-        // Release previously pressed notes    
-        if (pressedMidiNote != null) {
-            pressedMidiNote.locked = false;
-        }
-            
-        final byte[] stuff = event.message.getMessage();
-        // We only care for presses
-        if (stuff[0] != -112)
-            return;
-
-
-        // So we don't do tranposition on a sharpened scale
-        resetTransposition();
-
-
-        // -48 to make the left-bottom note the base 0
-        int note = stuff[1] - 48;
+    @Override
+    protected NoteButton handleMidiPress(int note, int pitch, boolean higherThan3,
+            boolean shouldSharpen, boolean shouldFlatten) {
         
-        if (ModClientConfigs.EXTEND_OCTAVES.get()) {
-            note = handleMidiOverflow(note);
-            if (note == -1)
-                return;
-        }
-        
-        final int layoutNote = note % 12;
-
-
-        //NOTE: Math.abs(getPitch()) was here instead, but transposition seems fair enough
-        final int pitch = 0;
-
-
-        //#region Do not transpose with pitch logic
-
-        // Much testing and maths later
-        // The logic here is that accidentals only occur when the note number is
-        // the same divisable as the pitch itself
-        boolean shouldSharpen = (layoutNote % 2) != (pitch % 2);
-
-        
-        // Negate logic for notes higher than 3 on the scale
-        final boolean higherThan3 = layoutNote > pitch + 4;
-        if (higherThan3)
-            shouldSharpen = !shouldSharpen;
-
-        // Negate logic for notes beyond the 12th note
-        if (layoutNote < pitch)
-            shouldSharpen = !shouldSharpen;
-
-        //#endregion
-
-        // Minecraft pitch limitations will want us to go down instead of up
-        final boolean shouldFlatten = getPitch() == NoteSound.MAX_PITCH;
-
-        if (shouldSharpen) {
-            if (shouldFlatten)
-                transposeDown();
-            else
-                transposeUp();
-        }
-
-        
-        final int playedNote = note + (shouldSharpen ? (shouldFlatten ? 1 : -1) : 0);
+        final int playedNote = note + ((shouldSharpen || shouldFlatten) ? 1 : 0);
 
         final int currNote = ((playedNote + (higherThan3 ? 1 : 0)) / 2)
             // 12th note should go to the next column
             + playedNote / (12 + pitch);
 
-        pressedMidiNote = getNoteButton(currNote % rows(), currNote / rows());
-        pressedMidiNote.play();
-    }
-
-    /**
-     * Extends the usual limitation of 3 octaves to 5 by adjusting the pitch higher/lower
-     * when necessary
-     * @param note The current note
-     * @return The new note to handle, or -1 if overflows
-     */
-    protected int handleMidiOverflow(int note) {
-        final int minPitch = NoteSound.MIN_PITCH, maxPitch = NoteSound.MAX_PITCH;
-
-        // Set the pitch
-        if (note < 0) {
-            // Minecraft pitch limitations
-            if (note < minPitch)
-                return - 1;
-
-            if (getPitch() != minPitch) {
-                setPitch(minPitch);
-                ModClientConfigs.PITCH.set(minPitch);
-            }
-        } else if (note >= maxPitch * 3) {
-            if (note >= (maxPitch * 4))
-                return - 1;
-
-            if (getPitch() != maxPitch) {
-                setPitch(maxPitch);
-                ModClientConfigs.PITCH.set(maxPitch);
-            }
-        }
-
-        if (getPitch() == minPitch) {
-            // Check if we are an octave above
-            if (note >= 0) {
-                // Reset if so
-                setPitch(0);
-                ModClientConfigs.PITCH.set(0);
-            }
-            // Shift the note to the lower octave
-            else
-                note -= minPitch;
-        }
-        else if (getPitch() == maxPitch) {
-            if (note < (maxPitch * 3)) {
-                setPitch(0);
-                ModClientConfigs.PITCH.set(0);
-            }
-            else
-                note -= maxPitch;
-        }
-
-        return note;
+        return getNoteButton(currNote % rows(), currNote / rows());
     }
 
 }

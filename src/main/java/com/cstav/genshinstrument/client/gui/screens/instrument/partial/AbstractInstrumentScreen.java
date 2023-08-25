@@ -248,8 +248,6 @@ public abstract class AbstractInstrumentScreen extends Screen {
         }
     }
 
-    public void onMidi(final MidiEvent event) {}
-
 
     @Override
     public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
@@ -422,6 +420,164 @@ public abstract class AbstractInstrumentScreen extends Screen {
     @Override
     public boolean isPauseScreen() {
         return false;
+    }
+
+
+    /* ----------- MIDI implementations ----------- */
+
+    /**
+     * Defines wether this instrument can handle MIDI messages.
+     * Must override {@link AbstractInstrumentScreen#handleMidiPress} to function.
+     */
+    public boolean isMidiInstrument() {
+        return false;
+    }
+
+    private NoteButton pressedMidiNote = null;
+    public void onMidi(final MidiEvent event) {
+        if (!isMidiInstrument())
+            return;
+
+
+        // Release previously pressed notes    
+        if (pressedMidiNote != null)
+            pressedMidiNote.locked = false;
+            
+        final byte[] message = event.message.getMessage();
+        // We only care for presses
+        if (message[0] != -112)
+            return;
+
+
+        // So we don't do tranposition on a sharpened scale
+        resetTransposition();
+
+        final int note = handleMidiOverflow(getLowC(message[1]));
+        if (note == -1)
+            return;
+
+        
+        final int layoutNote = note % 12;
+
+        //NOTE: Math.abs(getPitch()) was here instead, but transposition seems fair enough
+        final int pitch = 0;
+        final boolean higherThan3 = layoutNote > pitch + 4;
+
+
+        // Handle transposition
+        boolean shouldSharpen = shouldSharpen(layoutNote, higherThan3);
+        // Minecraft pitch limitations will want us to go down instead of up
+        final boolean shouldFlatten = !shouldSharpen && (getPitch() == NoteSound.MAX_PITCH);
+
+        if (shouldFlatten)
+            shouldSharpen = false;
+
+
+        if (shouldSharpen)
+            transposeUp();
+        else if (shouldFlatten)
+            transposeDown();
+
+
+        pressedMidiNote = handleMidiPress(note, pitch, higherThan3, shouldSharpen, shouldFlatten);
+        if (pressedMidiNote != null)
+            pressedMidiNote.play();
+    }
+
+    /**
+     * Fires when a MIDI note is being pressed sucessfully
+     * @param note The raw note being pressed by the MIDI device, {@link AbstractInstrumentScreen#getLowC relative to low C} {@code note % 12}
+     * @param pitch The scale played by the MIDI device; the absolute value of current pitch saved in the client configs (Always set to 0 here)
+     * @param higherThan3 Determines whether the played note surpassed the 3rd note in a scale
+     * @param shouldSharpen If the pitch was bumped by 1 due to a black key press
+     * @param shouldFlatten If the pitch was lowered by 1 due to a black key press. Occures only if the pitch is {@link NoteSound#MAX_PITCH high C}.
+     * @return The pressed MIDI note to play
+     */
+    protected NoteButton handleMidiPress(int note, int pitch, boolean higherThan3, boolean shouldSharpen, boolean shouldFlatten) {
+        return null;
+    }
+
+
+    protected boolean shouldSharpen(final int layoutNote, final boolean higherThan3) {
+        // Much testing and maths later
+        // The logic here is that accidentals only occur when the note number is
+        // the same divisable as the pitch itself
+        boolean shouldSharpen = (layoutNote % 2) != (pitch % 2);
+
+        
+        // Negate logic for notes higher than 3 on the scale
+        if (higherThan3)
+            shouldSharpen = !shouldSharpen;
+
+        // Negate logic for notes beyond the 12th note
+        if (layoutNote < pitch)
+            shouldSharpen = !shouldSharpen;
+
+        return shouldSharpen;
+    }
+
+    /**
+     * Extends the usual limitation of octaves by 2 by adjusting the pitch higher/lower
+     * when necessary
+     * @param note The current note
+     * @return The new shited (or not) note to handle, or -1 if overflows
+     */
+    protected int handleMidiOverflow(int note) {
+        if (!ModClientConfigs.EXTEND_OCTAVES.get())
+            return note;
+
+
+        final int minPitch = NoteSound.MIN_PITCH, maxPitch = NoteSound.MAX_PITCH;
+
+        // Set the pitch
+        if (note < 0) {
+            // Minecraft pitch limitations
+            if (note < minPitch)
+                return - 1;
+
+            if (getPitch() != minPitch) {
+                setPitch(minPitch);
+                ModClientConfigs.PITCH.set(minPitch);
+            }
+        } else if (note >= maxPitch * 3) {
+            if (note >= (maxPitch * 4))
+                return - 1;
+
+            if (getPitch() != maxPitch) {
+                setPitch(maxPitch);
+                ModClientConfigs.PITCH.set(maxPitch);
+            }
+        }
+
+        if (getPitch() == minPitch) {
+            // Check if we are an octave above
+            if (note >= 0) {
+                // Reset if so
+                setPitch(0);
+                ModClientConfigs.PITCH.set(0);
+            }
+            // Shift the note to the lower octave
+            else
+                note -= minPitch;
+        }
+        else if (getPitch() == maxPitch) {
+            if (note < (maxPitch * 3)) {
+                setPitch(0);
+                ModClientConfigs.PITCH.set(0);
+            }
+            else
+                note -= maxPitch;
+        }
+
+        return note;
+    }
+
+    /**
+     * @return The MIDI note adjusted by -48.
+     * Assumes middle C is 60 as per MIDI specifications.
+     */
+    protected int getLowC(final int note) {
+        return note - 48;
     }
 
 }
