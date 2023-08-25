@@ -476,7 +476,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
 
-    protected static boolean shouldSharpen(final int layoutNote, final boolean higherThan3, final int pitch) {
+    protected boolean shouldSharpen(final int layoutNote, final boolean higherThan3, final int pitch) {
         // Much testing and maths later
         // The logic here is that accidentals only occur when the note number is
         // the same divisable as the pitch itself
