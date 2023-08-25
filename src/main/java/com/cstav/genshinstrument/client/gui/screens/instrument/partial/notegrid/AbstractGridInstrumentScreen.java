@@ -256,6 +256,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
             + playedNote / (12 + pitch);
 
         return getNoteButton(currNote % rows(), currNote / rows());
+        
     }
 
 }
