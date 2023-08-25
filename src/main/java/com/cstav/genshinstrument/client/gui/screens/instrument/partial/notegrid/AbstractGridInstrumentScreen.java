@@ -226,15 +226,24 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
 
     @Override
     public boolean isMidiInstrument() {
-        // idk how to handle this, nor do i really care tbh
+        // idk how to handle these, nor do i really care tbh
         return (rows() == 7) && !isSSTI();
     }
     
     @Override
-    protected NoteButton handleMidiPress(int note, int pitch, boolean higherThan3,
-            boolean shouldSharpen, boolean shouldFlatten) {
+    protected NoteButton handleMidiPress(int note, int pitch) {
+
+        final int layoutNote = note % 12;
+        final boolean higherThan3 = layoutNote > pitch + 4;
+
+        // Handle transposition
+        final boolean shouldSharpen = shouldSharpen(layoutNote, higherThan3, pitch);
+        final boolean shouldFlatten = shouldFlatten(shouldSharpen);
+
+        transposeMidi(shouldSharpen, shouldFlatten);
+
         
-        final int playedNote = note + ((shouldSharpen || shouldFlatten) ? 1 : 0);
+        final int playedNote = note + (shouldFlatten ? 1 : shouldSharpen ? -1 : 0);
 
         final int currNote = ((playedNote + (higherThan3 ? 1 : 0)) / 2)
             // 12th note should go to the next column

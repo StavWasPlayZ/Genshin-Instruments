@@ -433,6 +433,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
         return false;
     }
 
+
     private NoteButton pressedMidiNote = null;
     public void onMidi(final MidiEvent event) {
         if (!isMidiInstrument())
@@ -449,61 +450,37 @@ public abstract class AbstractInstrumentScreen extends Screen {
             return;
 
 
-        // So we don't do tranposition on a sharpened scale
+        // So we don't do tranpositions on a sharpened scale
         resetTransposition();
 
         final int note = handleMidiOverflow(getLowC(message[1]));
         if (note == -1)
             return;
 
-        
-        final int layoutNote = note % 12;
 
         //NOTE: Math.abs(getPitch()) was here instead, but transposition seems fair enough
         final int pitch = 0;
-        final boolean higherThan3 = layoutNote > pitch + 4;
 
-
-        // Handle transposition
-        boolean shouldSharpen = shouldSharpen(layoutNote, higherThan3);
-        // Minecraft pitch limitations will want us to go down instead of up
-        final boolean shouldFlatten = !shouldSharpen && (getPitch() == NoteSound.MAX_PITCH);
-
-        if (shouldFlatten)
-            shouldSharpen = false;
-
-
-        if (shouldSharpen)
-            transposeUp();
-        else if (shouldFlatten)
-            transposeDown();
-
-
-        pressedMidiNote = handleMidiPress(note, pitch, higherThan3, shouldSharpen, shouldFlatten);
+        pressedMidiNote = handleMidiPress(note, pitch);
         if (pressedMidiNote != null)
             pressedMidiNote.play();
     }
 
     /**
-     * Fires when a MIDI note is being pressed sucessfully
+     * Fires when a MIDI note is being pressed sucessfully, only if this is {@link AbstractInstrumentScreen#isMidiInstrument a midi instrument}.
      * @param note The raw note being pressed by the MIDI device, {@link AbstractInstrumentScreen#getLowC relative to low C} {@code note % 12}
      * @param pitch The scale played by the MIDI device; the absolute value of current pitch saved in the client configs (Always set to 0 here)
-     * @param higherThan3 Determines whether the played note surpassed the 3rd note in a scale
-     * @param shouldSharpen If the pitch was bumped by 1 due to a black key press
-     * @param shouldFlatten If the pitch was lowered by 1 due to a black key press. Occures only if the pitch is {@link NoteSound#MAX_PITCH high C}.
-     * @return The pressed MIDI note to play
      */
-    protected NoteButton handleMidiPress(int note, int pitch, boolean higherThan3, boolean shouldSharpen, boolean shouldFlatten) {
+    protected NoteButton handleMidiPress(int note, int pitch) {
         return null;
     }
 
 
-    protected boolean shouldSharpen(final int layoutNote, final boolean higherThan3) {
+    protected static boolean shouldSharpen(final int layoutNote, final boolean higherThan3, final int pitch) {
         // Much testing and maths later
         // The logic here is that accidentals only occur when the note number is
         // the same divisable as the pitch itself
         boolean shouldSharpen = (layoutNote % 2) != (pitch % 2);
-
         
         // Negate logic for notes higher than 3 on the scale
         if (higherThan3)
@@ -514,6 +491,19 @@ public abstract class AbstractInstrumentScreen extends Screen {
             shouldSharpen = !shouldSharpen;
 
         return shouldSharpen;
+    }
+    /**
+     * Minecraft pitch limitations will want us to go down a pitch instead of up.
+     */
+    protected boolean shouldFlatten(final boolean shouldSharpen) {
+        return shouldSharpen && (getPitch() == NoteSound.MAX_PITCH);
+    }
+    
+    protected void transposeMidi(final boolean shouldSharpen, final boolean shouldFlatten) {
+        if (shouldFlatten)
+            transposeDown();
+        else if (shouldSharpen)
+            transposeUp();
     }
 
     /**

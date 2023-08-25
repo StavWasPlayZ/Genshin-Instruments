@@ -9,6 +9,7 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.Instrumen
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.BaseInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.DrumOptionsScren;
+import com.cstav.genshinstrument.networking.buttonidentifier.DrumNoteIdentifier;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 
 import net.minecraft.client.gui.layouts.LinearLayout;
@@ -115,4 +116,17 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
         return THEME_LOADER;
     }
     
+
+
+    @Override
+    public boolean isMidiInstrument() {
+        return true;
+    }
+
+    @Override
+    protected NoteButton handleMidiPress(int note, int pitch) {
+        final boolean isLeft = note < 6;
+        return getNoteButton(new DrumNoteIdentifier(isLeft ? DrumButtonType.KA : DrumButtonType.DON, !isLeft));
+    }
+
 }
