@@ -470,6 +470,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * Fires when a MIDI note is being pressed sucessfully, only if this is {@link AbstractInstrumentScreen#isMidiInstrument a midi instrument}.
      * @param note The raw note being pressed by the MIDI device, {@link AbstractInstrumentScreen#getLowC relative to low C} {@code note % 12}
      * @param pitch The scale played by the MIDI device; the absolute value of current pitch saved in the client configs (Always set to 0 here)
+     * @return The pressed note button. Null if none.
      */
     protected NoteButton handleMidiPress(int note, int pitch) {
         return null;
