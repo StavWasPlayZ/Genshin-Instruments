@@ -35,7 +35,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public abstract class AbstractInstrumentScreen extends Screen {    
+public abstract class AbstractInstrumentScreen extends Screen {
     @SuppressWarnings("resource")
     public int getNoteSize() {
         return switch (Minecraft.getInstance().options.guiScale().get()) {
@@ -454,7 +454,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
         resetTransposition();
 
         final int note = handleMidiOverflow(getLowC(message[1]));
-        if (note == -1)
+        if (note == -99)
             return;
 
 
@@ -506,32 +506,39 @@ public abstract class AbstractInstrumentScreen extends Screen {
             transposeUp();
     }
 
+
+    public boolean allowMidiOverflow() {
+        return false;
+    }
     /**
      * Extends the usual limitation of octaves by 2 by adjusting the pitch higher/lower
      * when necessary
      * @param note The current note
-     * @return The new shited (or not) note to handle, or -1 if overflows
+     * @return The new shited (or not) note to handle, or -99 if overflows
      */
     protected int handleMidiOverflow(int note) {
-        if (!ModClientConfigs.EXTEND_OCTAVES.get())
+        if (!allowMidiOverflow() || !ModClientConfigs.EXTEND_OCTAVES.get()) {
+            if ((note <= minMidiNote()) || (note > maxMidiNote()))
+                return -99;
             return note;
+        }
 
 
         final int minPitch = NoteSound.MIN_PITCH, maxPitch = NoteSound.MAX_PITCH;
 
         // Set the pitch
-        if (note < 0) {
+        if (note < minMidiNote()) {
             // Minecraft pitch limitations
             if (note < minPitch)
-                return - 1;
+                return -99;
 
             if (getPitch() != minPitch) {
                 setPitch(minPitch);
                 ModClientConfigs.PITCH.set(minPitch);
             }
-        } else if (note >= maxPitch * 3) {
+        } else if (note >= maxMidiNote()) {
             if (note >= (maxPitch * 4))
-                return - 1;
+                return -99;
 
             if (getPitch() != maxPitch) {
                 setPitch(maxPitch);
@@ -541,7 +548,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
         if (getPitch() == minPitch) {
             // Check if we are an octave above
-            if (note >= 0) {
+            if (note >= minMidiNote()) {
                 // Reset if so
                 setPitch(0);
                 ModClientConfigs.PITCH.set(0);
@@ -551,7 +558,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
                 note -= minPitch;
         }
         else if (getPitch() == maxPitch) {
-            if (note < (maxPitch * 3)) {
+            if (note < maxMidiNote()) {
                 setPitch(0);
                 ModClientConfigs.PITCH.set(0);
             }
@@ -561,6 +568,14 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
         return note;
     }
+
+    protected int minMidiNote() {
+        return 0;
+    }
+    protected int maxMidiNote() {
+        return NoteSound.MAX_PITCH * 3;
+    }
+
 
     /**
      * @return The MIDI note adjusted by -48.

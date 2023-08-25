@@ -229,6 +229,12 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
         // idk how to handle these, nor do i really care tbh
         return (rows() == 7) && !isSSTI();
     }
+
+    @Override
+    public boolean allowMidiOverflow() {
+        return true;
+    }
+
     
     @Override
     protected NoteButton handleMidiPress(int note, int pitch) {

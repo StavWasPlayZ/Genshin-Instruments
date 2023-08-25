@@ -96,14 +96,19 @@ public abstract class BaseInstrumentOptionsScreen extends ModOptionsScreen {
             Orientation.HORIZONTAL
         );
 
+        
         final Button doneBtn = Button.builder(CommonComponents.GUI_DONE, (btn) -> onClose())
             .width(150)
             .build();
-        final Button midiOptions = Button.builder(MIDI_OPTIONS.copy().append("..."), (btn) -> openMidiOptions())
-            .width(150)
-            .build();
 
-        buttonLayout.addChild(midiOptions);
+        if (instrumentScreen.isMidiInstrument()) {
+            final Button midiOptions = Button.builder(MIDI_OPTIONS.copy().append("..."), (btn) -> openMidiOptions())
+                .width(150)
+                .build();
+    
+            buttonLayout.addChild(midiOptions);
+        }
+
         buttonLayout.addChild(doneBtn);
 
         buttonLayout.arrangeElements();

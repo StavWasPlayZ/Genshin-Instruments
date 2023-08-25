@@ -62,14 +62,16 @@ public class MidiOptionsScreen extends ModOptionsScreen {
             );
         rowHelper.addChild(midiEnabled);
 
-        final CycleButton<Boolean> extendOctaves = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
-            .withInitialValue(ModClientConfigs.EXTEND_OCTAVES.get())
-            .withTooltip((value) -> Tooltip.create(Component.translatable("button.genshinstrument.extendOctaves.tooltip")))
-            .create(0, 0,
-                getSmallButtonWidth(), getButtonHeight(),
-                Component.translatable("button.genshinstrument.extendOctaves"), this::onMidiEnabledChanged
-            );
-        rowHelper.addChild(extendOctaves);
+        if (instrumentScreen.allowMidiOverflow()) {
+            final CycleButton<Boolean> extendOctaves = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
+                .withInitialValue(ModClientConfigs.EXTEND_OCTAVES.get())
+                .withTooltip((value) -> Tooltip.create(Component.translatable("button.genshinstrument.extendOctaves.tooltip")))
+                .create(0, 0,
+                    getSmallButtonWidth(), getButtonHeight(),
+                    Component.translatable("button.genshinstrument.extendOctaves"), this::onMidiEnabledChanged
+                );
+            rowHelper.addChild(extendOctaves);
+        }
 
 
         MidiController.reloadDevices();

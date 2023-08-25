@@ -19,15 +19,6 @@ public class DrumNoteIdentifier extends DefaultNoteButtonIdentifier {
         isRight = note.isRight;
     }
 
-    /**
-     * Only to be used locally!
-     */
-    public DrumNoteIdentifier(final DrumButtonType noteType, final boolean isRight) {
-        super(null, false);
-        this.noteType = noteType;
-        this.isRight = isRight;
-    }
-
     public DrumNoteIdentifier(FriendlyByteBuf buf) {
         super(buf);
         noteType = buf.readEnum(DrumButtonType.class);
