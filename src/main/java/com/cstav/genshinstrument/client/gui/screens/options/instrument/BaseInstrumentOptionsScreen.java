@@ -90,30 +90,34 @@ public abstract class BaseInstrumentOptionsScreen extends ModOptionsScreen {
         grid.visitWidgets(this::addRenderableWidget);
 
 
-        final LinearLayout buttonLayout = new LinearLayout(
-            grid.getX() + 40, ClientUtil.lowerButtonsY(grid.getY(), grid.getHeight(), height),
-            getBigButtonWidth() - 80, getButtonHeight(),
-            Orientation.HORIZONTAL
-        );
+        final int buttonsY = ClientUtil.lowerButtonsY(grid.getY(), grid.getHeight(), height);
 
-        
         final Button doneBtn = Button.builder(CommonComponents.GUI_DONE, (btn) -> onClose())
             .width(150)
             .build();
 
-        if (instrumentScreen.isMidiInstrument()) {
+        // Add MIDI options button for MIDI instruments
+        if (!isOverlay || instrumentScreen.isMidiInstrument()) {
+            final LinearLayout buttonLayout = new LinearLayout(
+                grid.getX() + 40, buttonsY,
+                getBigButtonWidth() - 80, getButtonHeight(),
+                Orientation.HORIZONTAL
+            );
+
             final Button midiOptions = Button.builder(MIDI_OPTIONS.copy().append("..."), (btn) -> openMidiOptions())
                 .width(150)
                 .build();
     
             buttonLayout.addChild(midiOptions);
+            buttonLayout.addChild(doneBtn);
+
+            buttonLayout.arrangeElements();
+            buttonLayout.visitWidgets(this::addRenderableWidget);
+        } else {
+            doneBtn.setPosition((width - doneBtn.getWidth())/2, buttonsY);
+            addRenderableWidget(doneBtn);
         }
-
-        buttonLayout.addChild(doneBtn);
-
-        buttonLayout.arrangeElements();
-        buttonLayout.visitWidgets(this::addRenderableWidget);
-        
+            
     }
 
     protected void initAudioSection(final GridLayout grid, final RowHelper rowHelper) {

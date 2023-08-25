@@ -62,7 +62,7 @@ public class MidiOptionsScreen extends ModOptionsScreen {
             );
         rowHelper.addChild(midiEnabled);
 
-        if (instrumentScreen.allowMidiOverflow()) {
+        if (!isOverlay || instrumentScreen.allowMidiOverflow()) {
             final CycleButton<Boolean> extendOctaves = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
                 .withInitialValue(ModClientConfigs.EXTEND_OCTAVES.get())
                 .withTooltip((value) -> Tooltip.create(Component.translatable("button.genshinstrument.extendOctaves.tooltip")))

@@ -56,6 +56,7 @@ public class ClientUtil {
         layout.arrangeElements();
         FrameLayout.alignInRectangle(layout, 0, 0, screenWidth, screenHeight, 0.5f, 0);
         layout.setY(40);
+        layout.arrangeElements();
     }
 
     public static int lowerButtonsY(int desiredY, int desiredHeight, int screenHeight) {
