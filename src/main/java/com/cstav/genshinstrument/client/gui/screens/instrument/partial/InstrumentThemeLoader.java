@@ -9,6 +9,7 @@ import java.util.function.Function;
 import org.slf4j.Logger;
 
 import com.cstav.genshinstrument.GInstrumentMod;
+import com.cstav.genshinstrument.util.CommonUtil;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -25,19 +26,29 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 /**
- * <p>Responsible for loading and processing the instrument style JSON object
- * (commonly used as {@code instrument_style.json}).</p>
- * It contains:
- * <ul>
- * <li><b>note_theme</b> - An array representing RGB values. Used for the Note Grid's text.</li>
- * <li><b>note_pressed_theme</b> - An array representing RGB values. Used for the Note Grid's text when pressed.</li>
- * </ul>
+ * <p>
+ * Responsible for loading and processing the instrument style JSON object, used as {@code instrument_style.json}.
+ * See {@link InstrumentThemeLoader#loadColorTheme(JsonObject) implementations} to learn more about built-in properties.
+ * </p>
+ * 
  * This class must be initialized during mod setup.
  */
 @OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(modid = GInstrumentMod.MODID, bus = Bus.MOD, value = Dist.CLIENT)
 public class InstrumentThemeLoader {
     private static final Logger LOGGER = LogUtils.getLogger();
+    public static final String JSON_STYLER_NAME = "instrument_style.json";
+
+    public static final ResourceLocation
+        INSTRUMENTS_META_LOC = AbstractInstrumentScreen.getInternalResourceFromGlob("instruments.meta.json"),
+        GLOBAL_LOC = AbstractInstrumentScreen.getInternalResourceFromGlob("global")
+    ;
+
+    private static boolean isGlobalThemed;
+    public static boolean isGlobalThemed() {
+        return isGlobalThemed;
+    }
+        
 
     private static final HashMap<ResourceLocation, JsonObject> CACHES = new HashMap<>();
 
@@ -45,20 +56,47 @@ public class InstrumentThemeLoader {
     private static final ArrayList<InstrumentThemeLoader> LOADERS = new ArrayList<>();
     private static final Color DEF_NOTE_PRESSED_THEME = new Color(255, 249, 239);
 
-    private final ResourceLocation InstrumentStyleLocation;
-    private Color noteTheme, pressedNoteTheme, labelTheme;
+    public final ResourceLocation resourcesRootDir, instrumentId;
+    private final boolean ignoreGlobal;
 
-    private ArrayList<Consumer<JsonObject>> listeners = new ArrayList<>();
+    private Color noteTheme, pressedNoteTheme, labelTheme, noteRingTheme;
+
+    private final ArrayList<Consumer<JsonObject>> listeners = new ArrayList<>();
     
     /**
-     * Initializes a new Instrument Theme Loader and subsribes it to the resource load event.
-     * @param instrumentStyleLocation The location of the instrument's JSON styler
+     * Initializes a new Instrument Theme Loader and subscribes it to the resource load event.
+     * @param resourceRootDir The location of the root resources folder to derive styles from
+     * @param ignoreGlobal When a global resource pack is enabled, defines whether this theme loader ignores it
      */
-    public InstrumentThemeLoader(final ResourceLocation instrumentStyleLocation) {
-        this.InstrumentStyleLocation = instrumentStyleLocation;
+    public InstrumentThemeLoader(ResourceLocation resourceRootDir, ResourceLocation instrumentId, boolean ignoreGlobal) {
+        this.resourcesRootDir = resourceRootDir;
+        this.instrumentId = instrumentId;
+        this.ignoreGlobal = ignoreGlobal;
 
         LOADERS.add(this);
         addListener(this::loadColorTheme);
+    }
+    /**
+     * Initializes a new Instrument Theme Loader and subscribes it to the resource load event.
+     * @param resourceRootDir The location of the root resources folder to derive styles from
+     */
+    public InstrumentThemeLoader(ResourceLocation resourceRootDir, ResourceLocation instrumentId) {
+        this(resourceRootDir, instrumentId, false);
+    }
+    /**
+     * Initializes a new Instrument Theme Loader and subscribes it to the resource load event.
+     * @param instrumentId The ID of the instrument in question,
+     * as well as the location of the root resources directory to derive styles from
+     */
+    public InstrumentThemeLoader(ResourceLocation instrumentId) {
+        this(getRootPath(instrumentId), instrumentId);
+    }
+
+    public static InstrumentThemeLoader fromOther(ResourceLocation otherInstrumentId, ResourceLocation instrumentId) {
+        return new InstrumentThemeLoader(getRootPath(otherInstrumentId), instrumentId);
+    }
+    private static ResourceLocation getRootPath(final ResourceLocation instrumentId) {
+        return instrumentId.withPath(AbstractInstrumentScreen.getGlobalRootPath() + instrumentId.getPath());
     }
 
 
@@ -67,9 +105,10 @@ public class InstrumentThemeLoader {
     }
 
     public void loadColorTheme(final JsonObject theme) {
-        setNoteTheme(getTheme(theme.get("note_theme"), Color.BLACK));
-        setLabelTheme(getTheme(theme.get("label_theme"), Color.BLACK));
-        setPressedNoteTheme(getTheme(theme.get("note_pressed_theme"), DEF_NOTE_PRESSED_THEME));
+        setNoteTheme(getTheme(theme, "note_theme", Color.BLACK));
+        setLabelTheme(getTheme(theme, "label_theme", Color.BLACK));
+        setPressedNoteTheme(getTheme(theme, "note_pressed_theme", DEF_NOTE_PRESSED_THEME));
+        setNoteRingTheme(getTheme(theme, "note_ring_theme", getNoteTheme()));
     }
 
     /**
@@ -80,11 +119,13 @@ public class InstrumentThemeLoader {
      * 
      * @see tryGetProperty
      */
-    public static Color getTheme(final JsonElement rgbArray, final Color def) {
+    public Color getTheme(JsonObject theme, String propertyName, Color def) {
+        final JsonElement rgbArray = theme.get(propertyName);
+
         if (rgbArray == null || !rgbArray.isJsonArray())
             return def;
 
-        return tryGetProperty(rgbArray.getAsJsonArray(), (rgb) -> new Color(
+        return tryGetProperty(propertyName, rgbArray.getAsJsonArray(), (rgb) -> new Color(
             rgb.get(0).getAsInt(), rgb.get(1).getAsInt(), rgb.get(2).getAsInt()
         ), def);
     }
@@ -97,11 +138,11 @@ public class InstrumentThemeLoader {
      * @return Either the value of the getter, or the default if 
      * any exception occured.
      */
-    public static <T, J extends JsonElement> T tryGetProperty(final J element, Function<J, T> getter, final T def) {
+    public <T, J extends JsonElement> T tryGetProperty(String property, J element, Function<J, T> getter, T def) {
         try {
             return getter.apply(element);
         } catch (Exception e) {
-            LOGGER.error("Error retrieving property from JSON element", e);
+            LOGGER.error("Error retrieving JSON property for "+instrumentId, e);
             return def;
         }
     }
@@ -113,41 +154,20 @@ public class InstrumentThemeLoader {
 
             @Override
             public void onResourceManagerReload(ResourceManager resourceManager) {
-                for (final InstrumentThemeLoader instrumentLoader : LOADERS) {
-                    final ResourceLocation styleLocation = instrumentLoader.getInstrumentStyleLocation();
-                    
-                    try {
-                        JsonObject styleInfo;
+                // Handle global resource packs
+                isGlobalThemed = false;
 
-                        // If it is already cached, then let it be
-                        if (CACHES.containsKey(styleLocation)) {
-                            styleInfo = CACHES.get(styleLocation);
+                try {
+                    isGlobalThemed = JsonParser.parseReader(resourceManager.getResource(INSTRUMENTS_META_LOC).get().openAsReader())
+                        .getAsJsonObject().get("is_global_pack").getAsBoolean();
 
-                            for (final Consumer<JsonObject> listener : instrumentLoader.listeners)
-                                listener.accept(styleInfo);
-
-                            LOGGER.info("Loaded instrument style from the already cached "+styleLocation);
-                            continue;
-                        }
+                    if (isGlobalThemed)
+                        LOGGER.info("Instrument global themes enabled; loading all instrument resources from "+GLOBAL_LOC);
+                } catch (Exception e) {}
 
 
-                        styleInfo = JsonParser.parseReader(
-                            resourceManager.getResource(styleLocation).get().openAsReader()
-                        ).getAsJsonObject();
-
-                        // Call all load listeners on the current loader
-                        for (final Consumer<JsonObject> listener : instrumentLoader.listeners)
-                            listener.accept(styleInfo);
-
-                        
-                        CACHES.put(styleLocation, styleInfo);
-                        LOGGER.info("Loaded and cached instrument style from "+styleLocation);
-
-                    } catch (Exception e) {
-                        LOGGER.error("Met an exception upon loading the instrument styler from "+styleLocation, e);
-                        continue;
-                    }
-                }
+                for (final InstrumentThemeLoader instrumentLoader : LOADERS)
+                    instrumentLoader.performReload(resourceManager);
 
                 CACHES.clear();
             }
@@ -155,11 +175,58 @@ public class InstrumentThemeLoader {
         });
     }
 
+    private void performReload(final ResourceManager resourceManager) {
+        final String logSuffix = " for "+instrumentId;
 
-    public ResourceLocation getInstrumentStyleLocation() {
-        return InstrumentStyleLocation;
+        final ResourceLocation styleLocation = getStylerLocation();
+        JsonObject styleInfo;
+        
+        try {
+
+            // If it is already cached, then let it be
+            if (CACHES.containsKey(styleLocation)) {
+                styleInfo = CACHES.get(styleLocation);
+    
+                for (final Consumer<JsonObject> listener : listeners)
+                    listener.accept(styleInfo);
+    
+                LOGGER.info("Loaded instrument style from already cached "+styleLocation + logSuffix);
+                return;
+            }
+    
+    
+            styleInfo = JsonParser.parseReader(
+                resourceManager.getResource(styleLocation).get().openAsReader()
+            ).getAsJsonObject();
+    
+            // Call all load listeners on the current loader
+            for (final Consumer<JsonObject> listener : listeners)
+                listener.accept(styleInfo);
+    
+            
+            CACHES.put(styleLocation, styleInfo);
+            LOGGER.info("Loaded and cached instrument style from "+styleLocation + logSuffix);
+
+        } catch (Exception e) {
+            LOGGER.error("Met an exception upon loading the instrument styler from "+styleLocation + logSuffix, e);
+        }
+
     }
 
+
+
+    public ResourceLocation getResourcesRootDir() {
+        return resourcesRootDir;
+    }
+
+    public ResourceLocation getStylerLocation() {
+        return CommonUtil.withSuffix(
+            (!ignoreGlobal && isGlobalThemed) ? GLOBAL_LOC : getResourcesRootDir(),
+            "/"+JSON_STYLER_NAME
+        );
+    }
+
+    
     public Color getNoteTheme() {
         return noteTheme;
     }
@@ -179,6 +246,13 @@ public class InstrumentThemeLoader {
     }
     public void setLabelTheme(Color labelTheme) {
         this.labelTheme = labelTheme;
+    }
+
+    public Color getNoteRingTheme() {
+        return noteRingTheme;
+    }
+    public void setNoteRingTheme(Color noteRingTheme) {
+        this.noteRingTheme = noteRingTheme;
     }
 
 }

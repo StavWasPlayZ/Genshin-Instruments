@@ -24,9 +24,4 @@ public interface INoteLabel {
     public default String getKey() {
         return BUTTON_TRANS_PATH + toString().toLowerCase();
     }
-
-    /**
-     * @return All cyclable label suppliers
-     */
-    public INoteLabel[] getValues();
 }

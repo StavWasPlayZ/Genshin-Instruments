@@ -5,6 +5,8 @@ import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.client.config.enumType.ZitherSoundType;
 import com.cstav.genshinstrument.client.config.enumType.label.DrumNoteLabel;
 import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
+import com.cstav.genshinstrument.client.gui.screens.instrument.drum.DominentDrumType;
+import com.cstav.genshinstrument.client.gui.screens.options.instrument.midi.MidiOptionsScreen;
 import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraftforge.api.distmarker.Dist;
@@ -26,14 +28,16 @@ import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
 public class ModClientConfigs {
     public static final ForgeConfigSpec CONFIGS;
 
-    public static final IntValue PITCH;
+    public static final IntValue PITCH, MIDI_DEVICE_INDEX, OCTAVE_SHIFT;
     public static final EnumValue<NoteGridLabel> GRID_LABEL_TYPE;
     public static final EnumValue<InstrumentChannelType> CHANNEL_TYPE;
     public static final BooleanValue STOP_MUSIC_ON_PLAY, EMIT_RING_ANIMATION, SHARED_INSTRUMENT,
-        RENDER_BACKGROUND, ACCEPTED_GENSHIN_CONSENT, ACCURATE_NOTES;
+        RENDER_BACKGROUND, ACCEPTED_GENSHIN_CONSENT, ACCURATE_NOTES,
+        MIDI_ENABLED, EXTEND_OCTAVES;
 
     public static final EnumValue<ZitherSoundType> ZITHER_SOUND_TYPE;
     public static final EnumValue<DrumNoteLabel> DRUM_LABEL_TYPE;
+    public static final EnumValue<DominentDrumType> DOMINENT_DRUM_TYPE;
 
 
     static {
@@ -61,6 +65,21 @@ public class ModClientConfigs {
 
         ZITHER_SOUND_TYPE = configBuilder.defineEnum("zither_sound_type", ZitherSoundType.NEW);
         DRUM_LABEL_TYPE = configBuilder.defineEnum("drum_label_type", DrumNoteLabel.KEYBOARD_LAYOUT);
+
+
+        MIDI_ENABLED = configBuilder.define("midi_enabled", false);
+        MIDI_DEVICE_INDEX = configBuilder.defineInRange("midi_device_index", -1, -1, Integer.MAX_VALUE);
+
+        EXTEND_OCTAVES = configBuilder.comment(
+            "When a note that is higher/lower than the usual octave range is played, will automatically adjust the pitch to match your playings. Can only extend up to 1 octave per side: high and low C."
+        ).define("extend_octaves", true);
+
+        OCTAVE_SHIFT = configBuilder.defineInRange("midi_octave_shift", 0, MidiOptionsScreen.MIN_OCTAVE_SHIFT, MidiOptionsScreen.MAX_OCTAVE_SHIFT);
+
+
+        DOMINENT_DRUM_TYPE = configBuilder.comment(
+            "Defines the MIDI split behaviour of the Arataki's Great and Glorious Drum"
+        ).defineEnum("dominent_drum_type", DominentDrumType.BOTH);
 
 
         CONFIGS = configBuilder.build();
