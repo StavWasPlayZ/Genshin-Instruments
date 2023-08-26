@@ -2,10 +2,8 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.vintagelyre;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteNotation;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.NoteGridButton;
-import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -13,15 +11,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class VintageNoteButton extends NoteGridButton {
 
-    public VintageNoteButton(int row, int column,
-            NoteSound sound, NoteLabelSupplier labelSupplier, AbstractGridInstrumentScreen instrumentScreen) {
-        super(row, column, sound, labelSupplier, instrumentScreen);
+    public VintageNoteButton(int row, int column, AbstractGridInstrumentScreen instrumentScreen) {
+        super(row, column, instrumentScreen);
     }
 
     
     private boolean isDefaultFlat() {
         return (row == 6) || (row == 2) ||
-            ((row == 1) && (column == 0)) || ((row == 5) && (column == 0));
+            ((column == 0) && ((row == 1) || (row == 5)));
     }
 
     @Override

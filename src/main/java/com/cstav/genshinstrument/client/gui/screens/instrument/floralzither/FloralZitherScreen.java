@@ -3,7 +3,7 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.floralzither;
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screens.options.instrument.AbstractInstrumentOptionsScreen;
+import com.cstav.genshinstrument.client.gui.screens.options.instrument.BaseInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.FloralZitherOptionsScreen;
 import com.cstav.genshinstrument.sound.NoteSound;
 
@@ -17,29 +17,29 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 //NOTE: There just to make it load on mod setup
 @EventBusSubscriber(Dist.CLIENT)
 public class FloralZitherScreen extends AbstractGridInstrumentScreen {
-    public static final String INSTRUMENT_ID = "floral_zither";
+    public static final ResourceLocation INSTRUMENT_ID = new ResourceLocation(GInstrumentMod.MODID, "floral_zither");
     
     public FloralZitherScreen(InteractionHand hand) {
         super(hand);
     }
     @Override
     public ResourceLocation getInstrumentId() {
-        return new ResourceLocation(GInstrumentMod.MODID, INSTRUMENT_ID);
+        return INSTRUMENT_ID;
     }
 
     
     @Override
-    public NoteSound[] getSounds() {
-        return ((FloralZitherOptionsScreen)optionsScreen).getPerferredSoundType().soundArr().get();
+    public NoteSound[] getInitSounds() {
+        return ((FloralZitherOptionsScreen)optionsScreen).getPerferredSoundType().getSoundArr().get();
     }
 
     @Override
-    protected AbstractInstrumentOptionsScreen initInstrumentOptionsScreen() {
+    protected BaseInstrumentOptionsScreen initInstrumentOptionsScreen() {
         return new FloralZitherOptionsScreen(this);
     }
 
     
-    private static final InstrumentThemeLoader THEME_LOADER = initThemeLoader(GInstrumentMod.MODID, INSTRUMENT_ID);
+    private static final InstrumentThemeLoader THEME_LOADER = new InstrumentThemeLoader(INSTRUMENT_ID);
     @Override
     public InstrumentThemeLoader getThemeLoader() {
         return THEME_LOADER;

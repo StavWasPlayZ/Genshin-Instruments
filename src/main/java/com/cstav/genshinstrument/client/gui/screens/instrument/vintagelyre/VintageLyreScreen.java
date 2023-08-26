@@ -3,7 +3,6 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.vintagelyre;
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.NoteGrid;
 import com.cstav.genshinstrument.sound.ModSounds;
 import com.cstav.genshinstrument.sound.NoteSound;
 
@@ -17,8 +16,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 //NOTE: There just to make it load on mod setup
 @EventBusSubscriber(Dist.CLIENT)
 public class VintageLyreScreen extends AbstractGridInstrumentScreen {
-    public static final String INSTRUMENT_ID = "vintage_lyre";
-    public static final String[] VINTAGE_LYRE_LAYOUT = new String[] {
+    public static final ResourceLocation INSTRUMENT_ID = new ResourceLocation(GInstrumentMod.MODID, "vintage_lyre");
+    public static final String[] NOTE_LAYOUT = {
         "C", "Db", "Eb", "F", "G", "Ab", "Bb",
         "C", "D", "Eb", "F", "G", "A", "Bb",
         "C", "D", "Eb", "F", "G", "A", "Bb"
@@ -29,27 +28,27 @@ public class VintageLyreScreen extends AbstractGridInstrumentScreen {
     }
     @Override
     public ResourceLocation getInstrumentId() {
-        return new ResourceLocation(GInstrumentMod.MODID, INSTRUMENT_ID);
+        return INSTRUMENT_ID;
     }
 
 
     @Override
-    public NoteSound[] getSounds() {
+    public NoteSound[] getInitSounds() {
         return ModSounds.VINTAGE_LYRE_NOTE_SOUNDS;
     }
 
     @Override
     public String[] noteLayout() {
-        return VINTAGE_LYRE_LAYOUT;
+        return NOTE_LAYOUT;
     }
 
     @Override
-    public NoteGrid initNoteGrid() {
-        return new VintageNoteGrid(getSounds(), this);
+    public VintageNoteButton createNote(int row, int column) {
+        return new VintageNoteButton(row, column, this);
     }
     
     
-    private static final InstrumentThemeLoader THEME_LOADER = initThemeLoader(GInstrumentMod.MODID, INSTRUMENT_ID);
+    private static final InstrumentThemeLoader THEME_LOADER = new InstrumentThemeLoader(INSTRUMENT_ID);
     @Override
     public InstrumentThemeLoader getThemeLoader() {
         return THEME_LOADER;

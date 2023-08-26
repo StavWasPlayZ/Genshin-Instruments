@@ -38,11 +38,31 @@
     "button.genshinstrument.accurate_notes": "תווים מדוייקים",
     "button.genshinstrument.accurate_notes.tooltip": "כאשר אופציה זו מופעלת, יוצגו התווים ויתקיהם בהתאם לגובה הצליל הנבחר",
     
+    
+    "button.genshinstrument.midiEnabled": "MIDI מופעל",
+    "button.genshinstrument.midiDevice": "מכשיר MIDI",
 
+    "button.genshinstrument.extendOctaves": "הרחב אוקטבות",
+    "button.genshinstrument.extendOctaves.tooltip": "כאשר תו העובר את מגבלת האוקטבות המובנת מתנגן, יעלה/יוריד את גובה הצליל כדיי להתאימו. בגלל איך שמיינקראפט בנוי, יכול להעלות/לרדת עד דו מז'ור.",
+
+    "button.genshinstrument.midiOctaveShift": "הסטת אוקטבות",
+
+
+    "button.genshinstrument.dominentDrumType": "סוג הטוף השולט",
+    "button.genshinstrument.dominentDrumType.both": "שניהם",
+
+    "button.genshinstrument.dominentDrumType.both.tooltip": "מכשיר הMIDI יחולק ל- 2 בדו באמצעי, כך שמפתח פה מנגן Don ודו Ka",
+    "button.genshinstrument.dominentDrumType.don.tooltip": "כל התווים הם מסוג צליל Don",
+    "button.genshinstrument.dominentDrumType.ka.tooltip": "כל התווים הם מסוג צליל Ka",
+
+
+    "button.none": "כלום",
+    
 
     
     "button.genshinstrument.instrumentOptions": "אפשרויות כלי נגינה",
     "label.genshinstrument.zither_options": "אפשרויות הציטר",
+    "label.genshinstrument.midiOptions": "אפשרויות MIDI",
 
     
     "button.genshinstrument.label": "תגיות תווים",
@@ -56,8 +76,17 @@
     "button.genshinstrument.label.do_re_mi": "דו רה מי",
     "button.genshinstrument.label.note_name": "שם תו",
 
+    "genshinstrument.label.do": "דו",
+    "genshinstrument.label.re": "רה",
+    "genshinstrument.label.mi": "מי",
+    "genshinstrument.label.fa": "פה",
+    "genshinstrument.label.so": "סול",
+    "genshinstrument.label.la": "לה",
+    "genshinstrument.label.ti": "טי",
+
 
     "button.genshinstrument.label.keyboard_layout": "מקלדת",
+    "button.genshinstrument.label.qwerty": "מקלדת (QWERTY)",
     "button.genshinstrument.label.none": "ללא תגית",
 
 

@@ -56,6 +56,9 @@ public abstract class CommonUtil {
     public static ResourceLocation withSuffix(final ResourceLocation resource, final String suffix) {
         return new ResourceLocation(resource.getNamespace(), resource.getPath()+suffix);
     }
+    public static ResourceLocation withPath(final ResourceLocation resource, final String path) {
+        return new ResourceLocation(resource.getNamespace(), path);
+    }
 
     /**
      * Provides a similar behaviour to python's indexing,

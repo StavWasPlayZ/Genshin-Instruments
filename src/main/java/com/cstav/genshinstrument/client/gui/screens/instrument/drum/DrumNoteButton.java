@@ -35,5 +35,11 @@ public class DrumNoteButton extends NoteButton {
     protected NoteButtonRenderer initNoteRenderer() {
         return new NoteButtonRenderer(this, btnType.getSpriteIndex(isRight), 3);
     }
+
+
+    @Override
+    public int getNoteOffset() {
+        return (btnType == DrumButtonType.DON) ? 0 : 1;
+    }
     
 }
