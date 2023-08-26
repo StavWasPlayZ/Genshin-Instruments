@@ -20,7 +20,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  */
 @OnlyIn(Dist.CLIENT)
 public abstract class SoundTypeOptionsScreen<T extends SoundType> extends GridInstrumentOptionsScreen {
-    private final static int SPACE_BEFORE = 30, SPACER_HEIGHT = 13;
+    private final static int SPACE_BEFORE = 20, SPACER_HEIGHT = 13;
 
     public SoundTypeOptionsScreen(final AbstractGridInstrumentScreen screen) {
         super(screen);

@@ -55,7 +55,7 @@ public class ClientUtil {
     public static void alignGrid(Layout layout, int screenWidth, int screenHeight) {
         layout.arrangeElements();
         FrameLayout.alignInRectangle(layout, 0, 0, screenWidth, screenHeight, 0.5f, 0);
-        layout.setY(40);
+        layout.setY(30);
         layout.arrangeElements();
     }
 
