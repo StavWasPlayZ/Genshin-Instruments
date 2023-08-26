@@ -1,5 +1,5 @@
 //TODO rename screen package to screen
-package com.cstav.genshinstrument.client.gui.screens.options;
+package com.cstav.genshinstrument.client.gui.screens.options.instrument.midi;
 
 import com.cstav.genshinstrument.client.ClientUtil;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;

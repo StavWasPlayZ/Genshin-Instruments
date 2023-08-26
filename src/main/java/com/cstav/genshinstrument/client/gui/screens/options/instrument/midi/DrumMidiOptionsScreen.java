@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.client.gui.screens.options;
+package com.cstav.genshinstrument.client.gui.screens.options.instrument.midi;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.drum.DominentDrumType;

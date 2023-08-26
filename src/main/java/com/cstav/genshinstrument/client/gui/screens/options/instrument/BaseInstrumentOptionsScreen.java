@@ -11,7 +11,7 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractI
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screens.options.MidiOptionsScreen;
+import com.cstav.genshinstrument.client.gui.screens.options.instrument.midi.MidiOptionsScreen;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.LabelUtil;
 
@@ -32,6 +32,7 @@ import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+//TODO move to partial and all its foes
 @OnlyIn(Dist.CLIENT)
 public abstract class BaseInstrumentOptionsScreen extends ModOptionsScreen {
     public static final MutableComponent MIDI_OPTIONS = Component.translatable("label.genshinstrument.midiOptions");
