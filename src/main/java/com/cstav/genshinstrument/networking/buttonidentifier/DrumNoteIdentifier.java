@@ -1,7 +1,7 @@
 package com.cstav.genshinstrument.networking.buttonidentifier;
 
-import com.cstav.genshinstrument.client.gui.screens.instrument.drum.DrumButtonType;
-import com.cstav.genshinstrument.client.gui.screens.instrument.drum.DrumNoteButton;
+import com.cstav.genshinstrument.client.gui.screen.instrument.drum.DrumButtonType;
+import com.cstav.genshinstrument.client.gui.screen.instrument.drum.DrumNoteButton;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
