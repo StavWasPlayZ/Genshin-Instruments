@@ -20,16 +20,23 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ModOptionsScreen extends Screen {
 
     public final @Nullable AbstractInstrumentScreen instrumentScreen;
+    public final Screen lastScreen;
+
     public final boolean isOverlay;
     
-    public ModOptionsScreen(Component pTitle, AbstractInstrumentScreen instrumentScreen) {
+    
+    public ModOptionsScreen(Component pTitle, AbstractInstrumentScreen instrumentScreen, Screen lastScreen) {
         super(pTitle);
         this.instrumentScreen = instrumentScreen;
+        this.lastScreen = lastScreen;
 
         this.isOverlay = instrumentScreen != null;
     }
-    public ModOptionsScreen(Component pTitle) {
-        this(pTitle, null);
+    public ModOptionsScreen(Component pTitle, AbstractInstrumentScreen instrumentScreen) {
+        this(pTitle, instrumentScreen, null);
+    }
+    public ModOptionsScreen(Component pTitle, Screen prevScreen) {
+        this(pTitle, null, prevScreen);
     }
 
 
@@ -74,6 +81,21 @@ public class ModOptionsScreen extends Screen {
     @Override
     public boolean isPauseScreen() {
         return instrumentScreen == null;
+    }
+
+    @Override
+    public void onClose() {
+        onSave();
+
+        if (isOverlay) {
+            super.onClose();
+            if (lastScreen != null)
+                minecraft.pushGuiLayer(lastScreen);
+        }
+        else if (lastScreen != null)
+            minecraft.setScreen(lastScreen);
+        else
+            super.onClose();
     }
 
 
