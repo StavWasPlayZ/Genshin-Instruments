@@ -64,11 +64,11 @@ public class ClientUtil {
         return grid;
     }
 
-    public static void alignGrid(GridWidget layout, int screenWidth, int screenHeight) {
-        layout.pack();
-        layout.setX((screenWidth - layout.getWidth())/2);
-        layout.setY(30);
-        layout.pack();
+    public static void alignGrid(GridWidget grid, int screenWidth, int screenHeight) {
+        grid.pack();
+        grid.setX((screenWidth - grid.getWidth())/2);
+        grid.setY(30);
+        grid.pack();
     }
 
     public static int lowerButtonsY(int desiredY, int desiredHeight, int screenHeight) {

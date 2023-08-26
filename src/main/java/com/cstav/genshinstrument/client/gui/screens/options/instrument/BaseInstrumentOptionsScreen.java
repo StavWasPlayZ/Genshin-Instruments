@@ -79,14 +79,9 @@ public abstract class BaseInstrumentOptionsScreen extends ModOptionsScreen {
         currLabel = getCurrentLabel();
 
         final GridWidget grid = ClientUtil.createSettingsGrid();
-        
         initOptionsGrid(grid, grid.createRowHelper(2));
-        grid.pack();
         
-        grid.setX((width - grid.getWidth()) / 2);
-        grid.setY(40);
-        
-        grid.pack();
+        ClientUtil.alignGrid(grid, width, height);
         addRenderableWidget(grid);
 
 
