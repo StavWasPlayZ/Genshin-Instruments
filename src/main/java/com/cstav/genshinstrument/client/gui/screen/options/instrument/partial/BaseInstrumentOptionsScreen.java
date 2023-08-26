@@ -11,7 +11,6 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractIn
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.AbstractGridInstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screen.options.instrument.midi.DrumMidiOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.midi.MidiOptionsScreen;
 import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget;
 import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget.RowHelper;
@@ -294,7 +293,7 @@ public abstract class BaseInstrumentOptionsScreen extends ModOptionsScreen {
     }
 
     protected MidiOptionsScreen midiOptionsScreen() {
-        return new DrumMidiOptionsScreen(MIDI_OPTIONS, this, instrumentScreen);
+        return new MidiOptionsScreen(MIDI_OPTIONS, this, instrumentScreen);
     }
 
 
