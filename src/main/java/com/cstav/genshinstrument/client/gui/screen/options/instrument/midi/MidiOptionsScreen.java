@@ -159,9 +159,15 @@ public class MidiOptionsScreen extends ModOptionsScreen {
     public void onClose() {
         onSave();
 
-        super.onClose();
-        if (prevScreen != null)
-            minecraft.pushGuiLayer(prevScreen);
+        if (isOverlay) {
+            super.onClose();
+            if (prevScreen != null)
+                minecraft.pushGuiLayer(prevScreen);
+        }
+        else if (prevScreen != null)
+            minecraft.setScreen(prevScreen);
+        else
+            super.onClose();
     }
 
 }
