@@ -511,6 +511,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
     public boolean allowMidiOverflow() {
         return false;
     }
+
     /**
      * Extends the usual limitation of octaves by 2 by adjusting the pitch higher/lower
      * when necessary
@@ -530,7 +531,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
         // Set the pitch
         if (note < minMidiNote()) {
             // Minecraft pitch limitations
-            if (note < minPitch)
+            if (note < minMidiOverflow())
                 return -99;
 
             if (getPitch() != minPitch) {
@@ -538,7 +539,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
                 ModClientConfigs.PITCH.set(minPitch);
             }
         } else if (note >= maxMidiNote()) {
-            if (note >= (maxPitch * 4))
+            if (note >= maxMidiOverflow())
                 return -99;
 
             if (getPitch() != maxPitch) {
@@ -577,6 +578,13 @@ public abstract class AbstractInstrumentScreen extends Screen {
         return NoteSound.MAX_PITCH * 3;
     }
 
+    protected int maxMidiOverflow() {
+        return maxMidiNote() + 12;
+    }
+    protected int minMidiOverflow() {
+        return minMidiNote() - 12;
+    }
+
 
     /**
      * @return The MIDI note adjusted by -48.
@@ -587,3 +595,6 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
 }
+
+
+// I just want to have 600 lines mate
