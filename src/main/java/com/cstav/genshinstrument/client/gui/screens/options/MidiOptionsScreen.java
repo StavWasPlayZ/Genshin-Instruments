@@ -1,13 +1,11 @@
 package com.cstav.genshinstrument.client.gui.screens.options;
 
-import java.awt.Color;
-
 import com.cstav.genshinstrument.client.ClientUtil;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.options.instrument.ModOptionsScreen;
 import com.cstav.genshinstrument.client.midi.MidiController;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
@@ -154,16 +152,6 @@ public class MidiOptionsScreen extends ModOptionsScreen {
     protected void onOctaveShiftChanged(final AbstractSliderButton button, final int value) {
         if (ModClientConfigs.OCTAVE_SHIFT.get() != value)
             ModClientConfigs.OCTAVE_SHIFT.set(value);
-    }
-
-
-    @Override
-    public void render(GuiGraphics gui, int pMouseX, int pMouseY, float pPartialTick) {
-        renderBackground(gui);
-        
-        gui.drawCenteredString(font, title, width/2, 15, Color.WHITE.getRGB());
-        
-        super.render(gui, pMouseX, pMouseY, pPartialTick);
     }
     
 

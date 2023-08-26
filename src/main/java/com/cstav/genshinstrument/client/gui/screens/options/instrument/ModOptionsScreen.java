@@ -1,5 +1,6 @@
-package com.cstav.genshinstrument.client.gui.screens.options;
+package com.cstav.genshinstrument.client.gui.screens.options.instrument;
 
+import java.awt.Color;
 import java.util.HashMap;
 
 import javax.annotation.Nullable;
@@ -8,6 +9,7 @@ import com.cstav.genshinstrument.client.ClientUtil;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
@@ -39,6 +41,16 @@ public class ModOptionsScreen extends Screen {
     }
     public int getButtonHeight() {
         return 20;
+    }
+
+
+    @Override
+    public void render(GuiGraphics gui, int pMouseX, int pMouseY, float pPartialTick) {
+        renderBackground(gui);
+        
+        gui.drawCenteredString(font, title, width/2, 15, Color.WHITE.getRGB());
+
+        super.render(gui, pMouseX, pMouseY, pPartialTick);
     }
 
 

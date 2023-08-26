@@ -10,8 +10,8 @@ import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvide
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.GenshinConsentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
-import com.cstav.genshinstrument.client.gui.screens.options.ModOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.BaseInstrumentOptionsScreen;
+import com.cstav.genshinstrument.client.gui.screens.options.instrument.ModOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.client.midi.MidiController;
 import com.cstav.genshinstrument.event.MidiEvent;

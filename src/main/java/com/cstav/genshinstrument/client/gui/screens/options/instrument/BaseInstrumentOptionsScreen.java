@@ -1,6 +1,5 @@
 package com.cstav.genshinstrument.client.gui.screens.options.instrument;
 
-import java.awt.Color;
 import java.text.DecimalFormat;
 
 import javax.annotation.Nullable;
@@ -13,11 +12,9 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.Note
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.options.MidiOptionsScreen;
-import com.cstav.genshinstrument.client.gui.screens.options.ModOptionsScreen;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.LabelUtil;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
@@ -285,17 +282,6 @@ public abstract class BaseInstrumentOptionsScreen extends ModOptionsScreen {
 
         if (isOverlay)
             instrumentScreen.notesIterable().forEach(NoteButton::updateNoteLabel);
-    }
-
-
-
-    @Override
-    public void render(GuiGraphics gui, int pMouseX, int pMouseY, float pPartialTick) {
-        renderBackground(gui);
-        
-        gui.drawCenteredString(font, title, width/2, 15, Color.WHITE.getRGB());
-        
-        super.render(gui, pMouseX, pMouseY, pPartialTick);
     }
 
 
