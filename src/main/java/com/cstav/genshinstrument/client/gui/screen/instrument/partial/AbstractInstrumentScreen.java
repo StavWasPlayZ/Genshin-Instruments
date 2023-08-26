@@ -11,7 +11,7 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.GenshinConsentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.BaseInstrumentOptionsScreen;
-import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.ModOptionsScreen;
+import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.AbstractInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.client.midi.MidiController;
 import com.cstav.genshinstrument.event.MidiEvent;
@@ -408,7 +408,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
         if (minecraft.screen instanceof AbstractInstrumentScreen)
             return Optional.of((AbstractInstrumentScreen)minecraft.screen);
 
-        if (minecraft.screen instanceof ModOptionsScreen instrumentOptionsScreen) {
+        if (minecraft.screen instanceof AbstractInstrumentOptionsScreen instrumentOptionsScreen) {
             if (instrumentOptionsScreen.isOverlay)
                 return Optional.of(instrumentOptionsScreen.instrumentScreen);
         }
