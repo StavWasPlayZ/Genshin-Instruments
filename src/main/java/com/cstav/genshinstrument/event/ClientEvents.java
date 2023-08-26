@@ -83,4 +83,10 @@ public class ClientEvents {
         });
     }
 
+    // Subscribe active instruments to a MIDI event
+    @SubscribeEvent
+    public static void onMidiEvent(final MidiEvent event) {
+        AbstractInstrumentScreen.getCurrentScreen(Minecraft.getInstance()).ifPresent((screen) -> screen.onMidi(event));
+    }
+
 }
