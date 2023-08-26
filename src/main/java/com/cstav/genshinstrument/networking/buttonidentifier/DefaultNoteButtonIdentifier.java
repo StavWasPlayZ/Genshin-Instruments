@@ -1,6 +1,6 @@
 package com.cstav.genshinstrument.networking.buttonidentifier;
 
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraft.network.FriendlyByteBuf;

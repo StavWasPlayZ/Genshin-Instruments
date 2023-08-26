@@ -2,7 +2,7 @@ package com.cstav.genshinstrument.sound;
 
 import java.util.Optional;
 
-import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.util.CommonUtil;
 
 import net.minecraft.resources.ResourceLocation;

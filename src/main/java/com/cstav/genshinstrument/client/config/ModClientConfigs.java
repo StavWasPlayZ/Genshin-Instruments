@@ -5,8 +5,8 @@ import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.client.config.enumType.ZitherSoundType;
 import com.cstav.genshinstrument.client.config.enumType.label.DrumNoteLabel;
 import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
-import com.cstav.genshinstrument.client.gui.screens.instrument.drum.DominentDrumType;
-import com.cstav.genshinstrument.client.gui.screens.options.instrument.midi.MidiOptionsScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.drum.DominentDrumType;
+import com.cstav.genshinstrument.client.gui.screen.options.instrument.midi.MidiOptionsScreen;
 import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraftforge.api.distmarker.Dist;

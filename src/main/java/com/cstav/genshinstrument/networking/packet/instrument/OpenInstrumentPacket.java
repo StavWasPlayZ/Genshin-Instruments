@@ -5,10 +5,10 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import com.cstav.genshinstrument.client.gui.screens.instrument.drum.AratakisGreatAndGloriousDrumScreen;
-import com.cstav.genshinstrument.client.gui.screens.instrument.floralzither.FloralZitherScreen;
-import com.cstav.genshinstrument.client.gui.screens.instrument.vintagelyre.VintageLyreScreen;
-import com.cstav.genshinstrument.client.gui.screens.instrument.windsonglyre.WindsongLyreScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.drum.AratakisGreatAndGloriousDrumScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.floralzither.FloralZitherScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.vintagelyre.VintageLyreScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.windsonglyre.WindsongLyreScreen;
 import com.cstav.genshinstrument.networking.IModPacket;
 
 import net.minecraft.client.Minecraft;
