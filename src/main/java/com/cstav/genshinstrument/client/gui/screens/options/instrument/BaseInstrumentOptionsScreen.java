@@ -251,6 +251,11 @@ public abstract class BaseInstrumentOptionsScreen extends ModOptionsScreen {
 
     protected void onPitchChanged(final AbstractSliderButton slider, final int pitch) {
         if (isOverlay) {
+            // This is a double slide, hence conversions to int would make
+            // this method be called for no reason
+            if (instrumentScreen.getPitch() == pitch)
+                return;
+
             // Directly save the pitch if we're on an instrument
             // Otherwise tranpositions will reset to their previous pitch
             instrumentScreen.setPitch(pitch);
