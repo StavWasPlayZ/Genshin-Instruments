@@ -35,8 +35,13 @@ public class DrumOptionsScren extends BaseInstrumentOptionsScreen {
 
     @Override
     protected void openMidiOptions() {
-        minecraft.popGuiLayer();
-        minecraft.pushGuiLayer(new DrumMidiOptionsScreen(MIDI_OPTIONS, this, instrumentScreen));
+        final DrumMidiOptionsScreen midiScreen = new DrumMidiOptionsScreen(MIDI_OPTIONS, this, instrumentScreen);
+
+        if (isOverlay) {
+            minecraft.popGuiLayer();
+            minecraft.pushGuiLayer(midiScreen);
+        } else
+            minecraft.setScreen(midiScreen);
     }
     
 }
