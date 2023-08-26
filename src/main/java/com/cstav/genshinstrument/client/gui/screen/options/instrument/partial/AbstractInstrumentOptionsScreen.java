@@ -15,9 +15,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-//TODO rename to AbstractInstrumentOptionsScreen
 @OnlyIn(Dist.CLIENT)
-public class ModOptionsScreen extends Screen {
+public class AbstractInstrumentOptionsScreen extends Screen {
 
     public final @Nullable AbstractInstrumentScreen instrumentScreen;
     public final Screen lastScreen;
@@ -25,17 +24,17 @@ public class ModOptionsScreen extends Screen {
     public final boolean isOverlay;
     
     
-    public ModOptionsScreen(Component pTitle, AbstractInstrumentScreen instrumentScreen, Screen lastScreen) {
+    public AbstractInstrumentOptionsScreen(Component pTitle, AbstractInstrumentScreen instrumentScreen, Screen lastScreen) {
         super(pTitle);
         this.instrumentScreen = instrumentScreen;
         this.lastScreen = lastScreen;
 
         this.isOverlay = instrumentScreen != null;
     }
-    public ModOptionsScreen(Component pTitle, AbstractInstrumentScreen instrumentScreen) {
+    public AbstractInstrumentOptionsScreen(Component pTitle, AbstractInstrumentScreen instrumentScreen) {
         this(pTitle, instrumentScreen, null);
     }
-    public ModOptionsScreen(Component pTitle, Screen prevScreen) {
+    public AbstractInstrumentOptionsScreen(Component pTitle, Screen prevScreen) {
         this(pTitle, null, prevScreen);
     }
 
