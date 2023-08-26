@@ -1,9 +1,10 @@
-package com.cstav.genshinstrument.client.gui.screens.options.instrument;
+package com.cstav.genshinstrument.client.gui.screens.options;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.ZitherSoundType;
 import com.cstav.genshinstrument.client.gui.screens.instrument.floralzither.FloralZitherScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.options.instrument.SoundTypeOptionsScreen;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

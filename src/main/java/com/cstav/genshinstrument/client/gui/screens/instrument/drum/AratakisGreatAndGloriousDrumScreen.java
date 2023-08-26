@@ -8,8 +8,8 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.note.NoteButton;
+import com.cstav.genshinstrument.client.gui.screens.options.DrumOptionsScren;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.BaseInstrumentOptionsScreen;
-import com.cstav.genshinstrument.client.gui.screens.options.instrument.DrumOptionsScren;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 
 import net.minecraft.client.gui.layouts.LinearLayout;

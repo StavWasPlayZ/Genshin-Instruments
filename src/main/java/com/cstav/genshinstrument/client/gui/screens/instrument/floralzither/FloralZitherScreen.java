@@ -3,8 +3,8 @@ package com.cstav.genshinstrument.client.gui.screens.instrument.floralzither;
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screens.options.FloralZitherOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screens.options.instrument.BaseInstrumentOptionsScreen;
-import com.cstav.genshinstrument.client.gui.screens.options.instrument.FloralZitherOptionsScreen;
 import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraft.resources.ResourceLocation;

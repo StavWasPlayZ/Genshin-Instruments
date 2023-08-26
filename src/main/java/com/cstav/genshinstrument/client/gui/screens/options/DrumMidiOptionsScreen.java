@@ -1,9 +1,8 @@
-package com.cstav.genshinstrument.client.midi;
+package com.cstav.genshinstrument.client.gui.screens.options;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screens.instrument.drum.DominentDrumType;
 import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractInstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screens.options.MidiOptionsScreen;
 
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;
