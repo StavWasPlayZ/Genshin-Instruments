@@ -1,3 +1,4 @@
+//TODO rename screen package to screen
 package com.cstav.genshinstrument.client.gui.screens.options;
 
 import com.cstav.genshinstrument.client.ClientUtil;
