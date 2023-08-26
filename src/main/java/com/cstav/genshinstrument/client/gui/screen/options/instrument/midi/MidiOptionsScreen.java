@@ -3,7 +3,7 @@ package com.cstav.genshinstrument.client.gui.screen.options.instrument.midi;
 import com.cstav.genshinstrument.client.ClientUtil;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.ModOptionsScreen;
+import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.AbstractInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.midi.MidiController;
 
 import net.minecraft.client.gui.components.AbstractSliderButton;
@@ -21,7 +21,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class MidiOptionsScreen extends ModOptionsScreen {
+public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
     public static final int MIN_OCTAVE_SHIFT = -4, MAX_OCTAVE_SHIFT = 4;
 
     public MidiOptionsScreen(Component pTitle, Screen prevScreen, AbstractInstrumentScreen instrumentScreen) {
