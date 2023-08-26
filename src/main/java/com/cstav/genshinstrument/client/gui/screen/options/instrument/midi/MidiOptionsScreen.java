@@ -23,11 +23,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class MidiOptionsScreen extends ModOptionsScreen {
     public static final int MIN_OCTAVE_SHIFT = -4, MAX_OCTAVE_SHIFT = 4;
 
-    protected final Screen prevScreen;
-
     public MidiOptionsScreen(Component pTitle, Screen prevScreen, AbstractInstrumentScreen instrumentScreen) {
-        super(pTitle, instrumentScreen);
-        this.prevScreen = prevScreen;
+        super(pTitle, instrumentScreen, prevScreen);
     }
 
 
@@ -151,22 +148,6 @@ public class MidiOptionsScreen extends ModOptionsScreen {
     protected void onOctaveShiftChanged(final AbstractSliderButton button, final int value) {
         if (ModClientConfigs.OCTAVE_SHIFT.get() != value)
             ModClientConfigs.OCTAVE_SHIFT.set(value);
-    }
-
-
-    @Override
-    public void onClose() {
-        onSave();
-
-        if (isOverlay) {
-            super.onClose();
-            if (prevScreen != null)
-                minecraft.pushGuiLayer(prevScreen);
-        }
-        else if (prevScreen != null)
-            minecraft.setScreen(prevScreen);
-        else
-            super.onClose();
     }
 
 }

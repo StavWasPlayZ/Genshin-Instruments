@@ -46,8 +46,6 @@ public abstract class BaseInstrumentOptionsScreen extends ModOptionsScreen {
     public abstract INoteLabel getCurrentLabel();
     
 
-    protected final Screen lastScreen;
-
     protected final @Nullable INoteLabel[] labels;
     protected @Nullable INoteLabel currLabel;
 
@@ -62,14 +60,10 @@ public abstract class BaseInstrumentOptionsScreen extends ModOptionsScreen {
 
     public BaseInstrumentOptionsScreen(@Nullable AbstractInstrumentScreen screen) {
         super(Component.translatable("button.genshinstrument.instrumentOptions"), screen);
-        
-        lastScreen = null;
         labels = getLabels();
     }
     public BaseInstrumentOptionsScreen(final Screen lastScreen) {
-        super(Component.translatable("button.genshinstrument.instrumentOptions"), null);
-        
-        this.lastScreen = lastScreen;
+        super(Component.translatable("button.genshinstrument.instrumentOptions"), lastScreen);
         labels = getLabels();
     }
 
