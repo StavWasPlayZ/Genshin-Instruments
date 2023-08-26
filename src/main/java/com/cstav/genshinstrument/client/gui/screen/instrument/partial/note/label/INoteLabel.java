@@ -1,0 +1,27 @@
+package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label;
+
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+
+/**
+ * An interface holding {@link NoteLabelSupplier}s for note buttons to cycle thorugh.
+ */
+public interface INoteLabel {
+    // Useful stuff
+    public static final String TRANSLATABLE_PATH = "genshinstrument.label.";
+    public static final String BUTTON_TRANS_PATH = "button.genshinstrument.label.";
+
+    public static MutableComponent upperComponent(final Component component) {
+        return Component.literal(component.getString().toUpperCase());
+    }
+
+
+    public NoteLabelSupplier getLabelSupplier();
+    /**
+     * @return The translation key of this label
+     */
+    public default String getKey() {
+        return BUTTON_TRANS_PATH + toString().toLowerCase();
+    }
+}
