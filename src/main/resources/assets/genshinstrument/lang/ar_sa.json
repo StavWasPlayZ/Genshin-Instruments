@@ -44,12 +44,13 @@
     "genshinstrument.label.re": "ري",
     "genshinstrument.label.mi": "مي",
     "genshinstrument.label.fa": "فا",
-    "genshinstrument.label.so": "صو",
-    "genshinstrument.label.la": "لا ",
+    "genshinstrument.label.so": "صول",
+    "genshinstrument.label.la": "لا",
     "genshinstrument.label.ti": "تي",
 
 
     "button.genshinstrument.label.keyboard_layout": "لوحة المفاتيح",
+    "button.genshinstrument.label.qwerty": "لوحة المفاتيح (QWERTY)",
     "button.genshinstrument.label.note_name": "اسم الملاحظة",
     "button.genshinstrument.label.none": "لا تسمية"
 

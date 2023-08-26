@@ -1,71 +1,50 @@
 package com.cstav.genshinstrument.client.gui.screens.options.instrument;
 
-import java.awt.Color;
-
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.ZitherSoundType;
 import com.cstav.genshinstrument.client.gui.screens.instrument.floralzither.FloralZitherScreen;
+import com.cstav.genshinstrument.client.gui.screens.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.CycleButton;
-import net.minecraft.client.gui.layouts.GridLayout;
-import net.minecraft.client.gui.layouts.GridLayout.RowHelper;
-import net.minecraft.client.gui.layouts.SpacerElement;
-import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class FloralZitherOptionsScreen extends GridInstrumentOptionsScreen {
-    private static final String SOUND_TYPE_KEY = "button.genshinstrument.zither.soundType";
-    private final static int SPACE_BEFORE = 30, SPACER_HEIGHT = 13;
-
-    public FloralZitherOptionsScreen(final FloralZitherScreen screen) {
+public class FloralZitherOptionsScreen extends SoundTypeOptionsScreen<ZitherSoundType> {
+    private static final String SOUND_TYPE_KEY = "button.genshinstrument.zither.soundType",
+        OPTIONS_LABEL_KEY = "label.genshinstrument.zither_options";
+    
+    public FloralZitherOptionsScreen(final AbstractGridInstrumentScreen screen) {
         super(screen);
     }
+    
 
-    private ZitherSoundType perferredSoundType = ModClientConfigs.ZITHER_SOUND_TYPE.get();
-    public ZitherSoundType getPerferredSoundType() {
-        return perferredSoundType;
+    @Override
+    protected String soundTypeButtonKey() {
+        return SOUND_TYPE_KEY;
+    }
+    @Override
+    protected String optionsLabelKey() {
+        return OPTIONS_LABEL_KEY;
     }
 
 
-    private int heightBefore;
-
     @Override
-    protected void initOptionsGrid(GridLayout grid, RowHelper rowHelper) {
-        super.initOptionsGrid(grid, rowHelper);
-        
-        rowHelper.addChild(SpacerElement.height(SPACER_HEIGHT), 2);
-        grid.arrangeElements();
-        heightBefore = grid.getHeight();
-
-        final CycleButton<ZitherSoundType> soundTypeButton = CycleButton.<ZitherSoundType>builder((type) ->
-            Component.translatable(SOUND_TYPE_KEY+"."+type.toString().toLowerCase())
-        )
-            .withValues(ZitherSoundType.values())
-            .withInitialValue(getPerferredSoundType())
-            .create(0, 0,
-                getBigButtonWidth(), getButtonHeight()
-            , Component.translatable(SOUND_TYPE_KEY), this::onSoundTypeChange);
-
-        rowHelper.addChild(soundTypeButton, 2);
+    protected ZitherSoundType getInitSoundType() {
+        return ModClientConfigs.ZITHER_SOUND_TYPE.get();
     }
 
     @Override
-    public void render(GuiGraphics gui, int pMouseX, int pMouseY, float pPartialTick) {
-        super.render(gui, pMouseX, pMouseY, pPartialTick);
-        
-        gui.drawCenteredString(font,
-            Component.translatable("label.genshinstrument.zither_options"),
-            width/2, heightBefore + SPACE_BEFORE
-        , Color.WHITE.getRGB());
+    protected ZitherSoundType[] values() {
+        return ZitherSoundType.values();
     }
 
-    private void onSoundTypeChange(final CycleButton<ZitherSoundType> btn, final ZitherSoundType soundType) {
-        if ((instrumentScreen != null) && (instrumentScreen instanceof FloralZitherScreen))
-            ((FloralZitherScreen)instrumentScreen).noteGrid.setNoteSounds(soundType.soundArr().get());
+    @Override
+    protected void saveSoundType(ZitherSoundType soundType) {
+        ModClientConfigs.ZITHER_SOUND_TYPE.set(soundType);
+    }
 
-        queueToSave("zither_sound_type", () -> ModClientConfigs.ZITHER_SOUND_TYPE.set(soundType));
+    @Override
+    protected boolean isValidForSet(AbstractGridInstrumentScreen screen) {
+        return screen instanceof FloralZitherScreen;
     }
 }
