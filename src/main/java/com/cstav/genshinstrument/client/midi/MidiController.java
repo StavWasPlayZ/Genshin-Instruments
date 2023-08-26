@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import com.cstav.genshinstrument.event.MidiEvent;
 import com.mojang.logging.LogUtils;
 
-import net.minecraft.util.thread.BlockableEventLoop;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
@@ -116,8 +115,6 @@ public abstract class MidiController {
 
                     LogicalSidedProvider.WORKQUEUE.get(LogicalSide.CLIENT)
                         .executeBlocking(() -> MinecraftForge.EVENT_BUS.post(new MidiEvent(message)));
-                }
-                private static void fireMidiEvent(final MidiMessage message) {
                 }
 
                 @Override
