@@ -587,11 +587,11 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
 
     /**
-     * @return The MIDI note adjusted by -48.
+     * @return The MIDI note adjusted by -48, as well as the shift accounted.
      * Assumes middle C is 60 as per MIDI specifications.
      */
     protected int getLowC(final int note) {
-        return note - 48;
+        return note - ModClientConfigs.OCTAVE_SHIFT.get() * 12 - 48;
     }
 
 }

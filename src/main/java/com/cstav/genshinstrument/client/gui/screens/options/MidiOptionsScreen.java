@@ -8,19 +8,23 @@ import com.cstav.genshinstrument.client.gui.screens.instrument.partial.AbstractI
 import com.cstav.genshinstrument.client.midi.MidiController;
 
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.layouts.GridLayout.RowHelper;
+import net.minecraft.client.gui.layouts.SpacerElement;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class MidiOptionsScreen extends ModOptionsScreen {
+    public static final int MIN_OCTAVE_SHIFT = -4, MAX_OCTAVE_SHIFT = 4;
 
     protected final Screen prevScreen;
 
@@ -91,6 +95,33 @@ public class MidiOptionsScreen extends ModOptionsScreen {
                     Component.translatable("button.genshinstrument.midiDevice"), this::onMidiDeviceChanged
                 );
         rowHelper.addChild(midiDevice, 2);
+
+
+        rowHelper.addChild(SpacerElement.height(7), 2);
+
+        final AbstractSliderButton octaveShift = new AbstractSliderButton(0, 0, getBigButtonWidth(), 20,
+            CommonComponents.EMPTY,
+            Mth.clampedMap(ModClientConfigs.OCTAVE_SHIFT.get(), MIN_OCTAVE_SHIFT, MAX_OCTAVE_SHIFT, 0, 1)) {
+
+            {
+                updateMessage();
+            }
+
+            @Override
+            protected void updateMessage() {
+                this.setMessage(
+                    Component.translatable("button.genshinstrument.midiOctaveShift").append(": "
+                        + ModClientConfigs.OCTAVE_SHIFT.get()
+                    )
+                );
+            }
+            
+            @Override
+            protected void applyValue() {
+                onOctaveShiftChanged(this, (int)Mth.clampedLerp(MIN_OCTAVE_SHIFT, MAX_OCTAVE_SHIFT, value));
+            }
+        };
+        rowHelper.addChild(octaveShift, 2);
     }
 
     protected void onMidiEnabledChanged(final CycleButton<Boolean> button, final boolean value) {
@@ -119,6 +150,10 @@ public class MidiOptionsScreen extends ModOptionsScreen {
     
     protected void onExtendOctavesChanged(final CycleButton<Boolean> button, final boolean value) {
         ModClientConfigs.EXTEND_OCTAVES.set(value);
+    }
+    protected void onOctaveShiftChanged(final AbstractSliderButton button, final int value) {
+        if (ModClientConfigs.OCTAVE_SHIFT.get() != value)
+            ModClientConfigs.OCTAVE_SHIFT.set(value);
     }
 
 
