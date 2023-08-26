@@ -587,7 +587,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
 
     /**
-     * @return The MIDI note adjusted by -48, as well as the shift accounted.
+     * @return The MIDI note adjusted by -48, as well as the perferred shift accounted.
      * Assumes middle C is 60 as per MIDI specifications.
      */
     protected int getLowC(final int note) {
