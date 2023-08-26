@@ -17,9 +17,12 @@ import org.slf4j.Logger;
 import com.cstav.genshinstrument.event.MidiEvent;
 import com.mojang.logging.LogUtils;
 
+import net.minecraft.util.thread.BlockableEventLoop;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.LogicalSidedProvider;
+import net.minecraftforge.fml.LogicalSide;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class MidiController {
@@ -109,7 +112,12 @@ public abstract class MidiController {
 
                 @Override
                 public void send(MidiMessage message, long timeStamp) {
-                    MinecraftForge.EVENT_BUS.post(new MidiEvent(message));
+                    // We only want this to run on the render thread, not the MIDI one
+
+                    LogicalSidedProvider.WORKQUEUE.get(LogicalSide.CLIENT)
+                        .executeBlocking(() -> MinecraftForge.EVENT_BUS.post(new MidiEvent(message)));
+                }
+                private static void fireMidiEvent(final MidiMessage message) {
                 }
 
                 @Override

@@ -1,7 +1,6 @@
 package com.cstav.genshinstrument.client.gui.screens.instrument.partial.note;
 
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 
 import com.cstav.genshinstrument.client.ClientUtil;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
@@ -61,12 +60,7 @@ public class NoteButtonRenderer {
         RenderSystem.enableBlend();
 
         rings.removeIf((ring) -> !ring.isPlaying());
-        try {
-            // This was throwing it for some reason
-            rings.forEach((ring) -> ring.render(gui, themeLoader));
-        } catch (ConcurrentModificationException e) {
-            // dunno
-        }
+        rings.forEach((ring) -> ring.render(gui, themeLoader));
 
 
         renderNoteButton(gui, themeLoader);
