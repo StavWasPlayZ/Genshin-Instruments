@@ -180,14 +180,7 @@ public abstract class NoteButton extends AbstractButton {
             ? player.blockPosition()
             : InstrumentOpenProvider.getBlockPos(player);
 
-        // Send sound packet to server
-        ModPacketHandler.sendToServer(
-            new InstrumentPacket(pos,
-                sound, getPitch(),
-                instrumentScreen.interactionHand,
-                instrumentScreen.getInstrumentId(), getIdentifier()
-            )
-        );
+        sendNotePlayPacket(pos);
 
         playNoteAnimation(false);
 
@@ -196,6 +189,10 @@ public abstract class NoteButton extends AbstractButton {
     @Override
     public void onPress() {
         play();
+    }
+
+    protected void sendNotePlayPacket(final BlockPos pos) {
+        ModPacketHandler.sendToServer(new InstrumentPacket(this, pos));
     }
 
 
