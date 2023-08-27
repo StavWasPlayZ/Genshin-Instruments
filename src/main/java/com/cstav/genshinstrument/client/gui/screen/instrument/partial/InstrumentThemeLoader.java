@@ -259,13 +259,25 @@ public class InstrumentThemeLoader {
     }
 
 
-    protected <T> T getTheme(final Supplier<T> theme) {
-        if (theme.get() == null) {
+    protected Color getTheme(final Supplier<Color> theme) {
+        return getTheme(theme, Color.BLACK);
+    }
+
+    protected <T> T getTheme(final Supplier<T> theme, final T def) {
+        T _theme = theme.get();
+
+        if (_theme == null) {
             LOGGER.warn("Requested theme not found, performing reload!");
             performReload(Minecraft.getInstance().getResourceManager());
+
+            _theme = theme.get();
+            if (_theme == null) {
+                LOGGER.error("Failed to load instrument resources!");
+                return def;
+            }
         }
 
-        return theme.get();
+        return _theme;
     }
 
 }
