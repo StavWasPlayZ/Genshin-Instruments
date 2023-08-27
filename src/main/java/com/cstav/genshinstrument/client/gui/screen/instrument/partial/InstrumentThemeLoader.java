@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 
@@ -14,6 +15,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.logging.LogUtils;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
@@ -153,25 +155,29 @@ public class InstrumentThemeLoader {
 
             @Override
             public void onResourceManagerReload(ResourceManager resourceManager) {
-                // Handle global resource packs
-                isGlobalThemed = false;
-
-                try {
-                    isGlobalThemed = JsonParser.parseReader(resourceManager.getResource(INSTRUMENTS_META_LOC).get().openAsReader())
-                        .getAsJsonObject().get("is_global_pack").getAsBoolean();
-
-                    if (isGlobalThemed)
-                        LOGGER.info("Instrument global themes enabled; loading all instrument resources from "+GLOBAL_LOC);
-                } catch (Exception e) {}
-
-
-                for (final InstrumentThemeLoader instrumentLoader : LOADERS)
-                    instrumentLoader.performReload(resourceManager);
-
-                CACHES.clear();
+                InstrumentThemeLoader.reload(resourceManager);
             }
             
         });
+    }
+
+    private static void reload(final ResourceManager resourceManager) {
+        // Handle global resource packs
+        isGlobalThemed = false;
+
+        try {
+            isGlobalThemed = JsonParser.parseReader(resourceManager.getResource(INSTRUMENTS_META_LOC).get().openAsReader())
+                .getAsJsonObject().get("is_global_pack").getAsBoolean();
+
+            if (isGlobalThemed)
+                LOGGER.info("Instrument global themes enabled; loading all instrument resources from "+GLOBAL_LOC);
+        } catch (Exception e) {}
+
+
+        for (final InstrumentThemeLoader instrumentLoader : LOADERS)
+            instrumentLoader.performReload(resourceManager);
+
+        CACHES.clear();
     }
 
     private void performReload(final ResourceManager resourceManager) {
@@ -225,31 +231,41 @@ public class InstrumentThemeLoader {
 
     
     public Color getNoteTheme() {
-        return noteTheme;
+        return getTheme(() -> noteTheme);
     }
     public void setNoteTheme(Color noteTheme) {
         this.noteTheme = noteTheme;
     }
     
     public Color getPressedNoteTheme() {
-        return pressedNoteTheme;
+        return getTheme(() -> pressedNoteTheme);
     }
     public void setPressedNoteTheme(Color pressedNoteTheme) {
         this.pressedNoteTheme = pressedNoteTheme;
     }
 
     public Color getLabelTheme() {
-        return labelTheme;
+        return getTheme(() -> labelTheme);
     }
     public void setLabelTheme(Color labelTheme) {
         this.labelTheme = labelTheme;
     }
 
     public Color getNoteRingTheme() {
-        return noteRingTheme;
+        return getTheme(() -> noteRingTheme);
     }
     public void setNoteRingTheme(Color noteRingTheme) {
         this.noteRingTheme = noteRingTheme;
+    }
+
+
+    protected <T> T getTheme(final Supplier<T> theme) {
+        if (theme.get() == null) {
+            LOGGER.warn("Requested theme not found, performing reload!");
+            performReload(Minecraft.getInstance().getResourceManager());
+        }
+
+        return theme.get();
     }
 
 }
