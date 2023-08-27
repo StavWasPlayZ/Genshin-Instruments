@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.packet.INoteIdentifierSender;
 import com.cstav.genshinstrument.sound.NoteSound;
@@ -14,6 +15,8 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent.Context;
 
@@ -39,6 +42,14 @@ public class InstrumentPacket implements INoteIdentifierSender {
         this.instrumentId = instrumentId;
         this.noteIdentifier = noteIdentifier;
     }
+    @OnlyIn(Dist.CLIENT)
+    public InstrumentPacket(final NoteButton noteButton, final BlockPos pos) {
+        this(pos, noteButton.getSound(), noteButton.getPitch(),
+            noteButton.instrumentScreen.interactionHand,
+            noteButton.instrumentScreen.getInstrumentId(), noteButton.getIdentifier()
+        );
+    }
+
     public InstrumentPacket(FriendlyByteBuf buf) {
         pos = buf.readBlockPos();
         sound = NoteSound.readFromNetwork(buf);
