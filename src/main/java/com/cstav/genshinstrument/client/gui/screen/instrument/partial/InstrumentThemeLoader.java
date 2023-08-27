@@ -271,7 +271,7 @@ public class InstrumentThemeLoader {
 
         if (_theme == null) {
             LOGGER.warn("Requested theme not found, performing reload!");
-            performReload(Minecraft.getInstance().getResourceManager());
+            reload(Minecraft.getInstance().getResourceManager());
 
             _theme = theme.get();
             if (_theme == null) {
