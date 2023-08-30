@@ -4,6 +4,7 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButtonRenderer;
 import com.cstav.genshinstrument.networking.buttonidentifier.DrumNoteIdentifier;
+import com.mojang.blaze3d.platform.InputConstants.Key;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -28,6 +29,11 @@ public class DrumNoteButton extends NoteButton {
     @Override
     public DrumNoteIdentifier getIdentifier() {
         return new DrumNoteIdentifier(this);
+    }
+
+
+    public Key getKey() {
+        return btnType.getKeys().getKey(isRight);
     }
 
 
