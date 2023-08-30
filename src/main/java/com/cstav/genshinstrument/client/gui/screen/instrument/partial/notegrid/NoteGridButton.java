@@ -3,9 +3,11 @@ package com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButtonRenderer;
+import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.LabelUtil;
+import com.mojang.blaze3d.platform.InputConstants.Key;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -52,6 +54,11 @@ public class NoteGridButton extends NoteButton {
      */
     public static NoteSound getSoundFromArr(AbstractGridInstrumentScreen gridInstrument, NoteSound[] sounds, int row, int column) {
         return sounds[row + NoteGrid.getFlippedColumn(column, gridInstrument.columns()) * gridInstrument.rows()];
+    }
+
+
+    public Key getKey() {
+        return InstrumentKeyMappings.GRID_INSTRUMENT_MAPPINGS[column][row];
     }
 
 

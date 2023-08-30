@@ -86,6 +86,10 @@ public class InstrumentKeyMappings {
             this.left = create(left);
             this.right = create(right);
         }
+
+        public Key getKey(final boolean isRight) {
+            return isRight ? right : left;
+        }
     }
 
 
