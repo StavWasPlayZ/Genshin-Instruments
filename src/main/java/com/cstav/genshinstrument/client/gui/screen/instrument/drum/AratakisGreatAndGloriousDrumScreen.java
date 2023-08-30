@@ -90,16 +90,16 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
             Orientation.HORIZONTAL
         );
 
-        createButton(type, layout, type.getKeys().left, false);
-        createButton(type, layout, type.getKeys().right, true);
+        createButton(type, layout, false);
+        createButton(type, layout, true);
 
         return layout;
     }
-    private NoteButton createButton(DrumButtonType btnType, LinearLayout container, Key key, boolean isRight) {
-        final NoteButton btn = new DrumNoteButton(btnType, isRight, this);
+    private DrumNoteButton createButton(DrumButtonType btnType, LinearLayout container, boolean isRight) {
+        final DrumNoteButton btn = new DrumNoteButton(btnType, isRight, this);
 
         container.addChild(btn);
-        notes.put(key, btn);
+        notes.put(btn.getKey(), btn);
 
         return btn;
     }

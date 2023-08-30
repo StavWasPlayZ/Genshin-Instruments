@@ -17,7 +17,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class AbstractInstrumentOptionsScreen extends Screen {
+public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
     public final @Nullable AbstractInstrumentScreen instrumentScreen;
     public final Screen lastScreen;

@@ -25,8 +25,8 @@ public class DrumOptionsScren extends BaseInstrumentOptionsScreen {
     }
 
     @Override
-    public DrumNoteLabel[] getLabels() {
-        return DrumNoteLabel.values();
+    public INoteLabel[] getLabels() {
+        return DrumNoteLabel.availableVals();
     }
     @Override
     public DrumNoteLabel getCurrentLabel() {

@@ -555,9 +555,9 @@ public abstract class AbstractInstrumentScreen extends Screen {
                 setPitch(0);
                 ModClientConfigs.PITCH.set(0);
             }
-            // Shift the note to the lower octave
+            // Shift the note to the higher octave
             else
-                note -= minPitch;
+                note += 12;
         }
         else if (getPitch() == maxPitch) {
             if (note < maxMidiNote()) {
@@ -565,7 +565,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
                 ModClientConfigs.PITCH.set(0);
             }
             else
-                note -= maxPitch;
+                note -= 12;
         }
 
         return note;
