@@ -11,7 +11,9 @@
         "3.1": "Changes:\n- Improves instrument textures\n- Pitch is now determined by accurate note scales (fixing inaccurate representations of note labels & accidentals)\n- Implemented instrument options as the config screen for Forge's mod menu\n\nFixed:\n- Zither's sound type button overflowing to the Done button\n- Left-hand display of instruments\n- Note buttons' text labels overflowing to the instrument options\n- Issues playing with navigation",
 
         "3.2.1": "Backported mod version v3.0 to Minecraft version 1.19.4\nChanges until v3.2.1:\n\nv3.2.1\nFixed some players being unable to receive any of the mod's packets (packets were being incorrectly registered)\n\nv3.2\nChanges:\n- The Glorious Drum is now more similar to Genshin's\n- Pitch now affects the representation of notes in addition to accidentals, resulting in super accurate notes!\n\nFixed:\n- Incompatibility with Visual Overhaul mod\n- Note sumboles being offset and sometimes funky\n- Game crashing upon having instrument options open & clearing one's inventory",
-        "3.2.3": "Changes up to v3.2.3\n\nv3.2.3\nChanges:\n- New transposition system! Use the set keybinds to pitch your instruments up by 1 semitone (default: Left Shift = down, Right Shift = up)\n\nFixed:\n- Humongous notes on large GUI scales\n- Block instruments not closing at far distances\n- Pitch Db being default rather than C\n\nv3.2.2\n- Fixed Forge config screen crashing\n- General networking optimizations"
+        "3.2.3": "Changes up to v3.2.3\n\nv3.2.3\nChanges:\n- New transposition system! Use the set keybinds to pitch your instruments up by 1 semitone (default: Left Shift = down, Right Shift = up)\n\nFixed:\n- Humongous notes on large GUI scales\n- Block instruments not closing at far distances\n- Pitch Db being default rather than C\n\nv3.2.2\n- Fixed Forge config screen crashing\n- General networking optimizations",
+
+        "3.3": "Changes:\n- Midi Support!\n Added QWERTY layout labels (shown to users who are using any other layout)\n- Arataki's Great and Glorious Drum now has Note Name and Do Re Mi layouts\n- When the Accurate Notes option is off, will show the unicode-accurate accidental symbols (♯ and ♭) for Do Re Mi and Note Name layouts\n- Do Re Mi layout is now all lowercase\n- Removed ABC-type layouts\n\nFixed:\n- Transposition keys not working on instrument options screen\n- Sound type instrument screens (Floral Zither) overflowing to lower buttons\n- Bright pixels on the Floral Zither's texture"
     },
     "1.19.3": {
         "1.0": "Initial release",
@@ -33,7 +35,9 @@
         "3.1": "Changes:\n- Improves instrument textures\n- Pitch is now determined by accurate note scales (fixing inaccurate representations of note labels & accidentals)\n- Implemented instrument options as the config screen for Forge's mod menu\n\nFixed:\n- Zither's sound type button overflowing to the Done button\n- Left-hand display of instruments\n- Note buttons' text labels overflowing to the instrument options\n- Issues playing with navigation",
 
         "3.2.1": "Backported mod version v3.0 to Minecraft version 1.19.4\nChanges until v3.2.1:\n\nv3.2.1\nFixed some players being unable to receive any of the mod's packets (packets were being incorrectly registered)\n\nv3.2\nChanges:\n- The Glorious Drum is now more similar to Genshin's\n- Pitch now affects the representation of notes in addition to accidentals, resulting in super accurate notes!\n\nFixed:\n- Incompatibility with Visual Overhaul mod\n- Note sumboles being offset and sometimes funky\n- Game crashing upon having instrument options open & clearing one's inventory",
-        "3.2.3": "Changes up to v3.2.3\n\nv3.2.3\nChanges:\n- New transposition system! Use the set keybinds to pitch your instruments up by 1 semitone (default: Left Shift = down, Right Shift = up)\n\nFixed:\n- Humongous notes on large GUI scales\n- Block instruments not closing at far distances\n- Pitch Db being default rather than C\n\nv3.2.2\n- Fixed Forge config screen crashing\n- General networking optimizations"
+        "3.2.3": "Changes up to v3.2.3\n\nv3.2.3\nChanges:\n- New transposition system! Use the set keybinds to pitch your instruments up by 1 semitone (default: Left Shift = down, Right Shift = up)\n\nFixed:\n- Humongous notes on large GUI scales\n- Block instruments not closing at far distances\n- Pitch Db being default rather than C\n\nv3.2.2\n- Fixed Forge config screen crashing\n- General networking optimizations",
+
+        "3.3": "Changes:\n- Midi Support!\n Added QWERTY layout labels (shown to users who are using any other layout)\n- Arataki's Great and Glorious Drum now has Note Name and Do Re Mi layouts\n- When the Accurate Notes option is off, will show the unicode-accurate accidental symbols (♯ and ♭) for Do Re Mi and Note Name layouts\n- Do Re Mi layout is now all lowercase\n- Removed ABC-type layouts\n\nFixed:\n- Transposition keys not working on instrument options screen\n- Sound type instrument screens (Floral Zither) overflowing to lower buttons\n- Bright pixels on the Floral Zither's texture"
     },
     "1.19.4": {
         "2.5": "- Update to version 1.19.4\n- GUI keyboard navigation",
@@ -46,7 +50,9 @@
         "3.1": "Changes:\n- Improves instrument textures\n- Pitch is now determined by accurate note scales (fixing inaccurate representations of note labels & accidentals)\n- Implemented instrument options as the config screen for Forge's mod menu\n\nFixed:\n- Zither's sound type button overflowing to the Done button\n- Left-hand display of instruments\n- Note buttons' text labels overflowing to the instrument options",
 
         "3.2.1": "Backported mod version v3.0 to Minecraft version 1.19.4\nChanges until v3.2.1:\n\nv3.2.1\nFixed some players being unable to receive any of the mod's packets (packets were being incorrectly registered)\n\nv3.2\nChanges:\n- The Glorious Drum is now more similar to Genshin's\n- Pitch now affects the representation of notes in addition to accidentals, resulting in super accurate notes!\n\nFixed:\n- Incompatibility with Visual Overhaul mod\n- Note sumboles being offset and sometimes funky\n- Game crashing upon having instrument options open & clearing one's inventory",
-        "3.2.3": "Changes up to v3.2.3\n\nv3.2.3\nChanges:\n- New transposition system! Use the set keybinds to pitch your instruments up by 1 semitone (default: Left Shift = down, Right Shift = up)\n\nFixed:\n- Humongous notes on large GUI scales\n- Block instruments not closing at far distances\n- Pitch Db being default rather than C\n\nv3.2.2\n- Fixed Forge config screen crashing\n- General networking optimizations"
+        "3.2.3": "Changes up to v3.2.3\n\nv3.2.3\nChanges:\n- New transposition system! Use the set keybinds to pitch your instruments up by 1 semitone (default: Left Shift = down, Right Shift = up)\n\nFixed:\n- Humongous notes on large GUI scales\n- Block instruments not closing at far distances\n- Pitch Db being default rather than C\n\nv3.2.2\n- Fixed Forge config screen crashing\n- General networking optimizations",
+
+        "3.3": "Changes:\n- Midi Support!\n Added QWERTY layout labels (shown to users who are using any other layout)\n- Arataki's Great and Glorious Drum now has Note Name and Do Re Mi layouts\n- When the Accurate Notes option is off, will show the unicode-accurate accidental symbols (♯ and ♭) for Do Re Mi and Note Name layouts\n- Do Re Mi layout is now all lowercase\n- Removed ABC-type layouts\n\nFixed:\n- Transposition keys not working on instrument options screen\n- Sound type instrument screens (Floral Zither) overflowing to lower buttons\n- Bright pixels on the Floral Zither's texture"
     },
 
     "1.20": {
@@ -63,7 +69,9 @@
 
         "3.2": "Changes:\n- The Glorious Drum is now more similar to Genshin's\n- Pitch now affects the representation of notes in addition to accidentals, resulting in super accurate notes!\n\nFixed:\n- Incompatibility with Visual Overhaul mod\n- Note sumboles being offset and sometimes funky\n- Game crashing upon having instrument options open & clearing one's inventory",
         "3.2.1": "Fixed some players being unable to receive any of the mod's packets (packets were being incorrectly registered)",
-        "3.2.3": "Changes up to v3.2.3\n\nv3.2.3\nChanges:\n- New transposition system! Use the set keybinds to pitch your instruments up by 1 semitone (default: Left Shift = down, Right Shift = up)\n\nFixed:\n- Humongous notes on large GUI scales\n- Block instruments not closing at far distances\n- Pitch Db being default rather than C\n\nv3.2.2\n- Fixed Forge config screen crashing\n- General networking optimizations"
+        "3.2.3": "Changes up to v3.2.3\n\nv3.2.3\nChanges:\n- New transposition system! Use the set keybinds to pitch your instruments up by 1 semitone (default: Left Shift = down, Right Shift = up)\n\nFixed:\n- Humongous notes on large GUI scales\n- Block instruments not closing at far distances\n- Pitch Db being default rather than C\n\nv3.2.2\n- Fixed Forge config screen crashing\n- General networking optimizations",
+
+        "3.3": "Changes:\n- Midi Support!\n Added QWERTY layout labels (shown to users who are using any other layout)\n- Arataki's Great and Glorious Drum now has Note Name and Do Re Mi layouts\n- When the Accurate Notes option is off, will show the unicode-accurate accidental symbols (♯ and ♭) for Do Re Mi and Note Name layouts\n- Do Re Mi layout is now all lowercase\n- Removed ABC-type layouts\n\nFixed:\n- Transposition keys not working on instrument options screen\n- Sound type instrument screens (Floral Zither) overflowing to lower buttons\n- Bright pixels on the Floral Zither's texture"
     },
     "1.20.1": {
         "2.7.8": "- Update to 1.20.1\n- Pitch slider now has pitch names",
@@ -80,25 +88,27 @@
 
         "3.2": "Changes:\n- The Glorious Drum is now more similar to Genshin's\n- Pitch now affects the representation of notes in addition to accidentals, resulting in super accurate notes!\n\nFixed:\n- Incompatibility with Visual Overhaul mod\n- Note sumboles being offset and sometimes funky\n- Game crashing upon having instrument options open & clearing one's inventory",
         "3.2.1": "Fixed some players being unable to receive any of the mod's packets (packets were being incorrectly registered)",
-        "3.2.3": "Changes up to v3.2.3\n\nv3.2.3\nChanges:\n- New transposition system! Use the set keybinds to pitch your instruments up by 1 semitone (default: Left Shift = down, Right Shift = up)\n\nFixed:\n- Humongous notes on large GUI scales\n- Block instruments not closing at far distances\n- Pitch Db being default rather than C\n\nv3.2.2\n- Fixed Forge config screen crashing\n- General networking optimizations"
+        "3.2.3": "Changes up to v3.2.3\n\nv3.2.3\nChanges:\n- New transposition system! Use the set keybinds to pitch your instruments up by 1 semitone (default: Left Shift = down, Right Shift = up)\n\nFixed:\n- Humongous notes on large GUI scales\n- Block instruments not closing at far distances\n- Pitch Db being default rather than C\n\nv3.2.2\n- Fixed Forge config screen crashing\n- General networking optimizations",
+
+        "3.3": "Changes:\n- Midi Support!\n Added QWERTY layout labels (shown to users who are using any other layout)\n- Arataki's Great and Glorious Drum now has Note Name and Do Re Mi layouts\n- When the Accurate Notes option is off, will show the unicode-accurate accidental symbols (♯ and ♭) for Do Re Mi and Note Name layouts\n- Do Re Mi layout is now all lowercase\n- Removed ABC-type layouts\n\nFixed:\n- Transposition keys not working on instrument options screen\n- Sound type instrument screens (Floral Zither) overflowing to lower buttons\n- Bright pixels on the Floral Zither's texture"
     },
 
     
     "promos": {
-        "1.19.2-latest": "3.2.3",
-        "1.19.2-recommended": "3.2.3",
+        "1.19.2-latest": "3.3",
+        "1.19.2-recommended": "3.3",
         
-        "1.19.3-latest": "3.2.3",
-        "1.19.3-recommended": "3.2.3",
+        "1.19.3-latest": "3.3",
+        "1.19.3-recommended": "3.3",
 
-        "1.19.4-latest": "3.2.3",
-        "1.19.4-recommended": "3.2.3",
+        "1.19.4-latest": "3.3",
+        "1.19.4-recommended": "3.3",
 
 
-        "1.20-latest": "3.2.3",
-        "1.20-recommended": "3.2.3",
+        "1.20-latest": "3.3",
+        "1.20-recommended": "3.3",
 
-        "1.20.1-latest": "3.2.3",
-        "1.20.1-recommended": "3.2.3"
+        "1.20.1-latest": "3.3",
+        "1.20.1-recommended": "3.3"
     }
 }
