@@ -109,7 +109,10 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
      * exists, it will be overwritten.
      * @param saveRunnable The runnable for saving the option
      */
-    protected void queueToSave(final String optionKey, final Runnable saveRunnable) {
+    protected void queueToSave(String optionKey, final Runnable saveRunnable) {
+        final String modId = modId();
+        optionKey = ((modId == null) ? "" : ":") + optionKey;
+
         if (appliedOptions.containsKey(optionKey))
             appliedOptions.replace(optionKey, saveRunnable);
         else
@@ -121,6 +124,11 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
             runnable.run();
         
         ModClientConfigs.CONFIGS.save();
+    }
+
+
+    public String modId() {
+        return isOverlay ? instrumentScreen.getModId() : null;
     }
     
 }

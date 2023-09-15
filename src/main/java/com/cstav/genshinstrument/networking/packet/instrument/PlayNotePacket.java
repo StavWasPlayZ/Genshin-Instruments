@@ -18,21 +18,25 @@ import net.minecraftforge.network.NetworkEvent.Context;
 public class PlayNotePacket implements INoteIdentifierSender {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_CLIENT;
 
+    private final int pitch;
+    private final float volume;
 
     private final BlockPos blockPos;
     private final NoteSound sound;
-    private final int pitch;
     private final ResourceLocation instrumentId;
     private final NoteButtonIdentifier noteIdentifier;
     
     private final Optional<UUID> playerUUID;
     private final Optional<InteractionHand> hand;
 
-    public PlayNotePacket(BlockPos pos, NoteSound sound, int pitch, ResourceLocation instrumentId,
+    public PlayNotePacket(BlockPos pos, NoteSound sound, int pitch, float volume, ResourceLocation instrumentId,
         NoteButtonIdentifier noteIdentifier, Optional<UUID> playerUUID, Optional<InteractionHand> hand) {
+
+        this.pitch = pitch;
+        this.volume = volume;
+
         this.blockPos = pos;
         this.sound = sound;
-        this.pitch = pitch;
         this.instrumentId = instrumentId;
         this.noteIdentifier = noteIdentifier;
 
@@ -40,9 +44,11 @@ public class PlayNotePacket implements INoteIdentifierSender {
         this.hand = hand;
     }
     public PlayNotePacket(FriendlyByteBuf buf) {
+        pitch = buf.readInt();
+        volume = buf.readFloat();
+
         blockPos = buf.readBlockPos();
         sound = NoteSound.readFromNetwork(buf);
-        pitch = buf.readInt();
         instrumentId = buf.readResourceLocation();
         noteIdentifier = readNoteIdentifierFromNetwork(buf);
 
@@ -52,9 +58,11 @@ public class PlayNotePacket implements INoteIdentifierSender {
 
     @Override
     public void toBytes(FriendlyByteBuf buf) {
+        buf.writeInt(pitch);
+        buf.writeFloat(volume);
+
         buf.writeBlockPos(blockPos);
         sound.writeToNetwork(buf);
-        buf.writeInt(pitch);
         buf.writeResourceLocation(instrumentId);
         noteIdentifier.writeToNetwork(buf);
 
@@ -70,7 +78,7 @@ public class PlayNotePacket implements INoteIdentifierSender {
         context.enqueueWork(() ->
 
             sound.playAtPos(
-                pitch, playerUUID.orElse(null), hand,
+                pitch, volume, playerUUID.orElse(null), hand,
                 instrumentId, noteIdentifier, blockPos
             )
             

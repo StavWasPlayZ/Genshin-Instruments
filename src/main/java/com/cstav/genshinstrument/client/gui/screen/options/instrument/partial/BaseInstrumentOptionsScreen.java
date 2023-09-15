@@ -12,10 +12,10 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteB
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.midi.MidiOptionsScreen;
+import com.cstav.genshinstrument.client.gui.widget.SliderButton;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.LabelUtil;
 
-import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;
@@ -28,7 +28,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -128,15 +127,14 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
         rowHelper.addChild(instrumentChannel, 2);
 
         if (isPitchSliderEnabled()) {
-            final AbstractSliderButton pitchSlider = new AbstractSliderButton(0, 0, getSmallButtonWidth(), 20,
-                CommonComponents.EMPTY,
-                Mth.clampedMap(getPitch(), NoteSound.MIN_PITCH, NoteSound.MAX_PITCH, 0, 1)) {
+            final SliderButton pitchSlider = new SliderButton(getSmallButtonWidth(),
+                getPitch(), NoteSound.MIN_PITCH, NoteSound.MAX_PITCH) {
     
-                final DecimalFormat format = new DecimalFormat("0.00");
+                private static final DecimalFormat D_FORMAT = new DecimalFormat("0.00");
                 {
                     pitch = getPitch();
-                    updateMessage();
                 }
+
     
                 private int pitch;
     
@@ -148,20 +146,48 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
                                 LabelUtil.getNoteName(pitch, AbstractGridInstrumentScreen.NOTE_LAYOUT, 0),
                                 false
                             )
-                            + " ("+format.format(NoteSound.getPitchByNoteOffset(pitch))+")"
+                            + " ("+D_FORMAT.format(NoteSound.getPitchByNoteOffset(pitch))+")"
                         )
                     );
                 }
-                
+
                 @Override
                 protected void applyValue() {
-                    pitch = (int)Mth.clampedLerp(NoteSound.MIN_PITCH, NoteSound.MAX_PITCH, value);
+                    // This is a double slide, hence conversions to int would
+                    // make unnecessary calls
+                    if (instrumentScreen.getPitch() == pitch)
+                        return;
+                        
+                    pitch = (int) getValueClamped();
                     onPitchChanged(this, pitch);
                 }
             };
             rowHelper.addChild(pitchSlider);
         }
 
+        final SliderButton volumeSlider = new SliderButton(getSmallButtonWidth(), ModClientConfigs.VOLUME.get(), 0, 1) {
+
+            @Override
+            protected void updateMessage() {
+                this.setMessage(
+                    Component.translatable("button.genshinstrument.volume").append(": "
+                        + ((int)(value * 100))+"%"
+                    )
+                );
+            }
+            
+            @Override
+            protected void applyValue() {
+                onVolumeChanged(this, value);
+            }
+        };
+        rowHelper.addChild(volumeSlider);
+
+    }
+
+    protected void initVisualsSection(final GridLayout grid, final RowHelper rowHelper) {
+
+        // Not visual, but no space
         final CycleButton<Boolean> stopMusic = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(ModClientConfigs.STOP_MUSIC_ON_PLAY.get())
             .withTooltip((value) -> Tooltip.create(Component.translatable(STOP_MUSIC_KEY+".tooltip", NoteSound.STOP_SOUND_DISTANCE)))
@@ -170,17 +196,6 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
                 Component.translatable(STOP_MUSIC_KEY), this::onMusicStopChanged
             );
         rowHelper.addChild(stopMusic);
-    }
-
-    protected void initVisualsSection(final GridLayout grid, final RowHelper rowHelper) {
-
-        final CycleButton<Boolean> emitRing = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
-            .withInitialValue(ModClientConfigs.EMIT_RING_ANIMATION.get())
-            .create(0, 0,
-                getSmallButtonWidth(), getButtonHeight(),
-                Component.translatable("button.genshinstrument.emit_ring"), this::onEmitRingChanged
-            );
-        rowHelper.addChild(emitRing);
 
         final CycleButton<Boolean> sharedInstrument = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(ModClientConfigs.SHARED_INSTRUMENT.get())
@@ -243,13 +258,8 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
     }
     protected abstract void saveLabel(final INoteLabel newLabel);
 
-    protected void onPitchChanged(final AbstractSliderButton slider, final int pitch) {
+    protected void onPitchChanged(final SliderButton slider, final int pitch) {
         if (isOverlay) {
-            // This is a double slide, hence conversions to int would make
-            // this method be called for no reason
-            if (instrumentScreen.getPitch() == pitch)
-                return;
-
             // Directly save the pitch if we're on an instrument
             // Otherwise tranpositions will reset to their previous pitch
             instrumentScreen.setPitch(pitch);
@@ -261,15 +271,22 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
         ModClientConfigs.PITCH.set(newPitch);
     }
 
+    protected void onVolumeChanged(final SliderButton slider, final double volume) {
+        if (isOverlay)
+            instrumentScreen.volume = volume;
+
+        queueToSave("volume", () -> saveVolume(volume));
+    }
+    protected void saveVolume(final double newVolume) {
+        ModClientConfigs.VOLUME.set(newVolume);
+    }
+
     // These values derive from the config directly, so just update them on-spot
     protected void onChannelTypeChanged(CycleButton<InstrumentChannelType> button, InstrumentChannelType type) {
         ModClientConfigs.CHANNEL_TYPE.set(type);
     }
     protected void onMusicStopChanged(final CycleButton<Boolean> button, final boolean value) {
         ModClientConfigs.STOP_MUSIC_ON_PLAY.set(value);
-    }
-    protected void onEmitRingChanged(final CycleButton<Boolean> button, final boolean value) {
-        ModClientConfigs.EMIT_RING_ANIMATION.set(value);
     }
     protected void onSharedInstrumentChanged(final CycleButton<Boolean> button, final boolean value) {
         ModClientConfigs.SHARED_INSTRUMENT.set(value);

@@ -14,6 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
+import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
 import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -29,9 +30,11 @@ public class ModClientConfigs {
     public static final ForgeConfigSpec CONFIGS;
 
     public static final IntValue PITCH, MIDI_DEVICE_INDEX, OCTAVE_SHIFT;
+    public static final DoubleValue VOLUME;
+
     public static final EnumValue<NoteGridLabel> GRID_LABEL_TYPE;
     public static final EnumValue<InstrumentChannelType> CHANNEL_TYPE;
-    public static final BooleanValue STOP_MUSIC_ON_PLAY, EMIT_RING_ANIMATION, SHARED_INSTRUMENT,
+    public static final BooleanValue STOP_MUSIC_ON_PLAY, SHARED_INSTRUMENT,
         RENDER_BACKGROUND, ACCEPTED_GENSHIN_CONSENT, ACCURATE_NOTES,
         MIDI_ENABLED, EXTEND_OCTAVES;
 
@@ -47,13 +50,16 @@ public class ModClientConfigs {
         PITCH = configBuilder.defineInRange("instrument_pitch",
             0, NoteSound.MIN_PITCH, NoteSound.MAX_PITCH
         );
+        VOLUME = configBuilder.defineInRange("instrument_volume",
+            1D, 0, 1
+        );
+
         GRID_LABEL_TYPE = configBuilder.defineEnum("label_type", NoteGridLabel.KEYBOARD_LAYOUT);
         CHANNEL_TYPE = configBuilder.defineEnum("channel_type", InstrumentChannelType.MIXED);
 
         STOP_MUSIC_ON_PLAY = configBuilder.comment(
             "Stops all background music when you or someone else within "+NoteSound.STOP_SOUND_DISTANCE+" blocks of range plays an instrument"
         ).define("stop_music_on_play", true);
-        EMIT_RING_ANIMATION = configBuilder.define("emit_ring_animation", true);
         SHARED_INSTRUMENT = configBuilder.comment("Defines whether you will see others playing on your instrument's screen")
             .define("display_other_players", true);
 

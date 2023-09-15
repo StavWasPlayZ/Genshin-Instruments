@@ -70,6 +70,12 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
 
+    public double volume = ModClientConfigs.VOLUME.get();
+    public float volume() {
+        return (float)volume;
+    }
+
+
     public abstract InstrumentThemeLoader getThemeLoader();
     public abstract ResourceLocation getInstrumentId();
     

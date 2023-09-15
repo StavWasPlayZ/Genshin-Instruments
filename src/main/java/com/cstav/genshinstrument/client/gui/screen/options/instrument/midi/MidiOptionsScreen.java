@@ -4,6 +4,7 @@ import com.cstav.genshinstrument.client.ClientUtil;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.AbstractInstrumentOptionsScreen;
+import com.cstav.genshinstrument.client.gui.widget.SliderButton;
 import com.cstav.genshinstrument.client.midi.MidiController;
 
 import net.minecraft.client.gui.components.AbstractSliderButton;
@@ -94,13 +95,8 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
 
         rowHelper.addChild(SpacerElement.height(7), 2);
 
-        final AbstractSliderButton octaveShift = new AbstractSliderButton(0, 0, getBigButtonWidth(), 20,
-            CommonComponents.EMPTY,
-            Mth.clampedMap(ModClientConfigs.OCTAVE_SHIFT.get(), MIN_OCTAVE_SHIFT, MAX_OCTAVE_SHIFT, 0, 1)) {
-
-            {
-                updateMessage();
-            }
+        final SliderButton octaveShift = new SliderButton(getBigButtonWidth(),
+            ModClientConfigs.OCTAVE_SHIFT.get(), MIN_OCTAVE_SHIFT, MAX_OCTAVE_SHIFT) {
 
             @Override
             protected void updateMessage() {

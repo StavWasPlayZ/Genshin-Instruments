@@ -170,7 +170,7 @@ public abstract class NoteButton extends AbstractButton {
         if (locked)
             return;
         
-        sound.playLocally(getPitch());
+        sound.playLocally(getPitch(), instrumentScreen.volume());
 
 
         final Player player = minecraft.player;
