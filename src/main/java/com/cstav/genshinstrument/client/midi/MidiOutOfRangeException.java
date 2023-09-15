@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.client.gui.screen.options.instrument.midi;
+package com.cstav.genshinstrument.client.midi;
 
 public class MidiOutOfRangeException extends Exception {
     

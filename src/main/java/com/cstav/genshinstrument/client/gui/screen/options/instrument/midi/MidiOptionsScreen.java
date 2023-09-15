@@ -160,6 +160,6 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
     }
 
     protected void onFixedTouchChanged(final CycleButton<Boolean> button, final boolean value) {
-        ModClientConfigs.EXTEND_OCTAVES.set(value);
+        ModClientConfigs.FIXED_TOUCH.set(value);
     }
 }
