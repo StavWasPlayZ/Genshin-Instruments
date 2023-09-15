@@ -475,7 +475,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
         // Handle dynamic touch
         final double prevVolume = volume;
         if (!ModClientConfigs.FIXED_TOUCH.get())
-            volume *= (Math.max(MIN_MIDI_VELOCITY, message[2]) / 127D);
+            volume *= Math.max(MIN_MIDI_VELOCITY, message[2]) / 127D;
 
 
         pressedMidiNote = handleMidiPress(note, pitch);
