@@ -77,7 +77,7 @@ public class ServerUtil {
             NoteSound sound, ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, int pitch, float volume,
             PlayNotePacketDelegate notePacketDelegate) {
 
-        //TODO verify that we can axtually only create 1 packet and send to all the same object
+        //TODO verify that we can actually only create 1 packet and send to all the same object
         final PlayNotePacket packet = notePacketDelegate.create(
             pos, sound, pitch, volume,
             instrumentId, noteIdentifier,
@@ -133,7 +133,7 @@ public class ServerUtil {
             ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, int pitch, float volume,
             PlayNotePacketDelegate notePacketDelegate) {
 
-        //TODO verify that we can axtually only create 1 packet and send to all the same object
+        //TODO verify that we can actually only create 1 packet and send to all the same object
         final PlayNotePacket packet = notePacketDelegate.create(
             pos, sound, pitch, volume,
             instrumentId, noteIdentifier,
