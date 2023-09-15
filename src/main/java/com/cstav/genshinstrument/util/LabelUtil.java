@@ -88,12 +88,12 @@ public abstract class LabelUtil {
      * get the natural version of the note only
      * @return The given note, replaced with accurate accidentals unicodes
      */
-    public static String formatNoteName(final String noteName, final boolean omitIfAcuurate) {
+    public static String formatNoteName(final String noteName, final boolean omitIfAccurate) {
         if (noteName.isEmpty())
             return "";
             
         String result = String.valueOf(noteName.charAt(0));
-        if (!(omitIfAcuurate && ModClientConfigs.ACCURATE_NOTES.get()))
+        if (!(omitIfAccurate && ModClientConfigs.ACCURATE_NOTES.get()))
             result += noteName.substring(1)
                 .replaceAll("##", "\u00D7")
                 .replaceAll("#", "♯")
