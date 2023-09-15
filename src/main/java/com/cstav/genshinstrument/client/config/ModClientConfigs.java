@@ -36,7 +36,7 @@ public class ModClientConfigs {
     public static final EnumValue<InstrumentChannelType> CHANNEL_TYPE;
     public static final BooleanValue STOP_MUSIC_ON_PLAY, SHARED_INSTRUMENT,
         RENDER_BACKGROUND, ACCEPTED_GENSHIN_CONSENT, ACCURATE_NOTES,
-        MIDI_ENABLED, EXTEND_OCTAVES;
+        MIDI_ENABLED, EXTEND_OCTAVES, FIXED_TOUCH;
 
     public static final EnumValue<ZitherSoundType> ZITHER_SOUND_TYPE;
     public static final EnumValue<DrumNoteLabel> DRUM_LABEL_TYPE;
@@ -79,6 +79,9 @@ public class ModClientConfigs {
         EXTEND_OCTAVES = configBuilder.comment(
             "When a note that is higher/lower than the usual octave range is played, will automatically adjust the pitch to match your playings. Can only extend up to 1 octave per side: high and low C."
         ).define("extend_octaves", true);
+        FIXED_TOUCH = configBuilder.comment(
+            "Defines whether the velocity of a note press will not affect the instrument's volume"
+        ).define("fixed_touch", false);
 
         OCTAVE_SHIFT = configBuilder.defineInRange("midi_octave_shift", 0, MidiOptionsScreen.MIN_OCTAVE_SHIFT, MidiOptionsScreen.MAX_OCTAVE_SHIFT);
 

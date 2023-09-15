@@ -17,7 +17,6 @@ import net.minecraft.client.gui.layouts.SpacerElement;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -62,16 +61,14 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
             );
         rowHelper.addChild(midiEnabled);
 
-        if (!isOverlay || instrumentScreen.allowMidiOverflow()) {
-            final CycleButton<Boolean> extendOctaves = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
-                .withInitialValue(ModClientConfigs.EXTEND_OCTAVES.get())
-                .withTooltip((value) -> Tooltip.create(Component.translatable("button.genshinstrument.extendOctaves.tooltip")))
-                .create(0, 0,
-                    getSmallButtonWidth(), getButtonHeight(),
-                    Component.translatable("button.genshinstrument.extendOctaves"), this::onExtendOctavesChanged
-                );
-            rowHelper.addChild(extendOctaves);
-        }
+        final CycleButton<Boolean> fixedTouch = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
+            .withInitialValue(ModClientConfigs.MIDI_ENABLED.get())
+            .withTooltip((value) -> Tooltip.create(Component.translatable("button.genshinstrument.fixedTouch.tooltip")))
+            .create(0, 0,
+                getSmallButtonWidth(), getButtonHeight(),
+                Component.translatable("button.genshinstrument.fixedTouch"), this::onFixedTouchChanged
+            );
+        rowHelper.addChild(fixedTouch);
 
 
         MidiController.reloadDevices();
@@ -95,7 +92,19 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
 
         rowHelper.addChild(SpacerElement.height(7), 2);
 
-        final SliderButton octaveShift = new SliderButton(getBigButtonWidth(),
+
+        if (!isOverlay || instrumentScreen.allowMidiOverflow()) {
+            final CycleButton<Boolean> extendOctaves = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
+                .withInitialValue(ModClientConfigs.EXTEND_OCTAVES.get())
+                .withTooltip((value) -> Tooltip.create(Component.translatable("button.genshinstrument.extendOctaves.tooltip")))
+                .create(0, 0,
+                    getSmallButtonWidth(), getButtonHeight(),
+                    Component.translatable("button.genshinstrument.extendOctaves"), this::onExtendOctavesChanged
+                );
+            rowHelper.addChild(extendOctaves);
+        }
+
+        final SliderButton octaveShift = new SliderButton(getSmallButtonWidth(),
             ModClientConfigs.OCTAVE_SHIFT.get(), MIN_OCTAVE_SHIFT, MAX_OCTAVE_SHIFT) {
 
             @Override
@@ -109,12 +118,14 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
             
             @Override
             protected void applyValue() {
-                onOctaveShiftChanged(this, (int)Mth.clampedLerp(MIN_OCTAVE_SHIFT, MAX_OCTAVE_SHIFT, value));
+                onOctaveShiftChanged(this, (int) getValueClamped());
             }
         };
-        rowHelper.addChild(octaveShift, 2);
+        rowHelper.addChild(octaveShift);
     }
 
+
+    
     protected void onMidiEnabledChanged(final CycleButton<Boolean> button, final boolean value) {
         if (!value)
             MidiController.unloadDevice();
@@ -138,6 +149,7 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
     protected void saveMidiDeviceIndex(final int index) {
         ModClientConfigs.MIDI_DEVICE_INDEX.set(index);
     }
+
     
     protected void onExtendOctavesChanged(final CycleButton<Boolean> button, final boolean value) {
         ModClientConfigs.EXTEND_OCTAVES.set(value);
@@ -147,4 +159,7 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
             ModClientConfigs.OCTAVE_SHIFT.set(value);
     }
 
+    protected void onFixedTouchChanged(final CycleButton<Boolean> button, final boolean value) {
+        ModClientConfigs.EXTEND_OCTAVES.set(value);
+    }
 }

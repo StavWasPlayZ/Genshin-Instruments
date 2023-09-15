@@ -10,8 +10,9 @@ import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvide
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.GenshinConsentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
-import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.BaseInstrumentOptionsScreen;
+import com.cstav.genshinstrument.client.gui.screen.options.instrument.midi.MidiOutOfRangeException;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.AbstractInstrumentOptionsScreen;
+import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.BaseInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.client.midi.MidiController;
 import com.cstav.genshinstrument.event.MidiEvent;
@@ -430,10 +431,11 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
 
     /* ----------- MIDI implementations ----------- */
+    public static final int MIN_MIDI_VELOCITY = 20;
 
     /**
      * Defines wether this instrument can handle MIDI messages.
-     * Must override {@link AbstractInstrumentScreen#handleMidiPress} to function.
+     * @apiNote Override {@link AbstractInstrumentScreen#handleMidiPress} to handle MIDI input
      */
     public boolean isMidiInstrument() {
         return false;
@@ -459,17 +461,29 @@ public abstract class AbstractInstrumentScreen extends Screen {
         // So we don't do tranpositions on a sharpened scale
         resetTransposition();
 
-        final int note = handleMidiOverflow(getLowC(message[1]));
-        if (note == -99)
+        final int note;
+        try {
+            note = handleMidiOverflow(getLowC(message[1]));
+        } catch (MidiOutOfRangeException e) {
             return;
+        }
 
 
         //NOTE: Math.abs(getPitch()) was here instead, but transposition seems fair enough
         final int pitch = 0;
 
+        // Handle dynamic touch
+        final double prevVolume = volume;
+        if (!ModClientConfigs.FIXED_TOUCH.get())
+            volume = Math.max(MIN_MIDI_VELOCITY, message[2]) / 127D;
+
+
         pressedMidiNote = handleMidiPress(note, pitch);
         if (pressedMidiNote != null)
             pressedMidiNote.play();
+
+
+        volume = prevVolume;
     }
 
     /**
@@ -522,12 +536,13 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * Extends the usual limitation of octaves by 2 by adjusting the pitch higher/lower
      * when necessary
      * @param note The current note
-     * @return The new shited (or not) note to handle, or -99 if overflows
+     * @return The new shifted (or not) note to handle
+     * @throws MidiOutOfRangeException If the pressed note exceeds the allowed MIDI range (overflows)
      */
-    protected int handleMidiOverflow(int note) {
+    protected int handleMidiOverflow(int note) throws MidiOutOfRangeException {
         if (!allowMidiOverflow() || !ModClientConfigs.EXTEND_OCTAVES.get()) {
             if ((note < minMidiNote()) || (note >= maxMidiNote()))
-                return -99;
+                throw new MidiOutOfRangeException();
             return note;
         }
 
@@ -538,7 +553,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
         if (note < minMidiNote()) {
             // Minecraft pitch limitations
             if (note < minMidiOverflow())
-                return -99;
+                throw new MidiOutOfRangeException();
 
             if (getPitch() != minPitch) {
                 setPitch(minPitch);
@@ -546,7 +561,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
             }
         } else if (note >= maxMidiNote()) {
             if (note >= maxMidiOverflow())
-                return -99;
+                throw new MidiOutOfRangeException();
 
             if (getPitch() != maxPitch) {
                 setPitch(maxPitch);

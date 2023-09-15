@@ -46,6 +46,9 @@
     
     "button.genshinstrument.midiEnabled": "MIDI Enabled",
     "button.genshinstrument.midiDevice": "MIDI Device",
+    
+    "button.genshinstrument.fixedTouch": "Fixed Touch",
+    "button.genshinstrument.fixedTouch.tooltip": "Defines whether the velocity of a note press will not affect the instrument's volume",
 
     "button.genshinstrument.extendOctaves": "Extend Octaves",
     "button.genshinstrument.extendOctaves.tooltip": "When a note that is higher/lower than the usual octave range is played, will automatically adjust the pitch to match your playings. Can only extend up to 1 octave per side: high and low C.\nBlame Minecraft.",

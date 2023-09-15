@@ -152,13 +152,13 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
                 }
 
                 @Override
-                protected void applyValue() {
+                protected void applyValue() {                        
+                    pitch = (int) getValueClamped();
                     // This is a double slide, hence conversions to int would
                     // make unnecessary calls
                     if (instrumentScreen.getPitch() == pitch)
                         return;
                         
-                    pitch = (int) getValueClamped();
                     onPitchChanged(this, pitch);
                 }
             };
