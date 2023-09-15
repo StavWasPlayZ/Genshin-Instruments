@@ -133,8 +133,8 @@ public abstract class NoteButton extends AbstractButton {
             : NoteNotation.NONE;
     }
 
-    public String getCutNoteName() {
-        return LabelUtil.getCutNoteName(getNoteName());
+    public String getFormattedNoteName() {
+        return LabelUtil.formatNoteName(getNoteName(), true);
     }
     public String getNoteName() {
         if (instrumentScreen.noteLayout() == null)

@@ -144,7 +144,10 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
                 protected void updateMessage() {
                     this.setMessage(
                         Component.translatable("button.genshinstrument.pitch").append(": "
-                            + LabelUtil.getNoteName(pitch, AbstractGridInstrumentScreen.NOTE_LAYOUT, 0)
+                            + LabelUtil.formatNoteName(
+                                LabelUtil.getNoteName(pitch, AbstractGridInstrumentScreen.NOTE_LAYOUT, 0),
+                                false
+                            )
                             + " ("+format.format(NoteSound.getPitchByNoteOffset(pitch))+")"
                         )
                     );

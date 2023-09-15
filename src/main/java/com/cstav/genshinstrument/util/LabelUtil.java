@@ -83,12 +83,17 @@ public abstract class LabelUtil {
         return scale[(CommonUtil.doublyPyWrap(pitch, scale.length))];
     }
 
-    public static String getCutNoteName(final String noteName) {
+    /**
+     * @param omitIfAcuurate If the {@link ModClientConfigs#ACCURATE_NOTES} setting is enabled,
+     * get the natural version of the note only
+     * @return The given note, replaced with accurate accidentals unicodes
+     */
+    public static String formatNoteName(final String noteName, final boolean omitIfAcuurate) {
         if (noteName.isEmpty())
             return "";
             
         String result = String.valueOf(noteName.charAt(0));
-        if (!ModClientConfigs.ACCURATE_NOTES.get())
+        if (!(omitIfAcuurate && ModClientConfigs.ACCURATE_NOTES.get()))
             result += noteName.substring(1)
                 .replaceAll("##", "\u00D7")
                 .replaceAll("#", "♯")
