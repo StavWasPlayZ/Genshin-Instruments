@@ -111,7 +111,8 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
      */
     protected void queueToSave(String optionKey, final Runnable saveRunnable) {
         final String modId = modId();
-        optionKey = ((modId == null) ? "" : ":") + optionKey;
+        if (modId != null)
+            optionKey = modId + ":" + optionKey;
 
         if (appliedOptions.containsKey(optionKey))
             appliedOptions.replace(optionKey, saveRunnable);
@@ -127,6 +128,10 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     }
 
 
+    /**
+     * Fetches the Mod ID of the instrument being used
+     * @apiNote Should be overwritten in the case of not being used by an instrument
+     */
     public String modId() {
         return isOverlay ? instrumentScreen.getModId() : null;
     }
