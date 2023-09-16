@@ -114,7 +114,7 @@ public abstract class MidiController {
                     // We only want this to run on the render thread, not the MIDI one
 
                     LogicalSidedProvider.WORKQUEUE.get(LogicalSide.CLIENT)
-                        .executeBlocking(() -> MinecraftForge.EVENT_BUS.post(new MidiEvent(message)));
+                        .executeBlocking(() -> MinecraftForge.EVENT_BUS.post(new MidiEvent(message, timeStamp)));
                 }
 
                 @Override
