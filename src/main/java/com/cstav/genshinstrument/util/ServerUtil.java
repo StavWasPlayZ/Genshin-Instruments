@@ -221,21 +221,22 @@ public class ServerUtil {
     private static boolean sendOpenPacket(ServerPlayer player, InteractionHand usedHand, OpenInstrumentPacketSender onOpenRequest,
             BlockPos pos) {
 
-        onOpenRequest.send(player, usedHand);
-
-        // Update the the capabilty on server
+        // Update the the capabilty on the server
         if (pos == null)
             InstrumentOpenProvider.setOpen(player);
         else
             InstrumentOpenProvider.setOpen(player, pos);
+
+        // Only open the screen for the player in question after we set the capability
+        onOpenRequest.send(player, usedHand);
         
-        // And clients
+        // Notify players that the player's playing
         final Optional<BlockPos> playPos = Optional.ofNullable(pos);
 
-        player.level().players().forEach((nearbyPlayer) ->
+        player.level().players().forEach((otherPlayer) ->
             ModPacketHandler.sendToClient(
                 new NotifyInstrumentOpenPacket(player.getUUID(), playPos),
-                (ServerPlayer)nearbyPlayer
+                (ServerPlayer)otherPlayer
             )
         );
 

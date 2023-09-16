@@ -27,7 +27,10 @@ displayURL="https://www.curseforge.com/minecraft/mc-mods/genshin-instruments" #o
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="icon.png" #optional
 # A text field displayed in the mod UI
-credits='''All sounds and most ideas were derived and taken from Genshin Impact and Specy's AMAZING music website - https://specy.github.io/genshinMusic''' #optional
+credits='''All sounds and related assets are directly taken from Genshin Impact, and are Hoyoverse's own property.
+Item texture art made by the awesome Gen! - https://www.planetminecraft.com/member/gen
+Inspired by Specy's AMAZING music app - https://specy.github.io/genshinMusic
+''' #optional
 # A text field displayed in the mod UI
 authors="Stav (IGN StavWasPlayZ)" #optional
 # Display Test controls the display for your mod in the server connection screen
@@ -39,8 +42,7 @@ authors="Stav (IGN StavWasPlayZ)" #optional
 #displayTest="MATCH_VERSION" # MATCH_VERSION is the default if nothing is specified (#optional)
 
 # The description text for the mod (multi line!) (#mandatory)
-description='''
-A mod that brings Genshin Impact's instruments to Minecraft!
+description='''A mod that brings Genshin Impact's instruments to Minecraft!
 This is my first ever published mod, and I am quite proud of it :')
 
 Hope you enjoy it as much as I do!!
