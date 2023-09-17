@@ -53,6 +53,11 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
      */
     public abstract NoteSound[] getInitSounds();
 
+    @Override
+    public void setNoteSounds(NoteSound[] sounds) {
+        noteGrid.setNoteSounds(sounds);
+    }
+
     /**
      * <p>
      * An SSTI instrument is a Singular Sound-Type Instrument, such that

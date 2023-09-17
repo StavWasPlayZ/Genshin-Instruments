@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.client;
+package com.cstav.genshinstrument.client.util;
 
 import java.awt.Color;
 import java.awt.Point;

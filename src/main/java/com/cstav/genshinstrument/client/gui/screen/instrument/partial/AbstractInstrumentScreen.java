@@ -1,5 +1,6 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -74,6 +75,23 @@ public abstract class AbstractInstrumentScreen extends Screen {
     public double volume = ModClientConfigs.VOLUME.get();
     public float volume() {
         return (float)volume;
+    }
+
+
+    /**
+     * Sets the sounds of this instruments.
+     * @apiNote This method should generally be overitten by subclasses to keep their respected order of notes
+     */
+    public void setNoteSounds(final NoteSound[] sounds) {
+        final Iterator<NoteButton> noteIterator = notesIterable().iterator();
+
+        int i = 0;
+        while (noteIterator.hasNext() && (i < sounds.length))
+            noteIterator.next().setSound(sounds[i++]);
+
+
+        if (noteIterator.hasNext() || (i < sounds.length))
+            LogUtils.getLogger().warn("Not all sounds could be set for this instrument!");
     }
 
 

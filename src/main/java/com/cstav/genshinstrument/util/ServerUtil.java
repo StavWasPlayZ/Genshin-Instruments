@@ -226,11 +226,8 @@ public class ServerUtil {
             InstrumentOpenProvider.setOpen(player);
         else
             InstrumentOpenProvider.setOpen(player, pos);
-
-        // Only open the screen for the player in question after we set the capability
-        onOpenRequest.send(player, usedHand);
         
-        // Notify players that the player's playing
+        // Notify the other players
         final Optional<BlockPos> playPos = Optional.ofNullable(pos);
 
         player.level().players().forEach((otherPlayer) ->
@@ -239,6 +236,10 @@ public class ServerUtil {
                 (ServerPlayer)otherPlayer
             )
         );
+
+
+        // Send open packet after everyone is aware of the state
+        onOpenRequest.send(player, usedHand);
 
         return true;
     }

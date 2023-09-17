@@ -1,11 +1,11 @@
 package com.cstav.genshinstrument.client.gui.screen.options.instrument.midi;
 
-import com.cstav.genshinstrument.client.ClientUtil;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.AbstractInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.widget.SliderButton;
 import com.cstav.genshinstrument.client.midi.MidiController;
+import com.cstav.genshinstrument.client.util.ClientUtil;
 
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;

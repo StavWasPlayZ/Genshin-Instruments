@@ -3,10 +3,10 @@ package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note;
 import java.awt.Point;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
-import com.cstav.genshinstrument.client.ClientUtil;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.NoteLabelSupplier;
+import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.buttonidentifier.DefaultNoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
