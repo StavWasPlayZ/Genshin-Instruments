@@ -472,7 +472,9 @@ public abstract class AbstractInstrumentScreen extends Screen {
             
         final byte[] message = event.message.getMessage();
         // We only care for presses
-        if (message[0] != -112)
+        // Also ignore last 4 bits (don't care about channel)
+        //TODO add slider to control which midi channel to use and a toggle for all
+        if (((message[0] >> 4) << 4) != -112)
             return;
 
 
