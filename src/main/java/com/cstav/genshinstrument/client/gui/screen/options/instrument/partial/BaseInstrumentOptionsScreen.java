@@ -154,11 +154,6 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
                 @Override
                 protected void applyValue() {                        
                     pitch = (int) getValueClamped();
-                    // This is a double slide, hence conversions to int would
-                    // make unnecessary calls
-                    if (instrumentScreen.getPitch() == pitch)
-                        return;
-                        
                     onPitchChanged(this, pitch);
                 }
             };
@@ -260,6 +255,11 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
 
     protected void onPitchChanged(final SliderButton slider, final int pitch) {
         if (isOverlay) {
+            // This is a double slide, hence conversions to int would
+            // make unnecessary calls
+            if (instrumentScreen.getPitch() == pitch)
+                return;
+
             // Directly save the pitch if we're on an instrument
             // Otherwise tranpositions will reset to their previous pitch
             instrumentScreen.setPitch(pitch);
