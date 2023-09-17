@@ -43,7 +43,7 @@ public class FloralZitherOptionsScreen extends SoundTypeOptionsScreen<ZitherSoun
 
     @Override
     public TogglablePedalSound<ZitherSoundType> midiPedalListener() {
-        return new TogglablePedalSound<ZitherSoundType>(values());
+        return new TogglablePedalSound<ZitherSoundType>(ZitherSoundType.NEW, ZitherSoundType.OLD);
     }
 
 

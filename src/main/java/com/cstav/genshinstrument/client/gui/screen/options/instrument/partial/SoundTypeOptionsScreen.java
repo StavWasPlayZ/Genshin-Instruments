@@ -137,6 +137,7 @@ public abstract class SoundTypeOptionsScreen<T extends SoundType> extends GridIn
             return;
 
 
+        //NOTE: I did not test this on an actual pedal, this value might need to be flipped
         optionsScreen.setPerferredSoundType((message[2] >= 64) ? pedalSounds.enabled : pedalSounds.disabled);
     }
     

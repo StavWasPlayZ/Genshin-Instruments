@@ -15,11 +15,4 @@ public class TogglablePedalSound<T extends SoundType> {
         this.disabled = disabled;
     }
 
-    /**
-     * Constructs a {@link TogglablePedalSound} using the first 2 elements of the given array {@code (on = 0, off = 1)}
-     */
-    public TogglablePedalSound(final T[] arr) {
-        this(arr[0], arr[1]);
-    }
-
 }

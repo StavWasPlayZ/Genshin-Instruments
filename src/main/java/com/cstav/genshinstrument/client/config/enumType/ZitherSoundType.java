@@ -10,8 +10,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public enum ZitherSoundType implements SoundType {
-    NEW(() -> ModSounds.ZITHER_NEW_NOTE_SOUNDS),
-    OLD(() -> ModSounds.ZITHER_OLD_NOTE_SOUNDS);
+    OLD(() -> ModSounds.ZITHER_OLD_NOTE_SOUNDS),
+    NEW(() -> ModSounds.ZITHER_NEW_NOTE_SOUNDS);
 
     private Supplier<NoteSound[]> soundArr;
     private ZitherSoundType(final Supplier<NoteSound[]> soundType) {
