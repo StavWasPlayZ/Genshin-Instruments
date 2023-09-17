@@ -62,7 +62,7 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
         rowHelper.addChild(midiEnabled);
 
         final CycleButton<Boolean> fixedTouch = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
-            .withInitialValue(ModClientConfigs.MIDI_ENABLED.get())
+            .withInitialValue(ModClientConfigs.FIXED_TOUCH.get())
             .withTooltip((value) -> Tooltip.create(Component.translatable("button.genshinstrument.fixedTouch.tooltip")))
             .create(0, 0,
                 getSmallButtonWidth(), getButtonHeight(),
