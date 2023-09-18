@@ -97,7 +97,7 @@ public abstract class SoundTypeOptionsScreen<T extends SoundType> extends GridIn
     protected void onSoundTypeChange(final CycleButton<T> btn, final T soundType) {
         setPerferredSoundType(soundType);
 
-        queueToSave("zither_sound_type", () -> saveSoundType(soundType));
+        queueToSave(instrumentScreen.getInstrumentId().getPath()+"_sound_type", () -> saveSoundType(soundType));
     }
 
     protected abstract void saveSoundType(final T soundType);
