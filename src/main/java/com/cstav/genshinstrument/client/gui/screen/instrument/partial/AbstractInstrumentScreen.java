@@ -588,46 +588,46 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
         // Set the pitch
         if (note < minMidiNote()) {
-            // Minecraft pitch limitations
             if (note < minMidiOverflow())
                 throw new MidiOutOfRangeException();
 
-            if (getPitch() != minPitch) {
-                setPitch(minPitch);
-                ModClientConfigs.PITCH.set(minPitch);
-            }
+            if (getPitch() != minPitch)
+                overflowMidi(minPitch);
+                
         } else if (note >= maxMidiNote()) {
             if (note >= maxMidiOverflow())
                 throw new MidiOutOfRangeException();
 
-            if (getPitch() != maxPitch) {
-                setPitch(maxPitch);
-                ModClientConfigs.PITCH.set(maxPitch);
-            }
+            if (getPitch() != maxPitch)
+                overflowMidi(maxPitch);
         }
 
+        // Check if we are an octave above/below
+        // and reset back to pitch C
         if (getPitch() == minPitch) {
-            // Check if we are an octave above
-            if (note >= minMidiNote()) {
-                // Reset if so
+            if (note >= minMidiNote())
                 setPitch(0);
-                ModClientConfigs.PITCH.set(0);
-            }
             // Shift the note to the higher octave
             else
                 note += 12;
         }
         else if (getPitch() == maxPitch) {
-            if (note < maxMidiNote()) {
+            if (note < maxMidiNote())
                 setPitch(0);
-                ModClientConfigs.PITCH.set(0);
-            }
             else
                 note -= 12;
         }
 
         return note;
     }
+
+    private void overflowMidi(final int desiredPitch) {
+        setPitch(desiredPitch);
+        // Reset pitch to C to avoid coming back down for a mess
+        if (!ModClientConfigs.PITCH.get().equals(0))
+            ModClientConfigs.PITCH.set(0);
+    }
+
 
     protected int minMidiNote() {
         return 0;
