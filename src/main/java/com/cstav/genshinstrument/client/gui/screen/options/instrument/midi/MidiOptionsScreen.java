@@ -23,7 +23,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
     public static final int
-        MIN_OCTAVE_SHIFT = -4, MAX_OCTAVE_SHIFT = 4,
+        MIN_OCTAVE_SHIFT = -5, MAX_OCTAVE_SHIFT = 5,
         MIN_MIDI_CHANNEL = 0, MAX_MIDI_CHANNEL = 15
     ;
 
