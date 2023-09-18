@@ -87,7 +87,7 @@ public class ModClientConfigs {
         OCTAVE_SHIFT = configBuilder.defineInRange("midi_octave_shift",
             0, MidiOptionsScreen.MIN_OCTAVE_SHIFT, MidiOptionsScreen.MAX_OCTAVE_SHIFT
         );
-        MIDI_CHANNEL = configBuilder.defineInRange("midi_octave_shift",
+        MIDI_CHANNEL = configBuilder.defineInRange("midi_channel",
             0, MidiOptionsScreen.MIN_MIDI_CHANNEL, MidiOptionsScreen.MAX_MIDI_CHANNEL
         );
 
