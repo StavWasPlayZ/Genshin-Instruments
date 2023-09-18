@@ -48,6 +48,8 @@
     "button.genshinstrument.extendOctaves.tooltip": "כאשר תו העובר את מגבלת האוקטבות המובנת מתנגן, יעלה/יוריד את גובה הצליל כדיי להתאימו. בגלל איך שמיינקראפט בנוי, יכול להעלות/לרדת עד דו מז'ור.",
 
     "button.genshinstrument.midiOctaveShift": "הסטת אוקטבות",
+    "button.genshinstrument.midiChannel": "ערוץ MIDI",
+    "button.genshinstrument.acceptAllChannels": "הקשב לכל הערוצים",
 
 
     "button.genshinstrument.dominentDrumType": "סוג הטוף השולט",

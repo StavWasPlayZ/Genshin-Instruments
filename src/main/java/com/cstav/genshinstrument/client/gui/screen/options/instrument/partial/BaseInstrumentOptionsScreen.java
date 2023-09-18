@@ -139,15 +139,13 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
                 private int pitch;
     
                 @Override
-                protected void updateMessage() {
-                    this.setMessage(
-                        Component.translatable("button.genshinstrument.pitch").append(": "
-                            + LabelUtil.formatNoteName(
-                                LabelUtil.getNoteName(pitch, AbstractGridInstrumentScreen.NOTE_LAYOUT, 0),
-                                false
-                            )
-                            + " ("+D_FORMAT.format(NoteSound.getPitchByNoteOffset(pitch))+")"
+                public Component getMessage() {
+                    return Component.translatable("button.genshinstrument.pitch").append(": "
+                        + LabelUtil.formatNoteName(
+                            LabelUtil.getNoteName(pitch, AbstractGridInstrumentScreen.NOTE_LAYOUT, 0),
+                            false
                         )
+                        + " ("+D_FORMAT.format(NoteSound.getPitchByNoteOffset(pitch))+")"
                     );
                 }
 
@@ -163,11 +161,9 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
         final SliderButton volumeSlider = new SliderButton(getSmallButtonWidth(), ModClientConfigs.VOLUME.get(), 0, 1) {
 
             @Override
-            protected void updateMessage() {
-                this.setMessage(
-                    Component.translatable("button.genshinstrument.volume").append(": "
-                        + ((int)(value * 100))+"%"
-                    )
+            public Component getMessage() {
+                return Component.translatable("button.genshinstrument.volume").append(": "
+                    + ((int)(value * 100))+"%"
                 );
             }
             

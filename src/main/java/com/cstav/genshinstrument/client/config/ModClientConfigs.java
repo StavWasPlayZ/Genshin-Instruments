@@ -29,14 +29,14 @@ import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
 public class ModClientConfigs {
     public static final ForgeConfigSpec CONFIGS;
 
-    public static final IntValue PITCH, MIDI_DEVICE_INDEX, OCTAVE_SHIFT;
+    public static final IntValue PITCH, MIDI_DEVICE_INDEX, OCTAVE_SHIFT, MIDI_CHANNEL;
     public static final DoubleValue VOLUME;
 
     public static final EnumValue<NoteGridLabel> GRID_LABEL_TYPE;
     public static final EnumValue<InstrumentChannelType> CHANNEL_TYPE;
     public static final BooleanValue STOP_MUSIC_ON_PLAY, SHARED_INSTRUMENT,
         RENDER_BACKGROUND, ACCEPTED_GENSHIN_CONSENT, ACCURATE_NOTES,
-        MIDI_ENABLED, EXTEND_OCTAVES, FIXED_TOUCH;
+        MIDI_ENABLED, EXTEND_OCTAVES, FIXED_TOUCH, ACCEPT_ALL_CHANNELS;
 
     public static final EnumValue<ZitherSoundType> ZITHER_SOUND_TYPE;
     public static final EnumValue<DrumNoteLabel> DRUM_LABEL_TYPE;
@@ -82,8 +82,14 @@ public class ModClientConfigs {
         FIXED_TOUCH = configBuilder.comment(
             "Defines whether the velocity of a note press will not affect the instrument's volume"
         ).define("fixed_touch", false);
+        ACCEPT_ALL_CHANNELS = configBuilder.define("accept_all_channels", true);
 
-        OCTAVE_SHIFT = configBuilder.defineInRange("midi_octave_shift", 0, MidiOptionsScreen.MIN_OCTAVE_SHIFT, MidiOptionsScreen.MAX_OCTAVE_SHIFT);
+        OCTAVE_SHIFT = configBuilder.defineInRange("midi_octave_shift",
+            0, MidiOptionsScreen.MIN_OCTAVE_SHIFT, MidiOptionsScreen.MAX_OCTAVE_SHIFT
+        );
+        MIDI_CHANNEL = configBuilder.defineInRange("midi_octave_shift",
+            0, MidiOptionsScreen.MIN_MIDI_CHANNEL, MidiOptionsScreen.MAX_MIDI_CHANNEL
+        );
 
 
         DOMINENT_DRUM_TYPE = configBuilder.comment(

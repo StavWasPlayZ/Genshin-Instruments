@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.client.gui.widget;
 
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 
 public abstract class SliderButton extends AbstractSliderButton {
@@ -19,6 +20,13 @@ public abstract class SliderButton extends AbstractSliderButton {
 
         updateMessage();
     }
+
+    @Override
+    protected void updateMessage() {
+        setMessage(getMessage());
+    }
+
+    public abstract Component getMessage();
 
 
     public double getValueClamped() {

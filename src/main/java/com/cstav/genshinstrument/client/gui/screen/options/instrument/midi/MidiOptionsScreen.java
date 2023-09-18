@@ -22,7 +22,10 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
-    public static final int MIN_OCTAVE_SHIFT = -4, MAX_OCTAVE_SHIFT = 4;
+    public static final int
+        MIN_OCTAVE_SHIFT = -4, MAX_OCTAVE_SHIFT = 4,
+        MIN_MIDI_CHANNEL = 0, MAX_MIDI_CHANNEL = 15
+    ;
 
     public MidiOptionsScreen(Component pTitle, Screen prevScreen, AbstractInstrumentScreen instrumentScreen) {
         super(pTitle, instrumentScreen, prevScreen);
@@ -52,7 +55,8 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
 
     }
 
-    protected void initOptionsGrid(final GridLayout grid, final RowHelper rowHelper) {
+
+    protected void initDeviceSection(final GridLayout grid, final RowHelper rowHelper) {
         final CycleButton<Boolean> midiEnabled = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(ModClientConfigs.MIDI_ENABLED.get())
             .create(0, 0,
@@ -88,12 +92,12 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
                     Component.translatable("button.genshinstrument.midiDevice"), this::onMidiDeviceChanged
                 );
         rowHelper.addChild(midiDevice, 2);
+    }
+        
+    protected void initThatOtherSection(final GridLayout grid, final RowHelper rowHelper) {
+        final boolean canInstrumentOverflow = !isOverlay || instrumentScreen.allowMidiOverflow();
 
-
-        rowHelper.addChild(SpacerElement.height(7), 2);
-
-
-        if (!isOverlay || instrumentScreen.allowMidiOverflow()) {
+        if (canInstrumentOverflow) {
             final CycleButton<Boolean> extendOctaves = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
                 .withInitialValue(ModClientConfigs.EXTEND_OCTAVES.get())
                 .withTooltip((value) -> Tooltip.create(Component.translatable("button.genshinstrument.extendOctaves.tooltip")))
@@ -104,24 +108,64 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
             rowHelper.addChild(extendOctaves);
         }
 
-        final SliderButton octaveShift = new SliderButton(getSmallButtonWidth(),
+        final SliderButton octaveShift = new SliderButton(
+            canInstrumentOverflow ? getSmallButtonWidth() : getBigButtonWidth(),
             ModClientConfigs.OCTAVE_SHIFT.get(), MIN_OCTAVE_SHIFT, MAX_OCTAVE_SHIFT) {
 
-            @Override
-            protected void updateMessage() {
-                this.setMessage(
-                    Component.translatable("button.genshinstrument.midiOctaveShift").append(": "
+                @Override
+                public Component getMessage() {
+                    return Component.translatable("button.genshinstrument.midiOctaveShift").append(": "
                         + ModClientConfigs.OCTAVE_SHIFT.get()
-                    )
-                );
-            }
-            
-            @Override
-            protected void applyValue() {
-                onOctaveShiftChanged(this, (int) getValueClamped());
-            }
+                    );
+                }
+                
+                @Override
+                protected void applyValue() {
+                    onOctaveShiftChanged(this, (int) getValueClamped());
+                }
         };
-        rowHelper.addChild(octaveShift);
+        rowHelper.addChild(octaveShift, canInstrumentOverflow ? 1 : 2);
+
+
+        final SliderButton midiChannel = new SliderButton(getSmallButtonWidth(),
+            ModClientConfigs.MIDI_CHANNEL.get(), MIN_MIDI_CHANNEL, MAX_MIDI_CHANNEL) {
+
+                @Override
+                public Component getMessage() {
+                    return Component.translatable("button.genshinstrument.midiChannel").append(": "
+                        + ModClientConfigs.MIDI_CHANNEL.get()
+                    );
+                }
+                
+                @Override
+                protected void applyValue() {
+                    onMidiChannelChanged(this, (int) getValueClamped());
+                }
+        };
+
+        final CycleButton<Boolean> acceptAllChannels = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
+            .withInitialValue(ModClientConfigs.ACCEPT_ALL_CHANNELS.get())
+            .create(0, 0,
+                getSmallButtonWidth(), getButtonHeight(),
+                Component.translatable("button.genshinstrument.acceptAllChannels"), (btn, val) -> {
+                    onAcceptAllChannelsChanged(btn, val);
+                    midiChannel.active = !val;
+                }
+        );
+
+        midiChannel.active = !acceptAllChannels.getValue();
+
+        rowHelper.addChild(acceptAllChannels);
+        rowHelper.addChild(midiChannel);
+    }
+
+
+    protected void initOptionsGrid(final GridLayout grid, final RowHelper rowHelper) {
+        initDeviceSection(grid, rowHelper);
+
+        rowHelper.addChild(SpacerElement.height(7), 2);
+
+        initThatOtherSection(grid, rowHelper);
     }
 
 
@@ -161,5 +205,12 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
 
     protected void onFixedTouchChanged(final CycleButton<Boolean> button, final boolean value) {
         ModClientConfigs.FIXED_TOUCH.set(value);
+    }
+    protected void onAcceptAllChannelsChanged(final CycleButton<Boolean> button, final boolean value) {
+        ModClientConfigs.ACCEPT_ALL_CHANNELS.set(value);
+    }
+    protected void onMidiChannelChanged(final AbstractSliderButton button, final int value) {
+        if (ModClientConfigs.MIDI_CHANNEL.get() != value)
+            ModClientConfigs.MIDI_CHANNEL.set(value);
     }
 }

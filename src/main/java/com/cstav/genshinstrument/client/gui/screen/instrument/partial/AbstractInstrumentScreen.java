@@ -459,23 +459,14 @@ public abstract class AbstractInstrumentScreen extends Screen {
         return false;
     }
 
-
+    
     private NoteButton pressedMidiNote = null;
+
     public void onMidi(final MidiEvent event) {
-        if (!isMidiInstrument())
+        if (!canPerformMidi(event))
             return;
 
-
-        // Release previously pressed notes    
-        if (pressedMidiNote != null)
-            pressedMidiNote.locked = false;
-            
         final byte[] message = event.message.getMessage();
-        // We only care for presses
-        // Also ignore last 4 bits (don't care about channel)
-        //TODO add slider to control which midi channel to use and a toggle for all
-        if (((message[0] >> 4) << 4) != -112)
-            return;
 
 
         // So we don't do tranpositions on a sharpened scale
@@ -505,6 +496,32 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
         volume = prevVolume;
     }
+
+    protected boolean canPerformMidi(final MidiEvent event) {
+        if (!isMidiInstrument())
+            return false;
+    
+        final byte[] message = event.message.getMessage();
+
+        // Release previously pressed notes    
+        if (pressedMidiNote != null)
+            pressedMidiNote.locked = false;
+
+        // We only care for press events:
+        
+        // Ignore last 4 bits (don't care about the channel atm)
+        final int eventType = (message[0] >> 4) << 4;
+        if (eventType != -112)
+            return false;
+
+        if (!ModClientConfigs.ACCEPT_ALL_CHANNELS.get())
+            if ((message[0] - eventType) != ModClientConfigs.MIDI_CHANNEL.get())
+                return false;
+
+
+        return true;
+    }
+
 
     /**
      * Fires when a MIDI note is being pressed sucessfully, only if this is {@link AbstractInstrumentScreen#isMidiInstrument a midi instrument}.
@@ -634,8 +651,4 @@ public abstract class AbstractInstrumentScreen extends Screen {
     protected int getLowC(final int note) {
         return note - ModClientConfigs.OCTAVE_SHIFT.get() * 12 - 48;
     }
-
 }
-
-
-// I just want to have 600 lines mate
