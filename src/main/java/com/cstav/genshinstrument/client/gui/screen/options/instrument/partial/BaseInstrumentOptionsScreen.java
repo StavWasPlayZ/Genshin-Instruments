@@ -16,6 +16,7 @@ import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.LabelUtil;
 
+import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;
@@ -249,7 +250,7 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
     }
     protected abstract void saveLabel(final INoteLabel newLabel);
 
-    protected void onPitchChanged(final SliderButton slider, final int pitch) {
+    protected void onPitchChanged(final AbstractSliderButton slider, final int pitch) {
         if (isOverlay) {
             // This is a double slide, hence conversions to int would
             // make unnecessary calls
@@ -267,7 +268,7 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
         ModClientConfigs.PITCH.set(newPitch);
     }
 
-    protected void onVolumeChanged(final SliderButton slider, final double volume) {
+    protected void onVolumeChanged(final AbstractSliderButton slider, final double volume) {
         if (isOverlay)
             instrumentScreen.volume = volume;
 
