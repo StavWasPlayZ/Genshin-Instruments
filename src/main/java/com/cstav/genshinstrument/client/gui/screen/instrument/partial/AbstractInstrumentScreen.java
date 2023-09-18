@@ -74,7 +74,8 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     public double volume = ModClientConfigs.VOLUME.get();
     /**
-     * Convinience method to get the {@link AbstractInstrumentScreen#volume volume} as a {@code float}
+     * Convinience method to get the {@link AbstractInstrumentScreen#volume volume}
+     * of this instrument as a {@code float}
      */
     public float volume() {
         return (float)volume;
