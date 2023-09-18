@@ -52,6 +52,11 @@ public abstract class MidiController {
         }
     }
 
+    /**
+     * Reloads the list of MIDI devices only if there are none
+     * @return Whether there are still no devices available
+     * @see MidiController#reloadDevices
+     */
     public static boolean reloadIfEmpty() {
         if (DEVICES.isEmpty())
             reloadDevices();
@@ -59,9 +64,11 @@ public abstract class MidiController {
         return DEVICES.isEmpty();
     }
 
+    /**
+     * @return A list of available MIDI devices by their indexes, and -1 for None
+     */
     public static List<Integer> getValuesForOption() {
         final List<Integer> result = new ArrayList<>(DEVICES.size() + 1);
-        // Include -1 as none
         result.add(-1);
 
         for (int i = 0; i < DEVICES.size(); i++)
@@ -72,8 +79,10 @@ public abstract class MidiController {
 
 
     public static void loadDevice(final int infoIndex) {
-        if (!reloadIfEmpty())
-            unloadDevice();
+        if (reloadIfEmpty())
+            return;
+            
+        unloadDevice();
 
         info = getInfoFromIndex(infoIndex);
         currDevice = DEVICES.get(info);
