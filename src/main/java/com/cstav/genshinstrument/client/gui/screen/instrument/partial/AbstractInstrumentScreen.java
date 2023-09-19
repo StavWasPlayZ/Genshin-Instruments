@@ -507,7 +507,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
     
         final byte[] message = event.message.getMessage();
 
-        // Release previously pressed notes    
+        // Release the previously pressed note
         if (pressedMidiNote != null)
             pressedMidiNote.locked = false;
 
@@ -584,7 +584,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
         if (!allowMidiOverflow() || !ModClientConfigs.EXTEND_OCTAVES.get()) {
             if ((note < minMidiNote()) || (note >= maxMidiNote()))
                 throw new MidiOutOfRangeException();
-                
+
             return note;
         }
 
