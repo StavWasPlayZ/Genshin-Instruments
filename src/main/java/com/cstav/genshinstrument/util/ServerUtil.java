@@ -33,6 +33,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.network.NetworkDirection;
+import net.minecraftforge.network.NetworkEvent.Context;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 public class ServerUtil {
@@ -256,14 +257,21 @@ public class ServerUtil {
         for (final Class<IModPacket> packetType : acceptablePackets)
             try {
                 
-                sc.registerMessage(id.get(), packetType, IModPacket::toBytes, (buf) -> {
+                sc.registerMessage(id.get(), packetType, IModPacket::write, (buf) -> {
                     try {
                         return packetType.getDeclaredConstructor(FriendlyByteBuf.class).newInstance(buf);
                     } catch (Exception e) {
                         LOGGER.error("Error constructing packet of type "+packetType.getName(), e);
                         return null;
                     }
-                }, IModPacket::handle, getDirection(packetType));
+                }, (msg, supplier) -> {
+                    final Context context = supplier.get();
+                    context.enqueueWork(() ->
+                        msg.handle(context)
+                    );
+                    
+                    context.setPacketHandled(true);
+                }, getDirection(packetType));
 
             } catch (Exception e) {
                 LOGGER.error(

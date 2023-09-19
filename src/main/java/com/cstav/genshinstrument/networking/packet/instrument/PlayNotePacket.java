@@ -2,7 +2,6 @@ package com.cstav.genshinstrument.networking.packet.instrument;
 
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Supplier;
 
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.packet.INoteIdentifierSender;
@@ -57,7 +56,7 @@ public class PlayNotePacket implements INoteIdentifierSender {
     }
 
     @Override
-    public void toBytes(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
         buf.writeInt(pitch);
         buf.writeFloat(volume);
 
@@ -72,18 +71,10 @@ public class PlayNotePacket implements INoteIdentifierSender {
 
 
     @Override
-    public void handle(final Supplier<Context> supplier) {
-        final Context context = supplier.get();
-
-        context.enqueueWork(() ->
-
-            sound.playAtPos(
-                pitch, volume, playerUUID.orElse(null), hand,
-                instrumentId, noteIdentifier, blockPos
-            )
-            
+    public void handle(final Context context) {
+        sound.playAtPos(
+            pitch, volume, playerUUID.orElse(null), hand,
+            instrumentId, noteIdentifier, blockPos
         );
-
-        context.setPacketHandled(true);
     }
 }

@@ -1,7 +1,6 @@
 package com.cstav.genshinstrument.networking.packet.instrument;
 
 import java.util.Optional;
-import java.util.function.Supplier;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
@@ -68,7 +67,7 @@ public class InstrumentPacket implements INoteIdentifierSender {
     }
 
     @Override
-    public void toBytes(final FriendlyByteBuf buf) {
+    public void write(final FriendlyByteBuf buf) {
         buf.writeBlockPos(pos);
         sound.writeToNetwork(buf);
         buf.writeOptional(hand, FriendlyByteBuf::writeEnum);
@@ -83,18 +82,12 @@ public class InstrumentPacket implements INoteIdentifierSender {
 
 
     @Override
-    public void handle(final Supplier<Context> supplier) {
-        final Context context = supplier.get();
-        
-        context.enqueueWork(() -> {
-            final ServerPlayer player = context.getSender();
-            if (!InstrumentOpen.isOpen(player))
-                return;
+    public void handle(final Context context) {
+        final ServerPlayer player = context.getSender();
+        if (!InstrumentOpen.isOpen(player))
+            return;
 
-            sendPlayNotePackets(player);
-        });
-
-        context.setPacketHandled(true);
+        sendPlayNotePackets(player);
     }
 
     protected void sendPlayNotePackets(final ServerPlayer player) {
