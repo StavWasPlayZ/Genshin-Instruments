@@ -85,8 +85,10 @@ public abstract class MidiController {
 
 
     public static void loadDevice(final int infoIndex) {
-        if (reloadIfEmpty())
+        if (reloadIfEmpty()) {
+            LOGGER.warn("Attempted to load MIDI device #"+infoIndex+", but there are no devices available!");
             return;
+        }
             
         unloadDevice();
 
