@@ -9,6 +9,7 @@ import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiDevice.Info;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.Transmitter;
 
@@ -35,9 +36,10 @@ public abstract class MidiController {
     private static boolean isTransmitting = false;
 
     public static void reloadDevices() {
+        LOGGER.info("Reloading MIDI devices...");
         DEVICES.clear();
 
-        MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
+        final MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
 
         for (int i = 0; i < infos.length; i++) {
             try {
@@ -48,7 +50,11 @@ public abstract class MidiController {
 
                 DEVICES.put(infos[i], device);
 
-            } catch (Exception e) {}
+            } catch (MidiUnavailableException e) {
+                LOGGER.warn("MIDI device "+infos[i]+" cannot transmit any MIDI; ommitting!");
+            } catch (Exception e) {
+                LOGGER.error("Unexpected error occured while trying to obtain MIDI device!", e);
+            }
         }
     }
 
