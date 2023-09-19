@@ -71,7 +71,7 @@ public abstract class MidiController {
     }
 
     /**
-     * @return A list of available MIDI devices by their indexes, and -1 for None
+     * @return A list of available MIDI devices by their indexes, including -1 for None
      */
     public static List<Integer> getValuesForOption() {
         final List<Integer> result = new ArrayList<>(DEVICES.size() + 1);
