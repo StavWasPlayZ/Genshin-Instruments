@@ -151,7 +151,7 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
                 }
 
                 @Override
-                protected void applyValue() {                        
+                protected void applyValue() {
                     pitch = (int) getValueClamped();
                     onPitchChanged(this, pitch);
                 }
