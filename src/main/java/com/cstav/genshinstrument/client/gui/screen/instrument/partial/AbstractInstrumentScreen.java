@@ -584,6 +584,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
         if (!allowMidiOverflow() || !ModClientConfigs.EXTEND_OCTAVES.get()) {
             if ((note < minMidiNote()) || (note >= maxMidiNote()))
                 throw new MidiOutOfRangeException();
+                
             return note;
         }
 
