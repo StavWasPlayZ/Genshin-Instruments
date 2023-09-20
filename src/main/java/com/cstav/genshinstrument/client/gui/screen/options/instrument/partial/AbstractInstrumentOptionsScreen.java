@@ -121,9 +121,10 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     }
 
     protected void onSave() {
-        for (final Runnable runnable : appliedOptions.values())
-            runnable.run();
-        
+        if (appliedOptions.isEmpty())
+            return;
+
+        appliedOptions.values().forEach(Runnable::run);
         ModClientConfigs.CONFIGS.save();
     }
 
