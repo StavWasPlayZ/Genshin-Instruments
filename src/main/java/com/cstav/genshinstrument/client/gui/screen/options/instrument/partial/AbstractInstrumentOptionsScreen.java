@@ -5,9 +5,12 @@ import java.util.HashMap;
 
 import javax.annotation.Nullable;
 
+import org.slf4j.Logger;
+
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.util.ClientUtil;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -101,6 +104,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     /* ---------------- Save System --------------- */
 
     protected final HashMap<String, Runnable> appliedOptions = new HashMap<>();
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     /**
      * Queues the given option to later be saved.
@@ -126,6 +130,9 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
         appliedOptions.values().forEach(Runnable::run);
         ModClientConfigs.CONFIGS.save();
+        
+        LOGGER.info("Successfully saved "+appliedOptions.size()+" option"+((appliedOptions.size() == 1) ? "" : "s")
+            + " for "+title.getString());
     }
 
 
