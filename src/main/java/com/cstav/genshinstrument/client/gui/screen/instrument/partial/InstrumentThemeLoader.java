@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 
@@ -15,7 +14,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.logging.LogUtils;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
@@ -175,7 +173,6 @@ public class InstrumentThemeLoader {
             instrumentLoader.performReload(resourceManager);
 
         CACHES.clear();
-        reloadAttempted = false;
     }
 
     private void performReload(final ResourceManager resourceManager) {
@@ -229,58 +226,40 @@ public class InstrumentThemeLoader {
 
     
     public Color getNoteTheme() {
-        return getTheme(() -> noteTheme);
+        return getColorTheme(noteTheme);
     }
     public void setNoteTheme(Color noteTheme) {
         this.noteTheme = noteTheme;
     }
     
     public Color getPressedNoteTheme() {
-        return getTheme(() -> pressedNoteTheme);
+        return getColorTheme(pressedNoteTheme);
     }
     public void setPressedNoteTheme(Color pressedNoteTheme) {
         this.pressedNoteTheme = pressedNoteTheme;
     }
 
     public Color getLabelTheme() {
-        return getTheme(() -> labelTheme);
+        return getColorTheme(labelTheme);
     }
     public void setLabelTheme(Color labelTheme) {
         this.labelTheme = labelTheme;
     }
 
     public Color getNoteRingTheme() {
-        return getTheme(() -> noteRingTheme);
+        return getColorTheme(noteRingTheme);
     }
     public void setNoteRingTheme(Color noteRingTheme) {
         this.noteRingTheme = noteRingTheme;
     }
 
 
-    protected Color getTheme(final Supplier<Color> theme) {
+    protected Color getColorTheme(final Color theme) {
         return getTheme(theme, Color.BLACK);
     }
 
-    private static boolean reloadAttempted;
-    protected <T> T getTheme(final Supplier<T> theme, final T def) {
-        T _theme = theme.get();
-
-        if (_theme == null) {
-            if (reloadAttempted)
-                return def;
-
-            LOGGER.warn("Requested theme not found, performing reload!");
-            reload(Minecraft.getInstance().getResourceManager());
-
-            _theme = theme.get();
-            if (_theme == null) {
-                LOGGER.error("Failed to load instrument resources!");
-                reloadAttempted = true;
-                return def;
-            }
-        }
-
-        return _theme;
+    protected <T> T getTheme(final T theme, final T def) {
+        return (theme == null) ? def : theme;
     }
 
 }
