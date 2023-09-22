@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class NoteRing {
-    public static final String RING_GLOB_FILENAME = "ring.png";
+    public static final String RING_GLOB_FILENAME = "note/ring.png";
 
     protected final RingAnimationController ringAnimation;
 

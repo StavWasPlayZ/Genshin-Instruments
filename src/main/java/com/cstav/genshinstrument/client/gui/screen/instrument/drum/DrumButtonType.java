@@ -24,9 +24,6 @@ public enum DrumButtonType {
     public NoteSound getSound() {
         return sound;
     }
-    public int getSpriteIndex(final boolean isRight) {
-        return ((this == KA) && isRight) ? 2 : ordinal();
-    }
     public String getTransKey() {
         return transKey;
     }

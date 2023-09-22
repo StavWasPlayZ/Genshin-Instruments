@@ -18,7 +18,6 @@ import com.mojang.blaze3d.platform.InputConstants.Key;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.layouts.AbstractLayout;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -155,15 +154,6 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
         return new GridInstrumentOptionsScreen(this);
     }
 
-    /**
-     * Defines the location of the note symbols.
-     * The number of symbols should match with the number of {@link AbstractGridInstrumentScreen#rows rows} in this instrument.
-     */
-    @Override
-    public ResourceLocation getNoteSymbolsLocation() {
-        return getInternalResourceFromGlob("grid_notes.png");
-    }
-
     @Override
     public String[] noteLayout() {
         return NOTE_LAYOUT;
@@ -197,18 +187,24 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
     protected void renderInstrumentBackground(final GuiGraphics gui) {
         final int clefX = grid.getX() - getNoteSize() + 8;
 
-        for (int i = 0; i < columns(); i++) {
-            renderClef(gui, i, clefX);
-            renderStaff(gui, i);
+        // Implement your own otherwise, idk
+        if (columns() == 3) {
+            renderClef(gui, 0, clefX, "treble");
+            renderClef(gui, 1, clefX, "alto");
+            renderClef(gui, 2, clefX, "bass");
         }
+
+        for (int i = 0; i < columns(); i++)
+            renderStaff(gui, i);
     }
 
-    protected void renderClef(final GuiGraphics gui, final int index, final int x) {
-        gui.blit(getInternalResourceFromGlob("background/clefs.png"),
+    protected void renderClef(GuiGraphics gui, int index, int x, String clefName) {
+        gui.blit(getInternalResourceFromGlob("background/clef/"+clefName+".png"),
             x, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index) - 5,
-            index * CLEF_WIDTH, 0,
+            0, 0,
+
             CLEF_WIDTH, CLEF_HEIGHT,
-            CLEF_WIDTH*3, CLEF_HEIGHT
+            CLEF_WIDTH, CLEF_HEIGHT
         );
     }
     protected void renderStaff(final GuiGraphics gui, final int index) {

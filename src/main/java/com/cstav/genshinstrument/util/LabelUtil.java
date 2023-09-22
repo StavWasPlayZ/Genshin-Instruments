@@ -8,12 +8,10 @@ import java.util.Map;
 import org.slf4j.Logger;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.INoteLabel;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 
 public abstract class LabelUtil {
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -110,26 +108,6 @@ public abstract class LabelUtil {
 
         return Component.translatable(INoteLabel.TRANSLATABLE_PATH + ABC_TO_DO_RE_MI.get(noteName.charAt(0)))
             .append(noteName.substring(1));
-    }
-
-
-    public static int getABCOffset(final NoteButton noteButton) {
-        final ResourceLocation instrumentId = noteButton.instrumentScreen.getInstrumentId();
-        final String noteName = noteButton.getNoteName();
-
-        if (noteName.isEmpty()) {
-            LOGGER.warn("Cannot get ABC offset for an instrument without a note layout! ("+instrumentId+")");
-            return 0;
-        }
-
-        final char note = noteName.charAt(0);
-
-        for (int i = 0; i < ABC.length; i++)
-            if (note == ABC[i])
-                return i;
-
-        LOGGER.warn("Could not get note "+note+" for instrument "+noteButton.instrumentScreen.getInstrumentId()+"!");
-        return 0;
     }
 
 }

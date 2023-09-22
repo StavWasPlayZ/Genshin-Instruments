@@ -104,11 +104,6 @@ public abstract class AbstractInstrumentScreen extends Screen {
     
     protected abstract BaseInstrumentOptionsScreen initInstrumentOptionsScreen();
 
-    /**
-     * @return The location of all labels present in this instrument
-     */
-    public abstract ResourceLocation getNoteSymbolsLocation();
-
 
     /**
      * @return The layout of the note names accross the instrument's rows.
@@ -162,24 +157,32 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
     /**
-     * @return The path of the root directory of all instruments
+     * @return The path of the root directory of the mod
      */
     public static String getGlobalRootPath() {
         return "textures/gui/instrument/";
     }
+    /**
+     * @return The resource laied inside of this instrument's directory
+     */
     public ResourceLocation getResourceFromGlob(final String path) {
-        return getSourcePath().withPath(getGlobalRootPath() + path);
+        return getSourcePath().withPath(getGlobalRootPath() + "instrument/" + path);
     }
     public static ResourceLocation getInternalResourceFromGlob(final String path) {
         return new ResourceLocation(GInstrumentMod.MODID, getGlobalRootPath() + path);
     }
+
+    public static ResourceLocation getInstrumentRootPath(final ResourceLocation instrumentId) {
+        return instrumentId.withPath(AbstractInstrumentScreen.getGlobalRootPath() + "instrument/" + instrumentId.getPath());
+    }
+
     /**
      * Gets the resource path under this instrument.
-     * It will usually be {@code textures/gui/instrument/<instrument>/}.
+     * It will usually be {@code textures/gui/instrument/instrument/<instrument>/}.
      * {@code instrument} is as specified by {@link AbstractInstrumentScreen#getSourcePath getSourcePath}.
      */
     protected String getPath() {
-        return getGlobalRootPath() + getSourcePath().getPath() + "/";
+        return getGlobalRootPath() + "instrument/" + getSourcePath().getPath() + "/";
     }
 
     /**
@@ -195,7 +198,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     
     /**
-     * @param path The desired path to obtain from the root directory
+     * @param path The desired path to obtain from the instrument's root directory
      * @param considerGlobal If {@link InstrumentThemeLoader#isGlobalThemed() a global resource pack is enabled}, take the resource from there
      * @return The resource contained in this instrument's root directory
      * @see {@link AbstractInstrumentScreen#getInstrumentResourcesLocation()}
