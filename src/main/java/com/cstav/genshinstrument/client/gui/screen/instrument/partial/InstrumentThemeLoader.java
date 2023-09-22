@@ -175,6 +175,7 @@ public class InstrumentThemeLoader {
             instrumentLoader.performReload(resourceManager);
 
         CACHES.clear();
+        reloadAttempted = false;
     }
 
     private void performReload(final ResourceManager resourceManager) {
@@ -260,16 +261,21 @@ public class InstrumentThemeLoader {
         return getTheme(theme, Color.BLACK);
     }
 
+    private static boolean reloadAttempted;
     protected <T> T getTheme(final Supplier<T> theme, final T def) {
         T _theme = theme.get();
 
         if (_theme == null) {
+            if (reloadAttempted)
+                return def;
+
             LOGGER.warn("Requested theme not found, performing reload!");
             reload(Minecraft.getInstance().getResourceManager());
 
             _theme = theme.get();
             if (_theme == null) {
                 LOGGER.error("Failed to load instrument resources!");
+                reloadAttempted = true;
                 return def;
             }
         }
