@@ -160,7 +160,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * @return The path of the root directory of the mod
      */
     public static String getGlobalRootPath() {
-        return "textures/gui/instrument/";
+        return "textures/gui/genshinstrument/";
     }
     /**
      * @return The resource laied inside of this instrument's directory
@@ -178,7 +178,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     /**
      * Gets the resource path under this instrument.
-     * It will usually be {@code textures/gui/instrument/instrument/<instrument>/}.
+     * It will usually be {@code textures/gui/genshinstrument/instrument/<instrument>/}.
      * {@code instrument} is as specified by {@link AbstractInstrumentScreen#getSourcePath getSourcePath}.
      */
     protected String getPath() {
