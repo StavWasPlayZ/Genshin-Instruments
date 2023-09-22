@@ -210,7 +210,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
             : getSourcePath().withPath(getPath() + path);
     }
     /**
-     * Gets The desired path to obtain from either the root or global directory.
+     * Gets The desired path to obtain from either the instrument's root or global directory.
      * The global directory will be used if {@link InstrumentThemeLoader#isGlobalThemed()} is true.
      * @return The resource contained in this instrument's root directory
      * @see {@link AbstractInstrumentScreen#getInstrumentResourcesLocation()}
