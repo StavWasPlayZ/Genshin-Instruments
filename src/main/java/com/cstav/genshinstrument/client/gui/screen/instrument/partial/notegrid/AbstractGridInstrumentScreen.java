@@ -211,6 +211,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
         gui.blit(getInternalResourceFromGlob("background/staff.png"),
             grid.getX() + 2, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index),
             0, 0,
+            
             grid.getWidth() - 5, getNoteSize(),
             grid.getWidth() - 5, getNoteSize()
         );
