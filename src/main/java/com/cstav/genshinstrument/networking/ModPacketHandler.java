@@ -44,6 +44,7 @@ public class ModPacketHandler {
     });
 
 
+    //test
     private static final String PROTOCOL_VERSION = "4.7";
 
     private static int protocolVersion() {
