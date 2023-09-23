@@ -129,7 +129,7 @@ public class NoteSound {
      * @param pos The position at which the sound was fired from
      */
     @OnlyIn(Dist.CLIENT)
-    public void playAtPos(int pitch, UUID playerUUID, Optional<InteractionHand> hand,
+    public void playAtPos(int pitch, float volume, UUID playerUUID, Optional<InteractionHand> hand,
             ResourceLocation instrumentId, NoteButtonIdentifier buttonIdentifier, BlockPos pos) {
         final Minecraft minecraft = Minecraft.getInstance();
         final Player player = minecraft.player;
@@ -144,10 +144,10 @@ public class NoteSound {
         
         MinecraftForge.EVENT_BUS.post((playerUUID == null)
             ? new InstrumentPlayedEvent(
-                this, pitch, level, pos, instrumentId, buttonIdentifier, true
+                this, pitch, volume, level, pos, instrumentId, buttonIdentifier, true
             )
             : new InstrumentPlayedEvent.ByPlayer(
-                this, pitch, level.getPlayerByUUID(playerUUID), pos, hand,
+                this, pitch, volume, level.getPlayerByUUID(playerUUID), pos, hand,
                 instrumentId, buttonIdentifier, true
             )
         );
@@ -165,17 +165,17 @@ public class NoteSound {
                 1, mcPitch
             , false);
         else
-            playLocally(mcPitch);
+            playLocally(mcPitch, volume);
     }
 
     /**
      * Plays this sound locally. Treats the given {@code pitch} as a Minecraft pitch.
      */
     @OnlyIn(Dist.CLIENT)
-    public void playLocally(final float pitch) {
+    public void playLocally(final float pitch, final float volume) {
         Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(
             getByPreference().getLocation(), SoundSource.RECORDS,
-            1, pitch, SoundInstance.createUnseededRandom(),
+            volume, pitch, SoundInstance.createUnseededRandom(),
             false, 0, SoundInstance.Attenuation.NONE,
             0, 0, 0, true
         ));
@@ -187,8 +187,8 @@ public class NoteSound {
      * @see NoteSound#getPitchByNoteOffset
      */
     @OnlyIn(Dist.CLIENT)
-    public void playLocally(final int pitch) {
-        playLocally(getPitchByNoteOffset(clampPitch(pitch)));
+    public void playLocally(final int pitch, final float volume) {
+        playLocally(getPitchByNoteOffset(clampPitch(pitch)), volume);
     }
 
 

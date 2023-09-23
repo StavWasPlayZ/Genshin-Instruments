@@ -10,8 +10,11 @@ import net.minecraftforge.eventbus.api.Event;
 public class MidiEvent extends Event {
 
     public final MidiMessage message;
-    public MidiEvent(final MidiMessage message) {
+    public final long timeStamp;
+
+    public MidiEvent(final MidiMessage message, final long timeStamp) {
         this.message = message;
+        this.timeStamp = timeStamp;
     }
     
 }

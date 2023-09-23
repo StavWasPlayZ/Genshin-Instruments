@@ -2,11 +2,13 @@ package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note;
 
 import java.awt.Point;
 
+import org.slf4j.Logger;
+
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
-import com.cstav.genshinstrument.client.ClientUtil;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.NoteLabelSupplier;
+import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.buttonidentifier.DefaultNoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
@@ -14,6 +16,7 @@ import com.cstav.genshinstrument.networking.packet.instrument.InstrumentPacket;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.LabelUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractButton;
@@ -22,6 +25,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -31,7 +35,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * @param <T> The type of this button's identifier
  */
 @OnlyIn(Dist.CLIENT)
-public abstract class NoteButton extends AbstractButton {    
+public abstract class NoteButton extends AbstractButton {
+    private static Logger LOGGER = LogUtils.getLogger();
 
     protected final Minecraft minecraft = Minecraft.getInstance();
 
@@ -134,8 +139,8 @@ public abstract class NoteButton extends AbstractButton {
             : NoteNotation.NONE;
     }
 
-    public String getCutNoteName() {
-        return LabelUtil.getCutNoteName(getNoteName());
+    public String getFormattedNoteName() {
+        return LabelUtil.formatNoteName(getNoteName(), true);
     }
     public String getNoteName() {
         if (instrumentScreen.noteLayout() == null)
@@ -171,7 +176,7 @@ public abstract class NoteButton extends AbstractButton {
         if (locked)
             return;
         
-        sound.playLocally(getPitch());
+        sound.playLocally(getPitch(), instrumentScreen.volume());
 
 
         final Player player = minecraft.player;
@@ -198,6 +203,29 @@ public abstract class NoteButton extends AbstractButton {
 
     public void playNoteAnimation(final boolean isForeign) {
         noteRenderer.playNoteAnimation(isForeign);
+    }
+
+
+    /**
+     * @return The index position of this note relative to the note {@code C}
+     */
+    public int getABCOffset() {
+        final ResourceLocation instrumentId = instrumentScreen.getInstrumentId();
+        final String noteName = getNoteName();
+
+        if (noteName.isEmpty()) {
+            LOGGER.warn("Cannot get ABC offset for an instrument without a note layout! ("+instrumentId+")");
+            return 0;
+        }
+
+        final char note = noteName.charAt(0);
+
+        for (int i = 0; i < LabelUtil.ABC.length; i++)
+            if (note == LabelUtil.ABC[i])
+                return i;
+
+        LOGGER.warn("Could not get note "+note+" for instrument "+instrumentScreen.getInstrumentId()+"!");
+        return 0;
     }
 
 

@@ -1,7 +1,7 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label;
 
 
-import com.cstav.genshinstrument.client.ClientUtil;
+import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 
 import net.minecraft.network.chat.Component;
