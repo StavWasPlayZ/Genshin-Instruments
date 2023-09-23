@@ -44,12 +44,17 @@ public class ModPacketHandler {
     });
 
 
-    private static final int PROTOCOL_VERSION = 47;
+    private static final String PROTOCOL_VERSION = "4.7";
 
-    public static final SimpleChannel INSTANCE = ChannelBuilder
+    private static int protocolVersion() {
+        return Integer.parseInt(PROTOCOL_VERSION.replace(".", ""));
+    }
+    
+
+    private static final SimpleChannel INSTANCE = ChannelBuilder
         .named(new ResourceLocation(GInstrumentMod.MODID, "main"))
-        .networkProtocolVersion(PROTOCOL_VERSION)
-        .acceptedVersions(VersionTest.exact(PROTOCOL_VERSION))
+        .networkProtocolVersion(protocolVersion())
+        .acceptedVersions(VersionTest.exact(protocolVersion()))
     .simpleChannel();
 
 
