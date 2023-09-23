@@ -5,6 +5,7 @@ import com.cstav.genshinstrument.block.partial.AbstractInstrumentBlock;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.midi.MidiController;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent.ByPlayer;
 import com.cstav.genshinstrument.sound.NoteSound;
 
@@ -16,6 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.event.GameShuttingDownEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -83,10 +85,17 @@ public class ClientEvents {
         });
     }
 
+
     // Subscribe active instruments to a MIDI event
     @SubscribeEvent
     public static void onMidiEvent(final MidiEvent event) {
         AbstractInstrumentScreen.getCurrentScreen(Minecraft.getInstance()).ifPresent((screen) -> screen.onMidi(event));
+    }
+
+    // Safely close MIDI streams upon game shutdown
+    @SubscribeEvent
+    public static void onGameShutdown(final GameShuttingDownEvent event) {
+        MidiController.unloadDevice();
     }
 
 }

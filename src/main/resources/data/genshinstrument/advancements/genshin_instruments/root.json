@@ -11,9 +11,7 @@
             "translate": "genshinstrument.advancements.main.root.description"
         },
 
-        "background": "minecraft:textures/block/stripped_jungle_log.png",
-        "announce_to_chat": false,
-        "show_toast": false
+        "background": "minecraft:textures/block/stripped_jungle_log.png"
     },
 
     "criteria": {
