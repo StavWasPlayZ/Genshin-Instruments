@@ -36,7 +36,6 @@
     "button.genshinstrument.audioChannels.mixed": "Mixed",
     "button.genshinstrument.stop_music_on_play.tooltip": "When you or other players within %s blocks of range play an instrument, Minecraft's background music will stop.",
     "button.genshinstrument.stop_music_on_play": "Stop Music On Play",
-    "button.genshinstrument.emit_ring": "Emit Ring Animations",
     "button.genshinstrument.shared_instrument.tooltip": "See what other notes players nearby are playing in your instrument's screen",
     "button.genshinstrument.shared_instrument": "Shared Instrument Screen",
 
@@ -47,11 +46,16 @@
     
     "button.genshinstrument.midiEnabled": "MIDI Enabled",
     "button.genshinstrument.midiDevice": "MIDI Device",
+    
+    "button.genshinstrument.fixedTouch": "Fixed Touch",
+    "button.genshinstrument.fixedTouch.tooltip": "Defines whether the velocity of a note press will not affect the instrument's volume",
 
     "button.genshinstrument.extendOctaves": "Extend Octaves",
     "button.genshinstrument.extendOctaves.tooltip": "When a note that is higher/lower than the usual octave range is played, will automatically adjust the pitch to match your playings. Can only extend up to 1 octave per side: high and low C.\nBlame Minecraft.",
 
     "button.genshinstrument.midiOctaveShift": "Octave Shift",
+    "button.genshinstrument.midiChannel": "MIDI Channel",
+    "button.genshinstrument.acceptAllChannels": "Listen to All Channels",
 
 
     "button.genshinstrument.dominentDrumType": "Dominent Drum Type",
@@ -68,6 +72,7 @@
 
     "button.genshinstrument.label": "Note Labels Type",
     "button.genshinstrument.pitch": "Pitch",
+    "button.genshinstrument.volume": "Instrument Volume",
 
     "button.genshinstrument.zither.soundType": "Sound Type",
     "button.genshinstrument.zither.soundType.old": "Old",

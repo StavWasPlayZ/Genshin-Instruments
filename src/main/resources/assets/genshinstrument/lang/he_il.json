@@ -29,8 +29,7 @@
         "במצב מרובה משתתפים, אם קטגוריית הסאונד \"כלי נגינה\" מכוון על 100% - תשמע.י כלי נגינה על סטריאו במרחק של עד %s בלוקים.\nאחרת, ישמעו במונו, כנ\"ל אם את.ה מנגנ.ת בעצמך.",
     "button.genshinstrument.audioChannels.mixed": "מעורב",
     "button.genshinstrument.stop_music_on_play.tooltip": "כאשר את.ה או שחקנים אחרים בטווח של %s בלוקים מנגנים בכלי נגינה, מוזיקת הרקע תחדול לנגן.",
-    "button.genshinstrument.stop_music_on_play": "הפסק מוזיקה בזמן נגינה",
-    "button.genshinstrument.emit_ring": "הצג הנפשות תווים",
+    "button.genshinstrument.stop_music_on_play": "הפסק מוזיקה בעת נגינה",
     "button.genshinstrument.shared_instrument.tooltip": "ראה מה שחקנים אחרים מנגנים במסך הנגינה שלך",
     "button.genshinstrument.shared_instrument": "מסך נגינה משותף",
 
@@ -42,16 +41,21 @@
     "button.genshinstrument.midiEnabled": "MIDI מופעל",
     "button.genshinstrument.midiDevice": "מכשיר MIDI",
 
+    "button.genshinstrument.fixedTouch": "מגע קבוע",
+    "button.genshinstrument.fixedTouch.tooltip": "מגדיר אם מהירות הלחיצה על תו לא תשפיע על הווליום של כלי הנגינה",
+
     "button.genshinstrument.extendOctaves": "הרחב אוקטבות",
     "button.genshinstrument.extendOctaves.tooltip": "כאשר תו העובר את מגבלת האוקטבות המובנת מתנגן, יעלה/יוריד את גובה הצליל כדיי להתאימו. בגלל איך שמיינקראפט בנוי, יכול להעלות/לרדת עד דו מז'ור.",
 
     "button.genshinstrument.midiOctaveShift": "הסטת אוקטבות",
+    "button.genshinstrument.midiChannel": "ערוץ MIDI",
+    "button.genshinstrument.acceptAllChannels": "הקשב לכל הערוצים",
 
 
     "button.genshinstrument.dominentDrumType": "סוג הטוף השולט",
     "button.genshinstrument.dominentDrumType.both": "שניהם",
 
-    "button.genshinstrument.dominentDrumType.both.tooltip": "מכשיר הMIDI יחולק ל- 2 בדו באמצעי, כך שמפתח פה מנגן Don ודו Ka",
+    "button.genshinstrument.dominentDrumType.both.tooltip": "מכשיר הMIDI יחולק ל- 2 בדו האמצעי, כך שמפתח פה מנגן Don ודו Ka",
     "button.genshinstrument.dominentDrumType.don.tooltip": "כל התווים הם מסוג צליל Don",
     "button.genshinstrument.dominentDrumType.ka.tooltip": "כל התווים הם מסוג צליל Ka",
 
@@ -67,6 +71,7 @@
     
     "button.genshinstrument.label": "תגיות תווים",
     "button.genshinstrument.pitch": "גובה צליל",
+    "button.genshinstrument.volume": "ווליום כלי הנגינה",
 
     "button.genshinstrument.zither.soundType": "סוג צליל",
     "button.genshinstrument.zither.soundType.old": "ישן",

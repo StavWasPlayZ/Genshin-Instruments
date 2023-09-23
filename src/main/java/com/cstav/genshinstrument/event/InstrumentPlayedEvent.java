@@ -24,6 +24,7 @@ public class InstrumentPlayedEvent extends Event {
 
     public final NoteSound sound;
     public final int pitch;
+    public final float volume;
 
     public final Level level;
     public final boolean isClientSide;
@@ -33,11 +34,12 @@ public class InstrumentPlayedEvent extends Event {
     public final BlockPos pos;
     
 
-    public InstrumentPlayedEvent(NoteSound sound, int pitch, Level level, BlockPos pos,
+    public InstrumentPlayedEvent(NoteSound sound, int pitch, float volume, Level level, BlockPos pos,
             ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, boolean isClientSide) {
 
         this.sound = sound;
         this.pitch = pitch;
+        this.volume = volume;
 
         this.level = level;
         this.pos = pos;
@@ -59,9 +61,9 @@ public class InstrumentPlayedEvent extends Event {
 
         public final Optional<BlockPos> blockInstrumentPos;
 
-        public ByPlayer(NoteSound sound, int pitch, Player player, BlockPos pos, Optional<InteractionHand> hand,
+        public ByPlayer(NoteSound sound, int pitch, float volume, Player player, BlockPos pos, Optional<InteractionHand> hand,
                 ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, boolean isClientSide) {
-            super(sound, pitch, player.getLevel(), pos, instrumentId, noteIdentifier, isClientSide);
+            super(sound, pitch, volume, player.getLevel(), pos, instrumentId, noteIdentifier, isClientSide);
             this.player = player;
 
             if (hand.isPresent()) {

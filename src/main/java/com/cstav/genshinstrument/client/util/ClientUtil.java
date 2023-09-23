@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.client;
+package com.cstav.genshinstrument.client.util;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -27,12 +27,15 @@ public class ClientUtil {
 
         // Assuming there will be more than 6 entries here
         for (int i = 0; i < qwerty.length(); i++) {
-            if (qwerty.charAt(i) != keyRow[i].getDisplayName().getString(1).charAt(0))
+            if (!charEquals(qwerty.charAt(i), keyRow[i].getDisplayName().getString(1).charAt(0)))
                 return false;
         }
 
         return true;
     });
+    private static boolean charEquals(final char char1, final char char2) {
+        return Character.toLowerCase(char1) == Character.toLowerCase(char2);
+    }
 
     
     /**

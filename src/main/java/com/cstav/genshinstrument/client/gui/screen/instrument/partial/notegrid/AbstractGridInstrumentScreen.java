@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 
-import com.cstav.genshinstrument.client.ClientUtil;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
@@ -12,6 +11,7 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.GridInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.BaseInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
+import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
@@ -19,7 +19,6 @@ import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.gui.layouts.AbstractLayout;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -53,6 +52,11 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
      * @return The array of sounds used by this instruments.
      */
     public abstract NoteSound[] getInitSounds();
+
+    @Override
+    public void setNoteSounds(NoteSound[] sounds) {
+        noteGrid.setNoteSounds(sounds);
+    }
 
     /**
      * <p>
@@ -151,15 +155,6 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
         return new GridInstrumentOptionsScreen(this);
     }
 
-    /**
-     * Defines the location of the note symbols.
-     * The number of symbols should match with the number of {@link AbstractGridInstrumentScreen#rows rows} in this instrument.
-     */
-    @Override
-    public ResourceLocation getNoteSymbolsLocation() {
-        return getInternalResourceFromGlob("grid_notes.png");
-    }
-
     @Override
     public String[] noteLayout() {
         return NOTE_LAYOUT;
@@ -193,20 +188,26 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
     protected void renderInstrumentBackground(final PoseStack stack) {
         final int clefX = grid.getX() - getNoteSize() + 8;
 
-        for (int i = 0; i < columns(); i++) {
-            renderClef(stack, i, clefX);
-            renderStaff(stack, i);
+        // Implement your own otherwise, idk
+        if (columns() == 3) {
+            renderClef(stack, 0, clefX, "treble");
+            renderClef(stack, 1, clefX, "alto");
+            renderClef(stack, 2, clefX, "bass");
         }
+
+        for (int i = 0; i < columns(); i++)
+            renderStaff(stack, i);
     }
 
-    protected void renderClef(final PoseStack stack, final int index, final int x) {
-        ClientUtil.displaySprite(getInternalResourceFromGlob("background/clefs.png"));
+    protected void renderClef(PoseStack stack, int index, int x, String clefName) {
+        ClientUtil.displaySprite(getInternalResourceFromGlob("background/clef/"+clefName+".png"));
 
         blit(stack,
             x, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index) - 5,
-            index * CLEF_WIDTH, 0,
+            0, 0,
+
             CLEF_WIDTH, CLEF_HEIGHT,
-            CLEF_WIDTH*3, CLEF_HEIGHT
+            CLEF_WIDTH, CLEF_HEIGHT
         );
     }
 
@@ -216,6 +217,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
         blit(stack,
             grid.getX() + 2, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index),
             0, 0,
+            
             grid.getWidth() - 5, getNoteSize(),
             grid.getWidth() - 5, getNoteSize()
         );
