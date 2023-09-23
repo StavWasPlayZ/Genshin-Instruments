@@ -25,7 +25,6 @@
     "button.genshinstrument.audioChannels.mixed": "Смешанные",
     "button.genshinstrument.stop_music_on_play.tooltip": "Когда вы или другие игроки в радиусе %s блоков играют на инструменте, фоновая музыка Minecraft остановится.",
     "button.genshinstrument.stop_music_on_play": "Остановка музыки при воспроизведении",
-    "button.genshinstrument.emit_ring": "Показать анимацию примечаний",
     "button.genshinstrument.shared_instrument.tooltip": "Смотрите на экране своего инструмента, какие ноты нажимают другие игроки поблизости",
     "button.genshinstrument.shared_instrument": "Экран общего инструмента",
 
@@ -39,7 +38,7 @@
 
     
     "button.genshinstrument.label": "Наклейки для заметок",
-    "button.genshinstrument.pitch": "Pitch",
+    "button.genshinstrument.volume": "Громкость инструмента",
 
     "button.genshinstrument.zither.soundType": "Тип звука",
     "button.genshinstrument.zither.soundType.old": "Старый",

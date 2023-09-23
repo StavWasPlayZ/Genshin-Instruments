@@ -5,9 +5,12 @@ import java.util.HashMap;
 
 import javax.annotation.Nullable;
 
-import com.cstav.genshinstrument.client.ClientUtil;
+import org.slf4j.Logger;
+
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.util.ClientUtil;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -101,6 +104,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     /* ---------------- Save System --------------- */
 
     protected final HashMap<String, Runnable> appliedOptions = new HashMap<>();
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     /**
      * Queues the given option to later be saved.
@@ -109,7 +113,11 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
      * exists, it will be overwritten.
      * @param saveRunnable The runnable for saving the option
      */
-    protected void queueToSave(final String optionKey, final Runnable saveRunnable) {
+    protected void queueToSave(String optionKey, final Runnable saveRunnable) {
+        final String modId = modId();
+        if (modId != null)
+            optionKey = modId + ":" + optionKey;
+
         if (appliedOptions.containsKey(optionKey))
             appliedOptions.replace(optionKey, saveRunnable);
         else
@@ -117,10 +125,23 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     }
 
     protected void onSave() {
-        for (final Runnable runnable : appliedOptions.values())
-            runnable.run();
-        
+        if (appliedOptions.isEmpty())
+            return;
+
+        appliedOptions.values().forEach(Runnable::run);
         ModClientConfigs.CONFIGS.save();
+        
+        LOGGER.info("Successfully saved "+appliedOptions.size()+" option"+((appliedOptions.size() == 1) ? "" : "s")
+            + " for "+title.getString());
+    }
+
+
+    /**
+     * Fetches the Mod ID of the instrument being used
+     * @apiNote Should be overwritten in the case of not being used by an instrument
+     */
+    public String modId() {
+        return isOverlay ? instrumentScreen.getModId() : null;
     }
     
 }

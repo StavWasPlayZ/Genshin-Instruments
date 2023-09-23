@@ -1,12 +1,12 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note;
 
 import java.util.ArrayList;
+import java.util.function.Supplier;
 
-import com.cstav.genshinstrument.client.ClientUtil;
-import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.animation.NoteAnimationController;
+import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.util.CommonUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 
@@ -23,12 +23,11 @@ public class NoteButtonRenderer {
     protected final AbstractInstrumentScreen instrumentScreen;
 
     // Resources
-    protected final ResourceLocation rootLocation,
-        noteLocation, noteBgLocation, accidentalsLocation;
+    protected final ResourceLocation rootLocation, accidentalsLocation;
 
-    // Texture properties
-    public int noteTextureRow;
-    protected final int rowsInNoteTexture;
+    protected final ResourceLocation notePressedLocation, noteReleasedLocation, noteHoverLocation;
+
+    protected Supplier<ResourceLocation> labelProvider;
 
     // Animations
     public final NoteAnimationController noteAnimation;
@@ -36,22 +35,20 @@ public class NoteButtonRenderer {
     protected final ArrayList<NoteRing> rings = new ArrayList<>();
 
 
-    public NoteButtonRenderer(NoteButton noteButton, int noteTextureRow, int rowsInNoteTexture) {
+    public NoteButtonRenderer(NoteButton noteButton, Supplier<ResourceLocation> labelProvider) {
         this.noteButton = noteButton;
-        instrumentScreen = noteButton.instrumentScreen;
+        this.labelProvider = labelProvider;
+        this.instrumentScreen = noteButton.instrumentScreen;
 
         noteAnimation = new NoteAnimationController(.15f, 9, noteButton);
 
-
-        this.noteTextureRow = noteTextureRow;
-        this.rowsInNoteTexture = rowsInNoteTexture;
-
-
+        
         rootLocation = instrumentScreen.getResourceFromRoot("note");
-
-        noteLocation = instrumentScreen.getNoteSymbolsLocation();
-        noteBgLocation = getResourceFromRoot("note_bg.png");
         accidentalsLocation = getResourceFromRoot("accidentals.png");
+
+        notePressedLocation = getResourceFromRoot("note/pressed.png");
+        noteReleasedLocation = getResourceFromRoot("note/released.png");
+        noteHoverLocation = getResourceFromRoot("note/hovered.png");
     }
 
 
@@ -74,21 +71,27 @@ public class NoteButtonRenderer {
     }
 
     protected void renderNoteButton(final GuiGraphics gui, final InstrumentThemeLoader themeLoader) {
-        // width = full color, width * 2 = border, 0 = normal
-        int blitOffset =
-            noteButton.isPlaying() ?
-                foreignPlaying ?
-                    (noteButton.getWidth() * 2)
-                : noteButton.getWidth()
-            : noteButton.isHoveredOrFocused() ?
-                (noteButton.getWidth() * 2)
-            : 0;
+        ResourceLocation noteLocation;
+
+        if (noteButton.isPlaying()) {
+
+            if (foreignPlaying)
+                noteLocation = noteHoverLocation;
+            else
+                noteLocation = notePressedLocation;
+
+        } else if (noteButton.isHoveredOrFocused())
+            noteLocation = noteHoverLocation;
+        else
+            noteLocation = noteReleasedLocation;
+            
         
-        gui.blit(noteBgLocation,
+        gui.blit(noteLocation,
             noteButton.getX(), noteButton.getY(),
-            blitOffset, 0,
+            0, 0,
+
             noteButton.getWidth(), noteButton.getHeight(),
-            noteButton.getWidth()*3, noteButton.getHeight()
+            noteButton.getWidth(), noteButton.getHeight()
         );
     }
 
@@ -100,12 +103,12 @@ public class NoteButtonRenderer {
             : themeLoader.getLabelTheme()
         );
 
-        gui.blit(noteLocation,
+        gui.blit(labelProvider.get(),
             noteButton.getX() + noteWidth/2, noteButton.getY() + noteHeight/2,
-            noteWidth * noteTextureRow, 0,
+            0, 0,
 
             noteWidth, noteHeight,
-            noteWidth * rowsInNoteTexture, noteButton.getHeight()/2
+            noteWidth, noteButton.getHeight()/2
         );
 
         ClientUtil.resetShaderColor();
@@ -185,8 +188,7 @@ public class NoteButtonRenderer {
         foreignPlaying = isForeign;
 
         noteAnimation.play(isForeign);
-        if (ModClientConfigs.EMIT_RING_ANIMATION.get())
-            rings.add(new NoteRing(noteButton, isForeign));
+        rings.add(new NoteRing(noteButton, isForeign));
     }
 
 

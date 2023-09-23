@@ -9,6 +9,7 @@ import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiDevice.Info;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.Transmitter;
 
@@ -35,9 +36,10 @@ public abstract class MidiController {
     private static boolean isTransmitting = false;
 
     public static void reloadDevices() {
+        LOGGER.info("Reloading MIDI devices...");
         DEVICES.clear();
 
-        MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
+        final MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
 
         for (int i = 0; i < infos.length; i++) {
             try {
@@ -48,10 +50,19 @@ public abstract class MidiController {
 
                 DEVICES.put(infos[i], device);
 
-            } catch (Exception e) {}
+            } catch (MidiUnavailableException e) {
+                LOGGER.warn("MIDI device "+infos[i]+" cannot transmit any MIDI; ommitting!");
+            } catch (Exception e) {
+                LOGGER.error("Unexpected error occured while trying to obtain MIDI device!", e);
+            }
         }
     }
 
+    /**
+     * Reloads the list of MIDI devices only if there are none
+     * @return Whether there are still no devices available
+     * @see MidiController#reloadDevices
+     */
     public static boolean reloadIfEmpty() {
         if (DEVICES.isEmpty())
             reloadDevices();
@@ -59,9 +70,11 @@ public abstract class MidiController {
         return DEVICES.isEmpty();
     }
 
+    /**
+     * @return A list of available MIDI devices by their indexes, including -1 for None
+     */
     public static List<Integer> getValuesForOption() {
         final List<Integer> result = new ArrayList<>(DEVICES.size() + 1);
-        // Include -1 as none
         result.add(-1);
 
         for (int i = 0; i < DEVICES.size(); i++)
@@ -72,8 +85,12 @@ public abstract class MidiController {
 
 
     public static void loadDevice(final int infoIndex) {
-        if (!reloadIfEmpty())
-            unloadDevice();
+        if (reloadIfEmpty()) {
+            LOGGER.warn("Attempted to load MIDI device #"+infoIndex+", but there are no devices available!");
+            return;
+        }
+            
+        unloadDevice();
 
         info = getInfoFromIndex(infoIndex);
         currDevice = DEVICES.get(info);
@@ -114,7 +131,7 @@ public abstract class MidiController {
                     // We only want this to run on the render thread, not the MIDI one
 
                     LogicalSidedProvider.WORKQUEUE.get(LogicalSide.CLIENT)
-                        .executeBlocking(() -> MinecraftForge.EVENT_BUS.post(new MidiEvent(message)));
+                        .executeBlocking(() -> MinecraftForge.EVENT_BUS.post(new MidiEvent(message, timeStamp)));
                 }
 
                 @Override

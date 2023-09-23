@@ -2,7 +2,6 @@ package com.cstav.genshinstrument.networking.packet.instrument;
 
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Supplier;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.networking.IModPacket;
@@ -46,7 +45,7 @@ public class NotifyInstrumentOpenPacket implements IModPacket {
     }
     
     @Override
-    public void toBytes(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
         buf.writeUUID(playerUUID);
         buf.writeBoolean(isOpen);
         buf.writeOptional(pos, FriendlyByteBuf::writeBlockPos);
@@ -55,25 +54,18 @@ public class NotifyInstrumentOpenPacket implements IModPacket {
 
     @SuppressWarnings("resource")
     @Override
-    public void handle(Supplier<Context> supplier) {
-        final Context context = supplier.get();
+    public void handle(final Context context) {
+        final Player player = Minecraft.getInstance().level.getPlayerByUUID(playerUUID);
 
-        context.enqueueWork(() -> {
-            final Player player = Minecraft.getInstance().level.getPlayerByUUID(playerUUID);
+        if (isOpen) {
 
-            if (isOpen) {
+            if (pos.isPresent())
+                InstrumentOpenProvider.setOpen(player, pos.get());
+            else
+                InstrumentOpenProvider.setOpen(player);
 
-                if (pos.isPresent())
-                    InstrumentOpenProvider.setOpen(player, pos.get());
-                else
-                    InstrumentOpenProvider.setOpen(player);
-
-            } else
-                InstrumentOpenProvider.setClosed(player);
-
-        });
-
-        context.setPacketHandled(true);
+        } else
+            InstrumentOpenProvider.setClosed(player);
     }
     
 }

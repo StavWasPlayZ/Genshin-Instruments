@@ -39,7 +39,12 @@ public class DrumNoteButton extends NoteButton {
 
     @Override
     protected NoteButtonRenderer initNoteRenderer() {
-        return new NoteButtonRenderer(this, btnType.getSpriteIndex(isRight), 3);
+        return new NoteButtonRenderer(this, () ->
+            instrumentScreen.getResourceFromRoot("note/label/" + switch (btnType) {
+                case DON -> "don";
+                case KA -> "ka_" + (isRight ? "right" : "left");
+            }+".png", false)
+        );
     }
 
 

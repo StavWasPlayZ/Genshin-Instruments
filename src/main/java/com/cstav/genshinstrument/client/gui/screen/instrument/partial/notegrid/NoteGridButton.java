@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButtonRenderer;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
@@ -9,11 +10,21 @@ import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.LabelUtil;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class NoteGridButton extends NoteButton {
+    private static final ResourceLocation[] GRID_LABELS = new ResourceLocation[LabelUtil.ABC.length];
+    static {
+        for (int i = 0; i < LabelUtil.ABC.length; i++) {
+            GRID_LABELS[i] = AbstractInstrumentScreen.getInternalResourceFromGlob(
+                "note/label/grid/" + Character.toLowerCase(LabelUtil.ABC[i]) + ".png"
+            );
+        }
+    }
+
 
     public final int row, column;
 
@@ -70,17 +81,10 @@ public class NoteGridButton extends NoteButton {
 
     @Override
     protected NoteButtonRenderer initNoteRenderer() {
-        return new NoteButtonRenderer(this, row, LabelUtil.ABC.length);
+        return new NoteButtonRenderer(this, () -> GRID_LABELS[textureRow()]);
     }
-
-    @Override
-    public void updateNoteLabel() {
-        super.updateNoteLabel();
-        noteRenderer.noteTextureRow = ModClientConfigs.ACCURATE_NOTES.get()
-            ? getABCOffset() : row;
-    }
-    public int getABCOffset() {
-        return LabelUtil.getABCOffset(this);
+    protected int textureRow() {
+        return ModClientConfigs.ACCURATE_NOTES.get() ? getABCOffset() : row;
     }
 
 

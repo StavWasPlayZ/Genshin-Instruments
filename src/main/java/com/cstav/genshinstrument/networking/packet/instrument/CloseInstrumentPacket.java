@@ -1,7 +1,5 @@
 package com.cstav.genshinstrument.networking.packet.instrument;
 
-import java.util.function.Supplier;
-
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.networking.IModPacket;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
@@ -20,18 +18,12 @@ public class CloseInstrumentPacket implements IModPacket {
 
 
     @Override
-    public void handle(final Supplier<Context> supplier) {
-        final Context context = supplier.get();
+    public void handle(final Context context) {
+        final ServerPlayer player = context.getSender();
+        InstrumentOpenProvider.setClosed(player);
 
-        context.enqueueWork(() -> {
-            final ServerPlayer player = context.getSender();
-            InstrumentOpenProvider.setClosed(player);
-
-            for (final Player oPlayer : player.level().players())
-                ModPacketHandler.sendToClient(new NotifyInstrumentOpenPacket(player.getUUID(), false), (ServerPlayer)oPlayer);
-        });
-
-        context.setPacketHandled(true);
+        for (final Player oPlayer : player.level().players())
+            ModPacketHandler.sendToClient(new NotifyInstrumentOpenPacket(player.getUUID(), false), (ServerPlayer)oPlayer);
     }
     
 }

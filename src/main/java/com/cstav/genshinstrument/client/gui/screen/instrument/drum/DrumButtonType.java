@@ -9,6 +9,7 @@ import com.cstav.genshinstrument.sound.NoteSound;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+// This class is also used by the server as an identifier for the drum
 public enum DrumButtonType {
     DON(ModSounds.GLORIOUS_DRUM[0], "glorious_drum.don"),
     KA(ModSounds.GLORIOUS_DRUM[1], "glorious_drum.ka");
@@ -23,9 +24,6 @@ public enum DrumButtonType {
 
     public NoteSound getSound() {
         return sound;
-    }
-    public int getSpriteIndex(final boolean isRight) {
-        return ((this == KA) && isRight) ? 2 : ordinal();
     }
     public String getTransKey() {
         return transKey;

@@ -47,21 +47,18 @@ public class OpenInstrumentPacket implements IModPacket {
     }
 
     @Override
-    public void toBytes(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
         buf.writeUtf(instrumentType);
         buf.writeOptional(hand, FriendlyByteBuf::writeEnum);
     }
 
 
     @Override
-    public void handle(final Supplier<Context> supplier) {
-        final Context context = supplier.get();
-
-        context.enqueueWork(() -> {
-            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
-                Minecraft.getInstance().setScreen(getInstrumentMap().get(instrumentType).get().apply(hand.orElse(null))));
-        });
-
-        context.setPacketHandled(true);
+    public void handle(final Context context) {
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
+            Minecraft.getInstance().setScreen(
+                getInstrumentMap().get(instrumentType).get().apply(hand.orElse(null))
+            )
+        );
     }
 }
