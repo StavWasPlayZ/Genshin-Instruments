@@ -90,10 +90,10 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
         // Add MIDI options button for MIDI instruments
         if (!isOverlay || instrumentScreen.isMidiInstrument()) {
             final LinearLayout buttonLayout = new LinearLayout(
-                getBigButtonWidth() - 80, getButtonHeight(),
+                grid.getX() + 40, buttonsY,
                 Orientation.HORIZONTAL
             );
-            buttonLayout.setPosition(grid.getX() + 40, buttonsY);
+            buttonLayout.spacing(ClientUtil.GRID_HORZ_PADDING * 2);
 
             final Button midiOptions = Button.builder(MIDI_OPTIONS.copy().append("..."), (btn) -> openMidiOptions())
                 .width(150)

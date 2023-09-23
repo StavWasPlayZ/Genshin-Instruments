@@ -80,9 +80,10 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
 
     private LinearLayout createRow(DrumButtonType type, float widthPercent) {
         final LinearLayout layout = new LinearLayout(
-            (int)(width/widthPercent), getNoteSize(),
+            0, 0,
             Orientation.HORIZONTAL
         );
+        layout.spacing((int)(width/widthPercent) - 80);
 
         createButton(type, layout, false);
         createButton(type, layout, true);
