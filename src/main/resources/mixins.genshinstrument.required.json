@@ -3,7 +3,7 @@
 	"package": "com.cstav.genshinstrument.mixins.required",
 	"compatibilityLevel": "JAVA_17",
 	"refmap": "mixins.genshinstrument.refmap.json",
-	"client": [
+	"mixins": [
         "CriterionRegisterInvoker"
 	],
 	"minVersion": "0.8"
