@@ -26,8 +26,10 @@ import com.mojang.blaze3d.platform.InputConstants.Type;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -258,6 +260,13 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
         addRenderableWidget(button);
         return button;
+    }
+
+    // To omit background
+    @Override
+    public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+        for (Renderable renderable : this.renderables)
+            renderable.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
     }
 
 

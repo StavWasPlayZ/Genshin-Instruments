@@ -1,5 +1,7 @@
 package com.cstav.genshinstrument.criteria;
 
+import java.util.Optional;
+
 import com.cstav.genshinstrument.networking.packet.instrument.InstrumentPacket;
 import com.google.gson.JsonObject;
 
@@ -7,9 +9,7 @@ import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 
@@ -26,16 +26,12 @@ import net.minecraft.world.item.ItemStack;
  */
 public class InstrumentPlayedTrigger extends SimpleCriterionTrigger<InstrumentPlayedTrigger.TriggerInstance> {
     // It doesn't account for namespaces, so will use genshinstrument_ prefix instead
-    public static final ResourceLocation ID = new ResourceLocation("genshinstrument_instrument_played");
+    public static final String ID = "genshinstrument_instrument_played";
     
 
     @Override
-    public ResourceLocation getId() {
-        return ID;
-    }
-
-    @Override
-    protected TriggerInstance createInstance(JsonObject pJson, ContextAwarePredicate player, DeserializationContext pContext) {
+    protected TriggerInstance createInstance(JsonObject pJson, Optional<ContextAwarePredicate> player,
+            DeserializationContext pContext) {
         return new TriggerInstance(player, ItemPredicate.fromJson(pJson.get("instrument")));
     }
 
@@ -47,20 +43,15 @@ public class InstrumentPlayedTrigger extends SimpleCriterionTrigger<InstrumentPl
 
 
     public static class TriggerInstance extends AbstractCriterionTriggerInstance {
-        private final ItemPredicate item;
+        private final Optional<ItemPredicate> item;
 
-        public TriggerInstance(ContextAwarePredicate pPlayer, ItemPredicate item) {
-            super(ID, pPlayer);
+        public TriggerInstance(Optional<ContextAwarePredicate> pPlayer, Optional<ItemPredicate> item) {
+            super(pPlayer);
             this.item = item;
         }
 
         public boolean matches(final ItemStack instrument) {
-            return item.matches(instrument);
-        }
-
-        @Override
-        public JsonObject serializeToJson(SerializationContext pConditions) {
-            return super.serializeToJson(pConditions);
+            return item.isEmpty() || item.get().matches(instrument);
         }
     }
 

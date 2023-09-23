@@ -33,8 +33,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkEvent.Context;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.minecraftforge.network.SimpleChannel;
 
 public class ServerUtil {
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -257,21 +256,18 @@ public class ServerUtil {
         for (final Class<IModPacket> packetType : acceptablePackets)
             try {
                 
-                sc.registerMessage(id.get(), packetType, IModPacket::write, (buf) -> {
-                    try {
-                        return packetType.getDeclaredConstructor(FriendlyByteBuf.class).newInstance(buf);
-                    } catch (Exception e) {
-                        LOGGER.error("Error constructing packet of type "+packetType.getName(), e);
-                        return null;
-                    }
-                }, (msg, supplier) -> {
-                    final Context context = supplier.get();
-                    context.enqueueWork(() ->
-                        msg.handle(context)
-                    );
-                    
-                    context.setPacketHandled(true);
-                }, getDirection(packetType));
+                sc.messageBuilder(packetType, id.get(), getDirection(packetType))
+                    .encoder(IModPacket::write)
+                    .decoder((buf) -> {
+                        try {
+                            return packetType.getDeclaredConstructor(FriendlyByteBuf.class).newInstance(buf);
+                        } catch (Exception e) {
+                            LOGGER.error("Error constructing packet of type "+packetType.getName(), e);
+                            return null;
+                        }
+                    })
+                    .consumerMainThread((packet, context) -> packet.handle(context))
+                .add();
 
             } catch (Exception e) {
                 LOGGER.error(
@@ -280,8 +276,8 @@ public class ServerUtil {
                 , e);
             }
     }
-    private static Optional<NetworkDirection> getDirection(final Class<IModPacket> packetType)
+    private static NetworkDirection getDirection(final Class<IModPacket> packetType)
             throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
-        return Optional.of((NetworkDirection)packetType.getField("NETWORK_DIRECTION").get(null));
+        return (NetworkDirection)packetType.getField("NETWORK_DIRECTION").get(null);
     }
 }
