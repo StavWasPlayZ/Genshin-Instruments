@@ -105,6 +105,24 @@ public class InstrumentThemeLoader {
         setLabelTheme(getTheme(theme, "label_theme", Color.BLACK));
         setPressedNoteTheme(getTheme(theme, "note_pressed_theme", DEF_NOTE_PRESSED_THEME));
         setNoteRingTheme(getTheme(theme, "note_ring_theme", getNoteTheme()));
+
+        //TODO make this format:
+        /*
+        {
+            "note_ring_theme": [r, g, b],
+
+            // PNG
+            "label": {
+                "pressed": [r, g, b],
+                "released": [r, g, b]
+            },
+            // Text
+            "note": {
+                "pressed": [r, g, b],
+                "released": [r, g, b]
+            }
+        }
+        */
     }
 
     /**
