@@ -18,8 +18,6 @@ import net.minecraft.network.chat.MutableComponent;
  * @implNote <p>
  * This screen was heavily inspired by <a href=https://ko-fi.com/s/665c3cc518>Kistu-Lyre+</a>'s Disclaimer screen.
  * Please consider supporting them on Ko-fi!
- * </p>
- * On a personal note, I unfortunately lack any budget to be in position of donating any sum of money to any one person ;-;
  */
 public class GenshinConsentScreen extends WarningScreen {
 
