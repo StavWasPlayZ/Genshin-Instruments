@@ -466,7 +466,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
 
     /* ----------- MIDI implementations ----------- */
-    public static final int MIN_MIDI_VELOCITY = 10;
+    public static final int MIN_MIDI_VELOCITY = 6;
 
     /**
      * Defines wether this instrument can handle MIDI messages.
