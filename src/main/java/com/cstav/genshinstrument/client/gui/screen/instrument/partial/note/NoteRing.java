@@ -42,7 +42,7 @@ public class NoteRing {
         final Point ringCenter = ClientUtil.getInitCenter(note.getInitX(), note.getInitY(), note.instrumentScreen.getNoteSize(), size);
 
 
-        ClientUtil.setShaderColor(themeLoader.getNoteRingTheme(), alpha);
+        ClientUtil.setShaderColor(themeLoader.noteRing(), alpha);
 
         gui.blit(AbstractInstrumentScreen.getInternalResourceFromGlob(RING_GLOB_FILENAME),
             ringCenter.x, ringCenter.y,

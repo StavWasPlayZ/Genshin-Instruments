@@ -23,7 +23,7 @@ public class InstrumentPacket implements INoteIdentifierSender {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_SERVER;
 
 
-    /**Optionally pass a position that defers from the player's */
+    /** Optionally pass a position that defers from the player's */
     private final Optional<BlockPos> pos;
     private final NoteSound sound;
     private final Optional<InteractionHand> hand;

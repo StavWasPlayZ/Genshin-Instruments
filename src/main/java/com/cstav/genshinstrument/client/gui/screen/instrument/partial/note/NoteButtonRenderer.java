@@ -95,12 +95,13 @@ public class NoteButtonRenderer {
         );
     }
 
+    // "Note" here refers to those symbols in the middle of a note button
     protected void renderNote(final GuiGraphics gui, final InstrumentThemeLoader themeLoader) {
         final int noteWidth = noteButton.getWidth()/2, noteHeight = noteButton.getHeight()/2;
         
         ClientUtil.setShaderColor((noteButton.isPlaying() && !foreignPlaying)
-            ? themeLoader.getPressedNoteTheme()
-            : themeLoader.getLabelTheme()
+            ? themeLoader.notePressed()
+            : themeLoader.noteReleased()
         );
 
         gui.blit(labelProvider.get(),
@@ -129,8 +130,8 @@ public class NoteButtonRenderer {
             MINECRAFT.font, noteButton.getMessage(),
             labelX, labelY,
             ((noteButton.isPlaying() && !foreignPlaying)
-                ? themeLoader.getPressedNoteTheme()
-                : themeLoader.getNoteTheme()
+                ? themeLoader.labelPressed()
+                : themeLoader.labelReleased()
             ).getRGB()
         );
     }
