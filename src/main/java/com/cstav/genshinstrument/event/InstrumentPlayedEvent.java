@@ -31,6 +31,15 @@ public class InstrumentPlayedEvent extends Event {
     public final ResourceLocation instrumentId;
     public final NoteButtonIdentifier noteIdentifier;
     public final BlockPos pos;
+
+
+    /**
+     * Convinience method to convert the volume of the note
+     * into a {@code float} percentage
+     */
+    public float volume() {
+        return volume / 100f;
+    }
     
 
     public InstrumentPlayedEvent(NoteSound sound, int pitch, int volume, Level level, BlockPos pos,
