@@ -129,7 +129,7 @@ public class NoteSound {
      * @param pos The position at which the sound was fired from
      */
     @OnlyIn(Dist.CLIENT)
-    public void playAtPos(int pitch, float volume, UUID playerUUID, Optional<InteractionHand> hand,
+    public void playAtPos(int pitch, int volume, UUID playerUUID, Optional<InteractionHand> hand,
             ResourceLocation instrumentId, NoteButtonIdentifier buttonIdentifier, BlockPos pos) {
         final Minecraft minecraft = Minecraft.getInstance();
         final Player player = minecraft.player;
@@ -165,7 +165,7 @@ public class NoteSound {
                 1, mcPitch
             , false);
         else
-            playLocally(mcPitch, volume);
+            playLocally(mcPitch, volume / 100f);
     }
 
     /**

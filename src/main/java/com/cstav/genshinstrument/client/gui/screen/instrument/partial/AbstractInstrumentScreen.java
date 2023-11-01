@@ -72,13 +72,23 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
 
-    public double volume = ModClientConfigs.VOLUME.get();
+    /**
+     * Represents the volume of this instrument in percentages (0% - 100%)
+     */
+    public int volume = ModClientConfigs.VOLUME.get();
     /**
      * Convinience method to get the {@link AbstractInstrumentScreen#volume volume}
-     * of this instrument as a {@code float}
+     * of this instrument as a {@code float} percentage
      */
     public float volume() {
-        return (float)volume;
+        return volume / 100f;
+    }
+    /**
+     * Convinience method to set the {@link AbstractInstrumentScreen#volume volume}
+     * of this instrument via a float percentage
+     */
+    public void setVolume(float volume) {
+        this.volume = (int)(volume * 100);
     }
 
 
@@ -491,7 +501,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
         final int pitch = 0;
 
         // Handle dynamic touch
-        final double prevVolume = volume;
+        final float prevVolume = volume();
         if (!ModClientConfigs.FIXED_TOUCH.get())
             volume *= Math.max(MIN_MIDI_VELOCITY, message[2]) / 127D;
 
@@ -501,7 +511,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
             pressedMidiNote.play();
 
 
-        volume = prevVolume;
+        setVolume(prevVolume);
     }
 
     protected boolean canPerformMidi(final MidiEvent event) {

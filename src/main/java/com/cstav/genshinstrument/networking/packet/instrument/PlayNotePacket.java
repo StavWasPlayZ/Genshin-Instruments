@@ -17,8 +17,7 @@ import net.minecraftforge.network.NetworkEvent.Context;
 public class PlayNotePacket implements INoteIdentifierSender {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_CLIENT;
 
-    private final int pitch;
-    private final float volume;
+    private final int pitch, volume;
 
     private final BlockPos blockPos;
     private final NoteSound sound;
@@ -28,7 +27,7 @@ public class PlayNotePacket implements INoteIdentifierSender {
     private final Optional<UUID> playerUUID;
     private final Optional<InteractionHand> hand;
 
-    public PlayNotePacket(BlockPos pos, NoteSound sound, int pitch, float volume, ResourceLocation instrumentId,
+    public PlayNotePacket(BlockPos pos, NoteSound sound, int pitch, int volume, ResourceLocation instrumentId,
         NoteButtonIdentifier noteIdentifier, Optional<UUID> playerUUID, Optional<InteractionHand> hand) {
 
         this.pitch = pitch;
@@ -44,7 +43,7 @@ public class PlayNotePacket implements INoteIdentifierSender {
     }
     public PlayNotePacket(FriendlyByteBuf buf) {
         pitch = buf.readInt();
-        volume = buf.readFloat();
+        volume = buf.readInt();
 
         blockPos = buf.readBlockPos();
         sound = NoteSound.readFromNetwork(buf);
@@ -58,7 +57,7 @@ public class PlayNotePacket implements INoteIdentifierSender {
     @Override
     public void write(FriendlyByteBuf buf) {
         buf.writeInt(pitch);
-        buf.writeFloat(volume);
+        buf.writeInt(volume);
 
         buf.writeBlockPos(blockPos);
         sound.writeToNetwork(buf);

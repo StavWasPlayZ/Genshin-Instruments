@@ -27,13 +27,12 @@ public class InstrumentPacket implements INoteIdentifierSender {
     private final NoteSound sound;
     private final Optional<InteractionHand> hand;
 
-    private final int pitch;
-    private final float volume;
+    private final int pitch, volume;
 
     private final ResourceLocation instrumentId;
     private final NoteButtonIdentifier noteIdentifier;
 
-    public InstrumentPacket(BlockPos pos, NoteSound sound, int pitch, float volume, Optional<InteractionHand> hand,
+    public InstrumentPacket(BlockPos pos, NoteSound sound, int pitch, int volume, Optional<InteractionHand> hand,
             ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier) {
         this.pos = pos;
         this.sound = sound;
@@ -48,7 +47,7 @@ public class InstrumentPacket implements INoteIdentifierSender {
     @OnlyIn(Dist.CLIENT)
     public InstrumentPacket(final NoteButton noteButton, final BlockPos pos) {
         this(pos, noteButton.getSound(),
-            noteButton.getPitch(), noteButton.instrumentScreen.volume(),
+            noteButton.getPitch(), noteButton.instrumentScreen.volume,
             noteButton.instrumentScreen.interactionHand,
             noteButton.instrumentScreen.getInstrumentId(), noteButton.getIdentifier()
         );
@@ -60,7 +59,7 @@ public class InstrumentPacket implements INoteIdentifierSender {
         hand = buf.readOptional((fbb) -> buf.readEnum(InteractionHand.class));
 
         pitch = buf.readInt();
-        volume = buf.readFloat();
+        volume = buf.readInt();
 
         instrumentId = buf.readResourceLocation();
         noteIdentifier = readNoteIdentifierFromNetwork(buf);
@@ -73,7 +72,7 @@ public class InstrumentPacket implements INoteIdentifierSender {
         buf.writeOptional(hand, FriendlyByteBuf::writeEnum);
 
         buf.writeInt(pitch);
-        buf.writeFloat(volume);
+        buf.writeInt(volume);
 
         buf.writeResourceLocation(instrumentId);
         noteIdentifier.writeToNetwork(buf);

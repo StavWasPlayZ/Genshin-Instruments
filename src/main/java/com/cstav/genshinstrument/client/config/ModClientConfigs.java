@@ -14,7 +14,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
-import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
 import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -29,8 +28,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
 public class ModClientConfigs {
     public static final ForgeConfigSpec CONFIGS;
 
-    public static final IntValue PITCH, MIDI_DEVICE_INDEX, OCTAVE_SHIFT, MIDI_CHANNEL;
-    public static final DoubleValue VOLUME;
+    public static final IntValue PITCH, VOLUME, MIDI_DEVICE_INDEX, OCTAVE_SHIFT, MIDI_CHANNEL;
 
     public static final EnumValue<NoteGridLabel> GRID_LABEL_TYPE;
     public static final EnumValue<InstrumentChannelType> CHANNEL_TYPE;
@@ -51,7 +49,7 @@ public class ModClientConfigs {
             0, NoteSound.MIN_PITCH, NoteSound.MAX_PITCH
         );
         VOLUME = configBuilder.defineInRange("instrument_volume",
-            1D, 0, 1
+            100, 0, 100
         );
 
         GRID_LABEL_TYPE = configBuilder.defineEnum("label_type", NoteGridLabel.KEYBOARD_LAYOUT);

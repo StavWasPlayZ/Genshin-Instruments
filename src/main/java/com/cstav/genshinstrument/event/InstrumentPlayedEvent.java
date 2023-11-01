@@ -23,8 +23,7 @@ import net.minecraftforge.eventbus.api.Event;
 public class InstrumentPlayedEvent extends Event {
 
     public final NoteSound sound;
-    public final int pitch;
-    public final float volume;
+    public final int pitch, volume;
 
     public final Level level;
     public final boolean isClientSide;
@@ -34,7 +33,7 @@ public class InstrumentPlayedEvent extends Event {
     public final BlockPos pos;
     
 
-    public InstrumentPlayedEvent(NoteSound sound, int pitch, float volume, Level level, BlockPos pos,
+    public InstrumentPlayedEvent(NoteSound sound, int pitch, int volume, Level level, BlockPos pos,
             ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, boolean isClientSide) {
 
         this.sound = sound;
@@ -61,7 +60,7 @@ public class InstrumentPlayedEvent extends Event {
 
         public final Optional<BlockPos> blockInstrumentPos;
 
-        public ByPlayer(NoteSound sound, int pitch, float volume, Player player, BlockPos pos, Optional<InteractionHand> hand,
+        public ByPlayer(NoteSound sound, int pitch, int volume, Player player, BlockPos pos, Optional<InteractionHand> hand,
                 ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, boolean isClientSide) {
             super(sound, pitch, volume, player.level(), pos, instrumentId, noteIdentifier, isClientSide);
             this.player = player;
