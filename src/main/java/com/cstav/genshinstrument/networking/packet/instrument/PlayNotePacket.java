@@ -19,7 +19,7 @@ public class PlayNotePacket implements INoteIdentifierSender {
 
     private final int pitch, volume;
 
-    private final BlockPos blockPos;
+    private final Optional<BlockPos> blockPos;
     private final NoteSound sound;
     private final ResourceLocation instrumentId;
     private final NoteButtonIdentifier noteIdentifier;
@@ -27,7 +27,7 @@ public class PlayNotePacket implements INoteIdentifierSender {
     private final Optional<UUID> playerUUID;
     private final Optional<InteractionHand> hand;
 
-    public PlayNotePacket(BlockPos pos, NoteSound sound, int pitch, int volume, ResourceLocation instrumentId,
+    public PlayNotePacket(Optional<BlockPos> pos, NoteSound sound, int pitch, int volume, ResourceLocation instrumentId,
         NoteButtonIdentifier noteIdentifier, Optional<UUID> playerUUID, Optional<InteractionHand> hand) {
 
         this.pitch = pitch;
@@ -45,7 +45,7 @@ public class PlayNotePacket implements INoteIdentifierSender {
         pitch = buf.readInt();
         volume = buf.readInt();
 
-        blockPos = buf.readBlockPos();
+        blockPos = buf.readOptional(FriendlyByteBuf::readBlockPos);
         sound = NoteSound.readFromNetwork(buf);
         instrumentId = buf.readResourceLocation();
         noteIdentifier = readNoteIdentifierFromNetwork(buf);
@@ -59,7 +59,7 @@ public class PlayNotePacket implements INoteIdentifierSender {
         buf.writeInt(pitch);
         buf.writeInt(volume);
 
-        buf.writeBlockPos(blockPos);
+        buf.writeOptional(blockPos, FriendlyByteBuf::writeBlockPos);
         sound.writeToNetwork(buf);
         buf.writeResourceLocation(instrumentId);
         noteIdentifier.writeToNetwork(buf);
@@ -71,8 +71,8 @@ public class PlayNotePacket implements INoteIdentifierSender {
 
     @Override
     public void handle(final Context context) {
-        sound.playAtPos(
-            pitch, volume, playerUUID.orElse(null), hand,
+        sound.play(
+            pitch, volume, playerUUID, hand,
             instrumentId, noteIdentifier, blockPos
         );
     }

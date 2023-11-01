@@ -55,7 +55,7 @@ public class ServerUtil {
             NoteSound sound, ResourceLocation instrumentId, int pitch, int volume) {
 
         sendPlayNotePackets(
-            player, player.blockPosition(), hand,
+            player, Optional.empty(), hand,
             sound, instrumentId, new DefaultNoteButtonIdentifier(sound, pitch),
             pitch, volume,
             PlayNotePacket::new
@@ -74,7 +74,7 @@ public class ServerUtil {
      * @param volume The volume of the sound to initiate
      * @param PlayNotePacketDelegate The initiator of the {@link PlayNotePacket} to be sent
      */
-    public static void sendPlayNotePackets(ServerPlayer player, BlockPos pos, Optional<InteractionHand> hand,
+    public static void sendPlayNotePackets(ServerPlayer player, Optional<BlockPos> pos, Optional<InteractionHand> hand,
             NoteSound sound, ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, int pitch, int volume,
             PlayNotePacketDelegate notePacketDelegate) {
 
@@ -91,7 +91,7 @@ public class ServerUtil {
         // Trigger an instrument game event
         // This is done so that sculk sensors can pick up the instrument's sound
         player.level().gameEvent(
-            GameEvent.INSTRUMENT_PLAY, pos,
+            GameEvent.INSTRUMENT_PLAY, pos.orElse(player.blockPosition()),
             GameEvent.Context.of(player)
         );
 
@@ -134,7 +134,7 @@ public class ServerUtil {
             PlayNotePacketDelegate notePacketDelegate) {
 
         final PlayNotePacket packet = notePacketDelegate.create(
-            pos, sound, pitch, volume,
+            Optional.of(pos), sound, pitch, volume,
             instrumentId, noteIdentifier,
             Optional.empty(), Optional.empty()
         );

@@ -124,36 +124,44 @@ public class NoteSound {
     /**
      * A method for packets to use for playing this note on the client's end.
      * Will also stop the client's background music per preference.
-     * @param playerUUID The UUID of the player who initiated the sound. Null for when it wasn't a player.
-     * @param hand The hand of the player who initiated the sound. Null for when it wasn't a player.
-     * @param pos The position at which the sound was fired from
+     * @param playerUUID The UUID of the player who initiated the sound. Empty for when it wasn't a player.
+     * @param hand The hand of the player who initiated the sound. Empty for when it wasn't a player.
+     * @param pos The position at which the sound was fired from. Null for the player's.
      */
     @OnlyIn(Dist.CLIENT)
-    public void playAtPos(int pitch, int volume, UUID playerUUID, Optional<InteractionHand> hand,
-            ResourceLocation instrumentId, NoteButtonIdentifier buttonIdentifier, BlockPos pos) {
+    public void play(int pitch, int volume, Optional<UUID> playerUUID, Optional<InteractionHand> hand,
+            ResourceLocation instrumentId, NoteButtonIdentifier buttonIdentifier, Optional<BlockPos> position) {
         final Minecraft minecraft = Minecraft.getInstance();
         final Player player = minecraft.player;
+
+        final Level level = minecraft.level;
+        final Player initiator = playerUUID.isPresent()
+            ? level.getPlayerByUUID(playerUUID.get())
+            : null;
+
+        // The initiator should always be a player if the position is not present
+        final BlockPos pos = position.orElseGet(initiator::blockPosition);
+        
 
         final double distanceFromPlayer = Math.sqrt(pos.distToCenterSqr((Position)player.position()));
         
         if (ModClientConfigs.STOP_MUSIC_ON_PLAY.get() && (distanceFromPlayer < NoteSound.STOP_SOUND_DISTANCE))
             minecraft.getMusicManager().stopPlaying();
 
-        final Level level = minecraft.level;
 
         
-        MinecraftForge.EVENT_BUS.post((playerUUID == null)
+        MinecraftForge.EVENT_BUS.post(playerUUID.isEmpty()
             ? new InstrumentPlayedEvent(
                 this, pitch, volume, level, pos, instrumentId, buttonIdentifier, true
             )
             : new InstrumentPlayedEvent.ByPlayer(
-                this, pitch, volume, level.getPlayerByUUID(playerUUID), pos, hand,
+                this, pitch, volume, initiator, position, hand,
                 instrumentId, buttonIdentifier, true
             )
         );
         
 
-        if (player.getUUID().equals(playerUUID))
+        if (player.equals(initiator))
             return;
 
         

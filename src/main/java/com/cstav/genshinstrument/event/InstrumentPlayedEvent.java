@@ -60,11 +60,18 @@ public class InstrumentPlayedEvent extends Event {
 
         public final Optional<BlockPos> blockInstrumentPos;
 
-        public ByPlayer(NoteSound sound, int pitch, int volume, Player player, BlockPos pos, Optional<InteractionHand> hand,
+        public ByPlayer(NoteSound sound, int pitch, int volume, Player player, Optional<BlockPos> pos, Optional<InteractionHand> hand,
                 ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, boolean isClientSide) {
-            super(sound, pitch, volume, player.level(), pos, instrumentId, noteIdentifier, isClientSide);
+            super(
+                sound, pitch, volume,
+                player.level(), pos.orElse(player.blockPosition()),
+                instrumentId, noteIdentifier,
+                isClientSide
+            );
+
             this.player = player;
 
+            // If the instrument is held, it is an instrument item
             if (hand.isPresent()) {
                 this.hand = hand;
                 itemInstrument = Optional.of((hand == null) ? null : player.getItemInHand(hand.get()));

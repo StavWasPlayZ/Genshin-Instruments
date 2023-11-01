@@ -14,7 +14,7 @@ import net.minecraft.world.InteractionHand;
 @FunctionalInterface
 public interface PlayNotePacketDelegate {
 
-    PlayNotePacket create(BlockPos pos, NoteSound sound, int pitch, int volume, ResourceLocation instrumentId,
+    PlayNotePacket create(Optional<BlockPos> pos, NoteSound sound, int pitch, int volume, ResourceLocation instrumentId,
         NoteButtonIdentifier noteIdentifier, Optional<UUID> playerUUID, Optional<InteractionHand> hand);
         
 }

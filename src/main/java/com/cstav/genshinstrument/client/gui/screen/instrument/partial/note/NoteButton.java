@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note;
 
 import java.awt.Point;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 
@@ -179,12 +180,10 @@ public abstract class NoteButton extends AbstractButton {
 
 
         final Player player = minecraft.player;
-
-        final BlockPos pos = InstrumentOpenProvider.isItem(player)
-            ? player.blockPosition()
-            : InstrumentOpenProvider.getBlockPos(player);
-
-        sendNotePlayPacket(pos);
+        sendNotePlayPacket(!InstrumentOpenProvider.isItem(player)
+            ? Optional.of(InstrumentOpenProvider.getBlockPos(player))
+            : Optional.empty()
+        );
 
         playNoteAnimation(false);
 
@@ -195,7 +194,7 @@ public abstract class NoteButton extends AbstractButton {
         play();
     }
 
-    protected void sendNotePlayPacket(final BlockPos pos) {
+    protected void sendNotePlayPacket(final Optional<BlockPos> pos) {
         ModPacketHandler.sendToServer(new InstrumentPacket(this, pos));
     }
 
@@ -253,7 +252,7 @@ public abstract class NoteButton extends AbstractButton {
      */
     @Override
     public boolean equals(Object obj) {
-        return getIdentifier().matches(obj);
+        return (obj instanceof NoteButton btn) && getIdentifier().matches(btn);
     }
 
 }

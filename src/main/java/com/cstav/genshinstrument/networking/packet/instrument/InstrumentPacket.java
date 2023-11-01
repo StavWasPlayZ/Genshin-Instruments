@@ -23,7 +23,8 @@ public class InstrumentPacket implements INoteIdentifierSender {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_SERVER;
 
 
-    private final BlockPos pos;
+    /**Optionally pass a position that defers from the player's */
+    private final Optional<BlockPos> pos;
     private final NoteSound sound;
     private final Optional<InteractionHand> hand;
 
@@ -32,7 +33,7 @@ public class InstrumentPacket implements INoteIdentifierSender {
     private final ResourceLocation instrumentId;
     private final NoteButtonIdentifier noteIdentifier;
 
-    public InstrumentPacket(BlockPos pos, NoteSound sound, int pitch, int volume, Optional<InteractionHand> hand,
+    public InstrumentPacket(Optional<BlockPos> pos, NoteSound sound, int pitch, int volume, Optional<InteractionHand> hand,
             ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier) {
         this.pos = pos;
         this.sound = sound;
@@ -45,7 +46,7 @@ public class InstrumentPacket implements INoteIdentifierSender {
         this.noteIdentifier = noteIdentifier;
     }
     @OnlyIn(Dist.CLIENT)
-    public InstrumentPacket(final NoteButton noteButton, final BlockPos pos) {
+    public InstrumentPacket(final NoteButton noteButton, final Optional<BlockPos> pos) {
         this(pos, noteButton.getSound(),
             noteButton.getPitch(), noteButton.instrumentScreen.volume,
             noteButton.instrumentScreen.interactionHand,
@@ -54,7 +55,7 @@ public class InstrumentPacket implements INoteIdentifierSender {
     }
 
     public InstrumentPacket(FriendlyByteBuf buf) {
-        pos = buf.readBlockPos();
+        pos = buf.readOptional(FriendlyByteBuf::readBlockPos);
         sound = NoteSound.readFromNetwork(buf);
         hand = buf.readOptional((fbb) -> buf.readEnum(InteractionHand.class));
 
@@ -67,7 +68,7 @@ public class InstrumentPacket implements INoteIdentifierSender {
 
     @Override
     public void write(final FriendlyByteBuf buf) {
-        buf.writeBlockPos(pos);
+        buf.writeOptional(pos, FriendlyByteBuf::writeBlockPos);
         sound.writeToNetwork(buf);
         buf.writeOptional(hand, FriendlyByteBuf::writeEnum);
 
