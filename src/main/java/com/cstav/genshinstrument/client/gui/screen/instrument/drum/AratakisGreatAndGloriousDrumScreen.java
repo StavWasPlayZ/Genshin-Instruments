@@ -117,16 +117,34 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
     public InstrumentMidiReciever initMidiReceiver() {
         return new InstrumentMidiReciever(this) {
             
+            private static boolean donRight = false, kaRight = false;
+
             @Override
             protected NoteButton handleMidiPress(int note, int pitch) {
                 final boolean isKa = (ddt() == DominentDrumType.KA) || ((ddt() == DominentDrumType.BOTH) && (note >= 12));
 
                 setPitch(note - (isKa ? 19 : 2));
-                
+
                 for (final NoteButton noteButton : notesIterable()) {
                     final DrumNoteButton dnb = (DrumNoteButton) noteButton;
-                    if ((dnb.isRight == !isKa) && (dnb.btnType == (isKa ? DrumButtonType.KA : DrumButtonType.DON)))
-                        return dnb;
+                    if (dnb.btnType != (isKa ? DrumButtonType.KA : DrumButtonType.DON))
+                        continue;
+                    
+                    // Toggle between left/right keys
+                    // just visually fun stuff
+                    if (isKa) {
+                        if (dnb.isRight == kaRight) {
+                            kaRight = !kaRight;
+                            return dnb;
+                        }
+                        continue;
+                    } else {
+                        if (dnb.isRight == donRight) {
+                            donRight = !donRight;
+                            return dnb;
+                        }
+                        continue;
+                    }
                 }
 
                 return null;
