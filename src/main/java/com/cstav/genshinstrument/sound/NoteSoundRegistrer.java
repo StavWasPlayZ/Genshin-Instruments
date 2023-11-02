@@ -1,5 +1,7 @@
 package com.cstav.genshinstrument.sound;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Optional;
 
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.AbstractGridInstrumentScreen;
@@ -7,41 +9,71 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.A
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
 
-public abstract class NoteSoundRegistrer {
+public class NoteSoundRegistrer {
+    private static final HashMap<ResourceLocation, NoteSound[]> SOUND_REGISTRY = new HashMap<>();
     public static final String STEREO_SUFFIX = "_stereo";
-    
-    public static RegistryObject<SoundEvent> register(DeferredRegister<SoundEvent> soundRegistrer, ResourceLocation soundLocation) {
-        return soundRegistrer.register(soundLocation.getPath(), () ->
-            createSoundUnsafe(soundLocation)
-        );
-    }
-    /**
-     * Creates a {@link NoteSound} with null sounds, that will get filled
-     * upon registration.
-     * @param name The name of the sound's entry. Appends "_note{{@code note}}" to the mono entry
-     * as well as {@link NoteSoundRegistrer#STEREO_SUFFIX "_stereo"} to the stereo entry.
-     * @param note The index of the note
-     * @param hasStereo If this note has a stereo version
-     * 
-     * @return The new instrument sound instance
-     * @see ModSounds#registerNote(String, boolean)
-     */
-    public static NoteSound registerInstrument(DeferredRegister<SoundEvent> soundRegistrer,
-      ResourceLocation soundLocation, int note, boolean hasStereo) {
 
-        return registerNote(soundRegistrer, soundLocation.withSuffix("_note_"+note), hasStereo);
+
+    private final DeferredRegister<SoundEvent> soundRegistrer;
+    private final ResourceLocation instrumentId;
+
+    private ResourceLocation baseNoteLocation;
+    private boolean hasStereo = false;
+
+    public NoteSoundRegistrer(DeferredRegister<SoundEvent> soundRegistrer, ResourceLocation instrumentId) {
+        this.soundRegistrer = soundRegistrer;
+        this.instrumentId = instrumentId;
+        // We assume the ID is the same as the note's location unless otherwise specified
+        this.baseNoteLocation = instrumentId;
     }
+
     /**
-     * Creates a {@link NoteSound} with null sounds, that will get filled
-     * upon registration.
-     * @param name The name of the sound's entry. Appends {@link NoteSoundRegistrer#STEREO_SUFFIX "_stereo"} to the stereo entry, if exists.
-     * @param hasStereo If this note has a stereo version
-     * @return The new instrument sound instance
+     * Defines that this note sound will support stereo.
+     * Stereo sounds are suffixed with {@code "_stereo"}.
      */
-    public static NoteSound registerNote(DeferredRegister<SoundEvent> soundRegistrer,
-      ResourceLocation soundLocation, boolean hasStereo) {
+    public NoteSoundRegistrer stereo() {
+        hasStereo = true;
+        return this;
+    }
+    public NoteSoundRegistrer noteLocation(final ResourceLocation baseNoteLocation) {
+        this.baseNoteLocation = baseNoteLocation;
+        return this;
+    }
+
+
+    public NoteSound[] register(final NoteSound[] noteSounds) {
+        SOUND_REGISTRY.put(instrumentId, noteSounds);
+        return noteSounds;
+    }
+
+
+    /**
+     * Registers a matrix of sounds for a grid instrument.
+     */
+    public NoteSound[] registerGrid(final int rows, final int columns) {
+        final NoteSound[] sounds = new NoteSound[rows * columns];
+
+        for (int i = 0; i < sounds.length; i++)
+            sounds[i] = createNote(i);
+
+        return register(sounds);
+    }
+
+    /**
+     * Registers a matrix of sounds for a grid instrument, with the
+     * default amount of {@link AbstractGridInstrumentScreen#DEF_ROWS rows} and {@link AbstractGridInstrumentScreen#DEF_COLUMNS columns}.
+     */
+    public NoteSound[] regsiterGrid() {
+        return registerGrid(AbstractGridInstrumentScreen.DEF_ROWS, AbstractGridInstrumentScreen.DEF_COLUMNS);
+    }
+
+
+    /**
+     * Creates a singular {@link NoteSound} with null sounds, that will get filled
+     * upon registration.
+     */
+    public NoteSound createNote(ResourceLocation soundLocation, boolean hasStereo) {
         final NoteSound sound = new NoteSound();
 
         soundRegistrer.register(soundLocation.getPath(), () ->
@@ -57,42 +89,49 @@ public abstract class NoteSoundRegistrer {
 
         return sound;
     }
-    public static NoteSound registerNote(DeferredRegister<SoundEvent> soundRegistrer, ResourceLocation soundLocation) {
-        return registerNote(soundRegistrer, soundLocation, false);
+
+    /**
+     * Creates a singular {@link NoteSound} with null sounds, that will get filled
+     * upon registration.
+     */
+    public NoteSound createNote(final ResourceLocation soundLocation) {
+        return createNote(soundLocation, hasStereo);
+    }
+    /**
+     * Creates a singular {@link NoteSound} with null sounds, that will get filled
+     * upon registration.
+     */
+    public NoteSound createNote() {
+        return createNote(baseNoteLocation);
+    }
+
+
+    private final ArrayList<NoteSound> stackedSounds = new ArrayList<>();
+    public NoteSoundRegistrer add(ResourceLocation soundLocation, boolean hasStereo) {
+        stackedSounds.add(createNote(soundLocation, hasStereo));
+        return this;
+    }
+    public NoteSoundRegistrer add(ResourceLocation soundLocation) {
+        return add(soundLocation, false);
+    }
+
+    public NoteSound[] addAll() {
+        return register(stackedSounds.toArray(NoteSound[]::new));
+    }
+    
+
+    
+    /**
+     * Creates and registers a {@link NoteSound} with null sounds, that will get filled
+     * upon registration.
+     * The name of the registered sound entry will be suffixed by "_note{@code note}".
+     * @param note The index of the note
+     */
+    public NoteSound createNote(int note) {
+        return createNote(baseNoteLocation.withSuffix("_note_"+note));
     }
 
     public static SoundEvent createSoundUnsafe(final ResourceLocation location) {
         return SoundEvent.createVariableRangeEvent(location);
-    }
-
-
-    /**
-     * Registers a series of notes for a grid instrument.
-     * @param soundRegistrer The registrer to register the sounds to
-     * @param baseNoteLocation The base location of which to have the sounds in
-     * @param hasStereo Does this instrument have stereo support?
-     * @return An array of {@link NoteSound NoteSounds} consisting of all the
-     * sounds of the described instrument
-     * 
-     * @see NoteSoundRegistrer#registerInstrument(DeferredRegister, ResourceLocation, int, boolean)
-     */
-    public static NoteSound[] createInstrumentNotes(DeferredRegister<SoundEvent> soundRegistrer,
-      ResourceLocation baseNoteLocation, boolean hasStereo, int rows, int columns) {
-
-        final NoteSound[] sounds = new NoteSound[rows * columns];
-
-        for (int i = 0; i < sounds.length; i++)
-            sounds[i] = registerInstrument(soundRegistrer, baseNoteLocation, i, hasStereo);
-
-        return sounds;
-    }
-
-    public static NoteSound[] createInstrumentNotes(DeferredRegister<SoundEvent> soundRegistrer,
-      ResourceLocation baseNoteLocation, boolean hasStereo) {
-        return createInstrumentNotes(soundRegistrer, baseNoteLocation, hasStereo, AbstractGridInstrumentScreen.DEF_ROWS, AbstractGridInstrumentScreen.DEF_COLUMNS);
-    }
-    public static NoteSound[] createInstrumentNotes(DeferredRegister<SoundEvent> soundRegistrer,
-      final ResourceLocation baseNoteLocation) {
-        return createInstrumentNotes(soundRegistrer, baseNoteLocation, false);
     }
 }
