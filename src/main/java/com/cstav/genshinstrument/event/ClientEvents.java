@@ -89,7 +89,9 @@ public class ClientEvents {
     // Subscribe active instruments to a MIDI event
     @SubscribeEvent
     public static void onMidiEvent(final MidiEvent event) {
-        AbstractInstrumentScreen.getCurrentScreen(Minecraft.getInstance()).ifPresent((screen) -> screen.onMidi(event));
+        AbstractInstrumentScreen.getCurrentScreen(Minecraft.getInstance())
+            .filter(AbstractInstrumentScreen::isMidiInstrument)
+            .ifPresent((instrument) -> instrument.midiReciever.onMidi(event));
     }
 
     // Safely close MIDI streams upon game shutdown
