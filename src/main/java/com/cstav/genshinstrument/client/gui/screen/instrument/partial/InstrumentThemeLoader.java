@@ -147,7 +147,7 @@ public class InstrumentThemeLoader {
         setPressedNoteTheme(getTheme(theme, "note_pressed_theme", DEF_PRESSED_THEME));
         setNoteRingTheme(getTheme(theme, "note_ring_theme", getNoteTheme()));
 
-        setNotePressed(getPressedNoteTheme());
+        setLabelPressed(getPressedNoteTheme());
     }
 
 
