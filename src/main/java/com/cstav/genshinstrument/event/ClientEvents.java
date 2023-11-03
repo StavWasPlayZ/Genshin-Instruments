@@ -72,17 +72,17 @@ public class ClientEvents {
             return;
 
 
-        AbstractInstrumentScreen.getCurrentScreen(MINECRAFT).ifPresent((screen) -> {
-            // The produced instrument sound has to match the current screen's sounds
-            if (!screen.getInstrumentId().equals(event.instrumentId))
-                return;
-
-            try {
-
-                screen.getNoteButton(event.noteIdentifier).playNoteAnimation(true);
-
-            } catch (Exception e) {}
-        });
+        AbstractInstrumentScreen.getCurrentScreen(MINECRAFT)
+            // Filter instruments that do not match the one we're on
+            .filter((screen) -> screen.getInstrumentId().equals(event.instrumentId))
+            .ifPresent((screen) -> {
+                try {
+                    screen.getNoteButton(event.noteIdentifier).playNoteAnimation(true);
+                } catch (Exception e) {
+                    // Button was prolly just not found
+                }
+            }
+        );
     }
 
 
