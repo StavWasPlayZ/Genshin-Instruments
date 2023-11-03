@@ -51,21 +51,21 @@ public class NoteSound {
 
 
     public final int index;
-    public final ResourceLocation instrumentId;
+    public final ResourceLocation baseSoundName;
 
     SoundEvent mono;
     Optional<SoundEvent> stereo;
     
     public NoteSound(int index, ResourceLocation instrumentId, SoundEvent mono, Optional<SoundEvent> stereo) {
         this.index = index;
-        this.instrumentId = instrumentId;
+        this.baseSoundName = instrumentId;
 
         this.mono = mono;
         this.stereo = stereo;
     }
     NoteSound(int index, ResourceLocation instrumentId) {
         this.index = index;
-        this.instrumentId = instrumentId;
+        this.baseSoundName = instrumentId;
     }
     
 
@@ -229,7 +229,7 @@ public class NoteSound {
 
 
     public void writeToNetwork(final FriendlyByteBuf buf) {
-        buf.writeResourceLocation(instrumentId);
+        buf.writeResourceLocation(baseSoundName);
         buf.writeInt(index);
     }
     public static NoteSound readFromNetwork(final FriendlyByteBuf buf) {

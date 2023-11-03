@@ -20,8 +20,8 @@ public class ModSounds {
         WINDSONG_LYRE_NOTE_SOUNDS = nsr(SOUNDS, loc("windsong_lyre")).stereo().regsiterGrid(),
         VINTAGE_LYRE_NOTE_SOUNDS = nsr(SOUNDS, loc("vintage_lyre")).regsiterGrid(),
 
-        ZITHER_NEW_NOTE_SOUNDS = nsr(SOUNDS, loc("floral_zither")).noteLocation(loc("floral_zither_new")).regsiterGrid(),
-        ZITHER_OLD_NOTE_SOUNDS = nsr(SOUNDS, loc("floral_zither")).noteLocation(loc("floral_zither_old")).regsiterGrid(),
+        ZITHER_NEW_NOTE_SOUNDS = nsr(SOUNDS, loc("floral_zither_new")).regsiterGrid(),
+        ZITHER_OLD_NOTE_SOUNDS = nsr(SOUNDS, loc("floral_zither_old")).regsiterGrid(),
 
         GLORIOUS_DRUM = nsr(SOUNDS, loc("glorious_drum"))
             .add(loc("glorious_drum_don"))
