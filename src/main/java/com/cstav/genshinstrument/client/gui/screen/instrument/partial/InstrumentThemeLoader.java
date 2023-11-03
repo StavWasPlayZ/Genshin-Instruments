@@ -138,7 +138,7 @@ public class InstrumentThemeLoader {
 
     @Deprecated(forRemoval = true)
     private void loadLegacyTheme(final JsonObject theme) {
-        LOGGER.warn("The active resourcepack is using the legacy instrument styler format!");
+        LOGGER.warn("The active resourcepack is using the legacy instrument styler format on instrument "+instrumentId+"!");
         LOGGER.warn("The format is deprecated and will be left unsupported, and should be migrated to the new format.");
         LOGGER.warn("Please update your pack, contact the author of it, or visit the Genshin Instruments GitHub repository to learn more."); //TODO add link to resourcepack wiki page
 

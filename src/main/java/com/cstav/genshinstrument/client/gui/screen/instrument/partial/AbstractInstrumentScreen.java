@@ -73,7 +73,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
     /**
      * Represents the volume of this instrument in percentages (0% - 100%)
      */
-    public int volume = ModClientConfigs.VOLUME.get();
+    public int volume = (int)(ModClientConfigs.VOLUME.get() * 100);
     /**
      * Convinience method to get the {@link AbstractInstrumentScreen#volume volume}
      * of this instrument as a {@code float} percentage

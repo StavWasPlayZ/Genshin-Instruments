@@ -274,9 +274,9 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
         if (isOverlay)
             instrumentScreen.volume = newVolume;
 
-        queueToSave("volume", () -> saveVolume(newVolume));
+        queueToSave("volume", () -> saveVolume(newVolume / 100d));
     }
-    protected void saveVolume(final int newVolume) {
+    protected void saveVolume(final double newVolume) {
         ModClientConfigs.VOLUME.set(newVolume);
     }
 
