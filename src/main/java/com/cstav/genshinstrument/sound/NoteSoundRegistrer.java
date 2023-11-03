@@ -81,7 +81,14 @@ public class NoteSoundRegistrer {
         return add(soundLocation, hasStereo);
     }
 
-    public NoteSound[] addAll() {
+    public NoteSound peek() {
+        return stackedSounds.get(stackedSounds.size() - 1);
+    }
+
+    /**
+     * Registers all NoteSounds added via {@link NoteSoundRegistrer#add}
+     */
+    public NoteSound[] registerAll() {
         return register(stackedSounds.toArray(NoteSound[]::new));
     }
 

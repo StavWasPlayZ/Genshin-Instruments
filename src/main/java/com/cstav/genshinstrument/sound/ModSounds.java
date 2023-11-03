@@ -26,7 +26,7 @@ public class ModSounds {
         GLORIOUS_DRUM = nsr(SOUNDS, loc("glorious_drum"))
             .add(loc("glorious_drum_don"))
             .add(loc("glorious_drum_ka"), true)
-        .addAll();
+        .registerAll();
     ;
 
     /**

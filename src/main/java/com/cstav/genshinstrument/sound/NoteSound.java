@@ -64,6 +64,10 @@ public class NoteSound {
         this.mono = mono;
         this.stereo = stereo;
     }
+
+    /**
+     * Constructor for assigning mono & stereo lazily
+     */
     NoteSound(int index, ResourceLocation instrumentId) {
         this.index = index;
         this.baseSoundName = instrumentId;
