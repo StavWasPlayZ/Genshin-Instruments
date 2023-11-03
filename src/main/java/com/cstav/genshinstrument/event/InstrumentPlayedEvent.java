@@ -2,7 +2,6 @@ package com.cstav.genshinstrument.event;
 
 import java.util.Optional;
 
-import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
 
@@ -30,7 +29,7 @@ public class InstrumentPlayedEvent extends Event {
     
     public final ResourceLocation instrumentId;
     public final NoteButtonIdentifier noteIdentifier;
-    public final BlockPos pos;
+    public final BlockPos playPos;
 
 
     /**
@@ -50,7 +49,7 @@ public class InstrumentPlayedEvent extends Event {
         this.volume = volume;
 
         this.level = level;
-        this.pos = pos;
+        this.playPos = pos;
         this.isClientSide = isClientSide;
 
         this.instrumentId = instrumentId;
@@ -67,31 +66,26 @@ public class InstrumentPlayedEvent extends Event {
         /** The hand holding the instrument played by this player */
         public final Optional<InteractionHand> hand;
 
-        public final Optional<BlockPos> blockInstrumentPos;
 
-        public ByPlayer(NoteSound sound, int pitch, int volume, Player player, Optional<BlockPos> pos, Optional<InteractionHand> hand,
+        public boolean isBlockInstrument() {
+            return !hand.isPresent();
+        }
+
+
+        public ByPlayer(NoteSound sound, int pitch, int volume, Player player, BlockPos pos, Optional<InteractionHand> hand,
                 ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, boolean isClientSide) {
             super(
                 sound, pitch, volume,
-                player.level(), pos.orElse(player.blockPosition()),
+                player.level(), pos,
                 instrumentId, noteIdentifier,
                 isClientSide
             );
 
             this.player = player;
+            this.hand = hand;
 
-            // If the instrument is held, it is an instrument item
-            if (hand.isPresent()) {
-                this.hand = hand;
-                itemInstrument = Optional.of((hand == null) ? null : player.getItemInHand(hand.get()));
-
-                blockInstrumentPos = Optional.empty();
-            } else {
-                itemInstrument = Optional.empty();
-                this.hand = Optional.empty();
-
-                blockInstrumentPos = Optional.ofNullable(InstrumentOpenProvider.getBlockPos(player));
-            }
+            itemInstrument = isBlockInstrument() ? Optional.empty()
+                : Optional.of(player.getItemInHand(hand.get()));
         }
     }
     

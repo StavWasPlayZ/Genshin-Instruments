@@ -7,6 +7,7 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
+import com.cstav.genshinstrument.util.CommonUtil;
 import com.cstav.genshinstrument.util.LabelUtil;
 
 import net.minecraft.client.Minecraft;
@@ -135,7 +136,7 @@ public class NoteSound {
      * Will also stop the client's background music per preference.
      * @param playerUUID The UUID of the player who initiated the sound. Empty for when it wasn't a player.
      * @param hand The hand of the player who initiated the sound. Empty for when it wasn't a player.
-     * @param pos The position at which the sound was fired from. Null for the player's.
+     * @param playPos The position at which the sound was fired from. Null for the player's.
      */
     @OnlyIn(Dist.CLIENT)
     public void play(int pitch, int volume, Optional<UUID> playerUUID, Optional<InteractionHand> hand,
@@ -148,8 +149,7 @@ public class NoteSound {
             ? level.getPlayerByUUID(playerUUID.get())
             : null;
 
-        // The initiator should always be a player if the position is not present
-        final BlockPos pos = position.orElseGet(initiator::blockPosition);
+        final BlockPos pos = CommonUtil.getPlayeredPosition(initiator, position);
         
 
         final double distanceFromPlayer = Math.sqrt(pos.distToCenterSqr((Position)player.position()));
@@ -164,7 +164,7 @@ public class NoteSound {
                 this, pitch, volume, level, pos, instrumentId, buttonIdentifier, true
             )
             : new InstrumentPlayedEvent.ByPlayer(
-                this, pitch, volume, initiator, position, hand,
+                this, pitch, volume, initiator, pos, hand,
                 instrumentId, buttonIdentifier, true
             )
         );

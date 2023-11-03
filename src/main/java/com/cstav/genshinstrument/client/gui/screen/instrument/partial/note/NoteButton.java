@@ -1,11 +1,9 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note;
 
 import java.awt.Point;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 
-import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.NoteLabelSupplier;
@@ -24,10 +22,8 @@ import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.sounds.SoundManager;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -177,14 +173,7 @@ public abstract class NoteButton extends AbstractButton {
             return;
         
         sound.playLocally(getPitch(), instrumentScreen.volume());
-
-
-        final Player player = minecraft.player;
-        sendNotePlayPacket(!InstrumentOpenProvider.isItem(player)
-            ? Optional.of(InstrumentOpenProvider.getBlockPos(player))
-            : Optional.empty()
-        );
-
+        sendNotePlayPacket();
         playNoteAnimation(false);
 
         locked = true;
@@ -194,8 +183,8 @@ public abstract class NoteButton extends AbstractButton {
         play();
     }
 
-    protected void sendNotePlayPacket(final Optional<BlockPos> pos) {
-        ModPacketHandler.sendToServer(new InstrumentPacket(this, pos));
+    protected void sendNotePlayPacket() {
+        ModPacketHandler.sendToServer(new InstrumentPacket(this));
     }
 
 

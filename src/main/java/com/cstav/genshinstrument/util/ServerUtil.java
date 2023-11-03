@@ -84,19 +84,21 @@ public class ServerUtil {
             Optional.of(player.getUUID()), hand
         );
 
-        for (final Player listener : noteListeners(player.level(), player.blockPosition()))
+        final BlockPos playeredPos = CommonUtil.getPlayeredPosition(player, pos);
+
+        for (final Player listener : noteListeners(player.level(), playeredPos))
             ModPacketHandler.sendToClient(packet, (ServerPlayer)listener);
 
 
         // Trigger an instrument game event
         // This is done so that sculk sensors can pick up the instrument's sound
         player.level().gameEvent(
-            GameEvent.INSTRUMENT_PLAY, pos.orElse(player.blockPosition()),
+            GameEvent.INSTRUMENT_PLAY, playeredPos,
             GameEvent.Context.of(player)
         );
 
         MinecraftForge.EVENT_BUS.post(
-            new InstrumentPlayedEvent.ByPlayer(sound, pitch, volume, player, pos, hand, instrumentId, noteIdentifier, false)
+            new InstrumentPlayedEvent.ByPlayer(sound, pitch, volume, player, playeredPos, hand, instrumentId, noteIdentifier, false)
         );
     }
 

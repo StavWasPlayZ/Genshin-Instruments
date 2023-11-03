@@ -19,7 +19,7 @@ public class PlayNotePacket implements INoteIdentifierSender {
 
     private final int pitch, volume;
 
-    private final Optional<BlockPos> blockPos;
+    private final Optional<BlockPos> position;
     private final NoteSound sound;
     private final ResourceLocation instrumentId;
     private final NoteButtonIdentifier noteIdentifier;
@@ -33,7 +33,7 @@ public class PlayNotePacket implements INoteIdentifierSender {
         this.pitch = pitch;
         this.volume = volume;
 
-        this.blockPos = pos;
+        this.position = pos;
         this.sound = sound;
         this.instrumentId = instrumentId;
         this.noteIdentifier = noteIdentifier;
@@ -45,7 +45,7 @@ public class PlayNotePacket implements INoteIdentifierSender {
         pitch = buf.readInt();
         volume = buf.readInt();
 
-        blockPos = buf.readOptional(FriendlyByteBuf::readBlockPos);
+        position = buf.readOptional(FriendlyByteBuf::readBlockPos);
         sound = NoteSound.readFromNetwork(buf);
         instrumentId = buf.readResourceLocation();
         noteIdentifier = readNoteIdentifierFromNetwork(buf);
@@ -59,7 +59,7 @@ public class PlayNotePacket implements INoteIdentifierSender {
         buf.writeInt(pitch);
         buf.writeInt(volume);
 
-        buf.writeOptional(blockPos, FriendlyByteBuf::writeBlockPos);
+        buf.writeOptional(position, FriendlyByteBuf::writeBlockPos);
         sound.writeToNetwork(buf);
         buf.writeResourceLocation(instrumentId);
         noteIdentifier.writeToNetwork(buf);
@@ -73,7 +73,7 @@ public class PlayNotePacket implements INoteIdentifierSender {
     public void handle(final Context context) {
         sound.play(
             pitch, volume, playerUUID, hand,
-            instrumentId, noteIdentifier, blockPos
+            instrumentId, noteIdentifier, position
         );
     }
 }

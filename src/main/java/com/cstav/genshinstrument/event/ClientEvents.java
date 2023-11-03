@@ -68,7 +68,7 @@ public class ClientEvents {
             return;
 
         // Only show play notes in the local range
-        if (!event.pos.closerThan(MINECRAFT.player.blockPosition(), NoteSound.LOCAL_RANGE))
+        if (!event.playPos.closerThan(MINECRAFT.player.blockPosition(), NoteSound.LOCAL_RANGE))
             return;
 
 
