@@ -50,14 +50,23 @@ public class NoteSound {
 
 
 
+    public final int index;
+    public final ResourceLocation instrumentId;
+
     SoundEvent mono;
     Optional<SoundEvent> stereo;
     
-    public NoteSound(SoundEvent mono, Optional<SoundEvent> stereo) {
+    public NoteSound(int index, ResourceLocation instrumentId, SoundEvent mono, Optional<SoundEvent> stereo) {
+        this.index = index;
+        this.instrumentId = instrumentId;
+
         this.mono = mono;
         this.stereo = stereo;
     }
-    NoteSound() {}
+    NoteSound(int index, ResourceLocation instrumentId) {
+        this.index = index;
+        this.instrumentId = instrumentId;
+    }
     
 
     public SoundEvent getMono() {
@@ -220,14 +229,11 @@ public class NoteSound {
 
 
     public void writeToNetwork(final FriendlyByteBuf buf) {
-        mono.writeToNetwork(buf);
-        buf.writeOptional(stereo, (fbb, sound) -> sound.writeToNetwork(fbb));
+        buf.writeResourceLocation(instrumentId);
+        buf.writeInt(index);
     }
     public static NoteSound readFromNetwork(final FriendlyByteBuf buf) {
-        return new NoteSound(
-            SoundEvent.readFromNetwork(buf),
-            buf.readOptional(SoundEvent::readFromNetwork)
-        );
+        return NoteSoundRegistrer.getSounds(buf.readResourceLocation())[buf.readInt()];
     }
 
 

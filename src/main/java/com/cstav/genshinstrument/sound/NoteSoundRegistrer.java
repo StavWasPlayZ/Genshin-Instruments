@@ -14,6 +14,12 @@ public class NoteSoundRegistrer {
     private static final HashMap<ResourceLocation, NoteSound[]> SOUND_REGISTRY = new HashMap<>();
     public static final String STEREO_SUFFIX = "_stereo";
 
+    public static NoteSound[] getSounds(final ResourceLocation instrumentId) {
+        return SOUND_REGISTRY.get(instrumentId);
+    }
+
+
+    /* ----------- Registration Builder ----------- */
 
     private final DeferredRegister<SoundEvent> soundRegistrer;
     private final ResourceLocation instrumentId;
@@ -48,6 +54,7 @@ public class NoteSoundRegistrer {
     }
 
 
+    // Grid registrer
     /**
      * Registers a matrix of sounds for a grid instrument.
      */
@@ -69,12 +76,36 @@ public class NoteSoundRegistrer {
     }
 
 
+    // Singles registrer
+    private final ArrayList<NoteSound> stackedSounds = new ArrayList<>();
+    public NoteSoundRegistrer add(ResourceLocation soundLocation, boolean hasStereo) {
+        stackedSounds.add(createNote(soundLocation, hasStereo, stackedSounds.size()));
+        return this;
+    }
+    public NoteSoundRegistrer add(ResourceLocation soundLocation) {
+        return add(soundLocation, false);
+    }
+
+    public NoteSound[] addAll() {
+        return register(stackedSounds.toArray(NoteSound[]::new));
+    }
+
+    // Single registrer
     /**
      * Creates a singular {@link NoteSound} with null sounds, that will get filled
      * upon registration.
      */
-    public NoteSound createNote(ResourceLocation soundLocation, boolean hasStereo) {
-        final NoteSound sound = new NoteSound();
+    public NoteSound registerNote() {
+        return createNote(baseNoteLocation, 0);
+    }
+
+
+    /**
+     * Creates a singular {@link NoteSound} with null sounds, that will get filled
+     * upon registration.
+     */
+    private NoteSound createNote(ResourceLocation soundLocation, boolean hasStereo, int index) {
+        final NoteSound sound = new NoteSound(index, instrumentId);
 
         soundRegistrer.register(soundLocation.getPath(), () ->
             sound.mono = createSoundUnsafe(soundLocation)
@@ -89,49 +120,26 @@ public class NoteSoundRegistrer {
 
         return sound;
     }
-
+    
     /**
      * Creates a singular {@link NoteSound} with null sounds, that will get filled
      * upon registration.
      */
-    public NoteSound createNote(final ResourceLocation soundLocation) {
-        return createNote(soundLocation, hasStereo);
+    private NoteSound createNote(ResourceLocation soundLocation, int index) {
+        return createNote(soundLocation, hasStereo, index);
     }
-    /**
-     * Creates a singular {@link NoteSound} with null sounds, that will get filled
-     * upon registration.
-     */
-    public NoteSound createNote() {
-        return createNote(baseNoteLocation);
-    }
-
-
-    private final ArrayList<NoteSound> stackedSounds = new ArrayList<>();
-    public NoteSoundRegistrer add(ResourceLocation soundLocation, boolean hasStereo) {
-        stackedSounds.add(createNote(soundLocation, hasStereo));
-        return this;
-    }
-    public NoteSoundRegistrer add(ResourceLocation soundLocation) {
-        return add(soundLocation, false);
-    }
-
-    public NoteSound[] addAll() {
-        return register(stackedSounds.toArray(NoteSound[]::new));
-    }
-    
-
-    
     /**
      * Creates and registers a {@link NoteSound} with null sounds, that will get filled
      * upon registration.
-     * The name of the registered sound entry will be suffixed by "_note{@code note}".
-     * @param note The index of the note
+     * The name of the registered sound entry will be suffixed by "_note{@code noteIndex}".
+     * @param noteIndex The index of the note
      */
-    public NoteSound createNote(int note) {
-        return createNote(baseNoteLocation.withSuffix("_note_"+note));
+    public NoteSound createNote(int noteIndex) {
+        return createNote(baseNoteLocation.withSuffix("_note_"+noteIndex), noteIndex);
     }
+    
 
-    public static SoundEvent createSoundUnsafe(final ResourceLocation location) {
+    private static SoundEvent createSoundUnsafe(final ResourceLocation location) {
         return SoundEvent.createVariableRangeEvent(location);
     }
 }
