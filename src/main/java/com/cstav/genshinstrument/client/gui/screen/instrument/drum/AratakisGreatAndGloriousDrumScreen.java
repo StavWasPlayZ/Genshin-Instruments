@@ -120,7 +120,7 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
             private static boolean donRight = false, kaRight = false;
 
             @Override
-            protected NoteButton handleMidiPress(int note, int pitch) {
+            protected NoteButton handleMidiPress(int note, int key) {
                 final boolean isKa = (ddt() == DominentDrumType.KA) || ((ddt() == DominentDrumType.BOTH) && (note >= 12));
 
                 setPitch(note - (isKa ? 19 : 2));

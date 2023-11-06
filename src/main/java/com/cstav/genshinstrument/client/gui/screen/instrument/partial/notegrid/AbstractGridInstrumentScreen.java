@@ -237,13 +237,13 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
 
             
             @Override
-            protected NoteButton handleMidiPress(int note, int pitch) {
+            protected NoteButton handleMidiPress(int note, int key) {
 
                 final int layoutNote = note % 12;
-                final boolean higherThan3 = layoutNote > pitch + 4;
+                final boolean higherThan3 = layoutNote > key + 4;
 
                 // Handle transposition
-                final boolean shouldSharpen = shouldSharpen(layoutNote, higherThan3, pitch);
+                final boolean shouldSharpen = shouldSharpen(layoutNote, key);
                 final boolean shouldFlatten = shouldFlatten(shouldSharpen);
 
                 transposeMidi(shouldSharpen, shouldFlatten);
@@ -253,7 +253,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
 
                 final int currNote = ((playedNote + (higherThan3 ? 1 : 0)) / 2)
                     // 12th note should go to the next column
-                    + playedNote / (12 + pitch);
+                    + playedNote / (12 + key);
 
                 return getNoteButton(currNote % rows(), currNote / rows());
 

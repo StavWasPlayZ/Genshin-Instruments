@@ -41,10 +41,10 @@ public abstract class InstrumentMidiReciever {
     /**
      * Fires when a MIDI note is being pressed sucessfully, only if this is {@link AbstractInstrumentScreen#isMidiInstrument a midi instrument}.
      * @param note The raw note being pressed by the MIDI device, {@link AbstractInstrumentScreen#getLowC relative to low C} {@code note % 12}
-     * @param pitch The scale played by the MIDI device; the absolute value of current pitch saved in the client configs (Always set to 0 here)
+     * @param key The scale played by the MIDI device; the absolute value of current pitch saved in the client configs (Always set to 0 here)
      * @return The pressed note button. Null if none.
      */
-    protected abstract NoteButton handleMidiPress(int note, int pitch);
+    protected abstract NoteButton handleMidiPress(int note, int key);
     
 
     public void onMidi(final MidiEvent event) {
@@ -105,18 +105,20 @@ public abstract class InstrumentMidiReciever {
     }
 
 
-    protected boolean shouldSharpen(final int layoutNote, final boolean higherThan3, final int pitch) {
+    protected boolean shouldSharpen(final int layoutNote, final int key) {
+        final boolean higherThan3 = layoutNote > key + 4;
+
         // Much testing and maths later
         // The logic here is that accidentals only occur when the note number is
         // the same divisable as the pitch itself
-        boolean shouldSharpen = (layoutNote % 2) != (pitch % 2);
+        boolean shouldSharpen = (layoutNote % 2) != (key % 2);
         
         // Negate logic for notes higher than 3 on the scale
         if (higherThan3)
             shouldSharpen = !shouldSharpen;
 
         // Negate logic for notes beyond the 12th note
-        if (layoutNote < pitch)
+        if (layoutNote < key)
             shouldSharpen = !shouldSharpen;
 
         return shouldSharpen;
