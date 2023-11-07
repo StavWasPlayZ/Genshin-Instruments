@@ -1,10 +1,14 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid;
 
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.ShortMessage;
+
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButtonRenderer;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
+import com.cstav.genshinstrument.event.MidiEvent;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.LabelUtil;
@@ -48,6 +52,48 @@ public class NoteGridButton extends NoteButton {
         this.column = column;
     }
 
+    public AbstractGridInstrumentScreen gridInstrument() {
+        return (AbstractGridInstrumentScreen) instrumentScreen;
+    }
+
+
+    @Override
+    public void play() {
+        if (locked)
+            return;
+
+        final boolean actAsTranspose = true; //TODO make config
+        if (!actAsTranspose) {
+            super.play();
+            return;
+        }
+
+
+        try {
+            instrumentScreen.midiReciever.onMidi(new MidiEvent(
+                new ShortMessage(-112, toMidiNote() + getPitch() * 2, 127), 0,
+                (note) -> {
+                    play(note.getSound(), 0);
+                    return false;
+                }
+            ));
+        } catch (InvalidMidiDataException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int toMidiNote() {
+        final int columns = gridInstrument().columns();
+
+            // Base note
+        return 60 - (columns - 1) * 12
+            // Climbing from left to right
+            + (row * 2) + (((columns - 1) - column) * 12)
+            // Gaps
+            - (row / 3) + (row / 6);
+    }
+
+
     public void updateSoundArr() {
         if (!(instrumentScreen instanceof AbstractGridInstrumentScreen gridInstrument))
             return;
@@ -90,6 +136,6 @@ public class NoteGridButton extends NoteButton {
 
     @Override
     public int getNoteOffset() {
-        return row + column * ((AbstractGridInstrumentScreen)instrumentScreen).rows();
+        return row + column * gridInstrument().rows();
     }
 }

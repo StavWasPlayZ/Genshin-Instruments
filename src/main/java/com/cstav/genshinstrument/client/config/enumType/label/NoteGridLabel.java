@@ -57,6 +57,6 @@ public enum NoteGridLabel implements INoteLabel {
         return (NoteGridButton)btn;
     }
     private static AbstractGridInstrumentScreen gs(final NoteButton btn) {
-        return (AbstractGridInstrumentScreen)btn.instrumentScreen;
+        return ng(btn).gridInstrument();
     }
 }

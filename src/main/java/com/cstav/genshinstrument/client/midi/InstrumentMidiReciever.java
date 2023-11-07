@@ -65,8 +65,8 @@ public abstract class InstrumentMidiReciever {
         }
 
 
-        //NOTE: Math.abs(getPitch()) was here instead, but transposition seems fair enough
-        final int pitch = 0;
+        final boolean actAsTranspose = supportTransposition() && true; //TODO add the config here
+        final int key = actAsTranspose ? instrument.getPitch() : 0;
 
         // Handle dynamic touch
         final float prevVolume = instrument.volume();
@@ -74,10 +74,10 @@ public abstract class InstrumentMidiReciever {
             instrument.volume *= Math.max(MIN_MIDI_VELOCITY, message[2]) / 127D;
 
 
-        pressedMidiNote = handleMidiPress(note, pitch);
-        if (pressedMidiNote != null)
+        pressedMidiNote = handleMidiPress(note, key);
+        if ((pressedMidiNote != null) && event.shouldPLay(pressedMidiNote))
             pressedMidiNote.play();
-
+            
 
         instrument.setVolume(prevVolume);
     }
@@ -102,6 +102,14 @@ public abstract class InstrumentMidiReciever {
 
 
         return true;
+    }
+
+    /**
+     * @return Whether this MIDI reciever is capable of maintaining
+     * key changes
+     */
+    public boolean supportTransposition() {
+        return false;
     }
 
 

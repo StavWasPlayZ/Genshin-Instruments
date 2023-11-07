@@ -172,19 +172,23 @@ public abstract class NoteButton extends AbstractButton {
         if (locked)
             return;
         
-        sound.playLocally(getPitch(), instrumentScreen.volume());
-        sendNotePlayPacket();
+        play(getSound(), getPitch());
+    }
+    protected void play(final NoteSound sound, final int pitch) {
+        sound.playLocally(pitch, instrumentScreen.volume());
+        sendNotePlayPacket(sound, pitch);
         playNoteAnimation(false);
 
         locked = true;
     }
+
     @Override
     public void onPress() {
         play();
     }
 
-    protected void sendNotePlayPacket() {
-        ModPacketHandler.sendToServer(new InstrumentPacket(this));
+    protected void sendNotePlayPacket(final NoteSound sound, final int pitch) {
+        ModPacketHandler.sendToServer(new InstrumentPacket(this, sound, pitch));
     }
 
 

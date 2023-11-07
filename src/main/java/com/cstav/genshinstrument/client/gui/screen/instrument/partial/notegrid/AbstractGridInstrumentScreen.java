@@ -228,38 +228,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
 
     @Override
     public InstrumentMidiReciever initMidiReceiver() {
-        return ((rows() != 7) || isSSTI()) ? null : new InstrumentMidiReciever(this) {
-
-            @Override
-            public boolean allowMidiOverflow() {
-                return true;
-            }
-
-            
-            @Override
-            protected NoteButton handleMidiPress(int note, int key) {
-
-                final int layoutNote = note % 12;
-                final boolean higherThan3 = layoutNote > key + 4;
-
-                // Handle transposition
-                final boolean shouldSharpen = shouldSharpen(layoutNote, key);
-                final boolean shouldFlatten = shouldFlatten(shouldSharpen);
-
-                transposeMidi(shouldSharpen, shouldFlatten);
-
-                
-                final int playedNote = note + (shouldFlatten ? 1 : shouldSharpen ? -1 : 0);
-
-                final int currNote = ((playedNote + (higherThan3 ? 1 : 0)) / 2)
-                    // 12th note should go to the next column
-                    + playedNote / (12 + key);
-
-                return getNoteButton(currNote % rows(), currNote / rows());
-
-            }
-            
-        };
+        return ((rows() != 7) || isSSTI()) ? null : new GridInstrumentMidiReciever(this);
     }
 
 }

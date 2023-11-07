@@ -46,9 +46,8 @@ public class InstrumentPacket implements INoteIdentifierSender {
         this.noteIdentifier = noteIdentifier;
     }
     @OnlyIn(Dist.CLIENT)
-    public InstrumentPacket(final NoteButton noteButton) {
-        this(Optional.empty(), noteButton.getSound(),
-            noteButton.getPitch(), noteButton.instrumentScreen.volume,
+    public InstrumentPacket(final NoteButton noteButton, NoteSound sound, int pitch) {
+        this(Optional.empty(), sound, pitch, noteButton.instrumentScreen.volume,
             noteButton.instrumentScreen.interactionHand,
             noteButton.instrumentScreen.getInstrumentId(), noteButton.getIdentifier()
         );
