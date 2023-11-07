@@ -156,7 +156,7 @@ public class ServerUtil {
 
 
         MinecraftForge.EVENT_BUS.post(
-            new InstrumentPlayedEvent(sound, pitch, volume, (ServerLevel)level, pos, instrumentId, noteIdentifier, false)
+            new InstrumentPlayedEvent(sound, pitch, volume, level, pos, instrumentId, noteIdentifier, false)
         );
     }
 
