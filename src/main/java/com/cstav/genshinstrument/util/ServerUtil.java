@@ -1,11 +1,5 @@
 package com.cstav.genshinstrument.util;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Supplier;
-
-import org.slf4j.Logger;
-
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.networking.IModPacket;
@@ -18,7 +12,6 @@ import com.cstav.genshinstrument.networking.packet.instrument.OpenInstrumentPack
 import com.cstav.genshinstrument.networking.packet.instrument.PlayNotePacket;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.logging.LogUtils;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -35,6 +28,11 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent.Context;
 import net.minecraftforge.network.simple.SimpleChannel;
+import org.slf4j.Logger;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 public class ServerUtil {
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -72,7 +70,7 @@ public class ServerUtil {
      * @param noteIdentifier The identifier of the note
      * @param pitch The pitch of the sound to initiate
      * @param volume The volume of the sound to initiate
-     * @param PlayNotePacketDelegate The initiator of the {@link PlayNotePacket} to be sent
+     * @param notePacketDelegate The initiator of the {@link PlayNotePacket} to be sent
      */
     public static void sendPlayNotePackets(ServerPlayer player, Optional<BlockPos> pos, Optional<InteractionHand> hand,
             NoteSound sound, ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, int pitch, int volume,
@@ -129,7 +127,7 @@ public class ServerUtil {
      * @param noteIdentifier The identifier of the note
      * @param pitch The pitch of the sound to initiate
      * @param volume The volume of the sound to initiate
-     * @param PlayNotePacketDelegate The initiator of the {@link PlayNotePacket} to be sent
+     * @param notePacketDelegate The initiator of the {@link PlayNotePacket} to be sent
      */
     public static void sendPlayNotePackets(Level level, BlockPos pos, NoteSound sound,
             ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, int pitch, int volume,
@@ -174,7 +172,7 @@ public class ServerUtil {
 
 
     public static void setInstrumentClosed(final Player player) {
-        // Update the the capabilty on server
+        // Update the capability on server
         InstrumentOpenProvider.setClosed(player);
 
         // And clients
@@ -224,7 +222,7 @@ public class ServerUtil {
     private static boolean sendOpenPacket(ServerPlayer player, InteractionHand usedHand, OpenInstrumentPacketSender onOpenRequest,
             BlockPos pos) {
 
-        // Update the the capabilty on the server
+        // Update the capability on the server
         if (pos == null)
             InstrumentOpenProvider.setOpen(player);
         else
@@ -277,7 +275,7 @@ public class ServerUtil {
 
             } catch (Exception e) {
                 LOGGER.error(
-                    "Error registring packet of type "+packetType.getName()
+                    "Error registering packet of type "+packetType.getName()
                         +". Make sure to have a NETWORK_DIRECTION static field of type NetworkDirection."
                 , e);
             }
