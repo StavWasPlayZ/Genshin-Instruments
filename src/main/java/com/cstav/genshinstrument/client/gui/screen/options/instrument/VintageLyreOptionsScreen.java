@@ -24,12 +24,12 @@ public class VintageLyreOptionsScreen extends SingleButtonOptionsScreen {
     @Override
     protected AbstractButton constructButton() {
         return CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
-                .withInitialValue(ModClientConfigs.NORMALIZE_VINTAGE_LYRE.get())
-                .withTooltip((value) -> Tooltip.create(Component.translatable("button.genshinstrument.normalize_vintage_lyre.tooltip")))
-                .create(0, 0,
-                        getBigButtonWidth(), getButtonHeight(),
-                        Component.translatable("button.genshinstrument.normalize_vintage_lyre"), this::onNormalizeLyreChanged
-                );
+            .withInitialValue(ModClientConfigs.NORMALIZE_VINTAGE_LYRE.get())
+            .withTooltip((value) -> Tooltip.create(Component.translatable("button.genshinstrument.normalize_vintage_lyre.tooltip")))
+            .create(0, 0,
+                getBigButtonWidth(), getButtonHeight(),
+                Component.translatable("button.genshinstrument.normalize_vintage_lyre"), this::onNormalizeLyreChanged
+            );
     }
 
     private void onNormalizeLyreChanged(CycleButton<Boolean> button, Boolean value) {
