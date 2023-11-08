@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.registries.DeferredRegister;
 
-public class NoteSoundRegistrer {
+public class NoteSoundRegistrar {
     private static final HashMap<ResourceLocation, NoteSound[]> SOUNDS_REGISTRY = new HashMap<>();
     public static final String STEREO_SUFFIX = "_stereo";
 
@@ -21,35 +21,35 @@ public class NoteSoundRegistrer {
 
     /* ----------- Registration Builder ----------- */
 
-    private final DeferredRegister<SoundEvent> soundRegistrer;
-    private final ResourceLocation baseSoundName;
+    private final DeferredRegister<SoundEvent> soundRegistrar;
+    private final ResourceLocation baseSoundLocation;
 
     private boolean hasStereo = false;
 
-    public NoteSoundRegistrer(DeferredRegister<SoundEvent> soundRegistrer, ResourceLocation baseSoundName) {
-        this.soundRegistrer = soundRegistrer;
-        this.baseSoundName = baseSoundName;
+    public NoteSoundRegistrar(DeferredRegister<SoundEvent> soundRegistrar, ResourceLocation baseSoundLocation) {
+        this.soundRegistrar = soundRegistrar;
+        this.baseSoundLocation = baseSoundLocation;
     }
 
     /**
      * Defines that this note sound will support stereo.
      * Stereo sounds are suffixed with {@code "_stereo"}.
      */
-    public NoteSoundRegistrer stereo() {
+    public NoteSoundRegistrar stereo() {
         hasStereo = true;
         return this;
     }
 
 
     public NoteSound[] register(final NoteSound[] noteSounds) {
-        SOUNDS_REGISTRY.put(baseSoundName, noteSounds);
+        SOUNDS_REGISTRY.put(baseSoundLocation, noteSounds);
         return noteSounds;
     }
 
 
     /* ----------- Registration Methods ----------- */
 
-    // Grid registrer
+    // Grid registrar
     /**
      * Registers a matrix of sounds for a grid instrument.
      */
@@ -66,18 +66,18 @@ public class NoteSoundRegistrer {
      * Registers a matrix of sounds for a grid instrument, with the
      * default amount of {@link AbstractGridInstrumentScreen#DEF_ROWS rows} and {@link AbstractGridInstrumentScreen#DEF_COLUMNS columns}.
      */
-    public NoteSound[] regsiterGrid() {
+    public NoteSound[] registerGrid() {
         return registerGrid(AbstractGridInstrumentScreen.DEF_ROWS, AbstractGridInstrumentScreen.DEF_COLUMNS);
     }
 
 
-    // Singles registrer
+    // Singles registrar
     private final ArrayList<NoteSound> stackedSounds = new ArrayList<>();
-    public NoteSoundRegistrer add(ResourceLocation soundLocation, boolean hasStereo) {
+    public NoteSoundRegistrar add(ResourceLocation soundLocation, boolean hasStereo) {
         stackedSounds.add(createNote(soundLocation, hasStereo, stackedSounds.size()));
         return this;
     }
-    public NoteSoundRegistrer add(ResourceLocation soundLocation) {
+    public NoteSoundRegistrar add(ResourceLocation soundLocation) {
         return add(soundLocation, hasStereo);
     }
 
@@ -86,19 +86,19 @@ public class NoteSoundRegistrer {
     }
 
     /**
-     * Registers all NoteSounds added via {@link NoteSoundRegistrer#add}
+     * Registers all NoteSounds added via {@link NoteSoundRegistrar#add}
      */
     public NoteSound[] registerAll() {
         return register(stackedSounds.toArray(NoteSound[]::new));
     }
 
-    // Single registrer
+    // Single register
     /**
      * Creates a singular {@link NoteSound} with null sounds, that will get filled
      * upon registration.
      */
     public NoteSound registerNote() {
-        return createNote(baseSoundName, 0);
+        return createNote(baseSoundLocation, 0);
     }
 
 
@@ -107,14 +107,14 @@ public class NoteSoundRegistrer {
      * upon registration.
      */
     private NoteSound createNote(ResourceLocation soundLocation, boolean hasStereo, int index) {
-        final NoteSound sound = new NoteSound(index, baseSoundName);
+        final NoteSound sound = new NoteSound(index, baseSoundLocation);
 
-        soundRegistrer.register(soundLocation.getPath(), () ->
+        soundRegistrar.register(soundLocation.getPath(), () ->
             sound.mono = createSoundUnsafe(soundLocation)
         );
 
         if (hasStereo)
-            soundRegistrer.register(soundLocation.getPath() + STEREO_SUFFIX, () ->
+            soundRegistrar.register(soundLocation.getPath() + STEREO_SUFFIX, () ->
                 (sound.stereo = Optional.of(createSoundUnsafe(soundLocation.withSuffix(STEREO_SUFFIX)))).get()
             );
         else
@@ -137,7 +137,7 @@ public class NoteSoundRegistrer {
      * @param noteIndex The index of the note
      */
     public NoteSound createNote(int noteIndex) {
-        return createNote(baseSoundName.withSuffix("_note_"+noteIndex), noteIndex);
+        return createNote(baseSoundLocation.withSuffix("_note_"+noteIndex), noteIndex);
     }
     
 

@@ -16,17 +16,17 @@
     "genshinstrument.genshin_disclaimer.content.no_legal": "דברי משפט בצד; מקווה שתהנו מהתוסף!",
     "genshinstrument.genshin_disclaimer.bolden1": "תוצר קהילתי",
     "genshinstrument.genshin_disclaimer.bolden2": "לא רשמי",
-    
+
 
     "soundCategory.record": "כלי נגינה",
 
     "button.genshinstrument.audioChannels": "סוג אאודיו לכלי נגינה",
     "button.genshinstrument.audioChannels.stereo.tooltip":
-        "בגלל ספציפיקציות מפגרות של OpenAL, כל צליל שנשמע בסטריאו יהיה תקוע על 100%.\nזה כולל חלק מכלי הנגינה.",
+    "בגלל ספציפיקציות מפגרות של OpenAL, כל צליל שנשמע בסטריאו יהיה תקוע על 100%.\nזה כולל חלק מכלי הנגינה.",
     "button.genshinstrument.audioChannels.stereo": "סטריאו",
     "button.genshinstrument.audioChannels.mono": "מונו",
     "button.genshinstrument.audioChannels.mixed.tooltip":
-        "במצב מרובה משתתפים, אם קטגוריית הסאונד \"כלי נגינה\" מכוון על 100% - תשמע.י כלי נגינה על סטריאו במרחק של עד %s בלוקים.\nאחרת, ישמעו במונו, כנ\"ל אם את.ה מנגנ.ת בעצמך.",
+    "במצב מרובה משתתפים, אם קטגוריית הסאונד \"כלי נגינה\" מכוון על 100% - תשמע.י כלי נגינה על סטריאו במרחק של עד %s בלוקים.\nאחרת, ישמעו במונו, כנ\"ל אם את.ה מנגנ.ת בעצמך.",
     "button.genshinstrument.audioChannels.mixed": "מעורב",
     "button.genshinstrument.stop_music_on_play.tooltip": "כאשר את.ה או שחקנים אחרים בטווח של %s בלוקים מנגנים בכלי נגינה, מוזיקת הרקע תחדול לנגן.",
     "button.genshinstrument.stop_music_on_play": "הפסק מוזיקה בעת נגינה",
@@ -36,8 +36,8 @@
     "button.genshinstrument.render_background": "הצג תפאורות רקע",
     "button.genshinstrument.accurate_notes": "תווים מדוייקים",
     "button.genshinstrument.accurate_notes.tooltip": "כאשר אופציה זו מופעלת, יוצגו התווים ויתקיהם בהתאם לגובה הצליל הנבחר",
-    
-    
+
+
     "button.genshinstrument.midiEnabled": "MIDI מופעל",
     "button.genshinstrument.midiDevice": "מכשיר MIDI",
 
@@ -60,15 +60,20 @@
     "button.genshinstrument.dominentDrumType.ka.tooltip": "כל התווים הם מסוג צליל Ka",
 
 
-    "button.none": "כלום",
-    
+    "button.genshinstrument.normalize_vintage_lyre": "נרמל את הנבל",
+    "button.genshinstrument.normalize_vintage_lyre.tooltip": "מנרמל את כל הצלילים של הנבל תחת היתק במול",
 
-    
+
+    "button.none": "כלום",
+
+
+
     "button.genshinstrument.instrumentOptions": "אפשרויות כלי נגינה",
     "label.genshinstrument.zither_options": "אפשרויות הציטר",
+    "label.genshinstrument.vintage_lyre_options": "אפשרויות נבל הבציר",
     "label.genshinstrument.midiOptions": "אפשרויות MIDI",
 
-    
+
     "button.genshinstrument.label": "תגיות תווים",
     "button.genshinstrument.pitch": "גובה צליל",
     "button.genshinstrument.volume": "ווליום כלי הנגינה",
@@ -101,16 +106,16 @@
 
     "genshinstrument.advancements.main.master.title": "להקת יחיד",
     "genshinstrument.advancements.main.master.description": "החזק בכל כלי הנגינה בתיקך בבת אחד",
-    
+
     "genshinstrument.advancements.main.windsong_lyre.title": "צלילי הרוחות",
     "genshinstrument.advancements.main.windsong_lyre.description": "נגן בנבל הרוחות",
-    
+
     "genshinstrument.advancements.main.vintage_lyre.title": "היער יזכור",
     "genshinstrument.advancements.main.vintage_lyre.description": "נגן בנבל הבציר",
-    
+
     "genshinstrument.advancements.main.glorious_drum.title": "לגמרי לא עקיצה",
     "genshinstrument.advancements.main.glorious_drum.description": "נגן בטוף של ארטאקי",
-    
+
     "genshinstrument.advancements.main.floral_zither.title": "נגן בסתר",
     "genshinstrument.advancements.main.floral_zither.description": "נגן בציטר הפרחי"
 

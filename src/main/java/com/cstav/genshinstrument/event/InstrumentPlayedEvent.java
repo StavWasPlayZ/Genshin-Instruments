@@ -33,7 +33,7 @@ public class InstrumentPlayedEvent extends Event {
 
 
     /**
-     * Convinience method to convert the volume of the note
+     * Convenience method to convert the volume of the note
      * into a {@code float} percentage
      */
     public float volume() {
@@ -68,7 +68,7 @@ public class InstrumentPlayedEvent extends Event {
 
 
         public boolean isBlockInstrument() {
-            return !hand.isPresent();
+            return hand.isEmpty();
         }
 
 

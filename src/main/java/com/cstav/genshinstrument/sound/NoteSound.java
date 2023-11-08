@@ -1,20 +1,15 @@
 package com.cstav.genshinstrument.sound;
 
-import java.util.Optional;
-import java.util.UUID;
-
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.util.CommonUtil;
 import com.cstav.genshinstrument.util.LabelUtil;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Position;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -27,12 +22,15 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 
+import java.util.Optional;
+import java.util.UUID;
+
 /**
  * A class holding sound information for an instrument's note
  */
 public class NoteSound {
     /**
-     * The range at which playuers with Mixed instrument sound type will start to hear Mono.
+     * The range at which players with Mixed instrument sound type will start to hear Mono.
     */
     public static final double STEREO_RANGE = 5.5;
     /**
@@ -52,25 +50,17 @@ public class NoteSound {
 
 
     public final int index;
-    public final ResourceLocation baseSoundName;
+    public final ResourceLocation baseSoundLocation;
 
     SoundEvent mono;
     Optional<SoundEvent> stereo;
-    
-    public NoteSound(int index, ResourceLocation instrumentId, SoundEvent mono, Optional<SoundEvent> stereo) {
-        this.index = index;
-        this.baseSoundName = instrumentId;
-
-        this.mono = mono;
-        this.stereo = stereo;
-    }
 
     /**
      * Constructor for assigning mono & stereo lazily
      */
-    NoteSound(int index, ResourceLocation instrumentId) {
+    NoteSound(int index, ResourceLocation baseSoundLocation) {
         this.index = index;
-        this.baseSoundName = instrumentId;
+        this.baseSoundLocation = baseSoundLocation;
     }
     
 
@@ -86,7 +76,7 @@ public class NoteSound {
     }
 
     public NoteSound[] getSoundsArr() {
-        return NoteSoundRegistrer.getSounds(baseSoundName);
+        return NoteSoundRegistrar.getSounds(baseSoundLocation);
     }
 
     public NoteSoundReuslt transpose(final int amount) {
@@ -165,26 +155,24 @@ public class NoteSound {
      */
     @OnlyIn(Dist.CLIENT)
     public void play(int pitch, int volume, Optional<UUID> playerUUID, Optional<InteractionHand> hand,
-            ResourceLocation instrumentId, NoteButtonIdentifier buttonIdentifier, Optional<BlockPos> position) {
+            ResourceLocation instrumentId, NoteButtonIdentifier buttonIdentifier, Optional<BlockPos> playPos) {
         final Minecraft minecraft = Minecraft.getInstance();
         final Player player = minecraft.player;
 
         final Level level = minecraft.level;
-        final Player initiator = playerUUID.isPresent()
-            ? level.getPlayerByUUID(playerUUID.get())
-            : null;
+        final Player initiator = playerUUID.map(level::getPlayerByUUID).orElse(null);
 
-        final BlockPos pos = CommonUtil.getPlayeredPosition(initiator, position);
+        final BlockPos pos = CommonUtil.getPlayeredPosition(initiator, playPos);
         
 
-        final double distanceFromPlayer = Math.sqrt(pos.distToCenterSqr((Position)player.position()));
+        final double distanceFromPlayer = Math.sqrt(pos.distToCenterSqr(player.position()));
         
         if (ModClientConfigs.STOP_MUSIC_ON_PLAY.get() && (distanceFromPlayer < NoteSound.STOP_SOUND_DISTANCE))
             minecraft.getMusicManager().stopPlaying();
 
 
         
-        MinecraftForge.EVENT_BUS.post(playerUUID.isEmpty()
+        MinecraftForge.EVENT_BUS.post(initiator == null
             ? new InstrumentPlayedEvent(
                 this, pitch, volume, level, pos, instrumentId, buttonIdentifier, true
             )
@@ -254,21 +242,20 @@ public class NoteSound {
 
 
     public void writeToNetwork(final FriendlyByteBuf buf) {
-        buf.writeResourceLocation(baseSoundName);
+        buf.writeResourceLocation(baseSoundLocation);
         buf.writeInt(index);
     }
     public static NoteSound readFromNetwork(final FriendlyByteBuf buf) {
-        return NoteSoundRegistrer.getSounds(buf.readResourceLocation())[buf.readInt()];
+        return NoteSoundRegistrar.getSounds(buf.readResourceLocation())[buf.readInt()];
     }
 
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof NoteSound))
+        if (!(obj instanceof NoteSound other))
             return false;
 
-        final NoteSound other = (NoteSound) obj;
-        // Mono is enough to determine if the sounds are are the same
-        return mono.getLocation().equals(other.mono.getLocation());
+        // Mono is enough to determine if the sounds are the same
+        return baseSoundLocation.equals(other.baseSoundLocation) && (index == other.index);
     }
 }
