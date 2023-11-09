@@ -151,11 +151,6 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
 
-    /**
-     * Handles this instrument being closed by either receiving a false signal from {@link InstrumentOpenProvider#isOpen}
-     * or, if it is an item, if the item has been ripped out of the player's hands.
-     * @return Whether the instrument has closed as a result of this method
-     */
     public void handleAbruptClosing() {
         if (!InstrumentOpenProvider.isOpen(minecraft.player))
             onClose(false);
