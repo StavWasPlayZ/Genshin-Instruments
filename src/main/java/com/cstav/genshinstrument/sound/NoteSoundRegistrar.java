@@ -1,16 +1,20 @@
 package com.cstav.genshinstrument.sound;
 
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.AbstractGridInstrumentScreen;
+import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Function;
 
 public class NoteSoundRegistrar {
+    private static final Logger LOGGER = LogUtils.getLogger();
+
     private static final HashMap<ResourceLocation, NoteSound[]> SOUNDS_REGISTRY = new HashMap<>();
     public static final String STEREO_SUFFIX = "_stereo";
 
@@ -52,6 +56,8 @@ public class NoteSoundRegistrar {
 
     public NoteSound[] register(final NoteSound[] noteSounds) {
         SOUNDS_REGISTRY.put(baseSoundLocation, noteSounds);
+
+        LOGGER.info("Successfully registered "+noteSounds.length+" note sounds of "+baseSoundLocation);
         return noteSounds;
     }
 
