@@ -127,8 +127,9 @@ public class NoteSoundRegistrar {
         @Override
         public NoteSoundRegistrar add() {
             final NoteSoundRegistrar original = NoteSoundRegistrar.this;
+            final ArrayList<NoteSound> stackedSounds = original.stackedSounds;
 
-            original.stackedSounds.add(createNote(soundLocation, stackedSounds.size()));
+            stackedSounds.add(createNote(soundLocation, stackedSounds.size()));
             return original;
         }
 
