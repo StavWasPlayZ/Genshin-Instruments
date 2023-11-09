@@ -1,11 +1,5 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.function.Consumer;
-
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
@@ -22,7 +16,6 @@ import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.platform.InputConstants.Type;
 import com.mojang.logging.LogUtils;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
@@ -33,6 +26,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.Iterator;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractInstrumentScreen extends Screen {
@@ -189,7 +188,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
         return "textures/gui/genshinstrument/";
     }
     /**
-     * @return The resource laied inside of this instrument's directory
+     * @return The resource laid inside of this instrument's directory
      */
     public ResourceLocation getResourceFromGlob(final String path) {
         return getSourcePath().withPath(getGlobalRootPath() + "instrument/" + path);
@@ -227,8 +226,6 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * @param path The desired path to obtain from the instrument's root directory
      * @param considerGlobal If {@link InstrumentThemeLoader#isGlobalThemed() a global resource pack is enabled}, take the resource from there
      * @return The resource contained in this instrument's root directory
-     * @see {@link AbstractInstrumentScreen#getInstrumentResourcesLocation()}
-     * @see {@link AbstractInstrumentScreen#getResourceFrom(ResourceLocation, String)}
      */
     public ResourceLocation getResourceFromRoot(final String path, final boolean considerGlobal) {
         return (considerGlobal && InstrumentThemeLoader.isGlobalThemed())
@@ -239,8 +236,6 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * Gets The desired path to obtain from either the instrument's root or global directory.
      * The global directory will be used if {@link InstrumentThemeLoader#isGlobalThemed()} is true.
      * @return The resource contained in this instrument's root directory
-     * @see {@link AbstractInstrumentScreen#getInstrumentResourcesLocation()}
-     * @see {@link AbstractInstrumentScreen#getResourceFrom(ResourceLocation, String)}
      */
     public ResourceLocation getResourceFromRoot(final String path) {
         return getResourceFromRoot(path, true);
