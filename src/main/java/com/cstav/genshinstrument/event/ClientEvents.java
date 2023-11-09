@@ -91,7 +91,7 @@ public class ClientEvents {
     public static void onMidiEvent(final MidiEvent event) {
         AbstractInstrumentScreen.getCurrentScreen(Minecraft.getInstance())
             .filter(AbstractInstrumentScreen::isMidiInstrument)
-            .ifPresent((instrument) -> instrument.midiReciever.onMidi(event));
+            .ifPresent((instrument) -> instrument.midiReceiver.onMidi(event));
     }
 
     // Safely close MIDI streams upon game shutdown

@@ -7,11 +7,11 @@ import com.cstav.genshinstrument.event.MidiEvent;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.logging.LogUtils;
 
-public abstract class InstrumentMidiReciever {
+public abstract class InstrumentMidiReceiver {
     public static final int MIN_MIDI_VELOCITY = 6;
 
     public final AbstractInstrumentScreen instrument;
-    public InstrumentMidiReciever(AbstractInstrumentScreen instrument) {
+    public InstrumentMidiReceiver(AbstractInstrumentScreen instrument) {
         this.instrument = instrument;
         loadMidiDevices();
     }
@@ -212,7 +212,7 @@ public abstract class InstrumentMidiReciever {
     /**
      * Extends the usual limitation of octaves by 2 by adjusting the pitch higher/lower
      * when necessary
-     * @see InstrumentMidiReciever#handleMidiOverflow
+     * @see InstrumentMidiReceiver#handleMidiOverflow
      */
     public boolean allowMidiOverflow() {
         return false;

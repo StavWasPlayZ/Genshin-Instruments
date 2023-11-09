@@ -1,11 +1,11 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid;
 
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
-import com.cstav.genshinstrument.client.midi.InstrumentMidiReciever;
+import com.cstav.genshinstrument.client.midi.InstrumentMidiReceiver;
 
-public class GridInstrumentMidiReciever extends InstrumentMidiReciever {
+public class GridInstrumentMidiReceiver extends InstrumentMidiReceiver {
 
-    public GridInstrumentMidiReciever(AbstractGridInstrumentScreen instrument) {
+    public GridInstrumentMidiReceiver(AbstractGridInstrumentScreen instrument) {
         super(instrument);
     }
 

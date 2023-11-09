@@ -8,7 +8,7 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteB
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.AbstractInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.BaseInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
-import com.cstav.genshinstrument.client.midi.InstrumentMidiReciever;
+import com.cstav.genshinstrument.client.midi.InstrumentMidiReceiver;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.packet.instrument.CloseInstrumentPacket;
@@ -134,12 +134,12 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
 
-    public final InstrumentMidiReciever midiReciever;
+    public final InstrumentMidiReceiver midiReceiver;
     /**
      * Initiates the MIDI handler of this instrument.
      * Override to implement MIDI support.
      */
-    public InstrumentMidiReciever initMidiReceiver() {
+    public InstrumentMidiReceiver initMidiReceiver() {
         return null;
     }
 
@@ -147,7 +147,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
      * @return Whether this instrument can support MIDI input
      */
     public boolean isMidiInstrument() {
-        return midiReciever != null;
+        return midiReceiver != null;
     }
 
 
@@ -244,7 +244,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
         super(CommonComponents.EMPTY);
 
         interactionHand = Optional.ofNullable(hand);
-        midiReciever = initMidiReceiver();
+        midiReceiver = initMidiReceiver();
     }
 
 
