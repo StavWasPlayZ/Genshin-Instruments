@@ -22,6 +22,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -71,8 +72,9 @@ public class NoteSound {
     public boolean hasStereo() {
         return stereo != null;
     }
-    public Optional<SoundEvent> getStereo() {
-        return Optional.ofNullable(stereo);
+    @Nullable
+    public SoundEvent getStereo() {
+        return stereo;
     }
 
     public NoteSound[] getSoundsArr() {
@@ -111,9 +113,9 @@ public class NoteSound {
         final InstrumentChannelType preference = ModClientConfigs.CHANNEL_TYPE.get();
 
         return switch(preference) {
-            case MIXED -> (metInstrumentVolume() && (distanceFromPlayer <= STEREO_RANGE)) ? getStereo().get() : mono;
+            case MIXED -> (metInstrumentVolume() && (distanceFromPlayer <= STEREO_RANGE)) ? getStereo() : mono;
 
-            case STEREO -> getStereo().get();
+            case STEREO -> getStereo();
             case MONO -> mono;
         };
     }
@@ -130,9 +132,9 @@ public class NoteSound {
         final InstrumentChannelType preference = ModClientConfigs.CHANNEL_TYPE.get();
 
         return switch (preference) {
-            case MIXED -> metInstrumentVolume() ? getStereo().get() : mono;
+            case MIXED -> metInstrumentVolume() ? getStereo() : mono;
 
-            case STEREO -> getStereo().get();
+            case STEREO -> getStereo();
             case MONO -> mono;
         };
     }
