@@ -100,7 +100,7 @@ public class NoteSoundRegistrar {
      */
     public ChainedNoteSoundRegistrar chain(ResourceLocation soundLocation) {
         validateNotChained();
-        return new ChainedNoteSoundRegistrar(soundRegistrar, baseSoundLocation, soundLocation);
+        return new ChainedNoteSoundRegistrar(soundLocation);
     }
 
     public NoteSound peek() {
@@ -124,9 +124,8 @@ public class NoteSoundRegistrar {
     public class ChainedNoteSoundRegistrar extends NoteSoundRegistrar {
 
         private final ResourceLocation soundLocation;
-        private ChainedNoteSoundRegistrar(DeferredRegister<SoundEvent> soundRegistrar, ResourceLocation baseSoundLocation,
-                                          ResourceLocation soundLocation) {
-            super(soundRegistrar, baseSoundLocation);
+        private ChainedNoteSoundRegistrar(ResourceLocation soundLocation) {
+            super(NoteSoundRegistrar.this.soundRegistrar, NoteSoundRegistrar.this.baseSoundLocation);
             this.soundLocation = soundLocation;
         }
 
