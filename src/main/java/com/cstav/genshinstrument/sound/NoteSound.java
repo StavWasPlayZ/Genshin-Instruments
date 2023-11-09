@@ -72,7 +72,7 @@ public class NoteSound {
         return stereo != null;
     }
     public Optional<SoundEvent> getStereo() {
-        return Optional.of(stereo);
+        return Optional.ofNullable(stereo);
     }
 
     public NoteSound[] getSoundsArr() {
