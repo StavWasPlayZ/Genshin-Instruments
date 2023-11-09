@@ -113,7 +113,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
 
     /**
-     * @return The layout of the note names accross the instrument's rows.
+     * @return The layout of the note names across the instrument's rows.
      * Null for when this instrument does not support note names.
      * @implNote All built-in instruments' layouts are derived from
      * <a href=https://github.com/Specy/genshin-music/blob/19dfe0e2fb8081508bd61dd47289dcb2d89ad5e3/src/Config.ts#L114>
@@ -152,7 +152,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
 
     /**
-     * Handles this instrument being closed by either recieving a false signal from {@link InstrumentOpenProvider#isOpen}
+     * Handles this instrument being closed by either receiving a false signal from {@link InstrumentOpenProvider#isOpen}
      * or, if it is an item, if the item has been ripped out of the player's hands.
      * @return Whether the instrument has closed as a result of this method
      */
@@ -314,11 +314,11 @@ public abstract class AbstractInstrumentScreen extends Screen {
         if (pitchChanged)
             return false;
 
-        if (checkTranposeUpKey(pKeyCode, pScanCode)) {
+        if (checkTransposeUpKey(pKeyCode, pScanCode)) {
             transposeUp();
             return true;
         }
-        else if (checkTranposeDownKey(pKeyCode, pScanCode)) {
+        else if (checkTransposeDownKey(pKeyCode, pScanCode)) {
             transposeDown();
             return true;
         }
@@ -329,7 +329,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
         if (!pitchChanged)
             return false;
 
-        if (checkTranposeUpKey(pKeyCode, pScanCode) || checkTranposeDownKey(pKeyCode, pScanCode)) {
+        if (checkTransposeUpKey(pKeyCode, pScanCode) || checkTransposeDownKey(pKeyCode, pScanCode)) {
             resetTransposition();
             return true;
         }
@@ -353,7 +353,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
     /**
-     * @return Whether this instrument's pitch is being tranposed up/down as requested by the keybinds
+     * @return Whether this instrument's pitch is being transposed up/down as requested by the keybindings
      */
     public boolean isTranposed() {
         return pitchChanged;
@@ -366,13 +366,13 @@ public abstract class AbstractInstrumentScreen extends Screen {
      */
     public boolean isKeyConsumed(final int keyCode, final int scanCode) {
         return (getNoteByKey(keyCode) != null)
-            || checkTranposeDownKey(keyCode, scanCode) || checkTranposeUpKey(keyCode, scanCode);
+            || checkTransposeDownKey(keyCode, scanCode) || checkTransposeUpKey(keyCode, scanCode);
     }
 
-    protected boolean checkTranposeDownKey(final int keyCode, final int scanCode) {
+    protected boolean checkTransposeDownKey(final int keyCode, final int scanCode) {
         return InstrumentKeyMappings.TRANSPOSE_DOWN_MODIFIER.get().matches(keyCode, scanCode);
     }
-    protected boolean checkTranposeUpKey(final int keyCode, final int scanCode) {
+    protected boolean checkTransposeUpKey(final int keyCode, final int scanCode) {
         return InstrumentKeyMappings.TRANSPOSE_UP_MODIFIER.get().matches(keyCode, scanCode);
     }
 
@@ -386,8 +386,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
     public NoteButton getNoteByKey(final int keyCode) {
         final Key key = Type.KEYSYM.getOrCreate(keyCode);
-
-        return noteMap().containsKey(key) ? noteMap().get(key) : null;
+        return noteMap().getOrDefault(key, null);
     }
     /**
      * Unlocks any focused {@link NoteButton}s
