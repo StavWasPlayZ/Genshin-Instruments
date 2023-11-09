@@ -355,7 +355,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
     /**
      * @return Whether this instrument's pitch is being transposed up/down as requested by the keybindings
      */
-    public boolean isTranposed() {
+    public boolean isTransposed() {
         return pitchChanged;
     }
 
