@@ -1,14 +1,12 @@
 package com.cstav.genshinstrument.sound;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Optional;
-
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.AbstractGridInstrumentScreen;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.registries.DeferredRegister;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class NoteSoundRegistrar {
     private static final HashMap<ResourceLocation, NoteSound[]> SOUNDS_REGISTRY = new HashMap<>();
@@ -71,17 +69,25 @@ public class NoteSoundRegistrar {
     }
 
 
-    // Singles registrar
+    //#region Singles registrar
+
     private final ArrayList<NoteSound> stackedSounds = new ArrayList<>();
-    public NoteSoundRegistrar add(ResourceLocation soundLocation, boolean hasStereo) {
-        stackedSounds.add(createNote(soundLocation, hasStereo, stackedSounds.size()));
-        return this;
-    }
-    public NoteSoundRegistrar add(ResourceLocation soundLocation) {
-        return add(soundLocation, hasStereo);
+
+    /**
+     * <p>Chains a note sound to this registrar.</p>
+     * <p>Call back {@link ChainedNoteSoundRegistrar#add()}
+     * to perform the chain and return here.</p>
+     *
+     * <p>Call {@link NoteSoundRegistrar#registerAll()} after all registrations
+     * are complete.</p>
+     */
+    public ChainedNoteSoundRegistrar chain(ResourceLocation soundLocation) {
+        validateNotChained();
+        return new ChainedNoteSoundRegistrar(soundRegistrar, baseSoundLocation, soundLocation);
     }
 
     public NoteSound peek() {
+        validateNotChained();
         return stackedSounds.get(stackedSounds.size() - 1);
     }
 
@@ -89,8 +95,40 @@ public class NoteSoundRegistrar {
      * Registers all NoteSounds added via {@link NoteSoundRegistrar#add}
      */
     public NoteSound[] registerAll() {
+        validateNotChained();
         return register(stackedSounds.toArray(NoteSound[]::new));
     }
+
+    public NoteSoundRegistrar add() {
+        throw new IllegalStateException("Called add() on a non-chained registrar!");
+    }
+
+
+    public class ChainedNoteSoundRegistrar extends NoteSoundRegistrar {
+
+        private final ResourceLocation soundLocation;
+        private ChainedNoteSoundRegistrar(DeferredRegister<SoundEvent> soundRegistrar, ResourceLocation baseSoundLocation,
+                                          ResourceLocation soundLocation) {
+            super(soundRegistrar, baseSoundLocation);
+            this.soundLocation = soundLocation;
+        }
+
+        @Override
+        public NoteSoundRegistrar add() {
+            final NoteSoundRegistrar original = NoteSoundRegistrar.this;
+
+            original.stackedSounds.add(createNote(soundLocation, stackedSounds.size()));
+            return original;
+        }
+
+    }
+    private void validateNotChained() {
+        if (this instanceof ChainedNoteSoundRegistrar)
+            throw new IllegalStateException("Called non-chainable method on a chained registrar!");
+    }
+
+    //#endregion
+
 
     // Single register
     /**
@@ -106,30 +144,22 @@ public class NoteSoundRegistrar {
      * Creates a singular {@link NoteSound} with null sounds, that will get filled
      * upon registration.
      */
-    private NoteSound createNote(ResourceLocation soundLocation, boolean hasStereo, int index) {
+    protected NoteSound createNote(ResourceLocation soundLocation, int index) {
         final NoteSound sound = new NoteSound(index, baseSoundLocation);
 
         soundRegistrar.register(soundLocation.getPath(), () ->
             sound.mono = createSoundUnsafe(soundLocation)
         );
 
-        if (hasStereo)
+        if (hasStereo) {
             soundRegistrar.register(soundLocation.getPath() + STEREO_SUFFIX, () ->
-                (sound.stereo = Optional.of(createSoundUnsafe(soundLocation.withSuffix(STEREO_SUFFIX)))).get()
+                sound.stereo = createSoundUnsafe(soundLocation.withSuffix(STEREO_SUFFIX))
             );
-        else
-            sound.stereo = Optional.empty();
+        }
 
         return sound;
     }
-    
-    /**
-     * Creates a singular {@link NoteSound} with null sounds, that will get filled
-     * upon registration.
-     */
-    private NoteSound createNote(ResourceLocation soundLocation, int index) {
-        return createNote(soundLocation, hasStereo, index);
-    }
+
     /**
      * Creates and registers a {@link NoteSound} with null sounds, that will get filled
      * upon registration.

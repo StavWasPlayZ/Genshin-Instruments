@@ -24,8 +24,8 @@ public class ModSounds {
         ZITHER_OLD_NOTE_SOUNDS = nsr(loc("floral_zither_old")).registerGrid(),
 
         GLORIOUS_DRUM = nsr(loc("glorious_drum"))
-            .add(loc("glorious_drum_don"))
-            .add(loc("glorious_drum_ka"), true)
+            .chain(loc("glorious_drum_don")).add()
+            .chain(loc("glorious_drum_ka")).stereo().add()
         .registerAll()
     ;
 

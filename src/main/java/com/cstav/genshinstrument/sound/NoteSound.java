@@ -53,7 +53,7 @@ public class NoteSound {
     public final ResourceLocation baseSoundLocation;
 
     SoundEvent mono;
-    Optional<SoundEvent> stereo;
+    SoundEvent stereo;
 
     /**
      * Constructor for assigning mono & stereo lazily
@@ -69,10 +69,10 @@ public class NoteSound {
     }
 
     public boolean hasStereo() {
-        return stereo.isPresent();
+        return stereo != null;
     }
     public Optional<SoundEvent> getStereo() {
-        return stereo;
+        return Optional.of(stereo);
     }
 
     public NoteSound[] getSoundsArr() {
@@ -111,9 +111,9 @@ public class NoteSound {
         final InstrumentChannelType preference = ModClientConfigs.CHANNEL_TYPE.get();
 
         return switch(preference) {
-            case MIXED -> (metInstrumentVolume() && (distanceFromPlayer <= STEREO_RANGE)) ? stereo.get() : mono;
+            case MIXED -> (metInstrumentVolume() && (distanceFromPlayer <= STEREO_RANGE)) ? getStereo().get() : mono;
 
-            case STEREO -> stereo.get();
+            case STEREO -> getStereo().get();
             case MONO -> mono;
         };
     }
@@ -130,9 +130,9 @@ public class NoteSound {
         final InstrumentChannelType preference = ModClientConfigs.CHANNEL_TYPE.get();
 
         return switch (preference) {
-            case MIXED -> metInstrumentVolume() ? stereo.get() : mono;
+            case MIXED -> metInstrumentVolume() ? getStereo().get() : mono;
 
-            case STEREO -> stereo.get();
+            case STEREO -> getStereo().get();
             case MONO -> mono;
         };
     }
