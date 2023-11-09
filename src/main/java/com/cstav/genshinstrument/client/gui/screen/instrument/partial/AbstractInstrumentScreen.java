@@ -74,14 +74,14 @@ public abstract class AbstractInstrumentScreen extends Screen {
      */
     public int volume = (int)(ModClientConfigs.VOLUME.get() * 100);
     /**
-     * Convinience method to get the {@link AbstractInstrumentScreen#volume volume}
+     * Convenience method to get the {@link AbstractInstrumentScreen#volume volume}
      * of this instrument as a {@code float} percentage
      */
     public float volume() {
         return volume / 100f;
     }
     /**
-     * Convinience method to set the {@link AbstractInstrumentScreen#volume volume}
+     * Convenience method to set the {@link AbstractInstrumentScreen#volume volume}
      * of this instrument via a float percentage
      */
     public void setVolume(float volume) {
@@ -90,8 +90,8 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
 
     /**
-     * Sets the sounds of this instruments.
-     * @apiNote This method should generally be overitten by subclasses to keep their respected order of notes
+     * Sets the sounds of this instrument.
+     * @apiNote This method should generally be overwritten by subclasses to keep their respected order of notes
      */
     public void setNoteSounds(final NoteSound[] sounds) {
         final Iterator<NoteButton> noteIterator = notesIterable().iterator();
@@ -102,7 +102,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
 
 
         if (noteIterator.hasNext() || (i < sounds.length))
-            LogUtils.getLogger().warn("Not all sounds could be set for this instrument!");
+            LogUtils.getLogger().warn("Not all sounds were set for instrument "+getInstrumentId()+"!");
     }
 
 
