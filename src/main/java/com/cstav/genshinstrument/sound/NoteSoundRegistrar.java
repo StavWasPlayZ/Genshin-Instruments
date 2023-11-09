@@ -4,9 +4,11 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.A
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Function;
 
 public class NoteSoundRegistrar {
     private static final HashMap<ResourceLocation, NoteSound[]> SOUNDS_REGISTRY = new HashMap<>();
@@ -23,6 +25,7 @@ public class NoteSoundRegistrar {
     private final ResourceLocation baseSoundLocation;
 
     private boolean hasStereo = false;
+    private boolean alreadyRegistered = false;
 
     public NoteSoundRegistrar(DeferredRegister<SoundEvent> soundRegistrar, ResourceLocation baseSoundLocation) {
         this.soundRegistrar = soundRegistrar;
@@ -35,6 +38,14 @@ public class NoteSoundRegistrar {
      */
     public NoteSoundRegistrar stereo() {
         hasStereo = true;
+        return this;
+    }
+    /**
+     * Skips the process of registering this note's SoundEvents with Minecraft.
+     * For use with already registered sounds.
+     */
+    public NoteSoundRegistrar alreadyRegistered() {
+        alreadyRegistered = true;
         return this;
     }
 
@@ -147,17 +158,21 @@ public class NoteSoundRegistrar {
     protected NoteSound createNote(ResourceLocation soundLocation, int index) {
         final NoteSound sound = new NoteSound(index, baseSoundLocation);
 
-        soundRegistrar.register(soundLocation.getPath(), () ->
-            sound.mono = createSoundUnsafe(soundLocation)
-        );
-
+        setSoundField((soundEvent) -> sound.mono = soundEvent, soundLocation);
         if (hasStereo) {
-            soundRegistrar.register(soundLocation.getPath() + STEREO_SUFFIX, () ->
-                sound.stereo = createSoundUnsafe(soundLocation.withSuffix(STEREO_SUFFIX))
-            );
+            setSoundField((soundEvent) -> sound.stereo = soundEvent, soundLocation.withSuffix(STEREO_SUFFIX));
         }
 
         return sound;
+    }
+    private void setSoundField(Function<SoundEvent, SoundEvent> fieldConsumer, ResourceLocation soundLocation) {
+        if (alreadyRegistered) {
+            fieldConsumer.apply(ForgeRegistries.SOUND_EVENTS.getValue(soundLocation));
+        } else {
+            soundRegistrar.register(soundLocation.getPath(), () ->
+                fieldConsumer.apply(SoundEvent.createVariableRangeEvent(soundLocation))
+            );
+        }
     }
 
     /**
@@ -169,9 +184,5 @@ public class NoteSoundRegistrar {
     public NoteSound createNote(int noteIndex) {
         return createNote(baseSoundLocation.withSuffix("_note_"+noteIndex), noteIndex);
     }
-    
 
-    private static SoundEvent createSoundUnsafe(final ResourceLocation location) {
-        return SoundEvent.createVariableRangeEvent(location);
-    }
 }
