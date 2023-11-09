@@ -89,7 +89,7 @@ public class NoteGridButton extends NoteButton {
         return new NoteButtonRenderer(this, () -> GRID_LABELS[textureRow()]);
     }
     protected int textureRow() {
-        return ModClientConfigs.ACCURATE_NOTES.get() ? getABCOffset() : row;
+        return ModClientConfigs.ACCURATE_NOTES.get() ? getABCOffset() : (row % GRID_LABELS.length);
     }
 
 
