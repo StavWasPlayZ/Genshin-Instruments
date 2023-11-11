@@ -25,7 +25,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.minecraftforge.network.SimpleChannel;
 import org.slf4j.Logger;
 
 import java.util.List;
@@ -265,7 +265,7 @@ public class ServerUtil {
                             return null;
                         }
                     })
-                    .consumerMainThread((packet, context) -> packet.handle(context))
+                    .consumerMainThread(IModPacket::handle)
                 .add();
 
             } catch (Exception e) {

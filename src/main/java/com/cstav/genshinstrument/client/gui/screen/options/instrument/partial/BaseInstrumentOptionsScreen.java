@@ -94,6 +94,7 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
                 grid.getX() + getSmallButtonWidth() - buttonsWidth + ClientUtil.GRID_HORZ_PADDING, buttonsY,
                 Orientation.HORIZONTAL
             );
+            buttonLayout.spacing(ClientUtil.GRID_HORZ_PADDING * 2);
 
             final Button midiOptions = Button.builder(MIDI_OPTIONS.copy().append("..."), (btn) -> openMidiOptions())
                 .width(buttonsWidth)
