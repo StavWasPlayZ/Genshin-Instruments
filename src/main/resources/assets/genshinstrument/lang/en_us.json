@@ -18,9 +18,10 @@
     "button.genshinstrument.instrumentOptions": "Instrument Options",
     "label.genshinstrument.midiOptions": "MIDI Options",
     "label.genshinstrument.zither_options": "Zither Options",
+    "label.genshinstrument.vintage_lyre_options": "Vintage Lyre Options",
 
     "genshinstrument.genshin_disclaimer.title": "Disclaimer!",
-    "genshinstrument.genshin_disclaimer.content": "Genshin Instruments is an %s and %s Minecraft mod that is in no way afiliated with Genshin Impact nor HoYoverse.\n\nThus, all assets used in-game, such as sounds, images, instrumens and more are of complete ownership to HoYoverse.\n\nAs the user, you have the full responsibility over your actions within the game, including (but not limited to!) playing and sharing/publishing any songs that may be protected by copyright laws.",
+    "genshinstrument.genshin_disclaimer.content": "Genshin Instruments is an %s and %s Minecraft mod that is in no way affiliated with Genshin Impact nor HoYoverse.\n\nThus, all assets used in-game, such as sounds, images, instruments and more are of complete ownership to HoYoverse.\n\nAs the user, you have the full responsibility over your actions within the game, including (but not limited to!) playing and sharing/publishing any songs that may be protected by copyright laws.",
     "genshinstrument.genshin_disclaimer.content.no_legal": "Legal stuff aside; I hope you enjoy playing with this mod!",
     "genshinstrument.genshin_disclaimer.bolden1": "unofficial",
     "genshinstrument.genshin_disclaimer.bolden2": "fanmade",
@@ -30,9 +31,9 @@
     "button.genshinstrument.audioChannels.mono": "Mono",
     "button.genshinstrument.audioChannels.stereo": "Stereo",
     "button.genshinstrument.audioChannels.stereo.tooltip":
-        "NOTICE: Because of some annoying specification by OpenAL, all sounds produced on Stereo will be stuck on 100%.\nThis includes some instruments.",
+    "NOTICE: Because of some annoying specification by OpenAL, all sounds produced on Stereo will be stuck on 100%.\nThis includes some instruments.",
     "button.genshinstrument.audioChannels.mixed.tooltip":
-        "If the Instruments sound category is set to 100%, you will hear intruments on Stereo within %s blocks of range.\nOtherwise, you will hear Mono.",
+    "If the Instruments sound category is set to 100%, you will hear instruments on Stereo within %s blocks of range.\nOtherwise, you will hear Mono.",
     "button.genshinstrument.audioChannels.mixed": "Mixed",
     "button.genshinstrument.stop_music_on_play.tooltip": "When you or other players within %s blocks of range play an instrument, Minecraft's background music will stop.",
     "button.genshinstrument.stop_music_on_play": "Stop Music On Play",
@@ -42,11 +43,11 @@
     "button.genshinstrument.render_background": "Show Background Visuals",
     "button.genshinstrument.accurate_notes": "Accurate Notes",
     "button.genshinstrument.accurate_notes.tooltip": "When on, provides a pitch-accurate representation of the note symbols and accidentals used by this instrument's layout",
-    
-    
+
+
     "button.genshinstrument.midiEnabled": "MIDI Enabled",
     "button.genshinstrument.midiDevice": "MIDI Device",
-    
+
     "button.genshinstrument.fixedTouch": "Fixed Touch",
     "button.genshinstrument.fixedTouch.tooltip": "Defines whether the velocity of a note press will not affect the instrument's volume",
 
@@ -58,12 +59,16 @@
     "button.genshinstrument.acceptAllChannels": "Listen to All Channels",
 
 
-    "button.genshinstrument.dominentDrumType": "Dominent Drum Type",
+    "button.genshinstrument.dominentDrumType": "Dominant Drum Type",
     "button.genshinstrument.dominentDrumType.both": "Both",
 
     "button.genshinstrument.dominentDrumType.both.tooltip": "The MIDI keyboard will be split in middle C, such that low C plays Don and high plays Ka",
     "button.genshinstrument.dominentDrumType.don.tooltip": "The whole keyboard plays Don",
     "button.genshinstrument.dominentDrumType.ka.tooltip": "The whole keyboard plays Ka",
+
+
+    "button.genshinstrument.normalize_vintage_lyre": "Normalize Vintage Lyre",
+    "button.genshinstrument.normalize_vintage_lyre.tooltip": "Normalizes all the flattened notes in the Vintage Lyre",
 
 
     "button.none": "None",
@@ -96,6 +101,7 @@
     "button.genshinstrument.label.keyboard_layout": "Keyboard",
     "button.genshinstrument.label.qwerty": "Keyboard (QWERTY)",
     "button.genshinstrument.label.note_name": "Note Name",
+    "button.genshinstrument.label.abc": "ABC",
     "button.genshinstrument.label.none": "No Label",
 
     "button.genshinstrument.label.don_ka": "Don-Ka",
@@ -107,16 +113,16 @@
 
     "genshinstrument.advancements.main.master.title": "A Band of One",
     "genshinstrument.advancements.main.master.description": "Have all instruments in your inventory at once",
-    
+
     "genshinstrument.advancements.main.windsong_lyre.title": "The Sound of Wind",
     "genshinstrument.advancements.main.windsong_lyre.description": "Play the Windsong Lyre",
-    
-    "genshinstrument.advancements.main.vintage_lyre.title": "The Forest Will Remeber",
+
+    "genshinstrument.advancements.main.vintage_lyre.title": "The Forest Will Remember",
     "genshinstrument.advancements.main.vintage_lyre.description": "Play the Vintage Lyre",
-    
+
     "genshinstrument.advancements.main.glorious_drum.title": "Totally Not a Scam",
     "genshinstrument.advancements.main.glorious_drum.description": "Play Arataki's Glorious Drum",
-    
+
     "genshinstrument.advancements.main.floral_zither.title": "Incognito Player",
     "genshinstrument.advancements.main.floral_zither.description": "Play the Floral Zither"
 

@@ -4,6 +4,7 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.NoteLabelSupplier;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.NoteGridButton;
 import com.cstav.genshinstrument.util.LabelUtil;
 
@@ -29,6 +30,10 @@ public enum NoteGridLabel implements INoteLabel {
         LabelUtil.toDoReMi(note.getFormattedNoteName())
     ),
 
+    ABC((note) -> Component.literal(
+        String.valueOf(LabelUtil.ABC[(ng(note).row + ng(note).column * gs(note).rows()) % 7])
+    )),
+
     NONE(NoteLabelSupplier.EMPTY);
     
 
@@ -51,7 +56,7 @@ public enum NoteGridLabel implements INoteLabel {
     private static NoteGridButton ng(final NoteButton btn) {
         return (NoteGridButton)btn;
     }
-    // private static AbstractGridInstrumentScreen gs(final NoteButton btn) {
-    //     return (AbstractGridInstrumentScreen)btn.instrumentScreen;
-    // }
+    private static AbstractGridInstrumentScreen gs(final NoteButton btn) {
+        return ng(btn).gridInstrument();
+    }
 }

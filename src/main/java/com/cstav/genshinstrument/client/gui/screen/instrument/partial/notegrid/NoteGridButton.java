@@ -48,6 +48,11 @@ public class NoteGridButton extends NoteButton {
         this.column = column;
     }
 
+    public AbstractGridInstrumentScreen gridInstrument() {
+        return (AbstractGridInstrumentScreen) instrumentScreen;
+    }
+
+
     public void updateSoundArr() {
         if (!(instrumentScreen instanceof AbstractGridInstrumentScreen gridInstrument))
             return;
@@ -60,7 +65,7 @@ public class NoteGridButton extends NoteButton {
         );
     }
     /**
-     * Evaulates the sound at the current position, and sets it as this note's sound
+     * Evaluates the sound at the current position, and sets it as this note's sound
      * @param sounds The sound array of the instrument
      */
     public static NoteSound getSoundFromArr(AbstractGridInstrumentScreen gridInstrument, NoteSound[] sounds, int row, int column) {
@@ -84,12 +89,12 @@ public class NoteGridButton extends NoteButton {
         return new NoteButtonRenderer(this, () -> GRID_LABELS[textureRow()]);
     }
     protected int textureRow() {
-        return ModClientConfigs.ACCURATE_NOTES.get() ? getABCOffset() : row;
+        return ModClientConfigs.ACCURATE_NOTES.get() ? getABCOffset() : (row % GRID_LABELS.length);
     }
 
 
     @Override
     public int getNoteOffset() {
-        return row + column * ((AbstractGridInstrumentScreen)instrumentScreen).rows();
+        return row + column * gridInstrument().rows();
     }
 }
