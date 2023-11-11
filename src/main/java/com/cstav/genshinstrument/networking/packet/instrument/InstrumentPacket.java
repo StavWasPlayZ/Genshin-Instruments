@@ -23,17 +23,17 @@ public class InstrumentPacket implements INoteIdentifierSender {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_SERVER;
 
 
-    private final BlockPos pos;
+    /** Optionally pass a position that defers from the player's */
+    private final Optional<BlockPos> pos;
     private final NoteSound sound;
     private final Optional<InteractionHand> hand;
 
-    private final int pitch;
-    private final float volume;
+    private final int pitch, volume;
 
     private final ResourceLocation instrumentId;
     private final NoteButtonIdentifier noteIdentifier;
 
-    public InstrumentPacket(BlockPos pos, NoteSound sound, int pitch, float volume, Optional<InteractionHand> hand,
+    public InstrumentPacket(Optional<BlockPos> pos, NoteSound sound, int pitch, int volume, Optional<InteractionHand> hand,
             ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier) {
         this.pos = pos;
         this.sound = sound;
@@ -46,21 +46,21 @@ public class InstrumentPacket implements INoteIdentifierSender {
         this.noteIdentifier = noteIdentifier;
     }
     @OnlyIn(Dist.CLIENT)
-    public InstrumentPacket(final NoteButton noteButton, final BlockPos pos) {
-        this(pos, noteButton.getSound(),
-            noteButton.getPitch(), noteButton.instrumentScreen.volume(),
+    public InstrumentPacket(final NoteButton noteButton) {
+        this(Optional.empty(), noteButton.getSound(),
+            noteButton.getPitch(), noteButton.instrumentScreen.volume,
             noteButton.instrumentScreen.interactionHand,
             noteButton.instrumentScreen.getInstrumentId(), noteButton.getIdentifier()
         );
     }
 
     public InstrumentPacket(FriendlyByteBuf buf) {
-        pos = buf.readBlockPos();
+        pos = buf.readOptional(FriendlyByteBuf::readBlockPos);
         sound = NoteSound.readFromNetwork(buf);
         hand = buf.readOptional((fbb) -> buf.readEnum(InteractionHand.class));
 
         pitch = buf.readInt();
-        volume = buf.readFloat();
+        volume = buf.readInt();
 
         instrumentId = buf.readResourceLocation();
         noteIdentifier = readNoteIdentifierFromNetwork(buf);
@@ -68,12 +68,12 @@ public class InstrumentPacket implements INoteIdentifierSender {
 
     @Override
     public void write(final FriendlyByteBuf buf) {
-        buf.writeBlockPos(pos);
+        buf.writeOptional(pos, FriendlyByteBuf::writeBlockPos);
         sound.writeToNetwork(buf);
         buf.writeOptional(hand, FriendlyByteBuf::writeEnum);
 
         buf.writeInt(pitch);
-        buf.writeFloat(volume);
+        buf.writeInt(volume);
 
         buf.writeResourceLocation(instrumentId);
         noteIdentifier.writeToNetwork(buf);

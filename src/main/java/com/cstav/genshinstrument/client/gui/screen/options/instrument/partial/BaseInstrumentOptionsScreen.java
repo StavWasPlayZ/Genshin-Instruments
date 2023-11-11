@@ -82,21 +82,21 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
 
 
         final int buttonsY = ClientUtil.lowerButtonsY(grid.getY(), grid.getHeight(), height);
+        final int buttonsWidth = 150;
 
         final Button doneBtn = Button.builder(CommonComponents.GUI_DONE, (btn) -> onClose())
-            .width(150)
+            .width(buttonsWidth)
             .build();
 
         // Add MIDI options button for MIDI instruments
         if (!isOverlay || instrumentScreen.isMidiInstrument()) {
             final LinearLayout buttonLayout = new LinearLayout(
-                grid.getX() + 40, buttonsY,
+                grid.getX() + getSmallButtonWidth() - buttonsWidth + ClientUtil.GRID_HORZ_PADDING, buttonsY,
                 Orientation.HORIZONTAL
             );
-            buttonLayout.spacing(ClientUtil.GRID_HORZ_PADDING * 2);
 
             final Button midiOptions = Button.builder(MIDI_OPTIONS.copy().append("..."), (btn) -> openMidiOptions())
-                .width(150)
+                .width(buttonsWidth)
                 .build();
     
             buttonLayout.addChild(midiOptions);
@@ -258,7 +258,7 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
                 return;
 
             // Directly save the pitch if we're on an instrument
-            // Otherwise tranpositions will reset to their previous pitch
+            // Otherwise transpositions will reset to their previous pitch
             instrumentScreen.setPitch(pitch);
             savePitch(pitch);
         } else
@@ -269,10 +269,12 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
     }
 
     protected void onVolumeChanged(final AbstractSliderButton slider, final double volume) {
-        if (isOverlay)
-            instrumentScreen.volume = volume;
+        final int newVolume = (int)(volume * 100);
 
-        queueToSave("volume", () -> saveVolume(volume));
+        if (isOverlay)
+            instrumentScreen.volume = newVolume;
+
+        queueToSave("volume", () -> saveVolume(newVolume / 100d));
     }
     protected void saveVolume(final double newVolume) {
         ModClientConfigs.VOLUME.set(newVolume);
@@ -318,7 +320,7 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
 
 
     /**
-     * Tooltip is being annoying and not rpelacing my args.
+     * Tooltip is being annoying and not replacing my args.
      * So, fine, I'll do it myself.
      * @param key The translation key
      * @param arg The thing to replace with %s
