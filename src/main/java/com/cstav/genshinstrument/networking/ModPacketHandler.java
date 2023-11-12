@@ -43,7 +43,7 @@ public class ModPacketHandler {
     });
 
 
-    private static final String PROTOCOL_VERSION = "4.7";
+    private static final String PROTOCOL_VERSION = "5.0";
 
     private static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
         new ResourceLocation(GInstrumentMod.MODID, "main"),

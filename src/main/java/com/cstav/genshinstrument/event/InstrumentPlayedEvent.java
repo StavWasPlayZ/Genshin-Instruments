@@ -2,7 +2,6 @@ package com.cstav.genshinstrument.event;
 
 import java.util.Optional;
 
-import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
 
@@ -23,18 +22,26 @@ import net.minecraftforge.eventbus.api.Event;
 public class InstrumentPlayedEvent extends Event {
 
     public final NoteSound sound;
-    public final int pitch;
-    public final float volume;
+    public final int pitch, volume;
 
     public final Level level;
     public final boolean isClientSide;
     
     public final ResourceLocation instrumentId;
     public final NoteButtonIdentifier noteIdentifier;
-    public final BlockPos pos;
+    public final BlockPos playPos;
+
+
+    /**
+     * Convenience method to convert the volume of the note
+     * into a {@code float} percentage
+     */
+    public float volume() {
+        return volume / 100f;
+    }
     
 
-    public InstrumentPlayedEvent(NoteSound sound, int pitch, float volume, Level level, BlockPos pos,
+    public InstrumentPlayedEvent(NoteSound sound, int pitch, int volume, Level level, BlockPos pos,
             ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, boolean isClientSide) {
 
         this.sound = sound;
@@ -42,7 +49,7 @@ public class InstrumentPlayedEvent extends Event {
         this.volume = volume;
 
         this.level = level;
-        this.pos = pos;
+        this.playPos = pos;
         this.isClientSide = isClientSide;
 
         this.instrumentId = instrumentId;
@@ -59,24 +66,20 @@ public class InstrumentPlayedEvent extends Event {
         /** The hand holding the instrument played by this player */
         public final Optional<InteractionHand> hand;
 
-        public final Optional<BlockPos> blockInstrumentPos;
 
-        public ByPlayer(NoteSound sound, int pitch, float volume, Player player, BlockPos pos, Optional<InteractionHand> hand,
+        public boolean isBlockInstrument() {
+            return hand.isEmpty();
+        }
+
+
+        public ByPlayer(NoteSound sound, int pitch, int volume, Player player, BlockPos pos, Optional<InteractionHand> hand,
                 ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, boolean isClientSide) {
-            super(sound, pitch, volume, player.getLevel(), pos, instrumentId, noteIdentifier, isClientSide);
+            super(sound, pitch, volume, player.level(), pos, instrumentId, noteIdentifier, isClientSide);
             this.player = player;
+            this.hand = hand;
 
-            if (hand.isPresent()) {
-                this.hand = hand;
-                itemInstrument = Optional.of((hand == null) ? null : player.getItemInHand(hand.get()));
-
-                blockInstrumentPos = Optional.empty();
-            } else {
-                itemInstrument = Optional.empty();
-                this.hand = Optional.empty();
-
-                blockInstrumentPos = Optional.ofNullable(InstrumentOpenProvider.getBlockPos(player));
-            }
+            itemInstrument = isBlockInstrument() ? Optional.empty()
+                : Optional.of(player.getItemInHand(hand.get()));
         }
     }
     

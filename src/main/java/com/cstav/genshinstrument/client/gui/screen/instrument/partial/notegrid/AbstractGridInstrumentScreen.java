@@ -11,13 +11,12 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.GridInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.BaseInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
-import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
-import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.layouts.AbstractLayout;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
@@ -172,11 +171,11 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
 
 
     @Override
-    public void render(PoseStack stack, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(GuiGraphics gui, int pMouseX, int pMouseY, float pPartialTick) {
         if (ModClientConfigs.RENDER_BACKGROUND.get())
-            renderInstrumentBackground(stack);
+            renderInstrumentBackground(gui);
             
-        super.render(stack, pMouseX, pMouseY, pPartialTick);
+        super.render(gui, pMouseX, pMouseY, pPartialTick);
     }
 
 
@@ -185,24 +184,22 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
     /**
      * Renders the background of this grid instrument.
      */
-    protected void renderInstrumentBackground(final PoseStack stack) {
+    protected void renderInstrumentBackground(final GuiGraphics gui) {
         final int clefX = grid.getX() - getNoteSize() + 8;
 
         // Implement your own otherwise, idk
         if (columns() == 3) {
-            renderClef(stack, 0, clefX, "treble");
-            renderClef(stack, 1, clefX, "alto");
-            renderClef(stack, 2, clefX, "bass");
+            renderClef(gui, 0, clefX, "treble");
+            renderClef(gui, 1, clefX, "alto");
+            renderClef(gui, 2, clefX, "bass");
         }
 
         for (int i = 0; i < columns(); i++)
-            renderStaff(stack, i);
+            renderStaff(gui, i);
     }
 
-    protected void renderClef(PoseStack stack, int index, int x, String clefName) {
-        ClientUtil.displaySprite(getInternalResourceFromGlob("background/clef/"+clefName+".png"));
-
-        blit(stack,
+    protected void renderClef(GuiGraphics gui, int index, int x, String clefName) {
+        gui.blit(getInternalResourceFromGlob("background/clef/"+clefName+".png"),
             x, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index) - 5,
             0, 0,
 
@@ -210,11 +207,8 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
             CLEF_WIDTH, CLEF_HEIGHT
         );
     }
-
-    protected void renderStaff(final PoseStack stack, final int index) {
-        ClientUtil.displaySprite(getInternalResourceFromGlob("background/staff.png"));
-        
-        blit(stack,
+    protected void renderStaff(final GuiGraphics gui, final int index) {
+        gui.blit(getInternalResourceFromGlob("background/staff.png"),
             grid.getX() + 2, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index),
             0, 0,
             
@@ -231,40 +225,9 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
     }
 
 
-
     @Override
-    public boolean isMidiInstrument() {
-        // idk how to handle these, nor do i really care tbh
-        return (rows() == 7) && !isSSTI();
-    }
-
-    @Override
-    public boolean allowMidiOverflow() {
-        return true;
-    }
-
-    
-    @Override
-    protected NoteButton handleMidiPress(int note, int pitch) {
-
-        final int layoutNote = note % 12;
-        final boolean higherThan3 = layoutNote > pitch + 4;
-
-        // Handle transposition
-        final boolean shouldSharpen = shouldSharpen(layoutNote, higherThan3, pitch);
-        final boolean shouldFlatten = shouldFlatten(shouldSharpen);
-
-        transposeMidi(shouldSharpen, shouldFlatten);
-
-        
-        final int playedNote = note + (shouldFlatten ? 1 : shouldSharpen ? -1 : 0);
-
-        final int currNote = ((playedNote + (higherThan3 ? 1 : 0)) / 2)
-            // 12th note should go to the next column
-            + playedNote / (12 + pitch);
-
-        return getNoteButton(currNote % rows(), currNote / rows());
-        
+    public InstrumentMidiReceiver initMidiReceiver() {
+        return ((rows() != 7) || isSSTI()) ? null : new GridInstrumentMidiReceiver(this);
     }
 
 }
