@@ -8,8 +8,9 @@ import com.cstav.genshinstrument.client.gui.screen.options.instrument.GridInstru
 import com.cstav.genshinstrument.client.util.TogglablePedalSound;
 import com.cstav.genshinstrument.event.MidiEvent;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -18,6 +19,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+
+import java.awt.*;
 
 /**
  * A subclass of {@link GridInstrumentOptionsScreen} that implements a button to cycle through an instrument's sounds
@@ -65,18 +68,6 @@ public abstract class SoundTypeOptionsScreen<T extends SoundType> extends Single
                 Component.translatable(soundTypeButtonKey()),
                 this::onSoundTypeChange
             );
-
-        rowHelper.addChild(soundTypeButton, 2);
-    }
-
-    @Override
-    public void render(GuiGraphics gui, int pMouseX, int pMouseY, float pPartialTick) {
-        super.render(gui, pMouseX, pMouseY, pPartialTick);
-        
-        gui.drawCenteredString(font,
-            Component.translatable(optionsLabelKey()),
-            width/2, heightBefore + SPACE_BEFORE
-        , Color.WHITE.getRGB());
     }
 
 

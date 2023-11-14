@@ -1,9 +1,5 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid;
 
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.function.Consumer;
-
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
@@ -11,16 +7,21 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.GridInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.BaseInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
+import com.cstav.genshinstrument.client.midi.InstrumentMidiReceiver;
+import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
-
-import net.minecraft.client.gui.GuiGraphics;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.layouts.AbstractLayout;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.function.Consumer;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScreen {
@@ -171,11 +172,11 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
 
 
     @Override
-    public void render(GuiGraphics gui, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(PoseStack stack, int pMouseX, int pMouseY, float pPartialTick) {
         if (ModClientConfigs.RENDER_BACKGROUND.get())
-            renderInstrumentBackground(gui);
+            renderInstrumentBackground(stack);
             
-        super.render(gui, pMouseX, pMouseY, pPartialTick);
+        super.render(stack, pMouseX, pMouseY, pPartialTick);
     }
 
 
@@ -184,22 +185,23 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
     /**
      * Renders the background of this grid instrument.
      */
-    protected void renderInstrumentBackground(final GuiGraphics gui) {
+    protected void renderInstrumentBackground(final PoseStack stack) {
         final int clefX = grid.getX() - getNoteSize() + 8;
 
         // Implement your own otherwise, idk
         if (columns() == 3) {
-            renderClef(gui, 0, clefX, "treble");
-            renderClef(gui, 1, clefX, "alto");
-            renderClef(gui, 2, clefX, "bass");
+            renderClef(stack, 0, clefX, "treble");
+            renderClef(stack, 1, clefX, "alto");
+            renderClef(stack, 2, clefX, "bass");
         }
 
         for (int i = 0; i < columns(); i++)
-            renderStaff(gui, i);
+            renderStaff(stack, i);
     }
 
-    protected void renderClef(GuiGraphics gui, int index, int x, String clefName) {
-        gui.blit(getInternalResourceFromGlob("background/clef/"+clefName+".png"),
+    protected void renderClef(PoseStack stack, int index, int x, String clefName) {
+        ClientUtil.displaySprite(getInternalResourceFromGlob("background/clef/"+clefName+".png"));
+        blit(stack,
             x, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index) - 5,
             0, 0,
 
@@ -207,8 +209,9 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
             CLEF_WIDTH, CLEF_HEIGHT
         );
     }
-    protected void renderStaff(final GuiGraphics gui, final int index) {
-        gui.blit(getInternalResourceFromGlob("background/staff.png"),
+    protected void renderStaff(final PoseStack stack, final int index) {
+        ClientUtil.displaySprite(getInternalResourceFromGlob("background/staff.png"));
+        blit(stack,
             grid.getX() + 2, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index),
             0, 0,
             

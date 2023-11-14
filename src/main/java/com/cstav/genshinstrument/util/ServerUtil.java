@@ -91,13 +91,13 @@ public class ServerUtil {
 
         final BlockPos playeredPos = CommonUtil.getPlayeredPosition(player, pos);
 
-        for (final Player listener : noteListeners(player.level(), playeredPos))
+        for (final Player listener : noteListeners(player.getLevel(), playeredPos))
             ModPacketHandler.sendToClient(packet, (ServerPlayer)listener);
 
 
         // Trigger an instrument game event
         // This is done so that sculk sensors can pick up the instrument's sound
-        player.level().gameEvent(
+        player.getLevel().gameEvent(
             GameEvent.INSTRUMENT_PLAY, playeredPos,
             GameEvent.Context.of(player)
         );
@@ -183,7 +183,7 @@ public class ServerUtil {
         InstrumentOpenProvider.setClosed(player);
 
         // And clients
-        player.level().players().forEach((nearbyPlayer) ->
+        player.getLevel().players().forEach((nearbyPlayer) ->
             ModPacketHandler.sendToClient(
                 new NotifyInstrumentOpenPacket(player.getUUID(), false),
                 (ServerPlayer)nearbyPlayer
@@ -238,7 +238,7 @@ public class ServerUtil {
         // Notify the other players
         final Optional<BlockPos> playPos = Optional.ofNullable(pos);
 
-        player.level().players().forEach((otherPlayer) ->
+        player.getLevel().players().forEach((otherPlayer) ->
             ModPacketHandler.sendToClient(
                 new NotifyInstrumentOpenPacket(player.getUUID(), playPos),
                 (ServerPlayer)otherPlayer

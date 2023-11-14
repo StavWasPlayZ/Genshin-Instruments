@@ -1,18 +1,18 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note;
 
-import java.util.ArrayList;
-import java.util.function.Supplier;
-
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.animation.NoteAnimationController;
 import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.util.CommonUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
-
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.resources.ResourceLocation;
+
+import java.util.ArrayList;
+import java.util.function.Supplier;
 
 public class NoteButtonRenderer {
     private static final Minecraft MINECRAFT = Minecraft.getInstance();
@@ -53,24 +53,24 @@ public class NoteButtonRenderer {
 
 
 
-    public void render(GuiGraphics gui, int mouseX, int mouseY, float partialTick, InstrumentThemeLoader themeLoader) {
+    public void render(PoseStack stack, int mouseX, int mouseY, float partialTick, InstrumentThemeLoader themeLoader) {
         RenderSystem.enableBlend();
 
         rings.removeIf((ring) -> !ring.isPlaying());
-        rings.forEach((ring) -> ring.render(gui, themeLoader));
+        rings.forEach((ring) -> ring.render(stack, themeLoader));
 
 
-        renderNoteButton(gui, themeLoader);
-        renderNote(gui, themeLoader);
-        renderLabel(gui, themeLoader);
+        renderNoteButton(stack, themeLoader);
+        renderNote(stack, themeLoader);
+        renderLabel(stack, themeLoader);
         
-        renderAccidentals(gui, themeLoader);
+        renderAccidentals(stack, themeLoader);
 
 
         noteAnimation.update();
     }
 
-    protected void renderNoteButton(final GuiGraphics gui, final InstrumentThemeLoader themeLoader) {
+    protected void renderNoteButton(final PoseStack stack, final InstrumentThemeLoader themeLoader) {
         ResourceLocation noteLocation;
 
         if (noteButton.isPlaying()) {
@@ -84,9 +84,10 @@ public class NoteButtonRenderer {
             noteLocation = noteHoverLocation;
         else
             noteLocation = noteReleasedLocation;
-            
-        
-        gui.blit(noteLocation,
+
+
+        ClientUtil.displaySprite(noteLocation);
+        GuiComponent.blit(stack,
             noteButton.getX(), noteButton.getY(),
             0, 0,
 
@@ -96,7 +97,7 @@ public class NoteButtonRenderer {
     }
 
     // "Note" here refers to those symbols in the middle of a note button
-    protected void renderNote(final GuiGraphics gui, final InstrumentThemeLoader themeLoader) {
+    protected void renderNote(final PoseStack stack, final InstrumentThemeLoader themeLoader) {
         final int noteWidth = noteButton.getWidth()/2, noteHeight = noteButton.getHeight()/2;
         
         ClientUtil.setShaderColor((noteButton.isPlaying() && !foreignPlaying)
@@ -104,7 +105,8 @@ public class NoteButtonRenderer {
             : themeLoader.noteReleased()
         );
 
-        gui.blit(noteTextureProvider.get(),
+        ClientUtil.displaySprite(noteTextureProvider.get());
+        GuiComponent.blit(stack,
             noteButton.getX() + noteWidth/2, noteButton.getY() + noteHeight/2,
             0, 0,
 
@@ -125,8 +127,8 @@ public class NoteButtonRenderer {
         this.labelY = labelY;
     }
 
-    protected void renderLabel(final GuiGraphics gui, final InstrumentThemeLoader themeLoader) {
-        gui.drawCenteredString(
+    protected void renderLabel(final PoseStack stack, final InstrumentThemeLoader themeLoader) {
+        GuiComponent.drawCenteredString(stack,
             MINECRAFT.font, noteButton.getMessage(),
             labelX, labelY,
             ((noteButton.isPlaying() && !foreignPlaying)
@@ -137,33 +139,33 @@ public class NoteButtonRenderer {
     }
 
 
-    protected void renderAccidentals(final GuiGraphics gui, final InstrumentThemeLoader themeLoader) {
+    protected void renderAccidentals(final PoseStack stack, final InstrumentThemeLoader themeLoader) {
         RenderSystem.enableBlend();
         
         switch (noteButton.getNotation()) {
             case NONE: break;
 
             case FLAT:
-                renderAccidental(gui, 0);
+                renderAccidental(stack, 0);
                 break;
             case SHARP:
-                renderAccidental(gui, 1);
+                renderAccidental(stack, 1);
                 break;
             case DOUBLE_FLAT:
-                renderAccidental(gui, 0, -6, -3);
-                renderAccidental(gui, 0, 5, 2);
+                renderAccidental(stack, 0, -6, -3);
+                renderAccidental(stack, 0, 5, 2);
                 break;
             case DOUBLE_SHARP:
-                renderAccidental(gui, 2, -1, 0);
+                renderAccidental(stack, 2, -1, 0);
                 break;
 
         }
     }
     
-    protected void renderAccidental(final GuiGraphics gui, int index) {
-        renderAccidental(gui, index, 0, 0);
+    protected void renderAccidental(final PoseStack stack, int index) {
+        renderAccidental(stack, index, 0, 0);
     }
-    protected void renderAccidental(GuiGraphics gui, int index, int offsetX, int offsetY) {
+    protected void renderAccidental(PoseStack stack, int index, int offsetX, int offsetY) {
         final double textureMultiplier = noteButton.getWidth() * (
             // Handle sharp size
             (index == 1) ? SHARP_MULTIPLIER : 1
@@ -175,7 +177,8 @@ public class NoteButtonRenderer {
         final int spritePartWidth = textureWidth/3 + 1;
 
 
-        gui.blit(accidentalsLocation,
+        ClientUtil.displaySprite(accidentalsLocation);
+        GuiComponent.blit(stack,
             noteButton.getX() - 9 + offsetX, noteButton.getY() - 5 + offsetY,
             spritePartWidth * index, noteButton.isPlaying() ? (textureHeight + 1)/2 : 0,
             

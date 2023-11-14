@@ -2,7 +2,7 @@ package com.cstav.genshinstrument.client.gui.screen.options.instrument.partial;
 
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.GridInstrumentOptionsScreen;
-import net.minecraft.client.gui.GuiGraphics;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.layouts.SpacerElement;
@@ -38,10 +38,10 @@ public abstract class SingleButtonOptionsScreen extends GridInstrumentOptionsScr
     }
 
     @Override
-    public void render(GuiGraphics gui, int pMouseX, int pMouseY, float pPartialTick) {
-        super.render(gui, pMouseX, pMouseY, pPartialTick);
+    public void render(PoseStack stack, int pMouseX, int pMouseY, float pPartialTick) {
+        super.render(stack, pMouseX, pMouseY, pPartialTick);
 
-        gui.drawCenteredString(font,
+        drawCenteredString(stack, font,
                 Component.translatable(optionsLabelKey()),
                 width/2, heightBefore + SPACE_BEFORE
                 , Color.WHITE.getRGB()

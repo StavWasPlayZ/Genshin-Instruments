@@ -74,7 +74,7 @@ public class InstrumentPlayedEvent extends Event {
 
         public ByPlayer(NoteSound sound, int pitch, int volume, Player player, BlockPos pos, Optional<InteractionHand> hand,
                 ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, boolean isClientSide) {
-            super(sound, pitch, volume, player.level(), pos, instrumentId, noteIdentifier, isClientSide);
+            super(sound, pitch, volume, player.getLevel(), pos, instrumentId, noteIdentifier, isClientSide);
             this.player = player;
             this.hand = hand;
 
