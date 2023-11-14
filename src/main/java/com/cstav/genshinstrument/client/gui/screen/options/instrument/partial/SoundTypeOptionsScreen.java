@@ -58,7 +58,7 @@ public abstract class SoundTypeOptionsScreen<T extends SoundType> extends Single
                 Component.translatable(soundTypeButtonKey()+"."+type.toString().toLowerCase())
             )
             .withValues(values())
-            .withInitialValue(getPerferredSoundType())
+            .withInitialValue(getPreferredSoundType())
             .create(0, 0,
                 getBigButtonWidth(), getButtonHeight(),
                 Component.translatable(soundTypeButtonKey()),

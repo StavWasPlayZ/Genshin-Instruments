@@ -16,15 +16,10 @@ import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.LabelUtil;
 
-import net.minecraft.client.gui.components.AbstractSliderButton;
+import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.CycleButton;
-import net.minecraft.client.gui.components.Tooltip;
-import net.minecraft.client.gui.layouts.GridLayout;
-import net.minecraft.client.gui.layouts.GridLayout.RowHelper;
-import net.minecraft.client.gui.layouts.LinearLayout;
-import net.minecraft.client.gui.layouts.LinearLayout.Orientation;
-import net.minecraft.client.gui.layouts.SpacerElement;
+import net.minecraft.client.gui.components.GridWidget.RowHelper;
+import net.minecraft.client.gui.components.LinearLayoutWidget.Orientation;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;

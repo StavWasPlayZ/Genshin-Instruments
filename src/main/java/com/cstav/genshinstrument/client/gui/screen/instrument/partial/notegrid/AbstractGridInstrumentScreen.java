@@ -1,9 +1,5 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid;
 
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.function.Consumer;
-
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
@@ -11,16 +7,21 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.GridInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.BaseInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
+import com.cstav.genshinstrument.client.midi.InstrumentMidiReceiver;
+import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
-
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.layouts.AbstractLayout;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.function.Consumer;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScreen {

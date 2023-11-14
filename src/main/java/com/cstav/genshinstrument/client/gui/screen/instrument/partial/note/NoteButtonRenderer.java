@@ -1,17 +1,14 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note;
 
-import java.util.ArrayList;
-import java.util.function.Supplier;
-
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.animation.NoteAnimationController;
 import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.util.CommonUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
-
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
@@ -101,7 +98,7 @@ public class NoteButtonRenderer {
     }
 
     // "Note" here refers to those symbols in the middle of a note button
-    protected void renderNote(final GuiGraphics gui, final InstrumentThemeLoader themeLoader) {
+    protected void renderNote(final PoseStack stack, final InstrumentThemeLoader themeLoader) {
         final int noteWidth = noteButton.getWidth()/2, noteHeight = noteButton.getHeight()/2;
         
         ClientUtil.setShaderColor((noteButton.isPlaying() && !foreignPlaying)

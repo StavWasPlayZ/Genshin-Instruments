@@ -22,7 +22,6 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -86,7 +85,7 @@ public class ServerUtil {
 
         final BlockPos playeredPos = CommonUtil.getPlayeredPosition(player, pos);
 
-        for (final Player listener : noteListeners(player.level(), playeredPos))
+        for (final Player listener : noteListeners(player.getLevel(), playeredPos))
             ModPacketHandler.sendToClient(packet, (ServerPlayer)listener);
 
 
