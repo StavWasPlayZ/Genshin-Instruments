@@ -11,14 +11,13 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.GridInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.BaseInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
-import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
-import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.layouts.AbstractLayout;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -201,7 +200,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
 
     protected void renderClef(PoseStack stack, int index, int x, String clefName) {
         ClientUtil.displaySprite(getInternalResourceFromGlob("background/clef/"+clefName+".png"));
-        
+
         blit(stack,
             x, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index) - 5,
             0, 0,
@@ -213,7 +212,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
 
     protected void renderStaff(final PoseStack stack, final int index) {
         ClientUtil.displaySprite(getInternalResourceFromGlob("background/staff.png"));
-        
+
         blit(stack,
             grid.getX() + 2, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index),
             0, 0,
@@ -231,40 +230,9 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
     }
 
 
-
     @Override
-    public boolean isMidiInstrument() {
-        // idk how to handle these, nor do i really care tbh
-        return (rows() == 7) && !isSSTI();
-    }
-
-    @Override
-    public boolean allowMidiOverflow() {
-        return true;
-    }
-
-    
-    @Override
-    protected NoteButton handleMidiPress(int note, int pitch) {
-
-        final int layoutNote = note % 12;
-        final boolean higherThan3 = layoutNote > pitch + 4;
-
-        // Handle transposition
-        final boolean shouldSharpen = shouldSharpen(layoutNote, higherThan3, pitch);
-        final boolean shouldFlatten = shouldFlatten(shouldSharpen);
-
-        transposeMidi(shouldSharpen, shouldFlatten);
-
-        
-        final int playedNote = note + (shouldFlatten ? 1 : shouldSharpen ? -1 : 0);
-
-        final int currNote = ((playedNote + (higherThan3 ? 1 : 0)) / 2)
-            // 12th note should go to the next column
-            + playedNote / (12 + pitch);
-
-        return getNoteButton(currNote % rows(), currNote / rows());
-        
+    public InstrumentMidiReceiver initMidiReceiver() {
+        return ((rows() != 7) || isSSTI()) ? null : new GridInstrumentMidiReceiver(this);
     }
 
 }

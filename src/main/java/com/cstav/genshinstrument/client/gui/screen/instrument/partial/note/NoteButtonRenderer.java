@@ -9,11 +9,13 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.anima
 import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.util.CommonUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
+
+import java.util.ArrayList;
+import java.util.function.Supplier;
 
 public class NoteButtonRenderer {
     private static final Minecraft MINECRAFT = Minecraft.getInstance();
@@ -28,7 +30,7 @@ public class NoteButtonRenderer {
 
     protected final ResourceLocation notePressedLocation, noteReleasedLocation, noteHoverLocation;
 
-    protected Supplier<ResourceLocation> labelProvider;
+    protected Supplier<ResourceLocation> noteTextureProvider;
 
     // Animations
     public final NoteAnimationController noteAnimation;
@@ -36,9 +38,9 @@ public class NoteButtonRenderer {
     protected final ArrayList<NoteRing> rings = new ArrayList<>();
 
 
-    public NoteButtonRenderer(NoteButton noteButton, Supplier<ResourceLocation> labelProvider) {
+    public NoteButtonRenderer(NoteButton noteButton, Supplier<ResourceLocation> noteTextureProvider) {
         this.noteButton = noteButton;
-        this.labelProvider = labelProvider;
+        this.noteTextureProvider = noteTextureProvider;
         this.instrumentScreen = noteButton.instrumentScreen;
 
         noteAnimation = new NoteAnimationController(.15f, 9, noteButton);
@@ -88,7 +90,7 @@ public class NoteButtonRenderer {
             
 
         ClientUtil.displaySprite(noteLocation);
-        
+
         GuiComponent.blit(stack,
             noteButton.getX(), noteButton.getY(),
             0, 0,
@@ -98,16 +100,17 @@ public class NoteButtonRenderer {
         );
     }
 
-    protected void renderNote(final PoseStack stack, final InstrumentThemeLoader themeLoader) {
+    // "Note" here refers to those symbols in the middle of a note button
+    protected void renderNote(final GuiGraphics gui, final InstrumentThemeLoader themeLoader) {
         final int noteWidth = noteButton.getWidth()/2, noteHeight = noteButton.getHeight()/2;
         
         ClientUtil.setShaderColor((noteButton.isPlaying() && !foreignPlaying)
-            ? themeLoader.getPressedNoteTheme()
-            : themeLoader.getLabelTheme()
+            ? themeLoader.notePressed()
+            : themeLoader.noteReleased()
         );
 
-        
-        ClientUtil.displaySprite(labelProvider.get());
+
+        ClientUtil.displaySprite(noteTextureProvider.get());
 
         GuiComponent.blit(stack,
             noteButton.getX() + noteWidth/2, noteButton.getY() + noteHeight/2,
@@ -135,8 +138,8 @@ public class NoteButtonRenderer {
             MINECRAFT.font, noteButton.getMessage(),
             labelX, labelY,
             ((noteButton.isPlaying() && !foreignPlaying)
-                ? themeLoader.getPressedNoteTheme()
-                : themeLoader.getNoteTheme()
+                ? themeLoader.labelPressed()
+                : themeLoader.labelReleased()
             ).getRGB()
         );
     }
@@ -203,7 +206,7 @@ public class NoteButtonRenderer {
     /**
      * Obtains a resource from this instrument's directory.
      * @param path The resource to obtain from this note's directory
-     * @see {@link AbstractInstrumentScreen#getResourceFrom(ResourceLocation, String)}
+     * @see CommonUtil#getResourceFrom(ResourceLocation, String)
      */
     protected ResourceLocation getResourceFromRoot(final String path) {
         return CommonUtil.getResourceFrom(rootLocation, path);

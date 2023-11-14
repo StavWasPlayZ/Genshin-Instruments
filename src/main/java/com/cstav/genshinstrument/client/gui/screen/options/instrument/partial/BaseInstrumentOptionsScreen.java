@@ -19,12 +19,12 @@ import com.cstav.genshinstrument.util.LabelUtil;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
-import net.minecraft.client.gui.components.GridWidget;
-import net.minecraft.client.gui.components.GridWidget.RowHelper;
-import net.minecraft.client.gui.components.LinearLayoutWidget;
-import net.minecraft.client.gui.components.LinearLayoutWidget.Orientation;
-import net.minecraft.client.gui.components.SpacerWidget;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.layouts.GridLayout;
+import net.minecraft.client.gui.layouts.GridLayout.RowHelper;
+import net.minecraft.client.gui.layouts.LinearLayout;
+import net.minecraft.client.gui.layouts.LinearLayout.Orientation;
+import net.minecraft.client.gui.layouts.SpacerElement;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -82,23 +82,24 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
 
 
         final int buttonsY = ClientUtil.lowerButtonsY(grid.getY(), grid.getHeight(), height);
+        final int buttonsWidth = 150;
 
         final Button doneBtn = Button.builder(CommonComponents.GUI_DONE, (btn) -> onClose())
-            .width(150)
+            .width(buttonsWidth)
             .build();
 
         // Add MIDI options button for MIDI instruments
         if (!isOverlay || instrumentScreen.isMidiInstrument()) {
             final LinearLayoutWidget buttonLayout = new LinearLayoutWidget(
-                grid.getX() + 40, buttonsY,
-                getBigButtonWidth() - 80, getButtonHeight(),
+                grid.getX() + getSmallButtonWidth() - buttonsWidth + ClientUtil.GRID_HORZ_PADDING, buttonsY,
+                (buttonsWidth + ClientUtil.GRID_HORZ_PADDING) * 2, getButtonHeight(),
                 Orientation.HORIZONTAL
             );
 
             final Button midiOptions = Button.builder(MIDI_OPTIONS.copy().append("..."), (btn) -> openMidiOptions())
-                .width(150)
+                .width(buttonsWidth)
                 .build();
-    
+
             buttonLayout.addChild(midiOptions);
             buttonLayout.addChild(doneBtn);
 
@@ -108,7 +109,7 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
             doneBtn.setPosition((width - doneBtn.getWidth())/2, buttonsY);
             addRenderableWidget(doneBtn);
         }
-            
+
     }
 
     protected void initAudioSection(final GridWidget grid, final RowHelper rowHelper) {
@@ -258,7 +259,7 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
                 return;
 
             // Directly save the pitch if we're on an instrument
-            // Otherwise tranpositions will reset to their previous pitch
+            // Otherwise transpositions will reset to their previous pitch
             instrumentScreen.setPitch(pitch);
             savePitch(pitch);
         } else
@@ -269,10 +270,12 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
     }
 
     protected void onVolumeChanged(final AbstractSliderButton slider, final double volume) {
-        if (isOverlay)
-            instrumentScreen.volume = volume;
+        final int newVolume = (int)(volume * 100);
 
-        queueToSave("volume", () -> saveVolume(volume));
+        if (isOverlay)
+            instrumentScreen.volume = newVolume;
+
+        queueToSave("volume", () -> saveVolume(newVolume / 100d));
     }
     protected void saveVolume(final double newVolume) {
         ModClientConfigs.VOLUME.set(newVolume);
@@ -318,7 +321,7 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
 
 
     /**
-     * Tooltip is being annoying and not rpelacing my args.
+     * Tooltip is being annoying and not replacing my args.
      * So, fine, I'll do it myself.
      * @param key The translation key
      * @param arg The thing to replace with %s
@@ -329,5 +332,4 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
             Component.translatable(key).getString().replace("%s", arg.toString())
         );
     }
-
 }

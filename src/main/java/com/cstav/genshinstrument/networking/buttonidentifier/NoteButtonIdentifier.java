@@ -9,6 +9,8 @@ import com.cstav.genshinstrument.util.ServerUtil;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * <p>
@@ -25,22 +27,15 @@ public abstract class NoteButtonIdentifier {
 
     public abstract boolean matches(final NoteButtonIdentifier other);
     
+    @OnlyIn(Dist.CLIENT)
     public boolean matches(final NoteButton note) {
         return matches(note.getIdentifier());
-    }
-    public boolean matches(final Object obj) {
-        return equals(obj);
     }
 
 
     @Override
     public boolean equals(Object other) {
-        if (other instanceof NoteButtonIdentifier)
-            return matches((NoteButtonIdentifier)other);
-        if (other instanceof NoteButton)
-            return matches((NoteButton)other);
-
-        return false;
+        return (other instanceof NoteButtonIdentifier _other) && matches(_other);
     }
 
     /**

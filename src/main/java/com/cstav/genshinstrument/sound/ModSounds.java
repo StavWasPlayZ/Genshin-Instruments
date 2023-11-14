@@ -1,8 +1,5 @@
 package com.cstav.genshinstrument.sound;
 
-import static com.cstav.genshinstrument.sound.NoteSoundRegistrer.createInstrumentNotes;
-import static com.cstav.genshinstrument.sound.NoteSoundRegistrer.registerNote;
-
 import com.cstav.genshinstrument.GInstrumentMod;
 
 import net.minecraft.resources.ResourceLocation;
@@ -20,16 +17,16 @@ public class ModSounds {
 
 
     public static final NoteSound[]
-        WINDSONG_LYRE_NOTE_SOUNDS = createInstrumentNotes(SOUNDS, loc("windsong_lyre"), true),
-        VINTAGE_LYRE_NOTE_SOUNDS = createInstrumentNotes(SOUNDS, loc("vintage_lyre")),
+        WINDSONG_LYRE_NOTE_SOUNDS = nsr(loc("windsong_lyre")).stereo().registerGrid(),
+        VINTAGE_LYRE_NOTE_SOUNDS = nsr(loc("vintage_lyre")).registerGrid(),
 
-        ZITHER_NEW_NOTE_SOUNDS = createInstrumentNotes(SOUNDS, loc("floral_zither_new")),
-        ZITHER_OLD_NOTE_SOUNDS = createInstrumentNotes(SOUNDS, loc("floral_zither_old")),
+        ZITHER_NEW_NOTE_SOUNDS = nsr(loc("floral_zither_new")).registerGrid(),
+        ZITHER_OLD_NOTE_SOUNDS = nsr(loc("floral_zither_old")).registerGrid(),
 
-        GLORIOUS_DRUM = new NoteSound[] {
-            registerNote(SOUNDS, loc("glorious_drum_don")),
-            registerNote(SOUNDS, loc("glorious_drum_ka"), true)
-        }
+        GLORIOUS_DRUM = nsr(loc("glorious_drum"))
+            .chain(loc("glorious_drum_don")).add()
+            .chain(loc("glorious_drum_ka")).stereo().add()
+        .registerAll()
     ;
 
     /**
@@ -37,6 +34,12 @@ public class ModSounds {
      */
     private static ResourceLocation loc(final String name) {
         return new ResourceLocation(GInstrumentMod.MODID, name);
+    }
+    /**
+     * Shorthand for {@code new NoteSoundRegistrar(soundRegistrar, instrumentId)}
+     */
+    private static NoteSoundRegistrar nsr(ResourceLocation instrumentId) {
+        return new NoteSoundRegistrar(ModSounds.SOUNDS, instrumentId);
     }
 
 }

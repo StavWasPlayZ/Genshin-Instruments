@@ -68,28 +68,30 @@ public class ClientEvents {
             return;
 
         // Only show play notes in the local range
-        if (!event.pos.closerThan(MINECRAFT.player.blockPosition(), NoteSound.LOCAL_RANGE))
+        if (!event.playPos.closerThan(MINECRAFT.player.blockPosition(), NoteSound.LOCAL_RANGE))
             return;
 
 
-        AbstractInstrumentScreen.getCurrentScreen(MINECRAFT).ifPresent((screen) -> {
-            // The produced instrument sound has to match the current screen's sounds
-            if (!screen.getInstrumentId().equals(event.instrumentId))
-                return;
-
-            try {
-
-                screen.getNoteButton(event.noteIdentifier).playNoteAnimation(true);
-
-            } catch (Exception e) {}
-        });
+        AbstractInstrumentScreen.getCurrentScreen(MINECRAFT)
+            // Filter instruments that do not match the one we're on
+            .filter((screen) -> screen.getInstrumentId().equals(event.instrumentId))
+            .ifPresent((screen) -> {
+                try {
+                    screen.getNoteButton(event.noteIdentifier).playNoteAnimation(true);
+                } catch (Exception e) {
+                    // Button was prolly just not found
+                }
+            }
+        );
     }
 
 
     // Subscribe active instruments to a MIDI event
     @SubscribeEvent
     public static void onMidiEvent(final MidiEvent event) {
-        AbstractInstrumentScreen.getCurrentScreen(Minecraft.getInstance()).ifPresent((screen) -> screen.onMidi(event));
+        AbstractInstrumentScreen.getCurrentScreen(Minecraft.getInstance())
+            .filter(AbstractInstrumentScreen::isMidiInstrument)
+            .ifPresent((instrument) -> instrument.midiReceiver.onMidi(event));
     }
 
     // Safely close MIDI streams upon game shutdown
