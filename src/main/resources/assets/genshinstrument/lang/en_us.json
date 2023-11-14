@@ -68,7 +68,7 @@
 
 
     "button.genshinstrument.normalize_vintage_lyre": "Normalize Vintage Lyre",
-    "button.genshinstrument.normalize_vintage_lyre.tooltip": "Normalizes all the flattened notes in the Vintage Lyre",
+    "button.genshinstrument.normalize_vintage_lyre.tooltip": "Normalizes all flattened notes in the Vintage Lyre. Does not apply to the max pitch.",
 
 
     "button.none": "None",
