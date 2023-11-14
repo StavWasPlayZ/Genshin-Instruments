@@ -53,7 +53,9 @@ public class VintageLyreScreen extends AbstractGridInstrumentScreen {
 
     public boolean shouldSoundNormalize() {
         return ModClientConfigs.NORMALIZE_VINTAGE_LYRE.get()
-                && (getPitch() != NoteSound.MAX_PITCH);
+            // To normalize a flattened note, one must go up a note.
+            // ...But we're maxed.
+            && (getPitch() != NoteSound.MAX_PITCH);
     }
 
 

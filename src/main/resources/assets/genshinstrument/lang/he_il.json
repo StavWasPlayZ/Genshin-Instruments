@@ -61,7 +61,7 @@
 
 
     "button.genshinstrument.normalize_vintage_lyre": "נרמל את הנבל",
-    "button.genshinstrument.normalize_vintage_lyre.tooltip": "מנרמל את כל הצלילים של הנבל תחת היתק במול",
+    "button.genshinstrument.normalize_vintage_lyre.tooltip": "מנרמל את כל צלילי הנבל תחת היתק במול. אינו חל על גובה הצליל המקסימלי.",
 
 
     "button.none": "כלום",
