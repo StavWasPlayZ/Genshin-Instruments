@@ -3,8 +3,8 @@ package com.cstav.genshinstrument.client.keyMaps;
 import org.lwjgl.glfw.GLFW;
 
 import com.cstav.genshinstrument.GInstrumentMod;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.AbstractGridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.platform.InputConstants.Type;
@@ -30,7 +30,7 @@ public class InstrumentKeyMappings {
         @SuppressWarnings("resource")
         @Override
         public boolean isActive() {
-            return Minecraft.getInstance().screen instanceof AbstractInstrumentScreen;
+            return Minecraft.getInstance().screen instanceof InstrumentScreen;
         }
 
         @Override
@@ -96,7 +96,7 @@ public class InstrumentKeyMappings {
 
     /**
      * Creates a grid of keys.
-     * used by {@link AbstractGridInstrumentScreen} for managing keyboard input.
+     * used by {@link GridInstrumentScreen} for managing keyboard input.
      * @param keyCodes A 2D array representing a key grid. Each cell should correspond to a note.
      * @return A 2D key array as described in {@code keyCodes}.
      */
