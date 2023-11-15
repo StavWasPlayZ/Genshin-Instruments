@@ -4,8 +4,8 @@ import java.awt.Color;
 
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.config.enumType.SoundType;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.AbstractGridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.GridInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.util.TogglablePedalSound;
 import com.cstav.genshinstrument.event.MidiEvent;
@@ -28,7 +28,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @EventBusSubscriber(bus = Bus.FORGE, modid = GInstrumentMod.MODID, value = Dist.CLIENT)
 public abstract class SoundTypeOptionsScreen<T extends SoundType> extends SingleButtonOptionsScreen {
 
-    public SoundTypeOptionsScreen(final AbstractGridInstrumentScreen screen) {
+    public SoundTypeOptionsScreen(final GridInstrumentScreen screen) {
         super(screen);
     }
     public SoundTypeOptionsScreen(final Screen lastScreen) {
@@ -82,7 +82,7 @@ public abstract class SoundTypeOptionsScreen<T extends SoundType> extends Single
 
     protected abstract void saveSoundType(final T soundType);
 
-    protected abstract boolean isValidForSet(final AbstractInstrumentScreen screen);
+    protected abstract boolean isValidForSet(final InstrumentScreen screen);
 
 
 
@@ -98,7 +98,7 @@ public abstract class SoundTypeOptionsScreen<T extends SoundType> extends Single
     @SuppressWarnings("unchecked")
     @SubscribeEvent
     public static void onMidiReceivedEvent(final MidiEvent event) {
-        final AbstractInstrumentScreen instrumentScreen = AbstractInstrumentScreen.getCurrentScreen(Minecraft.getInstance()).orElse(null);
+        final InstrumentScreen instrumentScreen = InstrumentScreen.getCurrentScreen(Minecraft.getInstance()).orElse(null);
 
         if ((instrumentScreen == null)
             || !(instrumentScreen.optionsScreen instanceof SoundTypeOptionsScreen optionsScreen)

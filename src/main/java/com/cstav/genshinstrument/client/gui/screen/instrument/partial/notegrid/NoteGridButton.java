@@ -1,7 +1,7 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButtonRenderer;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
@@ -19,7 +19,7 @@ public class NoteGridButton extends NoteButton {
     private static final ResourceLocation[] GRID_LABELS = new ResourceLocation[LabelUtil.ABC.length];
     static {
         for (int i = 0; i < LabelUtil.ABC.length; i++) {
-            GRID_LABELS[i] = AbstractInstrumentScreen.getInternalResourceFromGlob(
+            GRID_LABELS[i] = InstrumentScreen.getInternalResourceFromGlob(
                 "note/label/grid/" + Character.toLowerCase(LabelUtil.ABC[i]) + ".png"
             );
         }
@@ -28,7 +28,7 @@ public class NoteGridButton extends NoteButton {
 
     public final int row, column;
 
-    public NoteGridButton(int row, int column, AbstractGridInstrumentScreen instrumentScreen) {
+    public NoteGridButton(int row, int column, GridInstrumentScreen instrumentScreen) {
         super(
             getSoundFromArr(instrumentScreen, instrumentScreen.getInitSounds(), row, column),
             instrumentScreen.getInitLabelSupplier(), instrumentScreen
@@ -40,7 +40,7 @@ public class NoteGridButton extends NoteButton {
     /**
      * Creates a button for an SSTI-type instrument
      */
-    public NoteGridButton(int row, int column, AbstractGridInstrumentScreen instrumentScreen,
+    public NoteGridButton(int row, int column, GridInstrumentScreen instrumentScreen,
             int pitch) {
         super(instrumentScreen.getInitSounds()[0], instrumentScreen.getInitLabelSupplier(), instrumentScreen, pitch);
 
@@ -48,13 +48,13 @@ public class NoteGridButton extends NoteButton {
         this.column = column;
     }
 
-    public AbstractGridInstrumentScreen gridInstrument() {
-        return (AbstractGridInstrumentScreen) instrumentScreen;
+    public GridInstrumentScreen gridInstrument() {
+        return (GridInstrumentScreen) instrumentScreen;
     }
 
 
     public void updateSoundArr() {
-        if (!(instrumentScreen instanceof AbstractGridInstrumentScreen gridInstrument))
+        if (!(instrumentScreen instanceof GridInstrumentScreen gridInstrument))
             return;
 
         final NoteGrid grid = gridInstrument.noteGrid;
@@ -68,7 +68,7 @@ public class NoteGridButton extends NoteButton {
      * Evaluates the sound at the current position, and sets it as this note's sound
      * @param sounds The sound array of the instrument
      */
-    public static NoteSound getSoundFromArr(AbstractGridInstrumentScreen gridInstrument, NoteSound[] sounds, int row, int column) {
+    public static NoteSound getSoundFromArr(GridInstrumentScreen gridInstrument, NoteSound[] sounds, int row, int column) {
         return sounds[row + NoteGrid.getFlippedColumn(column, gridInstrument.columns()) * gridInstrument.rows()];
     }
 

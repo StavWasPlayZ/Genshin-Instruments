@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
@@ -23,20 +23,20 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
-    public final @Nullable AbstractInstrumentScreen instrumentScreen;
+    public final @Nullable InstrumentScreen instrumentScreen;
     public final Screen lastScreen;
 
     public final boolean isOverlay;
     
     
-    public AbstractInstrumentOptionsScreen(Component pTitle, AbstractInstrumentScreen instrumentScreen, Screen lastScreen) {
+    public AbstractInstrumentOptionsScreen(Component pTitle, InstrumentScreen instrumentScreen, Screen lastScreen) {
         super(pTitle);
         this.instrumentScreen = instrumentScreen;
         this.lastScreen = lastScreen;
 
         this.isOverlay = instrumentScreen != null;
     }
-    public AbstractInstrumentOptionsScreen(Component pTitle, AbstractInstrumentScreen instrumentScreen) {
+    public AbstractInstrumentOptionsScreen(Component pTitle, InstrumentScreen instrumentScreen) {
         this(pTitle, instrumentScreen, null);
     }
     public AbstractInstrumentOptionsScreen(Component pTitle, Screen prevScreen) {
@@ -114,7 +114,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
     /**
      * Queues the given option to later be saved.
-     * Most notably, a save occures when the client closes this screen.
+     * Most notably, a save occurs when the client closes this screen.
      * @param optionKey A unique identifier of this option. If a duplicate entry
      * exists, it will be overwritten.
      * @param saveRunnable The runnable for saving the option

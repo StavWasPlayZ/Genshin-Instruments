@@ -15,7 +15,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 
 /**
- * A class holding an abstract {@link NoteButton note} grid for {@link AbstractGridInstrumentScreen}.
+ * A class holding an abstract {@link NoteButton note} grid for {@link GridInstrumentScreen}.
  * All fields are described in there.
  */
 @OnlyIn(Dist.CLIENT)
@@ -29,13 +29,13 @@ public class NoteGrid implements Iterable<NoteGridButton> {
     }
 
     
-    public final AbstractGridInstrumentScreen instrumentScreen;
+    public final GridInstrumentScreen instrumentScreen;
     protected final NoteGridButton[][] notes;
     private NoteSound[] noteSounds;
 
     public final int rows, columns;
 
-    public NoteGrid(AbstractGridInstrumentScreen instrumentScreen, SSTIPitchProvider pitchProvider) {
+    public NoteGrid(GridInstrumentScreen instrumentScreen, SSTIPitchProvider pitchProvider) {
         this.instrumentScreen = instrumentScreen;
         
         rows = instrumentScreen.rows();
@@ -66,7 +66,7 @@ public class NoteGrid implements Iterable<NoteGridButton> {
             notes[i] = buttonRow;
         }
     }
-    public NoteGrid(AbstractGridInstrumentScreen instrumentScreen) {
+    public NoteGrid(GridInstrumentScreen instrumentScreen) {
         this(instrumentScreen, null);
     }
 
@@ -75,7 +75,7 @@ public class NoteGrid implements Iterable<NoteGridButton> {
      * @param begginingNote The note to start the linear pitch increment.
      * @param noteSkip The amount of pitch to skip over every note in the linear pitch increment.
      */
-    public NoteGrid(AbstractGridInstrumentScreen instrumentScreen, int begginingNote, int noteSkip) {
+    public NoteGrid(GridInstrumentScreen instrumentScreen, int begginingNote, int noteSkip) {
         this(instrumentScreen, (row, column) -> begginingNote +
                 (noteSkip * (row + column * instrumentScreen.rows()))
         );
@@ -84,7 +84,7 @@ public class NoteGrid implements Iterable<NoteGridButton> {
      * Constructs a linearly increasing pitch note grid for an SSTI-type instrument. The increement is set to 1.
      * @param begginingNote The note to start the linear pitch increment.
      */
-    public NoteGrid(AbstractGridInstrumentScreen instrumentScreen, int begginingNote) {
+    public NoteGrid(GridInstrumentScreen instrumentScreen, int begginingNote) {
         this(instrumentScreen, begginingNote, 1);
     }
 

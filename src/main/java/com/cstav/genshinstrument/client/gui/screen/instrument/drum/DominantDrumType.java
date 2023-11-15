@@ -6,7 +6,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public enum DominentDrumType {
+public enum DominantDrumType {
     DON, KA, BOTH;
 
     public String getKey() {

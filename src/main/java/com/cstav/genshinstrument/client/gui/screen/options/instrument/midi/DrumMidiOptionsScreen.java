@@ -1,11 +1,8 @@
 package com.cstav.genshinstrument.client.gui.screen.options.instrument.midi;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
-import com.cstav.genshinstrument.client.gui.screen.instrument.drum.DominentDrumType;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
-import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget;
-import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget.RowHelper;
-import com.cstav.genshinstrument.client.gui.widget.copied.SpacerWidget;
+import com.cstav.genshinstrument.client.gui.screen.instrument.drum.DominantDrumType;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.screens.Screen;
@@ -17,7 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class DrumMidiOptionsScreen extends MidiOptionsScreen {
     public static final String DDT_KEY = "button.genshinstrument.dominentDrumType";
 
-    public DrumMidiOptionsScreen(Component pTitle, Screen prevScreen, AbstractInstrumentScreen instrumentScreen) {
+    public DrumMidiOptionsScreen(Component pTitle, Screen prevScreen, InstrumentScreen instrumentScreen) {
         super(pTitle, prevScreen, instrumentScreen);
     }
     
@@ -27,10 +24,10 @@ public class DrumMidiOptionsScreen extends MidiOptionsScreen {
 
         rowHelper.addChild(SpacerWidget.height(15), 2);
 
-        final CycleButton<DominentDrumType> dominentDrumType = CycleButton.<DominentDrumType>builder((type) -> Component.translatable(type.getKey()))
-            .withValues(DominentDrumType.values())
-            .withTooltip(tooltip((type) -> Component.translatable(DDT_KEY+"."+type.name().toLowerCase()+".tooltip")))
-            .withInitialValue(ModClientConfigs.DOMINENT_DRUM_TYPE.get())
+        final CycleButton<DominantDrumType> dominentDrumType = CycleButton.<DominantDrumType>builder((type) -> Component.translatable(type.getKey()))
+            .withValues(DominantDrumType.values())
+            .withTooltip((type) -> Tooltip.create(Component.translatable(DDT_KEY+"."+type.name().toLowerCase()+".tooltip")))
+            .withInitialValue(ModClientConfigs.DOMINANT_DRUM_TYPE.get())
             .create(0, 0,
                 getSmallButtonWidth(), getButtonHeight(),
                 Component.translatable(DDT_KEY), this::onDominentDrumTypeChanged
@@ -38,8 +35,8 @@ public class DrumMidiOptionsScreen extends MidiOptionsScreen {
         rowHelper.addChild(dominentDrumType);
     }
 
-    protected void onDominentDrumTypeChanged(final CycleButton<DominentDrumType> button, final DominentDrumType value) {
-        ModClientConfigs.DOMINENT_DRUM_TYPE.set(value);
+    protected void onDominentDrumTypeChanged(final CycleButton<DominantDrumType> button, final DominantDrumType value) {
+        ModClientConfigs.DOMINANT_DRUM_TYPE.set(value);
     }
 
 }

@@ -6,7 +6,7 @@ import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.INoteLabel;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.AbstractGridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.BaseInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget;
 import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget.RowHelper;
@@ -29,7 +29,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 @EventBusSubscriber(bus = Bus.MOD, modid = GInstrumentMod.MODID, value = Dist.CLIENT)
 public class GridInstrumentOptionsScreen extends BaseInstrumentOptionsScreen {
 
-    public GridInstrumentOptionsScreen(final AbstractGridInstrumentScreen screen) {
+    public GridInstrumentOptionsScreen(final GridInstrumentScreen screen) {
         super(screen);
     }
     public GridInstrumentOptionsScreen(final Screen lastScreen) {
@@ -56,7 +56,7 @@ public class GridInstrumentOptionsScreen extends BaseInstrumentOptionsScreen {
     @Override
     public boolean isPitchSliderEnabled() {
         return (instrumentScreen == null) ||
-            !((AbstractGridInstrumentScreen)instrumentScreen).isSSTI();
+            !((GridInstrumentScreen)instrumentScreen).isSSTI();
     }
 
 

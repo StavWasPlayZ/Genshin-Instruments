@@ -5,7 +5,7 @@ import java.awt.Point;
 import org.slf4j.Logger;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
@@ -45,7 +45,7 @@ public abstract class NoteButton extends AbstractButton {
     }
 
 
-    public final AbstractInstrumentScreen instrumentScreen;
+    public final InstrumentScreen instrumentScreen;
     
     private NoteSound sound;
     private NoteLabelSupplier labelSupplier;
@@ -54,7 +54,7 @@ public abstract class NoteButton extends AbstractButton {
     protected abstract NoteButtonRenderer initNoteRenderer();
 
 
-    public NoteButton(NoteSound sound, NoteLabelSupplier labelSupplier, AbstractInstrumentScreen instrumentScreen,
+    public NoteButton(NoteSound sound, NoteLabelSupplier labelSupplier, InstrumentScreen instrumentScreen,
             int pitch) {
 
         super(0, 0, 42, 42, Component.empty());
@@ -66,7 +66,7 @@ public abstract class NoteButton extends AbstractButton {
         this.instrumentScreen = instrumentScreen;
         this.pitch = pitch;
     }
-    public NoteButton(NoteSound sound, NoteLabelSupplier labelSupplier, AbstractInstrumentScreen instrumentScreen) {
+    public NoteButton(NoteSound sound, NoteLabelSupplier labelSupplier, InstrumentScreen instrumentScreen) {
         this(sound, labelSupplier, instrumentScreen, instrumentScreen.getPitch());
     }
 
@@ -146,7 +146,7 @@ public abstract class NoteButton extends AbstractButton {
         return LabelUtil.getNoteName(instrumentScreen.getPitch(), instrumentScreen.noteLayout(), getNoteOffset());
     }
     /**
-     * Defines the offset of this note relative to the this screen's {@link AbstractInstrumentScreen#noteLayout() note layout}
+     * Defines the offset of this note relative to the this screen's {@link InstrumentScreen#noteLayout() note layout}
      */
     public abstract int getNoteOffset();
 
