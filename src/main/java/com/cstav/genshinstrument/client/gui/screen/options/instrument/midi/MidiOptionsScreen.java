@@ -4,15 +4,16 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.AbstractInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.widget.SliderButton;
-import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget;
-import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget.RowHelper;
-import com.cstav.genshinstrument.client.gui.widget.copied.SpacerWidget;
 import com.cstav.genshinstrument.client.midi.MidiController;
 import com.cstav.genshinstrument.client.util.ClientUtil;
 
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.layouts.GridLayout;
+import net.minecraft.client.gui.layouts.GridLayout.RowHelper;
+import net.minecraft.client.gui.layouts.SpacerElement;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -93,8 +94,8 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
         rowHelper.addChild(midiDevice, 2);
     }
         
-    protected void initThatOtherSection(final GridWidget grid, final RowHelper rowHelper) {
-        final boolean canInstrumentOverflow = !isOverlay || instrumentScreen.allowMidiOverflow();
+    protected void initThatOtherSection(final GridLayout grid, final RowHelper rowHelper) {
+        final boolean canInstrumentOverflow = !isOverlay || instrumentScreen.midiReceiver.allowMidiOverflow();
 
         if (canInstrumentOverflow) {
             final CycleButton<Boolean> extendOctaves = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
@@ -159,7 +160,7 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
     }
 
 
-    protected void initOptionsGrid(final GridWidget grid, final RowHelper rowHelper) {
+    protected void initOptionsGrid(final GridLayout grid, final RowHelper rowHelper) {
         initDeviceSection(grid, rowHelper);
 
         rowHelper.addChild(SpacerWidget.height(7), 2);

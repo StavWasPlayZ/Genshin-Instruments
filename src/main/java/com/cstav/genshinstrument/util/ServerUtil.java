@@ -52,10 +52,10 @@ public class ServerUtil {
      * @param volume The volume of the sound to initiate
      */
     public static void sendPlayNotePackets(ServerPlayer player, Optional<InteractionHand> hand,
-            NoteSound sound, ResourceLocation instrumentId, int pitch, float volume) {
+            NoteSound sound, ResourceLocation instrumentId, int pitch, int volume) {
 
         sendPlayNotePackets(
-            player, player.blockPosition(), hand,
+            player, Optional.empty(), hand,
             sound, instrumentId, new DefaultNoteButtonIdentifier(sound, pitch),
             pitch, volume,
             PlayNotePacket::new
@@ -72,10 +72,10 @@ public class ServerUtil {
      * @param noteIdentifier The identifier of the note
      * @param pitch The pitch of the sound to initiate
      * @param volume The volume of the sound to initiate
-     * @param PlayNotePacketDelegate The initiator of the {@link PlayNotePacket} to be sent
+     * @param notePacketDelegate The initiator of the {@link PlayNotePacket} to be sent
      */
-    public static void sendPlayNotePackets(ServerPlayer player, BlockPos pos, Optional<InteractionHand> hand,
-            NoteSound sound, ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, int pitch, float volume,
+    public static void sendPlayNotePackets(ServerPlayer player, Optional<BlockPos> pos, Optional<InteractionHand> hand,
+            NoteSound sound, ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, int pitch, int volume,
             PlayNotePacketDelegate notePacketDelegate) {
 
         final PlayNotePacket packet = notePacketDelegate.create(
@@ -84,19 +84,21 @@ public class ServerUtil {
             Optional.of(player.getUUID()), hand
         );
 
-        for (final Player listener : noteListeners(player.getLevel(), player.blockPosition()))
+        final BlockPos playeredPos = CommonUtil.getPlayeredPosition(player, pos);
+
+        for (final Player listener : noteListeners(player.level(), playeredPos))
             ModPacketHandler.sendToClient(packet, (ServerPlayer)listener);
 
 
         // Trigger an instrument game event
         // This is done so that sculk sensors can pick up the instrument's sound
         player.getLevel().gameEvent(
-            GameEvent.INSTRUMENT_PLAY, pos,
+            GameEvent.INSTRUMENT_PLAY, playeredPos,
             GameEvent.Context.of(player)
         );
 
         MinecraftForge.EVENT_BUS.post(
-            new InstrumentPlayedEvent.ByPlayer(sound, pitch, volume, player, pos, hand, instrumentId, noteIdentifier, false)
+            new InstrumentPlayedEvent.ByPlayer(sound, pitch, volume, player, playeredPos, hand, instrumentId, noteIdentifier, false)
         );
     }
 
@@ -110,7 +112,7 @@ public class ServerUtil {
      * @param pitch The pitch of the sound to initiate
      */
     public static void sendPlayNotePackets(Level level, BlockPos pos, NoteSound sound, ResourceLocation instrumentId,
-            int pitch, float volume) {
+            int pitch, int volume) {
         sendPlayNotePackets(
             level, pos, sound,
             instrumentId, new DefaultNoteButtonIdentifier(sound, pitch), pitch, volume,
@@ -127,14 +129,14 @@ public class ServerUtil {
      * @param noteIdentifier The identifier of the note
      * @param pitch The pitch of the sound to initiate
      * @param volume The volume of the sound to initiate
-     * @param PlayNotePacketDelegate The initiator of the {@link PlayNotePacket} to be sent
+     * @param notePacketDelegate The initiator of the {@link PlayNotePacket} to be sent
      */
     public static void sendPlayNotePackets(Level level, BlockPos pos, NoteSound sound,
-            ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, int pitch, float volume,
+            ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, int pitch, int volume,
             PlayNotePacketDelegate notePacketDelegate) {
 
         final PlayNotePacket packet = notePacketDelegate.create(
-            pos, sound, pitch, volume,
+            Optional.of(pos), sound, pitch, volume,
             instrumentId, noteIdentifier,
             Optional.empty(), Optional.empty()
         );
@@ -156,7 +158,7 @@ public class ServerUtil {
 
 
         MinecraftForge.EVENT_BUS.post(
-            new InstrumentPlayedEvent(sound, pitch, volume, (ServerLevel)level, pos, instrumentId, noteIdentifier, false)
+            new InstrumentPlayedEvent(sound, pitch, volume, level, pos, instrumentId, noteIdentifier, false)
         );
     }
 
@@ -172,11 +174,11 @@ public class ServerUtil {
 
 
     public static void setInstrumentClosed(final Player player) {
-        // Update the the capabilty on server
+        // Update the capability on server
         InstrumentOpenProvider.setClosed(player);
 
         // And clients
-        player.getLevel().players().forEach((nearbyPlayer) ->
+        player.level().players().forEach((nearbyPlayer) ->
             ModPacketHandler.sendToClient(
                 new NotifyInstrumentOpenPacket(player.getUUID(), false),
                 (ServerPlayer)nearbyPlayer
@@ -222,7 +224,7 @@ public class ServerUtil {
     private static boolean sendOpenPacket(ServerPlayer player, InteractionHand usedHand, OpenInstrumentPacketSender onOpenRequest,
             BlockPos pos) {
 
-        // Update the the capabilty on the server
+        // Update the capability on the server
         if (pos == null)
             InstrumentOpenProvider.setOpen(player);
         else
@@ -275,7 +277,7 @@ public class ServerUtil {
 
             } catch (Exception e) {
                 LOGGER.error(
-                    "Error registring packet of type "+packetType.getName()
+                    "Error registering packet of type "+packetType.getName()
                         +". Make sure to have a NETWORK_DIRECTION static field of type NetworkDirection."
                 , e);
             }

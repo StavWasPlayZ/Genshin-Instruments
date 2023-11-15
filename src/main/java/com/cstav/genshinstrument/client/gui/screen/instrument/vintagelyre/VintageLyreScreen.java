@@ -1,11 +1,13 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.vintagelyre;
 
 import com.cstav.genshinstrument.GInstrumentMod;
+import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.AbstractGridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.options.instrument.VintageLyreOptionsScreen;
+import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.BaseInstrumentOptionsScreen;
 import com.cstav.genshinstrument.sound.ModSounds;
 import com.cstav.genshinstrument.sound.NoteSound;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
@@ -39,8 +41,23 @@ public class VintageLyreScreen extends AbstractGridInstrumentScreen {
 
     @Override
     public String[] noteLayout() {
-        return NOTE_LAYOUT;
+        return shouldSoundNormalize()
+            ? AbstractGridInstrumentScreen.NOTE_LAYOUT
+            : NOTE_LAYOUT;
     }
+
+    @Override
+    protected BaseInstrumentOptionsScreen initInstrumentOptionsScreen() {
+        return new VintageLyreOptionsScreen(this);
+    }
+
+    public boolean shouldSoundNormalize() {
+        return ModClientConfigs.NORMALIZE_VINTAGE_LYRE.get()
+            // To normalize a flattened note, one must go up a note.
+            // ...But we're maxed.
+            && (getPitch() != NoteSound.MAX_PITCH);
+    }
+
 
     @Override
     public VintageNoteButton createNote(int row, int column) {

@@ -12,11 +12,7 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.midi.MidiOptionsScreen;
 import com.cstav.genshinstrument.client.gui.widget.SliderButton;
-import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget;
-import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget.RowHelper;
 import com.cstav.genshinstrument.client.gui.widget.copied.LinearLayoutWidget;
-import com.cstav.genshinstrument.client.gui.widget.copied.LinearLayoutWidget.Orientation;
-import com.cstav.genshinstrument.client.gui.widget.copied.SpacerWidget;
 import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.LabelUtil;
@@ -24,6 +20,12 @@ import com.cstav.genshinstrument.util.LabelUtil;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.layouts.GridLayout;
+import net.minecraft.client.gui.layouts.GridLayout.RowHelper;
+import net.minecraft.client.gui.layouts.LinearLayout;
+import net.minecraft.client.gui.layouts.LinearLayout.Orientation;
+import net.minecraft.client.gui.layouts.SpacerElement;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -73,31 +75,32 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
 
         final GridWidget grid = ClientUtil.createSettingsGrid();
         initOptionsGrid(grid, grid.createRowHelper(2));
-        
+
         ClientUtil.alignGrid(grid, width, height);
         addRenderableWidget(grid);
 
 
-        final int buttonsY = ClientUtil.lowerButtonsY(grid.y, grid.getHeight(), height);
-        
+        final int buttonsY = ClientUtil.lowerButtonsY(grid.getY(), grid.getHeight(), height);
+        final int buttonsWidth = 150;
+
         final Button doneBtn = new Button(0, buttonsY,
-            150, getButtonHeight(),
+            buttonsWidth, getButtonHeight(),
             CommonComponents.GUI_DONE, (btn) -> onClose()
         );
 
         // Add MIDI options button for MIDI instruments
         if (!isOverlay || instrumentScreen.isMidiInstrument()) {
             final LinearLayoutWidget buttonLayout = new LinearLayoutWidget(
-                grid.x + 40, buttonsY,
-                getBigButtonWidth() - 80, getButtonHeight(),
+                grid.x + getSmallButtonWidth() - buttonsWidth + ClientUtil.GRID_HORZ_PADDING, buttonsY,
+                (buttonsWidth + ClientUtil.GRID_HORZ_PADDING) * 2, getButtonHeight(),
                 Orientation.HORIZONTAL
             );
 
             final Button midiOptions = new Button(0, 0,
-                150, getButtonHeight(),
+                buttonsWidth, getButtonHeight(),
                 MIDI_OPTIONS.copy().append("..."), (btn) -> openMidiOptions()
             );
-    
+
             buttonLayout.addChild(midiOptions);
             buttonLayout.addChild(doneBtn);
 
@@ -107,7 +110,7 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
             doneBtn.x = (width - doneBtn.getWidth())/2;
             addRenderableWidget(doneBtn);
         }
-            
+
     }
 
     protected void initAudioSection(final GridWidget grid, final RowHelper rowHelper) {
@@ -257,7 +260,7 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
                 return;
 
             // Directly save the pitch if we're on an instrument
-            // Otherwise tranpositions will reset to their previous pitch
+            // Otherwise transpositions will reset to their previous pitch
             instrumentScreen.setPitch(pitch);
             savePitch(pitch);
         } else
@@ -268,10 +271,12 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
     }
 
     protected void onVolumeChanged(final AbstractSliderButton slider, final double volume) {
-        if (isOverlay)
-            instrumentScreen.volume = volume;
+        final int newVolume = (int)(volume * 100);
 
-        queueToSave("volume", () -> saveVolume(volume));
+        if (isOverlay)
+            instrumentScreen.volume = newVolume;
+
+        queueToSave("volume", () -> saveVolume(newVolume / 100d));
     }
     protected void saveVolume(final double newVolume) {
         ModClientConfigs.VOLUME.set(newVolume);
@@ -317,7 +322,7 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
 
 
     /**
-     * Tooltip is being annoying and not rpelacing my args.
+     * Tooltip is being annoying and not replacing my args.
      * So, fine, I'll do it myself.
      * @param key The translation key
      * @param arg The thing to replace with %s
@@ -328,5 +333,4 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
             Component.translatable(key).getString().replace("%s", arg.toString())
         );
     }
-
 }
