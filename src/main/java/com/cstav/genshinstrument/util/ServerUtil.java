@@ -1,11 +1,5 @@
 package com.cstav.genshinstrument.util;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Supplier;
-
-import org.slf4j.Logger;
-
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.networking.IModPacket;
@@ -18,11 +12,9 @@ import com.cstav.genshinstrument.networking.packet.instrument.OpenInstrumentPack
 import com.cstav.genshinstrument.networking.packet.instrument.PlayNotePacket;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.logging.LogUtils;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -35,6 +27,11 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent.Context;
 import net.minecraftforge.network.simple.SimpleChannel;
+import org.slf4j.Logger;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 public class ServerUtil {
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -86,7 +83,7 @@ public class ServerUtil {
 
         final BlockPos playeredPos = CommonUtil.getPlayeredPosition(player, pos);
 
-        for (final Player listener : noteListeners(player.level(), playeredPos))
+        for (final Player listener : noteListeners(player.getLevel(), playeredPos))
             ModPacketHandler.sendToClient(packet, (ServerPlayer)listener);
 
 
@@ -178,7 +175,7 @@ public class ServerUtil {
         InstrumentOpenProvider.setClosed(player);
 
         // And clients
-        player.level().players().forEach((nearbyPlayer) ->
+        player.getLevel().players().forEach((nearbyPlayer) ->
             ModPacketHandler.sendToClient(
                 new NotifyInstrumentOpenPacket(player.getUUID(), false),
                 (ServerPlayer)nearbyPlayer

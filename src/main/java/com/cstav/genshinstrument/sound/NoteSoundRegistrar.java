@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument.sound;
 
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.AbstractGridInstrumentScreen;
+import com.cstav.genshinstrument.util.CommonUtil;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -166,7 +167,7 @@ public class NoteSoundRegistrar {
 
         setSoundField((soundEvent) -> sound.mono = soundEvent, soundLocation);
         if (hasStereo) {
-            setSoundField((soundEvent) -> sound.stereo = soundEvent, soundLocation.withSuffix(STEREO_SUFFIX));
+            setSoundField((soundEvent) -> sound.stereo = soundEvent, CommonUtil.withSuffix(soundLocation, STEREO_SUFFIX));
         }
 
         return sound;
@@ -176,7 +177,7 @@ public class NoteSoundRegistrar {
             fieldConsumer.apply(ForgeRegistries.SOUND_EVENTS.getValue(soundLocation));
         } else {
             soundRegistrar.register(soundLocation.getPath(), () ->
-                fieldConsumer.apply(SoundEvent.createVariableRangeEvent(soundLocation))
+                fieldConsumer.apply(new SoundEvent(soundLocation))
             );
         }
     }
@@ -188,7 +189,7 @@ public class NoteSoundRegistrar {
      * @param noteIndex The index of the note
      */
     public NoteSound createNote(int noteIndex) {
-        return createNote(baseSoundLocation.withSuffix("_note_"+noteIndex), noteIndex);
+        return createNote(CommonUtil.withSuffix(baseSoundLocation, "_note_"+noteIndex), noteIndex);
     }
 
 }

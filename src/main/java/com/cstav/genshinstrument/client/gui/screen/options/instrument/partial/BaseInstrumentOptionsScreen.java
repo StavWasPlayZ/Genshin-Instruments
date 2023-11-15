@@ -1,9 +1,5 @@
 package com.cstav.genshinstrument.client.gui.screen.options.instrument.partial;
 
-import java.text.DecimalFormat;
-
-import javax.annotation.Nullable;
-
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
@@ -12,26 +8,26 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.AbstractGridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.midi.MidiOptionsScreen;
 import com.cstav.genshinstrument.client.gui.widget.SliderButton;
+import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget;
+import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget.RowHelper;
 import com.cstav.genshinstrument.client.gui.widget.copied.LinearLayoutWidget;
+import com.cstav.genshinstrument.client.gui.widget.copied.LinearLayoutWidget.Orientation;
+import com.cstav.genshinstrument.client.gui.widget.copied.SpacerWidget;
 import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.LabelUtil;
-
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
-import net.minecraft.client.gui.components.Tooltip;
-import net.minecraft.client.gui.layouts.GridLayout;
-import net.minecraft.client.gui.layouts.GridLayout.RowHelper;
-import net.minecraft.client.gui.layouts.LinearLayout;
-import net.minecraft.client.gui.layouts.LinearLayout.Orientation;
-import net.minecraft.client.gui.layouts.SpacerElement;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import javax.annotation.Nullable;
+import java.text.DecimalFormat;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOptionsScreen {
@@ -80,7 +76,7 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
         addRenderableWidget(grid);
 
 
-        final int buttonsY = ClientUtil.lowerButtonsY(grid.getY(), grid.getHeight(), height);
+        final int buttonsY = ClientUtil.lowerButtonsY(grid.y, grid.getHeight(), height);
         final int buttonsWidth = 150;
 
         final Button doneBtn = new Button(0, buttonsY,

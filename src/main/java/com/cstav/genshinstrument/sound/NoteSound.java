@@ -7,6 +7,7 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
+import com.cstav.genshinstrument.util.CommonUtil;
 import com.cstav.genshinstrument.util.LabelUtil;
 
 import net.minecraft.client.Minecraft;
@@ -25,6 +26,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A class holding sound information for an instrument's note
@@ -63,7 +65,6 @@ public class NoteSound {
         this.index = index;
         this.baseSoundLocation = baseSoundLocation;
     }
-    NoteSound() {}
     
 
     public SoundEvent getMono() {
@@ -172,8 +173,6 @@ public class NoteSound {
         
         if (ModClientConfigs.STOP_MUSIC_ON_PLAY.get() && (distanceFromPlayer < NoteSound.STOP_SOUND_DISTANCE))
             minecraft.getMusicManager().stopPlaying();
-
-        final Level level = minecraft.level;
 
         
         MinecraftForge.EVENT_BUS.post(initiator == null
