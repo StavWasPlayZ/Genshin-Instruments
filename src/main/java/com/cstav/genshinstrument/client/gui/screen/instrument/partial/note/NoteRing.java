@@ -44,7 +44,7 @@ public class NoteRing {
 
 
         ClientUtil.setShaderColor(themeLoader.noteRing(), alpha);
-        ClientUtil.displaySprite(AbstractInstrumentScreen.getInternalResourceFromGlob(RING_GLOB_FILENAME));
+        ClientUtil.displaySprite(InstrumentScreen.getInternalResourceFromGlob(RING_GLOB_FILENAME));
 
         GuiComponent.blit(stack,
             ringCenter.x, ringCenter.y,
