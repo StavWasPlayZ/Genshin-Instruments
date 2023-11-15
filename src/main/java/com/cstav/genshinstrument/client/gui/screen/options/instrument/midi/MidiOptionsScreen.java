@@ -1,7 +1,7 @@
 package com.cstav.genshinstrument.client.gui.screen.options.instrument.midi;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.AbstractInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.widget.SliderButton;
 import com.cstav.genshinstrument.client.midi.MidiController;
@@ -21,7 +21,7 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
         MIN_MIDI_CHANNEL = 0, MAX_MIDI_CHANNEL = 15
     ;
 
-    public MidiOptionsScreen(Component pTitle, Screen prevScreen, AbstractInstrumentScreen instrumentScreen) {
+    public MidiOptionsScreen(Component pTitle, Screen prevScreen, InstrumentScreen instrumentScreen) {
         super(pTitle, instrumentScreen, prevScreen);
     }
 
