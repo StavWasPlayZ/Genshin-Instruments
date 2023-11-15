@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.DrumOptionsScren;
@@ -24,7 +24,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 @OnlyIn(Dist.CLIENT)
 //NOTE: There just to make it load on mod setup
 @EventBusSubscriber(Dist.CLIENT)
-public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen {
+public class AratakisGreatAndGloriousDrumScreen extends InstrumentScreen {
     public static final ResourceLocation INSTRUMENT_ID = new ResourceLocation(GInstrumentMod.MODID, "glorious_drum");
     public static final String[] NOTE_LAYOUT = {"D", "G"};
 
@@ -121,7 +121,7 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
 
             @Override
             protected NoteButton handleMidiPress(int note, int key) {
-                final boolean isKa = (ddt() == DominentDrumType.KA) || ((ddt() == DominentDrumType.BOTH) && (note >= 12));
+                final boolean isKa = (ddt() == DominantDrumType.KA) || ((ddt() == DominantDrumType.BOTH) && (note >= 12));
 
                 setPitch(note - (isKa ? 19 : 2));
 
@@ -137,13 +137,11 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
                             kaRight = !kaRight;
                             return dnb;
                         }
-                        continue;
                     } else {
                         if (dnb.isRight == donRight) {
                             donRight = !donRight;
                             return dnb;
                         }
-                        continue;
                     }
                 }
 
@@ -152,11 +150,11 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
 
             @Override
             protected int minMidiNote() {
-                return ((ddt() == DominentDrumType.BOTH) || ddt() == DominentDrumType.DON) ? -10 : 7;
+                return ((ddt() == DominantDrumType.BOTH) || ddt() == DominantDrumType.DON) ? -10 : 7;
             }
             @Override
             protected int maxMidiNote() {
-                return ((ddt() == DominentDrumType.BOTH) || ddt() == DominentDrumType.KA) ? 32 : 15;
+                return ((ddt() == DominantDrumType.BOTH) || ddt() == DominantDrumType.KA) ? 32 : 15;
             }
         };
     }
@@ -164,10 +162,10 @@ public class AratakisGreatAndGloriousDrumScreen extends AbstractInstrumentScreen
     
 
     /**
-     * Shorthand for {@code ModClientConfigs.DOMINENT_DRUM_TYPE.get()}
+     * Shorthand for {@code ModClientConfigs.DOMINANT_DRUM_TYPE.get()}
      */
-    private final static DominentDrumType ddt() {
-        return ModClientConfigs.DOMINENT_DRUM_TYPE.get();
+    private final static DominantDrumType ddt() {
+        return ModClientConfigs.DOMINANT_DRUM_TYPE.get();
     }
 
 }

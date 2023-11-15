@@ -5,7 +5,7 @@ import com.cstav.genshinstrument.client.midi.InstrumentMidiReceiver;
 
 public class GridInstrumentMidiReceiver extends InstrumentMidiReceiver {
 
-    public GridInstrumentMidiReceiver(AbstractGridInstrumentScreen instrument) {
+    public GridInstrumentMidiReceiver(GridInstrumentScreen instrument) {
         super(instrument);
     }
 
@@ -17,7 +17,7 @@ public class GridInstrumentMidiReceiver extends InstrumentMidiReceiver {
 
     @Override
     protected NoteButton handleMidiPress(int note, int key) {
-        final AbstractGridInstrumentScreen instrumentScreen = (AbstractGridInstrumentScreen)instrument;
+        final GridInstrumentScreen instrumentScreen = (GridInstrumentScreen)instrument;
 
         final int layoutNote = note % 12;
         final boolean higherThan3 = layoutNote > key + 4;

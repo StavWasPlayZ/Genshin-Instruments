@@ -1,6 +1,6 @@
 package com.cstav.genshinstrument.sound;
 
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.AbstractGridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -79,10 +79,10 @@ public class NoteSoundRegistrar {
 
     /**
      * Registers a matrix of sounds for a grid instrument, with the
-     * default amount of {@link AbstractGridInstrumentScreen#DEF_ROWS rows} and {@link AbstractGridInstrumentScreen#DEF_COLUMNS columns}.
+     * default amount of {@link GridInstrumentScreen#DEF_ROWS rows} and {@link GridInstrumentScreen#DEF_COLUMNS columns}.
      */
     public NoteSound[] registerGrid() {
-        return registerGrid(AbstractGridInstrumentScreen.DEF_ROWS, AbstractGridInstrumentScreen.DEF_COLUMNS);
+        return registerGrid(GridInstrumentScreen.DEF_ROWS, GridInstrumentScreen.DEF_COLUMNS);
     }
 
 

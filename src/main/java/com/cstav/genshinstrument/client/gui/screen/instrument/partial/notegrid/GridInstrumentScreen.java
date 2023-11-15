@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.GridInstrumentOptionsScreen;
@@ -24,7 +24,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScreen {
+public abstract class GridInstrumentScreen extends InstrumentScreen {
     public static final String[] NOTE_LAYOUT = {"C", "D", "E", "F", "G", "A", "B"};
 
     public static final int DEF_ROWS = 7, DEF_COLUMNS = 3,
@@ -33,7 +33,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
     protected AbstractLayout grid;
 
 
-    public AbstractGridInstrumentScreen(InteractionHand hand) {
+    public GridInstrumentScreen(InteractionHand hand) {
         super(hand);
     }
 
@@ -61,12 +61,12 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
     /**
      * <p>
      * An SSTI instrument is a Singular Sound-Type Instrument, such that
-     * only the <b>first</b> note in {@link AbstractGridInstrumentScreen#getSounds} will get used.
+     * only the <b>first</b> note in {@link GridInstrumentScreen#getInitSounds()} will get used.
      * </p><p>
      * Notes will start with the {@link NoteSound#MIN_PITCH set minimum pitch},
      * and increment their pitch up by 1 for every new instance.
      * </p>
-     * This behaviour can be changed by overriding {@link AbstractGridInstrumentScreen#initNoteGrid}.
+     * This behaviour can be changed by overriding {@link GridInstrumentScreen#initNoteGrid}.
      */
     public boolean isSSTI() {
         return false;
@@ -90,7 +90,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
      * If the given identifier is of type {@link NoteGridButtonIdentifier},
      * uses the optimal method to obtain the described {@link NoteButton}.
      * </p>
-     * Otherwise, uses {@link AbstractInstrumentScreen#getNoteButton the regular linear method}.
+     * Otherwise, uses {@link InstrumentScreen#getNoteButton the regular linear method}.
      * @return The {@link NoteButton} as described by the given identifier
      */
     @Override
@@ -123,7 +123,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
     }
 
     /**
-     * @return The perferred label supplier specified in this mod's configs
+     * @return The preferred label supplier specified in this mod's configs
      */
     protected NoteLabelSupplier getInitLabelSupplier() {
         return ModClientConfigs.GRID_LABEL_TYPE.get().getLabelSupplier();
