@@ -4,7 +4,7 @@ import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.block.partial.AbstractInstrumentBlock;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.midi.MidiController;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent.ByPlayer;
 import com.cstav.genshinstrument.sound.NoteSound;
@@ -32,7 +32,7 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void onClientTick(final ClientTickEvent event) {
-        AbstractInstrumentScreen.getCurrentScreen(MINECRAFT).ifPresent(AbstractInstrumentScreen::handleAbruptClosing);
+        InstrumentScreen.getCurrentScreen(MINECRAFT).ifPresent(InstrumentScreen::handleAbruptClosing);
     }
 
 
@@ -72,7 +72,7 @@ public class ClientEvents {
             return;
 
 
-        AbstractInstrumentScreen.getCurrentScreen(MINECRAFT)
+        InstrumentScreen.getCurrentScreen(MINECRAFT)
             // Filter instruments that do not match the one we're on
             .filter((screen) -> screen.getInstrumentId().equals(event.instrumentId))
             .ifPresent((screen) -> {
@@ -89,8 +89,8 @@ public class ClientEvents {
     // Subscribe active instruments to a MIDI event
     @SubscribeEvent
     public static void onMidiEvent(final MidiEvent event) {
-        AbstractInstrumentScreen.getCurrentScreen(Minecraft.getInstance())
-            .filter(AbstractInstrumentScreen::isMidiInstrument)
+        InstrumentScreen.getCurrentScreen(Minecraft.getInstance())
+            .filter(InstrumentScreen::isMidiInstrument)
             .ifPresent((instrument) -> instrument.midiReceiver.onMidi(event));
     }
 

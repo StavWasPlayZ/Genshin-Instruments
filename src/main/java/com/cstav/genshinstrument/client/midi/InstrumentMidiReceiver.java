@@ -1,7 +1,7 @@
 package com.cstav.genshinstrument.client.midi;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.event.MidiEvent;
 import com.cstav.genshinstrument.sound.NoteSound;
@@ -10,8 +10,8 @@ import com.mojang.logging.LogUtils;
 public abstract class InstrumentMidiReceiver {
     public static final int MIN_MIDI_VELOCITY = 6;
 
-    public final AbstractInstrumentScreen instrument;
-    public InstrumentMidiReceiver(AbstractInstrumentScreen instrument) {
+    public final InstrumentScreen instrument;
+    public InstrumentMidiReceiver(InstrumentScreen instrument) {
         this.instrument = instrument;
         loadMidiDevices();
     }
@@ -39,8 +39,8 @@ public abstract class InstrumentMidiReceiver {
     private NoteButton pressedMidiNote = null;
 
     /**
-     * Fires when a MIDI note is being pressed sucessfully, only if this is {@link AbstractInstrumentScreen#isMidiInstrument a midi instrument}.
-     * @param note The raw note being pressed by the MIDI device, {@link AbstractInstrumentScreen#getLowC relative to low C} {@code note % 12}
+     * Fires when a MIDI note is being pressed sucessfully, only if this is {@link InstrumentScreen#isMidiInstrument a midi instrument}.
+     * @param note The raw note being pressed by the MIDI device, {@link InstrumentScreen#getLowC relative to low C} {@code note % 12}
      * @param key The scale played by the MIDI device; the absolute value of current pitch saved in the client configs (Always set to 0 here)
      * @return The pressed note button. Null if none.
      */

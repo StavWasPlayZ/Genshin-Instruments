@@ -36,7 +36,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 @OnlyIn(Dist.CLIENT)
-public abstract class AbstractInstrumentScreen extends Screen {
+public abstract class InstrumentScreen extends Screen {
     @SuppressWarnings("resource")
     public int getNoteSize() {
         return switch (Minecraft.getInstance().options.guiScale().get()) {
@@ -76,14 +76,14 @@ public abstract class AbstractInstrumentScreen extends Screen {
      */
     public int volume = (int)(ModClientConfigs.VOLUME.get() * 100);
     /**
-     * Convenience method to get the {@link AbstractInstrumentScreen#volume volume}
+     * Convenience method to get the {@link InstrumentScreen#volume volume}
      * of this instrument as a {@code float} percentage
      */
     public float volume() {
         return volume / 100f;
     }
     /**
-     * Convenience method to set the {@link AbstractInstrumentScreen#volume volume}
+     * Convenience method to set the {@link InstrumentScreen#volume volume}
      * of this instrument via a float percentage
      */
     public void setVolume(float volume) {
@@ -195,13 +195,13 @@ public abstract class AbstractInstrumentScreen extends Screen {
     }
 
     public static ResourceLocation getInstrumentRootPath(final ResourceLocation instrumentId) {
-        return instrumentId.withPath(AbstractInstrumentScreen.getGlobalRootPath() + "instrument/" + instrumentId.getPath());
+        return instrumentId.withPath(InstrumentScreen.getGlobalRootPath() + "instrument/" + instrumentId.getPath());
     }
 
     /**
      * Gets the resource path under this instrument.
      * It will usually be {@code textures/gui/genshinstrument/instrument/<instrument>/}.
-     * {@code instrument} is as specified by {@link AbstractInstrumentScreen#getSourcePath getSourcePath}.
+     * {@code instrument} is as specified by {@link InstrumentScreen#getSourcePath getSourcePath}.
      */
     protected String getPath() {
         return getGlobalRootPath() + "instrument/" + getSourcePath().getPath() + "/";
@@ -242,7 +242,7 @@ public abstract class AbstractInstrumentScreen extends Screen {
     public final BaseInstrumentOptionsScreen optionsScreen = initInstrumentOptionsScreen();
     
     public final Optional<InteractionHand> interactionHand;
-    public AbstractInstrumentScreen(final InteractionHand hand) {
+    public InstrumentScreen(final InteractionHand hand) {
         super(CommonComponents.EMPTY);
 
         interactionHand = Optional.ofNullable(hand);
@@ -438,9 +438,9 @@ public abstract class AbstractInstrumentScreen extends Screen {
     /**
      * @return The current instrument screen, if present
      */
-    public static Optional<AbstractInstrumentScreen> getCurrentScreen(final Minecraft minecraft) {
-        if (minecraft.screen instanceof AbstractInstrumentScreen)
-            return Optional.of((AbstractInstrumentScreen)minecraft.screen);
+    public static Optional<InstrumentScreen> getCurrentScreen(final Minecraft minecraft) {
+        if (minecraft.screen instanceof InstrumentScreen)
+            return Optional.of((InstrumentScreen)minecraft.screen);
 
         if (minecraft.screen instanceof AbstractInstrumentOptionsScreen instrumentOptionsScreen) {
             if (instrumentOptionsScreen.isOverlay)

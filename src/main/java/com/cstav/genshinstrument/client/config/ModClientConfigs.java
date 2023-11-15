@@ -5,7 +5,7 @@ import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.client.config.enumType.ZitherSoundType;
 import com.cstav.genshinstrument.client.config.enumType.label.DrumNoteLabel;
 import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
-import com.cstav.genshinstrument.client.gui.screen.instrument.drum.DominentDrumType;
+import com.cstav.genshinstrument.client.gui.screen.instrument.drum.DominantDrumType;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.midi.MidiOptionsScreen;
 import com.cstav.genshinstrument.sound.NoteSound;
 
@@ -41,7 +41,7 @@ public class ModClientConfigs {
 
     public static final EnumValue<ZitherSoundType> ZITHER_SOUND_TYPE;
     public static final EnumValue<DrumNoteLabel> DRUM_LABEL_TYPE;
-    public static final EnumValue<DominentDrumType> DOMINENT_DRUM_TYPE;
+    public static final EnumValue<DominantDrumType> DOMINANT_DRUM_TYPE;
 
 
     static {
@@ -95,9 +95,9 @@ public class ModClientConfigs {
         );
 
 
-        DOMINENT_DRUM_TYPE = configBuilder.comment(
+        DOMINANT_DRUM_TYPE = configBuilder.comment(
             "Defines the MIDI split behaviour of the Arataki's Great and Glorious Drum"
-        ).defineEnum("dominent_drum_type", DominentDrumType.BOTH);
+        ).defineEnum("dominant_drum_type", DominantDrumType.BOTH);
 
 
         CONFIGS = configBuilder.build();

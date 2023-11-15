@@ -3,8 +3,8 @@ package com.cstav.genshinstrument.client.gui.screen.options.instrument;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.ZitherSoundType;
 import com.cstav.genshinstrument.client.gui.screen.instrument.floralzither.FloralZitherScreen;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.AbstractGridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.SoundTypeOptionsScreen;
 import com.cstav.genshinstrument.client.util.TogglablePedalSound;
 
@@ -16,7 +16,7 @@ public class FloralZitherOptionsScreen extends SoundTypeOptionsScreen<ZitherSoun
     private static final String SOUND_TYPE_KEY = "button.genshinstrument.zither.soundType",
         OPTIONS_LABEL_KEY = "label.genshinstrument.zither_options";
     
-    public FloralZitherOptionsScreen(final AbstractGridInstrumentScreen screen) {
+    public FloralZitherOptionsScreen(final GridInstrumentScreen screen) {
         super(screen);
     }
     
@@ -54,7 +54,7 @@ public class FloralZitherOptionsScreen extends SoundTypeOptionsScreen<ZitherSoun
     }
 
     @Override
-    protected boolean isValidForSet(AbstractInstrumentScreen screen) {
+    protected boolean isValidForSet(InstrumentScreen screen) {
         return screen instanceof FloralZitherScreen;
     }
 }
