@@ -6,6 +6,11 @@ import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
+import com.cstav.genshinstrument.client.gui.widget.copied.AbstractContainerWidget;
+import net.minecraft.client.gui.components.AbstractButton;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.TooltipAccessor;
+import net.minecraft.client.gui.components.Widget;
 import org.slf4j.Logger;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
@@ -60,8 +65,21 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         renderBackground(stack);
         
         drawCenteredString(stack, font, title, width/2, 15, Color.WHITE.getRGB());
-
         super.render(stack, pMouseX, pMouseY, pPartialTick);
+
+        renderables.forEach((renderable) -> renderTooltips(renderable, stack, pMouseX, pMouseY));
+    }
+    private void renderTooltips(Widget widget, PoseStack stack, int pMouseX, int pMouseY) {
+        if (widget instanceof AbstractContainerWidget container) {
+            container.getContainedChildren().forEach((child) -> renderTooltips(child, stack, pMouseX, pMouseY));
+            return;
+        }
+
+        if (!(widget instanceof AbstractWidget aWidget) || !(aWidget instanceof TooltipAccessor))
+            return;
+
+        if (aWidget.isHoveredOrFocused())
+            renderTooltip(stack, ((TooltipAccessor)aWidget).getTooltip(), pMouseX, pMouseY);
     }
 
 

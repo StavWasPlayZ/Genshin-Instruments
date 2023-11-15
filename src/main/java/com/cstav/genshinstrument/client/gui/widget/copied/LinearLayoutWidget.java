@@ -66,7 +66,7 @@ public class LinearLayoutWidget extends AbstractContainerWidget {
       }
    }
 
-   protected List<? extends AbstractWidget> getContainedChildren() {
+   public List<? extends AbstractWidget> getContainedChildren() {
       return this.containedChildrenView;
    }
 

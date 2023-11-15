@@ -55,7 +55,7 @@ public abstract class AbstractContainerWidget extends AbstractWidget implements 
       return this.getContainedChildren();
    }
 
-   protected abstract List<? extends AbstractWidget> getContainedChildren();
+   public abstract List<? extends AbstractWidget> getContainedChildren();
 
    public boolean isDragging() {
       return this.dragging;
