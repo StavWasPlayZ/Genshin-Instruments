@@ -2,7 +2,7 @@ package com.cstav.genshinstrument.client.gui.screen.instrument.windsonglyre;
 
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.AbstractGridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
 import com.cstav.genshinstrument.sound.ModSounds;
 import com.cstav.genshinstrument.sound.NoteSound;
 
@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 @OnlyIn(Dist.CLIENT)
 //NOTE: There just to make it load on mod setup
 @EventBusSubscriber(Dist.CLIENT)
-public class WindsongLyreScreen extends AbstractGridInstrumentScreen {
+public class WindsongLyreScreen extends GridInstrumentScreen {
     public static final ResourceLocation INSTRUMENT_ID = new ResourceLocation(GInstrumentMod.MODID, "windsong_lyre");
 
     public WindsongLyreScreen(InteractionHand hand) {

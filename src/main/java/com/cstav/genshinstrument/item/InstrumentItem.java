@@ -2,7 +2,7 @@ package com.cstav.genshinstrument.item;
 
 import java.util.function.Consumer;
 
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.item.clientExtensions.ClientInstrumentItem;
 import com.cstav.genshinstrument.networking.OpenInstrumentPacketSender;
 import com.cstav.genshinstrument.util.ServerUtil;
@@ -18,7 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 /**
- * An item responsible for opening an {@link AbstractInstrumentScreen}.
+ * An item responsible for opening an {@link InstrumentScreen}.
  */
 public class InstrumentItem extends Item {
 

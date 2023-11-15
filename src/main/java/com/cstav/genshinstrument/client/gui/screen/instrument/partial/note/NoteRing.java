@@ -6,9 +6,8 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractIn
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.animation.RingAnimationController;
 import com.cstav.genshinstrument.client.util.ClientUtil;
-import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -44,7 +43,7 @@ public class NoteRing {
 
 
         ClientUtil.setShaderColor(themeLoader.noteRing(), alpha);
-        ClientUtil.displaySprite(AbstractInstrumentScreen.getInternalResourceFromGlob(RING_GLOB_FILENAME));
+        ClientUtil.displaySprite(InstrumentScreen.getInternalResourceFromGlob(RING_GLOB_FILENAME));
 
         GuiComponent.blit(stack,
             ringCenter.x, ringCenter.y,

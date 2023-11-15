@@ -1,6 +1,6 @@
 package com.cstav.genshinstrument.client.gui.screen.options.instrument.partial;
 
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.AbstractGridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.GridInstrumentOptionsScreen;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.AbstractButton;
@@ -15,7 +15,7 @@ public abstract class SingleButtonOptionsScreen extends GridInstrumentOptionsScr
     private final static int SPACE_BEFORE = 20, SPACER_HEIGHT = 13;
     private int heightBefore;
 
-    public SingleButtonOptionsScreen(final AbstractGridInstrumentScreen screen) {
+    public SingleButtonOptionsScreen(final GridInstrumentScreen screen) {
         super(screen);
     }
     public SingleButtonOptionsScreen(final Screen lastScreen) {

@@ -1,6 +1,6 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note;
 
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.animation.NoteAnimationController;
 import com.cstav.genshinstrument.client.util.ClientUtil;
@@ -20,7 +20,7 @@ public class NoteButtonRenderer {
     private static final double SHARP_MULTIPLIER = .9;
     
     public final NoteButton noteButton;
-    protected final AbstractInstrumentScreen instrumentScreen;
+    protected final InstrumentScreen instrumentScreen;
 
     // Resources
     protected final ResourceLocation rootLocation, accidentalsLocation;
