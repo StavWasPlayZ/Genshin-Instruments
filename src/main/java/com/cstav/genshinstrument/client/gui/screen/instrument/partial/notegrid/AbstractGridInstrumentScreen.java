@@ -61,7 +61,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
     /**
      * <p>
      * An SSTI instrument is a Singular Sound-Type Instrument, such that
-     * only the <b>first</b> note in {@link AbstractGridInstrumentScreen#getSounds} will get used.
+     * only the <b>first</b> note in {@link AbstractGridInstrumentScreen#getInitSounds()} will get used.
      * </p><p>
      * Notes will start with the {@link NoteSound#MIN_PITCH set minimum pitch},
      * and increment their pitch up by 1 for every new instance.
@@ -123,7 +123,7 @@ public abstract class AbstractGridInstrumentScreen extends AbstractInstrumentScr
     }
 
     /**
-     * @return The perferred label supplier specified in this mod's configs
+     * @return The preferred label supplier specified in this mod's configs
      */
     protected NoteLabelSupplier getInitLabelSupplier() {
         return ModClientConfigs.GRID_LABEL_TYPE.get().getLabelSupplier();
