@@ -15,10 +15,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory;
+import net.minecraftforge.client.ConfigGuiHandler.ConfigGuiFactory;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -66,7 +66,7 @@ public class GridInstrumentOptionsScreen extends BaseInstrumentOptionsScreen {
             .withInitialValue(ModClientConfigs.RENDER_BACKGROUND.get())
             .create(0, 0,
                 getSmallButtonWidth(), getButtonHeight(),
-                Component.translatable("button.genshinstrument.render_background"), this::onRenderBackgroundChanged
+                new TranslatableComponent("button.genshinstrument.render_background"), this::onRenderBackgroundChanged
             );
         rowHelper.addChild(renderBackground);
 
@@ -81,14 +81,14 @@ public class GridInstrumentOptionsScreen extends BaseInstrumentOptionsScreen {
     // Register this options type as the main configs
     @SubscribeEvent
     public static void onClientSetup(final FMLClientSetupEvent event) {
-        ModLoadingContext.get().registerExtensionPoint(ConfigScreenFactory.class,
-            () -> new ConfigScreenFactory(new BiFunction<Minecraft, Screen, Screen>() {
+        ModLoadingContext.get().registerExtensionPoint(ConfigGuiFactory.class,
+            () -> new ConfigGuiFactory(new BiFunction<Minecraft, Screen, Screen>() {
 
                 @Override
                 public Screen apply(Minecraft minecraft, Screen screen) {
                     return new GridInstrumentOptionsScreen(screen);
                 }
-                
+
             })
         );
     }

@@ -9,7 +9,7 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -27,7 +27,7 @@ public class LinearLayoutWidget extends AbstractContainerWidget {
    }
 
    public LinearLayoutWidget(int pX, int pY, int pWidth, int pHeight, LinearLayoutWidget.Orientation pOrientation) {
-      super(pX, pY, pWidth, pHeight, Component.empty());
+      super(pX, pY, pWidth, pHeight, TextComponent.EMPTY);
       this.orientation = pOrientation;
    }
 

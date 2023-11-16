@@ -2,7 +2,7 @@ package com.cstav.genshinstrument.client.gui.widget.copied;
 
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -13,7 +13,7 @@ public class SpacerWidget extends AbstractWidget {
    }
 
    public SpacerWidget(int pX, int pY, int pWidth, int pHeight) {
-      super(pX, pY, pWidth, pHeight, Component.empty());
+      super(pX, pY, pWidth, pHeight, TextComponent.EMPTY);
    }
 
    public void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {

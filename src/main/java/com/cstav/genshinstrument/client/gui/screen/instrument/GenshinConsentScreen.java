@@ -1,18 +1,21 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.List;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
-import com.mojang.blaze3d.vertex.PoseStack;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.MultiLineLabel;
+import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.multiplayer.WarningScreen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 /**
  * @implNote
@@ -21,38 +24,31 @@ import net.minecraft.network.chat.MutableComponent;
  */
 public class GenshinConsentScreen extends WarningScreen {
 
-    private static final Component TITLE = Component.translatable(
+    private static final Component TITLE = new TranslatableComponent(
         "genshinstrument.genshin_disclaimer.title"
     ).withStyle(ChatFormatting.BOLD);
     // Can't create object field because of constructor
-    private static final MutableComponent CONTENT = Component.translatable(
+    private static final MutableComponent CONTENT = new TranslatableComponent(
         "genshinstrument.genshin_disclaimer.content", boldenAll(2)
     );
     private static final Component NARRATION = TITLE.copy().append("\n").append(CONTENT);
 
-    private final Screen previousScreen;
-
     public GenshinConsentScreen(final Screen previousScreen) {
-        super(TITLE, CONTENT, null, NARRATION);
-        this.previousScreen = previousScreen;
+        super(TITLE, CONTENT, null, NARRATION, previousScreen);
     }
 
-
-    @Override
-    protected int getLineHeight() {
-        return 10;
-    }
 
     private static boolean hasGreeting = false;
+    private MultiLineLabel message = MultiLineLabel.EMPTY;
 
     @Override
     protected void init() {
         final Button acknowledgeButton = new Button(
             0, 0,
-            160, 20, CommonComponents.GUI_ACKNOWLEDGE,
+            160, 20, CommonComponents.GUI_PROCEED,
             (button) -> {
                 ModClientConfigs.ACCEPTED_GENSHIN_CONSENT.set(true);
-                minecraft.setScreen(previousScreen);
+                minecraft.setScreen(previous);
             }
         );
 
@@ -77,7 +73,7 @@ public class GenshinConsentScreen extends WarningScreen {
 
             if (!hasGreeting) {
                 CONTENT.append("\n\n\n\n")
-                    .append(Component.translatable("genshinstrument.genshin_disclaimer.content.no_legal"));
+                    .append(new TranslatableComponent("genshinstrument.genshin_disclaimer.content.no_legal"));
 
                 hasGreeting = true;
             }
@@ -86,17 +82,31 @@ public class GenshinConsentScreen extends WarningScreen {
         this.addRenderableWidget(acknowledgeButton);
 
         super.init();
+        //1.18- being annoying
+        removeWidget(stopShowing);
+        this.message = MultiLineLabel.create(this.font, CONTENT, this.width - 50);
     }
+
+//    @Override
+//    protected void renderTitle(PoseStack stack) {
+//        drawCenteredString(stack, font, title, width/2, 30, Color.WHITE.getRGB());
+//    }
+
 
     @Override
-    protected void renderTitle(PoseStack stack) {
-        drawCenteredString(stack, font, title, width/2, 30, Color.WHITE.getRGB());
+    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+        renderBackground(pPoseStack);
+        drawCenteredString(pPoseStack, font, TITLE, width/2, 20, Color.WHITE.getRGB());
+        this.message.renderLeftAligned(pPoseStack, 25, 45, 9 * 2, 16777215);
+
+        //superduper.render
+        for(Widget widget : this.renderables) {
+            widget.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+        }
     }
-    
-    
 
     private static Component bolden(final int index) {
-        return Component.translatable("genshinstrument.genshin_disclaimer.bolden"+index).withStyle(ChatFormatting.BOLD);
+        return new TranslatableComponent("genshinstrument.genshin_disclaimer.bolden"+index).withStyle(ChatFormatting.BOLD);
     }
     private static Object[] boldenAll(final int amount) {
         final Object[] result = new Object[amount];
@@ -111,7 +121,7 @@ public class GenshinConsentScreen extends WarningScreen {
     @Override
     public void onClose() {
         super.onClose();
-        previousScreen.onClose();
+        previous.onClose();
     }
 
 

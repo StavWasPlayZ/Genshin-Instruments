@@ -9,7 +9,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class ModBlockEntities {
     
-    public static final DeferredRegister<BlockEntityType<?>> BETS = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, GInstrumentMod.MODID);
+    public static final DeferredRegister<BlockEntityType<?>> BETS = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, GInstrumentMod.MODID);
     public static void register(final IEventBus bus) {
         BETS.register(bus);
     }

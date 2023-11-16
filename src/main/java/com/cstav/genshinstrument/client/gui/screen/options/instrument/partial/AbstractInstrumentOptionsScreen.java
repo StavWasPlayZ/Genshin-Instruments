@@ -7,8 +7,8 @@ import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import com.cstav.genshinstrument.client.gui.widget.copied.AbstractContainerWidget;
-import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.CycleButton.TooltipSupplier;
 import net.minecraft.client.gui.components.TooltipAccessor;
 import net.minecraft.client.gui.components.Widget;
 import org.slf4j.Logger;
@@ -19,7 +19,6 @@ import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
 
-import net.minecraft.client.OptionInstance.TooltipSupplier;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;

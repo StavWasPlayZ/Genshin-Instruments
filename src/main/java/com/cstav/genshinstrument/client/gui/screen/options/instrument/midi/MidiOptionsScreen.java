@@ -16,10 +16,9 @@ import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.awt.*;
 
 @OnlyIn(Dist.CLIENT)
 public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
@@ -62,16 +61,16 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
             .withInitialValue(ModClientConfigs.MIDI_ENABLED.get())
             .create(0, 0,
                 getSmallButtonWidth(), getButtonHeight(),
-                Component.translatable("button.genshinstrument.midiEnabled"), this::onMidiEnabledChanged
+                new TranslatableComponent("button.genshinstrument.midiEnabled"), this::onMidiEnabledChanged
             );
         rowHelper.addChild(midiEnabled);
 
         final CycleButton<Boolean> fixedTouch = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(ModClientConfigs.FIXED_TOUCH.get())
-            .withTooltip(tooltip((value) -> Component.translatable("button.genshinstrument.fixedTouch.tooltip")))
+            .withTooltip(tooltip((value) -> new TranslatableComponent("button.genshinstrument.fixedTouch.tooltip")))
             .create(0, 0,
                 getSmallButtonWidth(), getButtonHeight(),
-                Component.translatable("button.genshinstrument.fixedTouch"), this::onFixedTouchChanged
+                new TranslatableComponent("button.genshinstrument.fixedTouch"), this::onFixedTouchChanged
             );
         rowHelper.addChild(fixedTouch);
 
@@ -80,9 +79,9 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
 
         final CycleButton<Integer> midiDevice = CycleButton.<Integer>builder((value) -> {
                 if (value == -1)
-                    return Component.translatable("button.none");
+                    return new TranslatableComponent("button.none");
 
-                return Component.literal(
+                return new TranslatableComponent(
                     MidiController.infoAsString(MidiController.getInfoFromIndex(value))
                 );
             })
@@ -90,7 +89,7 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
                 .withInitialValue(ModClientConfigs.MIDI_DEVICE_INDEX.get())
                 .create(0, 0,
                     getBigButtonWidth(), getButtonHeight(),
-                    Component.translatable("button.genshinstrument.midiDevice"), this::onMidiDeviceChanged
+                    new TranslatableComponent("button.genshinstrument.midiDevice"), this::onMidiDeviceChanged
                 );
         rowHelper.addChild(midiDevice, 2);
     }
@@ -101,10 +100,10 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
         if (canInstrumentOverflow) {
             final CycleButton<Boolean> extendOctaves = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
                 .withInitialValue(ModClientConfigs.EXTEND_OCTAVES.get())
-                .withTooltip(tooltip((value) -> Component.translatable("button.genshinstrument.extendOctaves.tooltip")))
+                .withTooltip(tooltip((value) -> new TranslatableComponent("button.genshinstrument.extendOctaves.tooltip")))
                 .create(0, 0,
                     getSmallButtonWidth(), getButtonHeight(),
-                    Component.translatable("button.genshinstrument.extendOctaves"), this::onExtendOctavesChanged
+                    new TranslatableComponent("button.genshinstrument.extendOctaves"), this::onExtendOctavesChanged
                 );
             rowHelper.addChild(extendOctaves);
         }
@@ -115,7 +114,7 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
 
                 @Override
                 public Component getMessage() {
-                    return Component.translatable("button.genshinstrument.midiOctaveShift").append(": "
+                    return new TranslatableComponent("button.genshinstrument.midiOctaveShift").append(": "
                         + ModClientConfigs.OCTAVE_SHIFT.get()
                     );
                 }
@@ -133,7 +132,7 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
 
                 @Override
                 public Component getMessage() {
-                    return Component.translatable("button.genshinstrument.midiChannel").append(": "
+                    return new TranslatableComponent("button.genshinstrument.midiChannel").append(": "
                         + ModClientConfigs.MIDI_CHANNEL.get()
                     );
                 }
@@ -148,7 +147,7 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
             .withInitialValue(ModClientConfigs.ACCEPT_ALL_CHANNELS.get())
             .create(0, 0,
                 getSmallButtonWidth(), getButtonHeight(),
-                Component.translatable("button.genshinstrument.acceptAllChannels"), (btn, val) -> {
+                new TranslatableComponent("button.genshinstrument.acceptAllChannels"), (btn, val) -> {
                     onAcceptAllChannelsChanged(btn, val);
                     midiChannel.active = !val;
                 }

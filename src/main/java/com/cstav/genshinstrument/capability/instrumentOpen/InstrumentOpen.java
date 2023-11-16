@@ -4,10 +4,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.common.capabilities.AutoRegisterCapability;
 import net.minecraftforge.common.util.LazyOptional;
 
-@AutoRegisterCapability
 public class InstrumentOpen {
     public static final String OPEN_TAG = "instrumentOpen";
     public static final String IS_ITEM_TAG = "isItem";

@@ -6,6 +6,7 @@ import com.mojang.blaze3d.platform.InputConstants.Key;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 /**
  * An interface holding {@link NoteLabelSupplier}s for note buttons to cycle thorugh.
@@ -16,13 +17,13 @@ public interface INoteLabel {
     public static final String BUTTON_TRANS_PATH = "button.genshinstrument.label.";
 
     public static MutableComponent upperComponent(final Component component) {
-        return Component.literal(component.getString().toUpperCase());
+        return new TranslatableComponent(component.getString().toUpperCase());
     }
 
 
     public static MutableComponent getQwerty(final Key key) {
         final String keyName = key.getName();
-        return Component.literal(
+        return new TranslatableComponent(
             // The QWERTY key is the last letter of the key name
             String.valueOf(keyName.charAt(keyName.length() - 1)).toUpperCase()
         );

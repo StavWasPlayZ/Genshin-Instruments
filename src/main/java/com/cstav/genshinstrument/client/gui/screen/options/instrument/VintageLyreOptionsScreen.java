@@ -6,7 +6,7 @@ import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.Si
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class VintageLyreOptionsScreen extends SingleButtonOptionsScreen {
 
@@ -24,10 +24,10 @@ public class VintageLyreOptionsScreen extends SingleButtonOptionsScreen {
     protected AbstractButton constructButton() {
         return CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(ModClientConfigs.NORMALIZE_VINTAGE_LYRE.get())
-            .withTooltip(tooltip((value) -> Component.translatable("button.genshinstrument.normalize_vintage_lyre.tooltip")))
+            .withTooltip(tooltip((value) -> new TranslatableComponent("button.genshinstrument.normalize_vintage_lyre.tooltip")))
             .create(0, 0,
                 getBigButtonWidth(), getButtonHeight(),
-                Component.translatable("button.genshinstrument.normalize_vintage_lyre"), this::onNormalizeLyreChanged
+                new TranslatableComponent("button.genshinstrument.normalize_vintage_lyre"), this::onNormalizeLyreChanged
             );
     }
 

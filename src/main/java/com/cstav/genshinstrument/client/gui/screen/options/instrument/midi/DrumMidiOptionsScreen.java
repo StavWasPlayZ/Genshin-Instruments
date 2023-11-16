@@ -9,6 +9,7 @@ import com.cstav.genshinstrument.client.gui.widget.copied.SpacerWidget;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -26,13 +27,13 @@ public class DrumMidiOptionsScreen extends MidiOptionsScreen {
 
         rowHelper.addChild(SpacerWidget.height(15), 2);
 
-        final CycleButton<DominantDrumType> dominentDrumType = CycleButton.<DominantDrumType>builder((type) -> Component.translatable(type.getKey()))
+        final CycleButton<DominantDrumType> dominentDrumType = CycleButton.<DominantDrumType>builder((type) -> new TranslatableComponent(type.getKey()))
             .withValues(DominantDrumType.values())
-            .withTooltip(tooltip((type) -> Component.translatable(DDT_KEY+"."+type.name().toLowerCase()+".tooltip")))
+            .withTooltip(tooltip((type) -> new TranslatableComponent(DDT_KEY+"."+type.name().toLowerCase()+".tooltip")))
             .withInitialValue(ModClientConfigs.DOMINANT_DRUM_TYPE.get())
             .create(0, 0,
                 getSmallButtonWidth(), getButtonHeight(),
-                Component.translatable(DDT_KEY), this::onDominentDrumTypeChanged
+                new TranslatableComponent(DDT_KEY), this::onDominentDrumTypeChanged
             );
         rowHelper.addChild(dominentDrumType);
     }

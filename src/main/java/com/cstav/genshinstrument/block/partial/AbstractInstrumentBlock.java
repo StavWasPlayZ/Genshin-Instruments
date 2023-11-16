@@ -1,16 +1,13 @@
 package com.cstav.genshinstrument.block.partial;
 
-import java.util.function.Consumer;
-
-import com.cstav.genshinstrument.block.partial.client.IClientArmPoseProvider;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.ModArmPose;
+import com.cstav.genshinstrument.event.PosePlayerArmEvent;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.OpenInstrumentPacketSender;
 import com.cstav.genshinstrument.networking.packet.instrument.NotifyInstrumentOpenPacket;
 import com.cstav.genshinstrument.util.ServerUtil;
 
-import net.minecraft.client.model.HumanoidModel.ArmPose;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -23,15 +20,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.loading.FMLEnvironment;
 
 public abstract class AbstractInstrumentBlock extends BaseEntityBlock {
 
     public AbstractInstrumentBlock(Properties pProperties) {
         super(pProperties);
-
-        if (!FMLEnvironment.dist.isDedicatedServer())
-            initClientBlockUseAnim((pose) -> clientBlockArmPose = pose);
     }
 
     
@@ -39,19 +32,6 @@ public abstract class AbstractInstrumentBlock extends BaseEntityBlock {
     protected abstract OpenInstrumentPacketSender instrumentPacketSender();
     @Override
     public abstract InstrumentBlockEntity newBlockEntity(BlockPos pPos, BlockState pState);
-    
-    /**
-     * An instance of {@link IClientArmPoseProvider} as defined in {@link AbstractInstrumentBlock#initClientBlockUseAnim}
-     */
-    private Object clientBlockArmPose;
-    protected void initClientBlockUseAnim(final Consumer<ArmPose> consumer) {
-        consumer.accept(ModArmPose.PLAYING_BLOCK_INSTRUMENT);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public ArmPose getClientBlockArmPose() {
-        return (ArmPose)clientBlockArmPose;
-    }
 
 
     @Override
@@ -89,6 +69,12 @@ public abstract class AbstractInstrumentBlock extends BaseEntityBlock {
                 ModPacketHandler.sendToClient(new NotifyInstrumentOpenPacket(user, false), (ServerPlayer)player);
             });
         }
+    }
+
+
+    @OnlyIn(Dist.CLIENT)
+    public void onPosePlayerArm(PosePlayerArmEvent args) {
+        ModArmPose.poseForBlockInstrument(args);
     }
 
 }

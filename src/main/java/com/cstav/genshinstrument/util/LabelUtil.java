@@ -5,6 +5,8 @@ import static java.util.Map.entry;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import org.slf4j.Logger;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
@@ -103,10 +105,10 @@ public abstract class LabelUtil {
     public static Component toDoReMi(final String noteName) {
         if (noteName.isEmpty()) {
             LOGGER.warn("Cannot convert empty note to Do Re Mi!");
-            return Component.empty();
+            return TextComponent.EMPTY;
         }
 
-        return Component.translatable(INoteLabel.TRANSLATABLE_PATH + ABC_TO_DO_RE_MI.get(noteName.charAt(0)))
+        return new TranslatableComponent(INoteLabel.TRANSLATABLE_PATH + ABC_TO_DO_RE_MI.get(noteName.charAt(0)))
             .append(noteName.substring(1));
     }
 

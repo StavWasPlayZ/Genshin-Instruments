@@ -5,23 +5,22 @@ import com.cstav.genshinstrument.block.partial.AbstractInstrumentBlock;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
+import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.client.midi.MidiController;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent.ByPlayer;
+import com.cstav.genshinstrument.item.ItemPoseModifier;
 import com.cstav.genshinstrument.sound.NoteSound;
-
+import com.cstav.genshinstrument.util.CommonUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.PlayerModel;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.event.GameShuttingDownEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(bus = Bus.FORGE, modid = GInstrumentMod.MODID, value = Dist.CLIENT)
@@ -36,22 +35,30 @@ public class ClientEvents {
     }
 
 
-    // Handle block instrument arm pose
+    // Behaviour copied from Fabric:
+    private static boolean poseForBlockInstrument(final PosePlayerArmEvent event) {
+        final Player player = event.player;
+
+        if (!InstrumentOpenProvider.isOpen(player) || InstrumentOpenProvider.isItem(player))
+            return false;
+
+        final Block block = player.level.getBlockState(InstrumentOpenProvider.getBlockPos(player)).getBlock();
+        if (!(block instanceof AbstractInstrumentBlock blockInstrument))
+            return false;
+
+        blockInstrument.onPosePlayerArm(event);
+        return true;
+    }
+
     @SubscribeEvent
-    public static void prePlayerRenderEvent(final RenderPlayerEvent.Pre event) {
-        final Player player = event.getEntity();
-
-        if (!(InstrumentOpenProvider.isOpen(player) && !InstrumentOpenProvider.isItem(player)))
+    public static void posePlayerArmEvent(final PosePlayerArmEvent event) {
+        if (poseForBlockInstrument(event))
             return;
 
-
-        final Block block = player.getLevel().getBlockState(InstrumentOpenProvider.getBlockPos(player)).getBlock();
-        if (!(block instanceof AbstractInstrumentBlock))
-            return;
-
-        final AbstractInstrumentBlock instrumentBlock = (AbstractInstrumentBlock) block;
-        final PlayerModel<AbstractClientPlayer> model = event.getRenderer().getModel();
-        model.leftArmPose = model.rightArmPose = instrumentBlock.getClientBlockArmPose();
+        // For items
+        CommonUtil.getItemInHands(ItemPoseModifier.class, event.player).ifPresent((item) ->
+            item.onPosePlayerArm(event)
+        );
     }
 
     
@@ -98,6 +105,14 @@ public class ClientEvents {
     @SubscribeEvent
     public static void onGameShutdown(final GameShuttingDownEvent event) {
         MidiController.unloadDevice();
+    }
+
+
+    // To accommodate for my laziness to move the client initiator from the main class
+    // on dev branch
+    @SubscribeEvent
+    public static void onClientSetup(FMLClientSetupEvent event) {
+        InstrumentKeyMappings.registerKeybinds();
     }
 
 }

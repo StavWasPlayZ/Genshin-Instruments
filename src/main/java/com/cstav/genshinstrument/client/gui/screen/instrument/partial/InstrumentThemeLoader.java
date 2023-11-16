@@ -1,20 +1,11 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.function.Consumer;
-import java.util.function.Function;
-
-import org.slf4j.Logger;
-
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.util.CommonUtil;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.logging.LogUtils;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
@@ -24,6 +15,15 @@ import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import org.slf4j.Logger;
+
+import java.awt.*;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -206,8 +206,7 @@ public class InstrumentThemeLoader {
         isGlobalThemed = false;
 
         try {
-            isGlobalThemed = JsonParser.parseReader(resourceManager.getResource(INSTRUMENTS_META_LOC).get().openAsReader())
-                .getAsJsonObject().get("is_global_pack").getAsBoolean();
+            final boolean isGlobalThemed = getJsonFromResource(resourceManager, INSTRUMENTS_META_LOC).get("is_global_pack").getAsBoolean();
 
             if (isGlobalThemed)
                 LOGGER.info("Instrument global themes enabled; loading all instrument resources from "+GLOBAL_LOC);
@@ -240,9 +239,7 @@ public class InstrumentThemeLoader {
             }
     
     
-            styleInfo = JsonParser.parseReader(
-                resourceManager.getResource(styleLocation).get().openAsReader()
-            ).getAsJsonObject();
+            styleInfo = getJsonFromResource(resourceManager, styleLocation);
     
             // Call all load listeners on the current loader
             for (final Consumer<JsonObject> listener : listeners)
@@ -256,6 +253,12 @@ public class InstrumentThemeLoader {
             LOGGER.error("Met an exception upon loading the instrument styler from "+styleLocation + logSuffix, e);
         }
 
+    }
+
+    private static JsonObject getJsonFromResource(ResourceManager resourceManager, ResourceLocation location) throws IOException {
+        return JsonParser.parseReader(
+            new InputStreamReader(resourceManager.getResource(location).getInputStream())
+        ).getAsJsonObject();
     }
 
 

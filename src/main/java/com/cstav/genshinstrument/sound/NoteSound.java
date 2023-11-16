@@ -1,20 +1,15 @@
 package com.cstav.genshinstrument.sound;
 
-import java.util.Optional;
-import java.util.UUID;
-
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.util.CommonUtil;
 import com.cstav.genshinstrument.util.LabelUtil;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Position;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -27,6 +22,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * A class holding sound information for an instrument's note
@@ -208,7 +206,7 @@ public class NoteSound {
     public void playLocally(final float pitch, final float volume) {
         Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(
             getByPreference().getLocation(), SoundSource.RECORDS,
-            volume, pitch, SoundInstance.createUnseededRandom(),
+            volume, pitch,
             false, 0, SoundInstance.Attenuation.NONE,
             0, 0, 0, true
         ));

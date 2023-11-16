@@ -1,41 +1,36 @@
 package com.cstav.genshinstrument.client;
 
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.HumanoidModel.ArmPose;
-import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.LivingEntity;
+import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
+import com.cstav.genshinstrument.event.PosePlayerArmEvent;
+import com.cstav.genshinstrument.event.PosePlayerArmEvent.HandType;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.IArmPoseTransformer;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class ModArmPose {
     public static final float HAND_HEIGHT_ROT = .9f;
 
-    public static void register() {}
+    public static void poseForItemInstrument(final PosePlayerArmEvent event) {
+        if (!InstrumentOpenProvider.isOpen(event.player) || !InstrumentOpenProvider.isItem(event.player))
+            return;
 
-
-    public static final ArmPose PLAYING_ITEM_INSTRUMENT = ArmPose.create("playing_item_instrument", true, new IArmPoseTransformer() {
-
-        @Override
-        public void applyTransform(HumanoidModel<?> model, LivingEntity entity, HumanoidArm arm) {
-            model.rightArm.xRot = -HAND_HEIGHT_ROT;
-            model.rightArm.zRot = -0.35f;
-
-            model.leftArm.xRot = -HAND_HEIGHT_ROT;
-            model.leftArm.zRot = 0.85f;
+        final ModelPart arm = event.arm;
+        if (event.hand == HandType.LEFT) {
+            arm.xRot = -HAND_HEIGHT_ROT;
+            arm.zRot = 0.85f;
+        } else {
+            arm.xRot = -HAND_HEIGHT_ROT;
+            arm.zRot = -0.35f;
         }
-        
-    });
-    public static final ArmPose PLAYING_BLOCK_INSTRUMENT = ArmPose.create("playing_block_instrument", true, new IArmPoseTransformer() {
 
-        @Override
-        public void applyTransform(HumanoidModel<?> model, LivingEntity entity, HumanoidArm arm) {
-            model.rightArm.xRot = -HAND_HEIGHT_ROT;
+        event.setCanceled(true);
+    }
 
-            model.leftArm.xRot = -HAND_HEIGHT_ROT;
-        }
-        
-    });
+    public static void poseForBlockInstrument(final PosePlayerArmEvent args) {
+        args.arm.xRot = -HAND_HEIGHT_ROT;
+
+        args.setCanceled(true);
+    }
 
 }

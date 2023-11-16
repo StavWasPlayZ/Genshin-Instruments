@@ -1,5 +1,6 @@
 package com.cstav.genshinstrument.client.keyMaps;
 
+import net.minecraftforge.client.ClientRegistry;
 import org.lwjgl.glfw.GLFW;
 
 import com.cstav.genshinstrument.GInstrumentMod;
@@ -13,7 +14,6 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.settings.IKeyConflictContext;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -57,10 +57,9 @@ public class InstrumentKeyMappings {
     );
 
 
-    @SubscribeEvent
-    public static void registerKeybinds(final RegisterKeyMappingsEvent event) {
-        event.register(TRANSPOSE_UP_MODIFIER.get());
-        event.register(TRANSPOSE_DOWN_MODIFIER.get());
+    public static void registerKeybinds() {
+        ClientRegistry.registerKeyBinding(TRANSPOSE_UP_MODIFIER.get());
+        ClientRegistry.registerKeyBinding(TRANSPOSE_DOWN_MODIFIER.get());
     }
     
 

@@ -8,7 +8,7 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.G
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.NoteGridButton;
 import com.cstav.genshinstrument.util.LabelUtil;
 
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 /**
  * An enum holding all labels for {@code NoteGridButton}.
@@ -23,14 +23,14 @@ public enum NoteGridLabel implements INoteLabel {
         INoteLabel.getQwerty(ng(note).getKey())
     ),
     
-    NOTE_NAME((note) -> Component.literal(
+    NOTE_NAME((note) -> new TranslatableComponent(
         note.getFormattedNoteName()
     )),
     DO_RE_MI((note) ->
         LabelUtil.toDoReMi(note.getFormattedNoteName())
     ),
 
-    ABC((note) -> Component.literal(
+    ABC((note) -> new TranslatableComponent(
         String.valueOf(LabelUtil.ABC[(ng(note).row + ng(note).column * gs(note).rows()) % 7])
     )),
 

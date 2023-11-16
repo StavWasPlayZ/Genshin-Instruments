@@ -5,10 +5,12 @@ import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvide
 import com.cstav.genshinstrument.item.InstrumentItem;
 import com.cstav.genshinstrument.util.CommonUtil;
 import com.cstav.genshinstrument.util.ServerUtil;
-
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.event.TickEvent.LevelTickEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
+import net.minecraftforge.event.TickEvent.Type;
+import net.minecraftforge.event.TickEvent.WorldTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -18,9 +20,9 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public abstract class ServerEvents {
     
     @SubscribeEvent
-    public static void onServerTick(final LevelTickEvent event) {
+    public static void onServerTick(final WorldTickEvent event) {
         if ((event.phase != Phase.END) && (event.side == LogicalSide.SERVER))
-            event.level.players().forEach(ServerEvents::handleAbruptInstrumentClose);
+            event.world.players().forEach(ServerEvents::handleAbruptInstrumentClose);
     }
 
     private static void handleAbruptInstrumentClose(final Player player) {
