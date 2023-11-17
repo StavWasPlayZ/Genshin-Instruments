@@ -67,7 +67,7 @@ public class GenshinConsentScreen extends WarningScreen {
     public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
         renderBackground(pPoseStack);
         drawCenteredString(pPoseStack, font, TITLE, width/2, 20, Color.WHITE.getRGB());
-        this.message.renderLeftAligned(pPoseStack, 25, 45, 9 * 2, 16777215);
+        this.message.renderLeftAligned(pPoseStack, 25, 45, 15, 16777215);
 
         //superduper.render
         for(Widget widget : this.renderables) {
