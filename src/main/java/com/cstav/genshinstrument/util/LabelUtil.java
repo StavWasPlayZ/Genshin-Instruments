@@ -82,7 +82,7 @@ public abstract class LabelUtil {
     }
 
     /**
-     * @param omitIfAcuurate If the {@link ModClientConfigs#ACCURATE_NOTES} setting is enabled,
+     * @param omitIfAccurate If the {@link ModClientConfigs#ACCURATE_NOTES} setting is enabled,
      * get the natural version of the note only
      * @return The given note, replaced with accurate accidentals unicodes
      */

@@ -29,7 +29,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * The abstract implementation of an instrument's note button.
- * @param <T> The type of this button's identifier
  */
 @OnlyIn(Dist.CLIENT)
 public abstract class NoteButton extends AbstractButton {

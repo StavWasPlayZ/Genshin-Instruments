@@ -153,12 +153,12 @@ public class InstrumentThemeLoader {
 
 
     /**
-     * @param rgbArray The array represenation of an RGB value
+     * @param propertyName The name of the RGB array representation within {@code theme}
      * @param def The default value of the theme
      * @return The theme as specified in the RGB array, or the default if 
-     * any exception occured.
+     * any exception occurred.
      * 
-     * @see tryGetProperty
+     * @see InstrumentThemeLoader#tryGetProperty
      */
     public Color getTheme(JsonObject theme, String propertyName, Color def) {
         final JsonElement rgbArray = theme.get(propertyName);
@@ -166,20 +166,19 @@ public class InstrumentThemeLoader {
         if (rgbArray == null || !rgbArray.isJsonArray())
             return def;
 
-        return tryGetProperty(propertyName, rgbArray.getAsJsonArray(), (rgb) -> new Color(
+        return tryGetProperty(rgbArray.getAsJsonArray(), (rgb) -> new Color(
             rgb.get(0).getAsInt(), rgb.get(1).getAsInt(), rgb.get(2).getAsInt()
         ), def);
     }
     /**
      * @param <T> The type of property to return
      * @param <J> The type of the json element
-     * @param element The element to try and take the value from
      * @param getter The method for getting the desired element
      * @param def The default value of the theme
-     * @return Either the value of the getter, or the default if 
-     * any exception occured.
+     * @return Either the value of the getter, or the given default if
+     * any exception occurred.
      */
-    public <T, J extends JsonElement> T tryGetProperty(String property, J element, Function<J, T> getter, T def) {
+    protected <T, J extends JsonElement> T tryGetProperty(J element, Function<J, T> getter, T def) {
         try {
             return getter.apply(element);
         } catch (Exception e) {
@@ -191,14 +190,7 @@ public class InstrumentThemeLoader {
 
     @SubscribeEvent
     public static void registerReloadEvent(final RegisterClientReloadListenersEvent event) {
-        event.registerReloadListener(new ResourceManagerReloadListener() {
-
-            @Override
-            public void onResourceManagerReload(ResourceManager resourceManager) {
-                InstrumentThemeLoader.reload(resourceManager);
-            }
-            
-        });
+        event.registerReloadListener((ResourceManagerReloadListener) InstrumentThemeLoader::reload);
     }
 
     private static void reload(final ResourceManager resourceManager) {
@@ -304,7 +296,7 @@ public class InstrumentThemeLoader {
 
     
     public Color noteRing() {
-        return getColorTheme(noteRing);
+        return noteRing;
     }
     public void setNoteRing(Color noteRingTheme) {
         this.noteRing = noteRingTheme;
@@ -313,7 +305,7 @@ public class InstrumentThemeLoader {
 
     
     /* --------- Legacy Styler Properties --------- */
-    //TODO remove in v6.0
+    //#region TODO remove in v6.0
 
     @Deprecated(forRemoval = true)
     public Color getNoteTheme() {
@@ -351,13 +343,16 @@ public class InstrumentThemeLoader {
         this.noteRing = noteRingTheme;
     }
 
-
+    @Deprecated(forRemoval = true)
     protected Color getColorTheme(final Color theme) {
         return getTheme(theme, Color.BLACK);
     }
 
+    @Deprecated(forRemoval = true)
     protected <T> T getTheme(final T theme, final T def) {
         return (theme == null) ? def : theme;
     }
+
+    //#endregion
 
 }
