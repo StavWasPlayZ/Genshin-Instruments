@@ -1,7 +1,5 @@
 package com.cstav.genshinstrument.client.gui.screen.options.instrument;
 
-import java.util.function.BiFunction;
-
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
@@ -11,7 +9,6 @@ import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.Ba
 import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget;
 import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget.RowHelper;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
@@ -82,14 +79,7 @@ public class GridInstrumentOptionsScreen extends BaseInstrumentOptionsScreen {
     @SubscribeEvent
     public static void onClientSetup(final FMLClientSetupEvent event) {
         ModLoadingContext.get().registerExtensionPoint(ConfigScreenFactory.class,
-            () -> new ConfigScreenFactory(new BiFunction<Minecraft, Screen, Screen>() {
-
-                @Override
-                public Screen apply(Minecraft minecraft, Screen screen) {
-                    return new GridInstrumentOptionsScreen(screen);
-                }
-                
-            })
+            () -> new ConfigScreenFactory((minecraft, screen) -> new GridInstrumentOptionsScreen(screen))
         );
     }
     

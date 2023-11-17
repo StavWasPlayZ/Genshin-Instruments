@@ -34,6 +34,9 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+/**
+ * The abstract implementation of a Genshin Instrument screen.
+ */
 @OnlyIn(Dist.CLIENT)
 public abstract class InstrumentScreen extends Screen {
     @SuppressWarnings("resource")

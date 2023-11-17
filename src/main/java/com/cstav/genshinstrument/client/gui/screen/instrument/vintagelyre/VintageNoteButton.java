@@ -3,7 +3,6 @@ package com.cstav.genshinstrument.client.gui.screen.instrument.vintagelyre;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteNotation;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.NoteGridButton;
-import com.cstav.genshinstrument.sound.NoteSound;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
