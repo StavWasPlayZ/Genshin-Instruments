@@ -1,7 +1,6 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument;
 
 import java.awt.Color;
-import java.util.List;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 
@@ -43,8 +42,6 @@ public class GenshinConsentScreen extends WarningScreen {
         return 10;
     }
 
-    private static boolean hasGreeting = false;
-
     @Override
     protected void init() {
         final Button acknowledgeButton = Button.builder(CommonComponents.GUI_ACKNOWLEDGE, (button) -> {
@@ -54,35 +51,12 @@ public class GenshinConsentScreen extends WarningScreen {
 
 
         // Make space for if the button is overlayed atop of the greeting
-        final int perferredButtonY = 100 + 140, annoyingButtonY = height - acknowledgeButton.getHeight() - 10;
+        final int preferredButtonY = 100 + 140, annoyingButtonY = height - acknowledgeButton.getHeight() - 10;
 
-        if (annoyingButtonY <= perferredButtonY) {
-            acknowledgeButton.setPosition(
-                (width - acknowledgeButton.getWidth()) / 2,
-                annoyingButtonY
-            );
-            
-            if (hasGreeting) {
-                // i have to eradicate brothers alike UmU
-                final List<Component> siblings = CONTENT.getSiblings();
-                for (int i = 0; i < 2; i++)
-                    siblings.remove(siblings.size() - 1);
-                    
-                hasGreeting = false;
-            }
-        } else {
-            acknowledgeButton.setPosition(
-                (width - acknowledgeButton.getWidth()) / 2,
-                perferredButtonY
-            );
-
-            if (!hasGreeting) {
-                CONTENT.append("\n\n\n\n")
-                    .append(Component.translatable("genshinstrument.genshin_disclaimer.content.no_legal"));
-
-                hasGreeting = true;
-            }
-        }
+        acknowledgeButton.setPosition(
+            (width - acknowledgeButton.getWidth()) / 2,
+            Math.min(annoyingButtonY, preferredButtonY)
+        );
 
         this.addRenderableWidget(acknowledgeButton);
 
