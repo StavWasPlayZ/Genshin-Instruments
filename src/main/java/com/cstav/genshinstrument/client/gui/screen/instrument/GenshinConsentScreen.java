@@ -1,7 +1,6 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument;
 
 import java.awt.*;
-import java.util.List;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 
@@ -37,8 +36,6 @@ public class GenshinConsentScreen extends WarningScreen {
         super(TITLE, CONTENT, null, NARRATION, previousScreen);
     }
 
-
-    private static boolean hasGreeting = false;
     private MultiLineLabel message = MultiLineLabel.EMPTY;
 
     @Override
@@ -52,32 +49,11 @@ public class GenshinConsentScreen extends WarningScreen {
             }
         );
 
-        acknowledgeButton.x = (width - acknowledgeButton.getWidth()) / 2;
-
         // Make space for if the button is overlayed atop of the greeting
-        final int perferredButtonY = 100 + 140, annoyingButtonY = height - acknowledgeButton.getHeight() - 10;
+        final int preferredButtonY = 100 + 140, annoyingButtonY = height - acknowledgeButton.getHeight() - 10;
 
-        if (annoyingButtonY <= perferredButtonY) {
-            acknowledgeButton.y = annoyingButtonY;
-            
-            if (hasGreeting) {
-                // i have to eradicate brothers alike UmU
-                final List<Component> siblings = CONTENT.getSiblings();
-                for (int i = 0; i < 2; i++)
-                    siblings.remove(siblings.size() - 1);
-                    
-                hasGreeting = false;
-            }
-        } else {
-            acknowledgeButton.y = perferredButtonY;
-
-            if (!hasGreeting) {
-                CONTENT.append("\n\n\n\n")
-                    .append(new TranslatableComponent("genshinstrument.genshin_disclaimer.content.no_legal"));
-
-                hasGreeting = true;
-            }
-        }
+        acknowledgeButton.x = (width - acknowledgeButton.getWidth()) / 2;
+        acknowledgeButton.y = Math.min(annoyingButtonY, preferredButtonY);
 
         this.addRenderableWidget(acknowledgeButton);
 
@@ -86,12 +62,6 @@ public class GenshinConsentScreen extends WarningScreen {
         removeWidget(stopShowing);
         this.message = MultiLineLabel.create(this.font, CONTENT, this.width - 50);
     }
-
-//    @Override
-//    protected void renderTitle(PoseStack stack) {
-//        drawCenteredString(stack, font, title, width/2, 30, Color.WHITE.getRGB());
-//    }
-
 
     @Override
     public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
@@ -104,6 +74,7 @@ public class GenshinConsentScreen extends WarningScreen {
             widget.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
         }
     }
+    
 
     private static Component bolden(final int index) {
         return new TranslatableComponent("genshinstrument.genshin_disclaimer.bolden"+index).withStyle(ChatFormatting.BOLD);
