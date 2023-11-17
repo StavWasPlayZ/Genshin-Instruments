@@ -26,7 +26,7 @@ public class InstrumentItem extends Item {
     /**
      * @param onOpenRequest A server-side event fired when the player has requested to interact
      * with the instrument.
-     * It should should send a packet to the given player for opening this instrument's screen.
+     * It should send a packet to the given player for opening this instrument's screen.
      */
     public InstrumentItem(final OpenInstrumentPacketSender onOpenRequest) {
         this(onOpenRequest, new Properties());
@@ -34,7 +34,7 @@ public class InstrumentItem extends Item {
     /**
      * @param onOpenRequest A server-side event fired when the player has requested to interact
      * with the instrument.
-     * It should should send a packet to the given player for opening this instrument's screen.
+     * It should send a packet to the given player for opening this instrument's screen.
      * @param properties The properties of this instrument item. {@link Properties#stacksTo stack size}
      * will always be set to 1.
      */
