@@ -7,7 +7,10 @@ import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class VintageLyreOptionsScreen extends SingleButtonOptionsScreen {
 
     public VintageLyreOptionsScreen(final VintageLyreScreen screen) {

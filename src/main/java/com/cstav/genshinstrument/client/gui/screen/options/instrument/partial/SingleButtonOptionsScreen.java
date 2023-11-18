@@ -8,9 +8,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.awt.*;
 
+@OnlyIn(Dist.CLIENT)
 public abstract class SingleButtonOptionsScreen extends GridInstrumentOptionsScreen {
     private final static int SPACE_BEFORE = 20, SPACER_HEIGHT = 13;
     private int heightBefore;

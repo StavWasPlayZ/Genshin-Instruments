@@ -14,6 +14,8 @@ import net.minecraft.client.gui.screens.multiplayer.WarningScreen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraft.network.chat.TranslatableComponent;
 
 /**
@@ -21,6 +23,7 @@ import net.minecraft.network.chat.TranslatableComponent;
  * This screen was heavily inspired by <a href=https://ko-fi.com/s/665c3cc518>Kistu-Lyre+</a>'s Disclaimer screen.
  * Please consider supporting them on Ko-fi!
  */
+@OnlyIn(Dist.CLIENT)
 public class GenshinConsentScreen extends WarningScreen {
 
     private static final Component TITLE = new TranslatableComponent(

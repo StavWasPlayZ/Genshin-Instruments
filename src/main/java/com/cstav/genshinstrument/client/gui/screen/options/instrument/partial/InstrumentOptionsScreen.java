@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 import java.text.DecimalFormat;
 
 @OnlyIn(Dist.CLIENT)
-public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOptionsScreen {
+public abstract class InstrumentOptionsScreen extends AbstractInstrumentOptionsScreen {
     public static final MutableComponent MIDI_OPTIONS = new TranslatableComponent("label.genshinstrument.midiOptions");
 
     private static final String SOUND_CHANNEL_KEY = "button.genshinstrument.audioChannels",
@@ -54,11 +54,11 @@ public abstract class BaseInstrumentOptionsScreen extends AbstractInstrumentOpti
     }
 
 
-    public BaseInstrumentOptionsScreen(@Nullable InstrumentScreen screen) {
+    public InstrumentOptionsScreen(@Nullable InstrumentScreen screen) {
         super(new TranslatableComponent("button.genshinstrument.instrumentOptions"), screen);
         labels = getLabels();
     }
-    public BaseInstrumentOptionsScreen(final Screen lastScreen) {
+    public InstrumentOptionsScreen(final Screen lastScreen) {
         super(new TranslatableComponent("button.genshinstrument.instrumentOptions"), lastScreen);
         labels = getLabels();
     }

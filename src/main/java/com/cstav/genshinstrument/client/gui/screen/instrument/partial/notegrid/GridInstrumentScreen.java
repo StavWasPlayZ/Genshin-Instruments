@@ -9,7 +9,7 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.Instrument
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.GridInstrumentOptionsScreen;
-import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.BaseInstrumentOptionsScreen;
+import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.InstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.client.midi.InstrumentMidiReceiver;
 import com.cstav.genshinstrument.client.util.ClientUtil;
@@ -152,7 +152,7 @@ public abstract class GridInstrumentScreen extends InstrumentScreen {
     }
 
     @Override
-    protected BaseInstrumentOptionsScreen initInstrumentOptionsScreen() {
+    protected InstrumentOptionsScreen initInstrumentOptionsScreen() {
         return new GridInstrumentOptionsScreen(this);
     }
 
