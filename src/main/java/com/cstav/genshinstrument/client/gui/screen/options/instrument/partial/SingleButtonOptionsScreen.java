@@ -9,9 +9,12 @@ import net.minecraft.client.gui.components.GridWidget.RowHelper;
 import net.minecraft.client.gui.components.SpacerWidget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.awt.*;
 
+@OnlyIn(Dist.CLIENT)
 public abstract class SingleButtonOptionsScreen extends GridInstrumentOptionsScreen {
     private final static int SPACE_BEFORE = 20, SPACER_HEIGHT = 13;
     private int heightBefore;
