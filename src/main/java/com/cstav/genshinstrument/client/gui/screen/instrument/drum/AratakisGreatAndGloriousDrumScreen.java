@@ -6,9 +6,9 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.Instrument
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.DrumOptionsScren;
-import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.BaseInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.widget.copied.LinearLayoutWidget;
 import com.cstav.genshinstrument.client.gui.widget.copied.LinearLayoutWidget.Orientation;
+import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.InstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.midi.InstrumentMidiReceiver;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 import net.minecraft.resources.ResourceLocation;
@@ -46,7 +46,7 @@ public class AratakisGreatAndGloriousDrumScreen extends InstrumentScreen {
     }
 
     @Override
-    protected BaseInstrumentOptionsScreen initInstrumentOptionsScreen() {
+    protected InstrumentOptionsScreen initInstrumentOptionsScreen() {
         return new DrumOptionsScren(this);
     }
 

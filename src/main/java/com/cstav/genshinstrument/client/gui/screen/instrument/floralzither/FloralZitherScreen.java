@@ -4,7 +4,7 @@ import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.FloralZitherOptionsScreen;
-import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.BaseInstrumentOptionsScreen;
+import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.InstrumentOptionsScreen;
 import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraft.resources.ResourceLocation;
@@ -34,7 +34,7 @@ public class FloralZitherScreen extends GridInstrumentScreen {
     }
 
     @Override
-    protected BaseInstrumentOptionsScreen initInstrumentOptionsScreen() {
+    protected InstrumentOptionsScreen initInstrumentOptionsScreen() {
         return new FloralZitherOptionsScreen(this);
     }
 
