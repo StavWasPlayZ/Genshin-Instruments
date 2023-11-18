@@ -6,7 +6,7 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.GenshinConsentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.AbstractInstrumentOptionsScreen;
-import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.BaseInstrumentOptionsScreen;
+import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.InstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.client.midi.InstrumentMidiReceiver;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
@@ -114,7 +114,7 @@ public abstract class InstrumentScreen extends Screen {
     public abstract InstrumentThemeLoader getThemeLoader();
     public abstract ResourceLocation getInstrumentId();
     
-    protected abstract BaseInstrumentOptionsScreen initInstrumentOptionsScreen();
+    protected abstract InstrumentOptionsScreen initInstrumentOptionsScreen();
 
 
     /**
@@ -242,7 +242,7 @@ public abstract class InstrumentScreen extends Screen {
     }
 
 
-    public final BaseInstrumentOptionsScreen optionsScreen = initInstrumentOptionsScreen();
+    public final InstrumentOptionsScreen optionsScreen = initInstrumentOptionsScreen();
     
     public final Optional<InteractionHand> interactionHand;
     public InstrumentScreen(final InteractionHand hand) {
