@@ -9,7 +9,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * The default note button identifier. Uses a button's {@link NoteSound} as an identifier.
+ * @deprecated Should pass 'null' when in desire of no identifier (/this kinda identifier)
  */
+@Deprecated
 public class DefaultNoteButtonIdentifier extends NoteButtonIdentifier {
     
     private final NoteSound sound;
@@ -54,7 +56,10 @@ public class DefaultNoteButtonIdentifier extends NoteButtonIdentifier {
     }
     private boolean matchSound(final DefaultNoteButtonIdentifier other) {
         return other.sound.equals(sound)
-            && ((identifyByPitch && other.identifyByPitch) ? (pitch == other.pitch) : true);
+            // We don't necessarily need to check against other's identifyByPitch,
+            // since both instrument screens should theoretically match anyway
+            // ...but we can so why not
+            && (!identifyByPitch || !other.identifyByPitch || (pitch == other.pitch));
     }
     
 }

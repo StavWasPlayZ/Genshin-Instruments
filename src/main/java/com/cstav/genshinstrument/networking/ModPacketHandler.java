@@ -36,7 +36,7 @@ public class ModPacketHandler {
     }
 
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "deprecation"})
     public static final List<Class<? extends NoteButtonIdentifier>> ACCEPTABLE_IDENTIFIERS = List.of(new Class[] {
         DefaultNoteButtonIdentifier.class,
         NoteButtonIdentifier.class, NoteGridButtonIdentifier.class, DrumNoteIdentifier.class
