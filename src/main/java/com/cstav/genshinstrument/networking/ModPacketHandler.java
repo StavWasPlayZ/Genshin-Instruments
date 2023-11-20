@@ -3,7 +3,6 @@ package com.cstav.genshinstrument.networking;
 import java.util.List;
 
 import com.cstav.genshinstrument.GInstrumentMod;
-import com.cstav.genshinstrument.networking.buttonidentifier.DefaultNoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.DrumNoteIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
@@ -36,9 +35,8 @@ public class ModPacketHandler {
     }
 
 
-    @SuppressWarnings({"unchecked", "deprecation"})
+    @SuppressWarnings("unchecked")
     public static final List<Class<? extends NoteButtonIdentifier>> ACCEPTABLE_IDENTIFIERS = List.of(new Class[] {
-        DefaultNoteButtonIdentifier.class,
         NoteButtonIdentifier.class, NoteGridButtonIdentifier.class, DrumNoteIdentifier.class
     });
 
