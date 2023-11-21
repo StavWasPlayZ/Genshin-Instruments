@@ -9,7 +9,6 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.Instrument
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
-import com.cstav.genshinstrument.networking.buttonidentifier.DefaultNoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.packet.instrument.InstrumentPacket;
 import com.cstav.genshinstrument.sound.NoteSound;
@@ -27,6 +26,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nullable;
+
 /**
  * The abstract implementation of an instrument's note button.
  */
@@ -39,8 +40,9 @@ public abstract class NoteButton extends AbstractButton {
     /**
      * Returns the UI identifier of this button.
      */
+    @Nullable
     public NoteButtonIdentifier getIdentifier() {
-        return new DefaultNoteButtonIdentifier(getSound(), getPitch(), false);
+        return null;
     }
 
 

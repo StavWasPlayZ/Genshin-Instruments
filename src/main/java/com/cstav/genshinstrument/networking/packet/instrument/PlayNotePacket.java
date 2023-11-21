@@ -22,13 +22,13 @@ public class PlayNotePacket implements INoteIdentifierSender {
     private final Optional<BlockPos> position;
     private final NoteSound sound;
     private final ResourceLocation instrumentId;
-    private final NoteButtonIdentifier noteIdentifier;
+    private final Optional<NoteButtonIdentifier> noteIdentifier;
     
     private final Optional<UUID> playerUUID;
     private final Optional<InteractionHand> hand;
 
     public PlayNotePacket(Optional<BlockPos> pos, NoteSound sound, int pitch, int volume, ResourceLocation instrumentId,
-        NoteButtonIdentifier noteIdentifier, Optional<UUID> playerUUID, Optional<InteractionHand> hand) {
+        Optional<NoteButtonIdentifier> noteIdentifier, Optional<UUID> playerUUID, Optional<InteractionHand> hand) {
 
         this.pitch = pitch;
         this.volume = volume;
@@ -48,7 +48,7 @@ public class PlayNotePacket implements INoteIdentifierSender {
         position = buf.readOptional(FriendlyByteBuf::readBlockPos);
         sound = NoteSound.readFromNetwork(buf);
         instrumentId = buf.readResourceLocation();
-        noteIdentifier = readNoteIdentifierFromNetwork(buf);
+        noteIdentifier = buf.readOptional(this::readNoteIdentifierFromNetwork);
 
         playerUUID = buf.readOptional(FriendlyByteBuf::readUUID);
         hand = buf.readOptional((fbb) -> fbb.readEnum(InteractionHand.class));
@@ -62,7 +62,7 @@ public class PlayNotePacket implements INoteIdentifierSender {
         buf.writeOptional(position, FriendlyByteBuf::writeBlockPos);
         sound.writeToNetwork(buf);
         buf.writeResourceLocation(instrumentId);
-        noteIdentifier.writeToNetwork(buf);
+        buf.writeOptional(noteIdentifier, (fbb, identifier) -> identifier.writeToNetwork(fbb));
 
         buf.writeOptional(playerUUID, FriendlyByteBuf::writeUUID);
         buf.writeOptional(hand, FriendlyByteBuf::writeEnum);

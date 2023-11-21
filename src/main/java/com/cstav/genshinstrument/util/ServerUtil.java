@@ -5,7 +5,6 @@ import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.networking.IModPacket;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.OpenInstrumentPacketSender;
-import com.cstav.genshinstrument.networking.buttonidentifier.DefaultNoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.packet.instrument.NotifyInstrumentOpenPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.OpenInstrumentPacket;
@@ -52,7 +51,7 @@ public class ServerUtil {
 
         sendPlayNotePackets(
             player, Optional.empty(), hand,
-            sound, instrumentId, new DefaultNoteButtonIdentifier(sound, pitch),
+            sound, instrumentId, null,
             pitch, volume,
             PlayNotePacket::new
         );
@@ -76,7 +75,7 @@ public class ServerUtil {
 
         final PlayNotePacket packet = notePacketDelegate.create(
             pos, sound, pitch, volume,
-            instrumentId, noteIdentifier,
+            instrumentId, Optional.ofNullable(noteIdentifier),
             Optional.of(player.getUUID()), hand
         );
 
@@ -111,7 +110,7 @@ public class ServerUtil {
             int pitch, int volume) {
         sendPlayNotePackets(
             level, pos, sound,
-            instrumentId, new DefaultNoteButtonIdentifier(sound, pitch), pitch, volume,
+            instrumentId, null, pitch, volume,
             PlayNotePacket::new
         );
     }
@@ -133,7 +132,7 @@ public class ServerUtil {
 
         final PlayNotePacket packet = notePacketDelegate.create(
             Optional.of(pos), sound, pitch, volume,
-            instrumentId, noteIdentifier,
+            instrumentId, Optional.ofNullable(noteIdentifier),
             Optional.empty(), Optional.empty()
         );
 
