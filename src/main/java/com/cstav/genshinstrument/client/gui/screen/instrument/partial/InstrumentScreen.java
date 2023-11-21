@@ -162,15 +162,63 @@ public abstract class InstrumentScreen extends Screen {
 
 
     /**
-     * @return The first {@link NoteButton} that matches the description of the given identifier
+     * Uses either {@link InstrumentScreen#getNoteButton(NoteButtonIdentifier)}
+     * or {@link InstrumentScreen#getNoteButton(NoteSound, int)}
+     * based on whether the provided {@code noteIdentifier} is empty
+     *
+     * @see InstrumentScreen#identifyByPitch()
      */
-    public NoteButton getNoteButton(final NoteButtonIdentifier noteIdentifier) throws NoSuchElementException {
+    public NoteButton getNoteButton(Optional<NoteButtonIdentifier> noteIdentifier,
+            NoteSound noteSound, int pitch) throws NoSuchElementException {
+
+        if (noteIdentifier.isEmpty())
+            return getNoteButton(noteSound, pitch);
+        else
+            return getNoteButton(noteIdentifier.get());
+
+    }
+
+    /**
+     * @return The first {@link NoteButton} that matches the description of the given {@code noteIdentifier}.
+     */
+    public NoteButton getNoteButton(final NoteButtonIdentifier noteIdentifier) {
         for (NoteButton note : notesIterable())
             if (noteIdentifier.matches(note))
                 return note;
 
-        throw new NoSuchElementException("Could not find a note in "+getClass().getSimpleName()+" based on the given identifier");
+        throw new NoSuchElementException("Could not find a note in "+getInstrumentId()+" based on the given identifier");
     }
+    /**
+     * @param noteSound The sound of the note button to find.
+     * @param pitch The sound of the pitch to find.
+     *
+     * @return The first note button in this instrument
+     * that matches the sound of the given {@code sound}.
+     */
+    public NoteButton getNoteButton(final NoteSound noteSound, final int pitch) {
+        for (final NoteButton note : notesIterable()) {
+            final NoteSound sound = note.getSound();
+
+            if (!noteSound.equals(sound))
+                continue;
+
+            if (!identifyByPitch() || (note.getPitch() == pitch))
+                return note;
+        }
+
+        throw new NoSuchElementException("Could not find a note in "+getInstrumentId()+" based on the given identifier");
+    }
+
+    /**
+     * Upon {@link InstrumentScreen#getNoteButton(NoteSound, int) retrieving a note button}
+     * defines whether the notes' pitch will be taken account by the comparator.
+     *
+     * @see InstrumentScreen#getNoteButton(NoteSound, int)
+     */
+    protected boolean identifyByPitch() {
+        return false;
+    }
+
 
     /**
      * @return A map holding an integer key as its keycode and a {@link NoteButton} as its value.

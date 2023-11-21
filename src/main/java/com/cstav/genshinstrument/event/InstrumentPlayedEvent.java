@@ -29,7 +29,7 @@ public class InstrumentPlayedEvent extends Event {
     public final boolean isClientSide;
     
     public final ResourceLocation instrumentId;
-    public final NoteButtonIdentifier noteIdentifier;
+    public final Optional<NoteButtonIdentifier> noteIdentifier;
     public final BlockPos playPos;
 
 
@@ -54,7 +54,7 @@ public class InstrumentPlayedEvent extends Event {
         this.isClientSide = isClientSide;
 
         this.instrumentId = instrumentId;
-        this.noteIdentifier = noteIdentifier;
+        this.noteIdentifier = Optional.ofNullable(noteIdentifier);
     }
 
     @Cancelable

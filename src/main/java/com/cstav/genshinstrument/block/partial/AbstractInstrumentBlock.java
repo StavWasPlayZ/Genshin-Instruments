@@ -36,9 +36,16 @@ public abstract class AbstractInstrumentBlock extends BaseEntityBlock {
 
     
     // Abstract implementations
+
+    /**
+     * A server-side event fired when the player has requested to interact
+     * with the instrument.
+     * It should send a packet to the given player for opening this instrument's screen.
+     */
     protected abstract OpenInstrumentPacketSender instrumentPacketSender();
     @Override
     public abstract InstrumentBlockEntity newBlockEntity(BlockPos pPos, BlockState pState);
+
     
     /**
      * An instance of {@link IClientArmPoseProvider} as defined in {@link AbstractInstrumentBlock#initClientBlockUseAnim}
