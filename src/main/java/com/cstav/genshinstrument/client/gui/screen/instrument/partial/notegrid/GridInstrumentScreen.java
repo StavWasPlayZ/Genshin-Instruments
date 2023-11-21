@@ -85,6 +85,11 @@ public abstract class GridInstrumentScreen extends InstrumentScreen {
     }
 
 
+    @Override
+    protected boolean identifyByPitch() {
+        return isSSTI();
+    }
+
     /**
      * <p>
      * If the given identifier is of type {@link NoteGridButtonIdentifier},

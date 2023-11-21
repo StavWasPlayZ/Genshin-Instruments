@@ -77,7 +77,8 @@ public class ClientEvents {
             .filter((screen) -> screen.getInstrumentId().equals(event.instrumentId))
             .ifPresent((screen) -> {
                 try {
-                    screen.getNoteButton(event.noteIdentifier).playNoteAnimation(true);
+                    screen.getNoteButton(event.noteIdentifier, event.sound, event.pitch)
+                        .playNoteAnimation(true);
                 } catch (Exception e) {
                     // Button was prolly just not found
                 }

@@ -7,20 +7,18 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class DrumNoteIdentifier extends DefaultNoteButtonIdentifier {
+public class DrumNoteIdentifier extends NoteButtonIdentifier {
 
     public final DrumButtonType noteType;
     public final boolean isRight;
 
     @OnlyIn(Dist.CLIENT)
     public DrumNoteIdentifier(final DrumNoteButton note) {
-        super(note, false);
         noteType = note.btnType;
         isRight = note.isRight;
     }
 
     public DrumNoteIdentifier(FriendlyByteBuf buf) {
-        super(buf);
         noteType = buf.readEnum(DrumButtonType.class);
         isRight = buf.readBoolean();
     }
@@ -33,7 +31,7 @@ public class DrumNoteIdentifier extends DefaultNoteButtonIdentifier {
 
     @Override
     public boolean matches(NoteButtonIdentifier other) {
-        return MatchType.perferMatch(other, this::drumMatch, super::matches);
+        return MatchType.forceMatch(other, this::drumMatch);
     }
     private boolean drumMatch(final DrumNoteIdentifier other) {
         return (noteType == other.noteType) && (isRight == other.isRight);

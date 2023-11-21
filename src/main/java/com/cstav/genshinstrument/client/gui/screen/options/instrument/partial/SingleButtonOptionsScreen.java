@@ -14,6 +14,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.awt.*;
 
+/**
+ * A subclass of {@link GridInstrumentOptionsScreen} that implements a simple, singular button.
+ */
 @OnlyIn(Dist.CLIENT)
 public abstract class SingleButtonOptionsScreen extends GridInstrumentOptionsScreen {
     private final static int SPACE_BEFORE = 20, SPACER_HEIGHT = 13;
