@@ -97,8 +97,7 @@ public abstract class InstrumentMidiReceiver {
             return false;
 
         if (!ModClientConfigs.ACCEPT_ALL_CHANNELS.get())
-            if ((message[0] - eventType) != ModClientConfigs.MIDI_CHANNEL.get())
-                return false;
+            return (message[0] - eventType) == ModClientConfigs.MIDI_CHANNEL.get();
 
 
         return true;
