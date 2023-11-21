@@ -157,7 +157,7 @@ public class NoteSound {
      */
     @OnlyIn(Dist.CLIENT)
     public void play(int pitch, int volume, Optional<UUID> playerUUID, Optional<InteractionHand> hand,
-            ResourceLocation instrumentId, NoteButtonIdentifier buttonIdentifier, Optional<BlockPos> playPos) {
+            ResourceLocation instrumentId, Optional<NoteButtonIdentifier> buttonIdentifier, Optional<BlockPos> playPos) {
         final Minecraft minecraft = Minecraft.getInstance();
         final Player player = minecraft.player;
 
@@ -176,11 +176,11 @@ public class NoteSound {
         
         MinecraftForge.EVENT_BUS.post(initiator == null
             ? new InstrumentPlayedEvent(
-                this, pitch, volume, level, pos, instrumentId, buttonIdentifier, true
+                this, pitch, volume, level, pos, instrumentId, buttonIdentifier.orElse(null), true
             )
             : new InstrumentPlayedEvent.ByPlayer(
                 this, pitch, volume, initiator, pos, hand,
-                instrumentId, buttonIdentifier, true
+                instrumentId, buttonIdentifier.orElse(null), true
             )
         );
         

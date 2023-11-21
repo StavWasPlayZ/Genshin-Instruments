@@ -23,7 +23,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import java.awt.*;
 
 /**
- * A subclass of {@link GridInstrumentOptionsScreen} that implements a button to cycle through an instrument's sounds
+ * An options screen that implements a button to cycle through the instrument's sounds.
  */
 @OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(bus = Bus.FORGE, modid = GInstrumentMod.MODID, value = Dist.CLIENT)
