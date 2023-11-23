@@ -40,7 +40,7 @@ public abstract class InstrumentMidiReceiver {
 
     /**
      * Fires when a MIDI note is being pressed successfully, only if this is {@link InstrumentScreen#isMidiInstrument a midi instrument}.
-     * @param note The raw note being pressed by the MIDI device, {@link InstrumentScreen#getLowC relative to low C} {@code note % 12}
+     * @param note The raw note being pressed by the MIDI device, {@link InstrumentMidiReceiver#getLowC relative to low C} {@code note % 12}
      * @param key The scale played by the MIDI device; the absolute value of current pitch saved in the client configs (Always set to 0 here)
      * @return The pressed note button. Null if none.
      */
