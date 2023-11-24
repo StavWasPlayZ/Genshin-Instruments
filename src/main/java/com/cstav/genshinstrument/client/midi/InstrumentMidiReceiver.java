@@ -39,8 +39,8 @@ public abstract class InstrumentMidiReceiver {
     private NoteButton pressedMidiNote = null;
 
     /**
-     * Fires when a MIDI note is being pressed sucessfully, only if this is {@link InstrumentScreen#isMidiInstrument a midi instrument}.
-     * @param note The raw note being pressed by the MIDI device, {@link InstrumentScreen#getLowC relative to low C} {@code note % 12}
+     * Fires when a MIDI note is being pressed successfully, only if this is {@link InstrumentScreen#isMidiInstrument a midi instrument}.
+     * @param note The raw note being pressed by the MIDI device, {@link InstrumentMidiReceiver#getLowC relative to low C} {@code note % 12}
      * @param key The scale played by the MIDI device; the absolute value of current pitch saved in the client configs (Always set to 0 here)
      * @return The pressed note button. Null if none.
      */
@@ -54,7 +54,7 @@ public abstract class InstrumentMidiReceiver {
         final byte[] message = event.message.getMessage();
 
 
-        // So we don't do tranpositions on a sharpened scale
+        // So we don't do transpositions on a sharpened scale
         instrument.resetTransposition();
 
         final int note;
@@ -71,7 +71,7 @@ public abstract class InstrumentMidiReceiver {
         // Handle dynamic touch
         final float prevVolume = instrument.volume();
         if (!ModClientConfigs.FIXED_TOUCH.get())
-            instrument.volume *= Math.max(MIN_MIDI_VELOCITY, message[2]) / 127D;
+            instrument.volume *= (int) (Math.max(MIN_MIDI_VELOCITY, message[2]) / 127D);
 
 
         pressedMidiNote = handleMidiPress(note, pitch);
@@ -97,8 +97,7 @@ public abstract class InstrumentMidiReceiver {
             return false;
 
         if (!ModClientConfigs.ACCEPT_ALL_CHANNELS.get())
-            if ((message[0] - eventType) != ModClientConfigs.MIDI_CHANNEL.get())
-                return false;
+            return (message[0] - eventType) == ModClientConfigs.MIDI_CHANNEL.get();
 
 
         return true;
@@ -110,7 +109,7 @@ public abstract class InstrumentMidiReceiver {
 
         // Much testing and maths later
         // The logic here is that accidentals only occur when the note number is
-        // the same divisable as the pitch itself
+        // the same divisible as the pitch itself
         boolean shouldSharpen = (layoutNote % 2) != (key % 2);
         
         // Negate logic for notes higher than 3 on the scale
@@ -227,7 +226,7 @@ public abstract class InstrumentMidiReceiver {
 
 
     /**
-     * @return The MIDI note adjusted by -48, as well as the perferred shift accounted.
+     * @return The MIDI note adjusted by -48, as well as the preferred shift accounted.
      * Assumes middle C is 60 as per MIDI specifications.
      */
     protected int getLowC(final int note) {
