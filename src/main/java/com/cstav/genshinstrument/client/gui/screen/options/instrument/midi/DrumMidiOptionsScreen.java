@@ -15,7 +15,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class DrumMidiOptionsScreen extends MidiOptionsScreen {
-    public static final String DDT_KEY = "button.genshinstrument.dominentDrumType";
+    public static final String DDT_KEY = "button.genshinstrument.dominantDrumType";
 
     public DrumMidiOptionsScreen(Component pTitle, Screen prevScreen, InstrumentScreen instrumentScreen) {
         super(pTitle, prevScreen, instrumentScreen);
@@ -33,12 +33,12 @@ public class DrumMidiOptionsScreen extends MidiOptionsScreen {
             .withInitialValue(ModClientConfigs.DOMINANT_DRUM_TYPE.get())
             .create(0, 0,
                 getSmallButtonWidth(), getButtonHeight(),
-                new TranslatableComponent(DDT_KEY), this::onDominentDrumTypeChanged
+                new TranslatableComponent(DDT_KEY), this::onDominantDrumTypeChanged
             );
         rowHelper.addChild(dominentDrumType);
     }
 
-    protected void onDominentDrumTypeChanged(final CycleButton<DominantDrumType> button, final DominantDrumType value) {
+    protected void onDominantDrumTypeChanged(final CycleButton<DominantDrumType> button, final DominantDrumType value) {
         ModClientConfigs.DOMINANT_DRUM_TYPE.set(value);
     }
 

@@ -58,12 +58,12 @@
     "button.genshinstrument.acceptAllChannels": "Listen to All Channels",
 
 
-    "button.genshinstrument.dominentDrumType": "Dominant Drum Type",
-    "button.genshinstrument.dominentDrumType.both": "Both",
+    "button.genshinstrument.dominantDrumType": "Dominant Drum Type",
+    "button.genshinstrument.dominantDrumType.both": "Both",
 
-    "button.genshinstrument.dominentDrumType.both.tooltip": "The MIDI keyboard will be split in middle C, such that low C plays Don and high plays Ka",
-    "button.genshinstrument.dominentDrumType.don.tooltip": "The whole keyboard plays Don",
-    "button.genshinstrument.dominentDrumType.ka.tooltip": "The whole keyboard plays Ka",
+    "button.genshinstrument.dominantDrumType.both.tooltip": "The MIDI keyboard will be split in middle C, such that low C plays Don and high plays Ka",
+    "button.genshinstrument.dominantDrumType.don.tooltip": "The whole keyboard plays Don",
+    "button.genshinstrument.dominantDrumType.ka.tooltip": "The whole keyboard plays Ka",
 
 
     "button.genshinstrument.normalize_vintage_lyre": "Normalize Vintage Lyre",
