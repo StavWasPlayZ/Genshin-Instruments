@@ -26,7 +26,7 @@ public class DrumMidiOptionsScreen extends MidiOptionsScreen {
 
         rowHelper.addChild(SpacerWidget.height(15), 2);
 
-        final CycleButton<DominantDrumType> dominentDrumType = CycleButton.<DominantDrumType>builder((type) -> Component.translatable(type.getKey()))
+        final CycleButton<DominantDrumType> dominantDrumType = CycleButton.<DominantDrumType>builder((type) -> Component.translatable(type.getKey()))
             .withValues(DominantDrumType.values())
             .withTooltip(tooltip((type) -> Component.translatable(DDT_KEY+"."+type.name().toLowerCase()+".tooltip")))
             .withInitialValue(ModClientConfigs.DOMINANT_DRUM_TYPE.get())
@@ -34,7 +34,7 @@ public class DrumMidiOptionsScreen extends MidiOptionsScreen {
                 getSmallButtonWidth(), getButtonHeight(),
                 Component.translatable(DDT_KEY), this::onDominantDrumTypeChanged
             );
-        rowHelper.addChild(dominentDrumType);
+        rowHelper.addChild(dominantDrumType);
     }
 
     protected void onDominantDrumTypeChanged(final CycleButton<DominantDrumType> button, final DominantDrumType value) {
