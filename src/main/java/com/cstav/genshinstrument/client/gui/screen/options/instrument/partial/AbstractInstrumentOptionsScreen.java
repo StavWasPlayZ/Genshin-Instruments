@@ -7,7 +7,6 @@ import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import com.cstav.genshinstrument.client.gui.widget.copied.AbstractContainerWidget;
-import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.TooltipAccessor;
 import net.minecraft.client.gui.components.Widget;
