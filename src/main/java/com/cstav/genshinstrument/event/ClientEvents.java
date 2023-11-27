@@ -108,12 +108,4 @@ public class ClientEvents {
         MidiController.unloadDevice();
     }
 
-
-    // To accommodate for my laziness to move the client initiator from the main class
-    // on dev branch
-    @SubscribeEvent
-    public static void onClientSetup(FMLClientSetupEvent event) {
-        InstrumentKeyMappings.registerKeybinds();
-    }
-
 }

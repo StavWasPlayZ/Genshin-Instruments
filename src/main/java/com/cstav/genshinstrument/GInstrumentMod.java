@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument;
 
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
+import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.item.ModItems;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
@@ -48,6 +49,8 @@ public class GInstrumentMod
     private static void clientSetup(final FMLClientSetupEvent event) {
 //        ModArmPose.register();
         registerItemProperties();
+
+        InstrumentKeyMappings.registerKeybinds();
     }
 
 
