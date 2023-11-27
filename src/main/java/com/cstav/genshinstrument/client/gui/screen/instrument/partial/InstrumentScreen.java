@@ -500,6 +500,9 @@ public abstract class InstrumentScreen extends Screen {
 
         return Optional.empty();
     }
+    public static Optional<InstrumentScreen> getCurrentScreen() {
+        return getCurrentScreen(Minecraft.getInstance());
+    }
     
 
     @Override
