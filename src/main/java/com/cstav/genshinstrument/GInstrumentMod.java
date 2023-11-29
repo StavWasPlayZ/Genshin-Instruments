@@ -1,7 +1,6 @@
 package com.cstav.genshinstrument;
 
 import com.cstav.genshinstrument.client.ModArmPose;
-import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.item.ModItems;
 import com.cstav.genshinstrument.item.clientExtensions.ModItemPredicates;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
@@ -30,14 +29,13 @@ public class GInstrumentMod
         ModPacketHandler.registerPackets();
         bus.addListener(GInstrumentMod::clientSetup);
 
+
         ModItems.register(bus);
         // ModBlocks.register(bus);
         // ModBlockEntities.register(bus);
 
         ModSounds.register(bus);
         ModCreativeModeTabs.regsiter(bus);
-
-        bus.register(InstrumentPlayedEvent.class);
 
         
         MinecraftForge.EVENT_BUS.register(this);
