@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.capability.instrumentOpen;
 
 import java.util.function.Function;
 
+import net.minecraft.world.InteractionHand;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,17 +52,14 @@ public class InstrumentOpenProvider implements ICapabilityProvider, INBTSerializ
             instrumentOpen.setOpen(pos)
         );
     }
-    public static void setOpen(Player player) {
+    public static void setOpen(Player player, InteractionHand hand) {
         player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((instrumentOpen) ->
-            instrumentOpen.setOpen()
+            instrumentOpen.setOpen(hand)
         );
     }
     public static void setClosed(Player player) {
-        player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((instrumentOpen) ->
-            instrumentOpen.setClosed()
-        );
+        player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent(InstrumentOpen::setClosed);
     }
-
 
     public static boolean isOpen(final Player player) {
         return getInstrumentOpen(player, InstrumentOpen::isOpen, false);
@@ -69,8 +67,12 @@ public class InstrumentOpenProvider implements ICapabilityProvider, INBTSerializ
     public static boolean isItem(final Player player) {
         return getInstrumentOpen(player, InstrumentOpen::isItem, false);
     }
+
     public static BlockPos getBlockPos(final Player player) {
         return getInstrumentOpen(player, InstrumentOpen::getBlockPos, null);
+    }
+    public static InteractionHand getHand(final Player player) {
+        return getInstrumentOpen(player, InstrumentOpen::getHand, null);
     }
 
     private static final <T> T getInstrumentOpen(Player player, Function<InstrumentOpen, T> ifExists, T elseVal) {

@@ -176,7 +176,7 @@ public class ServerUtil {
         // And clients
         player.level().players().forEach((nearbyPlayer) ->
             ModPacketHandler.sendToClient(
-                new NotifyInstrumentOpenPacket(player.getUUID(), false),
+                new NotifyInstrumentOpenPacket(player.getUUID()),
                 (ServerPlayer)nearbyPlayer
             )
         );
@@ -220,26 +220,26 @@ public class ServerUtil {
     private static boolean sendOpenPacket(ServerPlayer player, InteractionHand usedHand, OpenInstrumentPacketSender onOpenRequest,
             BlockPos pos) {
 
+        NotifyInstrumentOpenPacket instrumentOpenPacket;
+
         // Update the capability on the server
-        if (pos == null)
-            InstrumentOpenProvider.setOpen(player);
-        else
+        if (pos == null) {
+            InstrumentOpenProvider.setOpen(player, usedHand);
+            instrumentOpenPacket = new NotifyInstrumentOpenPacket(player.getUUID(), usedHand);
+        } else {
             InstrumentOpenProvider.setOpen(player, pos);
-        
-        // Notify the other players
-        final Optional<BlockPos> playPos = Optional.ofNullable(pos);
+            instrumentOpenPacket = new NotifyInstrumentOpenPacket(player.getUUID(), pos);
+        }
 
         player.level().players().forEach((otherPlayer) ->
             ModPacketHandler.sendToClient(
-                new NotifyInstrumentOpenPacket(player.getUUID(), playPos),
+                instrumentOpenPacket,
                 (ServerPlayer)otherPlayer
             )
         );
 
-
         // Send open packet after everyone is aware of the state
         onOpenRequest.send(player, usedHand);
-
         return true;
     }
 

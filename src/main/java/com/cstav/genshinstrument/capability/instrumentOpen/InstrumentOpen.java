@@ -3,6 +3,7 @@ package com.cstav.genshinstrument.capability.instrumentOpen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.AutoRegisterCapability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -15,6 +16,7 @@ public class InstrumentOpen {
 
     private boolean isOpen = false, isItem = false;
     private BlockPos blockPos;
+    private InteractionHand hand;
 
     public static boolean isOpen(final Player player) {
         final LazyOptional<InstrumentOpen> oIsOpen = player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN);
@@ -28,18 +30,32 @@ public class InstrumentOpen {
     public boolean isItem() {
         return isItem;
     }
+
+    /**
+     * The position of the instrument block.
+     * Present only for when {@link InstrumentOpen#isItem() not an item}.
+     */
     public BlockPos getBlockPos() {
         return blockPos;
     }
+    /**
+     * The hand holding the instrument.
+     * Present only for when {@link InstrumentOpen#isItem() not an item}.
+     */
+    public InteractionHand getHand() {
+        return hand;
+    }
     
-    public void setOpen() {
+    public void setOpen(final InteractionHand hand) {
         isOpen = true;
+
+        this.hand = hand;
         isItem = true;
     }
     public void setOpen(final BlockPos blockPos) {
         isOpen = true;
-        this.blockPos = blockPos;
 
+        this.blockPos = blockPos;
         isItem = false;
     }
 
