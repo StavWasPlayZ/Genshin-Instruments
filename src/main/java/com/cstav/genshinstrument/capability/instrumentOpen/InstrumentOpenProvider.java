@@ -61,6 +61,12 @@ public class InstrumentOpenProvider implements ICapabilityProvider, INBTSerializ
         player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent(InstrumentOpen::setClosed);
     }
 
+    public static void setBlockPos(Player player, BlockPos blockPos) {
+        player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((instrumentOpen) ->
+            instrumentOpen.setBlockPos(blockPos)
+        );
+    }
+
     public static boolean isOpen(final Player player) {
         return getInstrumentOpen(player, InstrumentOpen::isOpen, false);
     }
@@ -75,7 +81,7 @@ public class InstrumentOpenProvider implements ICapabilityProvider, INBTSerializ
         return getInstrumentOpen(player, InstrumentOpen::getHand, null);
     }
 
-    private static final <T> T getInstrumentOpen(Player player, Function<InstrumentOpen, T> ifExists, T elseVal) {
+    private static <T> T getInstrumentOpen(Player player, Function<InstrumentOpen, T> ifExists, T elseVal) {
         final LazyOptional<InstrumentOpen> lazyOpen = player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN);
 
         return lazyOpen.isPresent()

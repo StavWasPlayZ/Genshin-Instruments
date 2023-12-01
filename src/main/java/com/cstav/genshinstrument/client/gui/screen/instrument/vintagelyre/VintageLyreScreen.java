@@ -9,7 +9,6 @@ import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.In
 import com.cstav.genshinstrument.sound.ModSounds;
 import com.cstav.genshinstrument.sound.NoteSound;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -24,10 +23,7 @@ public class VintageLyreScreen extends GridInstrumentScreen {
         "C", "D", "Eb", "F", "G", "A", "Bb",
         "C", "D", "Eb", "F", "G", "A", "Bb"
     };
-    
-    public VintageLyreScreen(InteractionHand hand) {
-        super(hand);
-    }
+
     @Override
     public ResourceLocation getInstrumentId() {
         return INSTRUMENT_ID;

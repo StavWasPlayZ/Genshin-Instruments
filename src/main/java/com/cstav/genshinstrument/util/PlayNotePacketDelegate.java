@@ -9,12 +9,11 @@ import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.InteractionHand;
 
 @FunctionalInterface
 public interface PlayNotePacketDelegate {
 
     PlayNotePacket create(Optional<BlockPos> pos, NoteSound sound, int pitch, int volume, ResourceLocation instrumentId,
-        Optional<NoteButtonIdentifier> noteIdentifier, Optional<UUID> playerUUID, Optional<InteractionHand> hand);
+        Optional<NoteButtonIdentifier> noteIdentifier, Optional<UUID> playerUUID);
         
 }

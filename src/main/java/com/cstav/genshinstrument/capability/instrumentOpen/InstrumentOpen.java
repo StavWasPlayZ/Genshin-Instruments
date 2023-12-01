@@ -3,6 +3,7 @@ package com.cstav.genshinstrument.capability.instrumentOpen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.AutoRegisterCapability;
@@ -10,9 +11,12 @@ import net.minecraftforge.common.util.LazyOptional;
 
 @AutoRegisterCapability
 public class InstrumentOpen {
-    public static final String OPEN_TAG = "instrumentOpen";
-    public static final String IS_ITEM_TAG = "isItem";
-    public static final String BLOCK_POS_TAG = "blockPos";
+    public static final String
+        OPEN_TAG = "instrumentOpen",
+        IS_ITEM_TAG = "isItem",
+        BLOCK_POS_TAG = "blockPos",
+        HAND_TAG = "inOffhand"
+    ;
 
     private boolean isOpen = false, isItem = false;
     private BlockPos blockPos;
@@ -73,12 +77,16 @@ public class InstrumentOpen {
 
         if (blockPos != null)
             nbt.put(BLOCK_POS_TAG, NbtUtils.writeBlockPos(blockPos));
+        if (hand != null)
+            nbt.putBoolean(HAND_TAG, hand == InteractionHand.OFF_HAND);
     }
     public void loadNBTData(final CompoundTag nbt) {
         isOpen = nbt.getBoolean(OPEN_TAG);
         isItem = nbt.getBoolean(IS_ITEM_TAG);
 
-        if (nbt.contains(BLOCK_POS_TAG, CompoundTag.TAG_COMPOUND))
+        if (nbt.contains(BLOCK_POS_TAG, Tag.TAG_COMPOUND))
             blockPos = NbtUtils.readBlockPos(nbt.getCompound(BLOCK_POS_TAG));
+        if (nbt.contains(HAND_TAG, Tag.TAG_BYTE))
+            hand = nbt.getBoolean(HAND_TAG) ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
     }
 }
