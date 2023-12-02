@@ -17,7 +17,6 @@ import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.LabelUtil;
 
 import net.minecraft.client.gui.components.*;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.GridWidget.RowHelper;
 import net.minecraft.client.gui.components.LinearLayoutWidget.Orientation;
 import net.minecraft.client.gui.screens.Screen;
