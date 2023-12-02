@@ -9,6 +9,7 @@ import com.cstav.genshinstrument.networking.IModPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent.Context;
@@ -20,28 +21,38 @@ public class NotifyInstrumentOpenPacket implements IModPacket {
     private final UUID playerUUID;
     private final boolean isOpen;
     private final Optional<BlockPos> pos;
-    
-    public NotifyInstrumentOpenPacket(UUID playerUUID, final boolean isOpen) {
+    private final Optional<InteractionHand> hand;
+
+    /**
+     * Constructs packet notifying of a closed instrument
+     */
+    public NotifyInstrumentOpenPacket(UUID playerUUID) {
         this.playerUUID = playerUUID;
 
-        this.isOpen = isOpen;
+        this.isOpen = false;
         this.pos = Optional.empty();
+        this.hand = Optional.empty();
     }
-    /**
-     * Constructs a {@link NotifyInstrumentOpenPacket} that notifies of an open state
-     * with an optional instrument block position.
-     */
-    public NotifyInstrumentOpenPacket(UUID playerUUID, Optional<BlockPos> pos) {
+    public NotifyInstrumentOpenPacket(UUID playerUUID, BlockPos pos) {
         this.playerUUID = playerUUID;
 
         this.isOpen = true;
-        this.pos = pos;
+        this.pos = Optional.of(pos);
+        this.hand = Optional.empty();
+    }
+    public NotifyInstrumentOpenPacket(UUID playerUUID, InteractionHand hand) {
+        this.playerUUID = playerUUID;
+
+        this.isOpen = true;
+        this.pos = Optional.empty();
+        this.hand = Optional.of(hand);
     }
     
     public NotifyInstrumentOpenPacket(final FriendlyByteBuf buf) {
         playerUUID = buf.readUUID();
         isOpen = buf.readBoolean();
         pos = buf.readOptional(FriendlyByteBuf::readBlockPos);
+        hand = buf.readOptional((fbb) -> fbb.readEnum(InteractionHand.class));
     }
     
     @Override
@@ -49,6 +60,7 @@ public class NotifyInstrumentOpenPacket implements IModPacket {
         buf.writeUUID(playerUUID);
         buf.writeBoolean(isOpen);
         buf.writeOptional(pos, FriendlyByteBuf::writeBlockPos);
+        buf.writeOptional(hand, FriendlyByteBuf::writeEnum);
     }
 
 
@@ -59,10 +71,10 @@ public class NotifyInstrumentOpenPacket implements IModPacket {
 
         if (isOpen) {
 
-            if (pos.isPresent())
+            if (pos.isPresent()) // is block instrument
                 InstrumentOpenProvider.setOpen(player, pos.get());
             else
-                InstrumentOpenProvider.setOpen(player);
+                InstrumentOpenProvider.setOpen(player, hand.get());
 
         } else
             InstrumentOpenProvider.setClosed(player);

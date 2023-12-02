@@ -10,7 +10,6 @@ import com.cstav.genshinstrument.sound.NoteSound;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.InteractionHand;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent.Context;
 
@@ -25,10 +24,9 @@ public class PlayNotePacket implements INoteIdentifierSender {
     private final Optional<NoteButtonIdentifier> noteIdentifier;
     
     private final Optional<UUID> playerUUID;
-    private final Optional<InteractionHand> hand;
 
     public PlayNotePacket(Optional<BlockPos> pos, NoteSound sound, int pitch, int volume, ResourceLocation instrumentId,
-        Optional<NoteButtonIdentifier> noteIdentifier, Optional<UUID> playerUUID, Optional<InteractionHand> hand) {
+        Optional<NoteButtonIdentifier> noteIdentifier, Optional<UUID> playerUUID) {
 
         this.pitch = pitch;
         this.volume = volume;
@@ -39,7 +37,6 @@ public class PlayNotePacket implements INoteIdentifierSender {
         this.noteIdentifier = noteIdentifier;
 
         this.playerUUID = playerUUID;
-        this.hand = hand;
     }
     public PlayNotePacket(FriendlyByteBuf buf) {
         pitch = buf.readInt();
@@ -51,7 +48,6 @@ public class PlayNotePacket implements INoteIdentifierSender {
         noteIdentifier = buf.readOptional(this::readNoteIdentifierFromNetwork);
 
         playerUUID = buf.readOptional(FriendlyByteBuf::readUUID);
-        hand = buf.readOptional((fbb) -> fbb.readEnum(InteractionHand.class));
     }
 
     @Override
@@ -65,14 +61,13 @@ public class PlayNotePacket implements INoteIdentifierSender {
         buf.writeOptional(noteIdentifier, (fbb, identifier) -> identifier.writeToNetwork(fbb));
 
         buf.writeOptional(playerUUID, FriendlyByteBuf::writeUUID);
-        buf.writeOptional(hand, FriendlyByteBuf::writeEnum);
     }
 
 
     @Override
     public void handle(final Context context) {
         sound.play(
-            pitch, volume, playerUUID, hand,
+            pitch, volume, playerUUID,
             instrumentId, noteIdentifier, position
         );
     }
