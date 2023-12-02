@@ -24,7 +24,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -290,12 +289,9 @@ public abstract class InstrumentScreen extends Screen {
 
 
     public final InstrumentOptionsScreen optionsScreen = initInstrumentOptionsScreen();
-    
-    public final Optional<InteractionHand> interactionHand;
-    public InstrumentScreen(final InteractionHand hand) {
-        super(TextComponent.EMPTY);
 
-        interactionHand = Optional.ofNullable(hand);
+    public InstrumentScreen() {
+        super(TextComponent.EMPTY);
         midiReceiver = initMidiReceiver();
     }
 

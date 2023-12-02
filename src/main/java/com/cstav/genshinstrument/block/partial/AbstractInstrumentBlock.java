@@ -72,7 +72,7 @@ public abstract class AbstractInstrumentBlock extends BaseEntityBlock {
         for (final Player player : pLevel.players()) {
             ibe.users.forEach((user) -> {
                 InstrumentOpenProvider.setClosed(pLevel.getPlayerByUUID(user));
-                ModPacketHandler.sendToClient(new NotifyInstrumentOpenPacket(user, false), (ServerPlayer)player);
+                ModPacketHandler.sendToClient(new NotifyInstrumentOpenPacket(user), (ServerPlayer)player);
             });
         }
     }
