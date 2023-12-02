@@ -20,7 +20,6 @@ import com.mojang.blaze3d.platform.InputConstants.Key;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -32,11 +31,6 @@ public abstract class GridInstrumentScreen extends InstrumentScreen {
         CLEF_WIDTH = 26, CLEF_HEIGHT = 52;
 
     protected AbstractWidget grid;
-
-
-    public GridInstrumentScreen(InteractionHand hand) {
-        super(hand);
-    }
 
     public int columns() {
         return DEF_COLUMNS;

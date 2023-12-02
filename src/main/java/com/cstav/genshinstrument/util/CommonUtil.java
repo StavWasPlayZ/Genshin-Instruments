@@ -8,26 +8,11 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
 public abstract class CommonUtil {
-
-    @SuppressWarnings("unchecked")
-    public static <T> Optional<T> getItemInHands(final Class<T> item, final Player player) {
-        final Item mainItem = player.getItemInHand(InteractionHand.MAIN_HAND).getItem(),
-            offItem = player.getItemInHand(InteractionHand.OFF_HAND).getItem();
-
-        if (item.isInstance(mainItem))
-            return Optional.of((T)mainItem);
-        else if (item.isInstance(offItem))
-            return Optional.of((T)offItem);
-
-        return Optional.empty();
-    }
     
     /**
      * @return What the default level shouldve returned, but without any conditions
