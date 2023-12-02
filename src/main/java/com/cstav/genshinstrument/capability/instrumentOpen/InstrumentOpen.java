@@ -73,7 +73,7 @@ public class InstrumentOpen {
 
     public void saveNBTData(final CompoundTag nbt) {
         nbt.putBoolean(OPEN_TAG, isOpen);
-        nbt.putBoolean(IS_ITEM_TAG, isOpen);
+        nbt.putBoolean(IS_ITEM_TAG, isItem);
 
         if (blockPos != null)
             nbt.put(BLOCK_POS_TAG, NbtUtils.writeBlockPos(blockPos));
