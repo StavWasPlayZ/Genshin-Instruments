@@ -8,7 +8,6 @@ import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.In
 import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -18,10 +17,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 @EventBusSubscriber(Dist.CLIENT)
 public class FloralZitherScreen extends GridInstrumentScreen {
     public static final ResourceLocation INSTRUMENT_ID = new ResourceLocation(GInstrumentMod.MODID, "floral_zither");
-    
-    public FloralZitherScreen(InteractionHand hand) {
-        super(hand);
-    }
+
     @Override
     public ResourceLocation getInstrumentId() {
         return INSTRUMENT_ID;

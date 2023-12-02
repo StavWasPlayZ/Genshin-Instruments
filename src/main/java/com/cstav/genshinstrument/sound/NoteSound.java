@@ -1,5 +1,6 @@
 package com.cstav.genshinstrument.sound;
 
+import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
@@ -15,7 +16,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
@@ -152,11 +152,10 @@ public class NoteSound {
      * A method for packets to use for playing this note on the client's end.
      * Will also stop the client's background music per preference.
      * @param playerUUID The UUID of the player who initiated the sound. Empty for when it wasn't a player.
-     * @param hand The hand of the player who initiated the sound. Empty for when it wasn't a player.
      * @param playPos The position at which the sound was fired from. Null for the player's.
      */
     @OnlyIn(Dist.CLIENT)
-    public void play(int pitch, int volume, Optional<UUID> playerUUID, Optional<InteractionHand> hand,
+    public void play(int pitch, int volume, Optional<UUID> playerUUID,
             ResourceLocation instrumentId, Optional<NoteButtonIdentifier> buttonIdentifier, Optional<BlockPos> playPos) {
         final Minecraft minecraft = Minecraft.getInstance();
         final Player player = minecraft.player;
@@ -179,7 +178,7 @@ public class NoteSound {
                 this, pitch, volume, level, pos, instrumentId, buttonIdentifier.orElse(null), true
             )
             : new InstrumentPlayedEvent.ByPlayer(
-                this, pitch, volume, initiator, pos, hand,
+                this, pitch, volume, initiator, pos, InstrumentOpenProvider.getHand(initiator),
                 instrumentId, buttonIdentifier.orElse(null), true
             )
         );

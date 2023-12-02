@@ -13,7 +13,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.network.CustomPayloadEvent.Context;
@@ -26,18 +25,16 @@ public class InstrumentPacket implements INoteIdentifierSender {
     /** Optionally pass a position that defers from the player's */
     private final Optional<BlockPos> pos;
     private final NoteSound sound;
-    private final Optional<InteractionHand> hand;
 
     private final int pitch, volume;
 
     private final ResourceLocation instrumentId;
     private final Optional<NoteButtonIdentifier> noteIdentifier;
 
-    public InstrumentPacket(Optional<BlockPos> pos, NoteSound sound, int pitch, int volume, Optional<InteractionHand> hand,
+    public InstrumentPacket(Optional<BlockPos> pos, NoteSound sound, int pitch, int volume,
             ResourceLocation instrumentId, Optional<NoteButtonIdentifier> noteIdentifier) {
         this.pos = pos;
         this.sound = sound;
-        this.hand = hand;
 
         this.pitch = pitch;
         this.volume = volume;
@@ -49,7 +46,6 @@ public class InstrumentPacket implements INoteIdentifierSender {
     public InstrumentPacket(final NoteButton noteButton) {
         this(Optional.empty(), noteButton.getSound(),
             noteButton.getPitch(), noteButton.instrumentScreen.volume,
-            noteButton.instrumentScreen.interactionHand,
             noteButton.instrumentScreen.getInstrumentId(),
             Optional.ofNullable(noteButton.getIdentifier())
         );
@@ -58,7 +54,6 @@ public class InstrumentPacket implements INoteIdentifierSender {
     public InstrumentPacket(FriendlyByteBuf buf) {
         pos = buf.readOptional(FriendlyByteBuf::readBlockPos);
         sound = NoteSound.readFromNetwork(buf);
-        hand = buf.readOptional((fbb) -> buf.readEnum(InteractionHand.class));
 
         pitch = buf.readInt();
         volume = buf.readInt();
@@ -71,7 +66,6 @@ public class InstrumentPacket implements INoteIdentifierSender {
     public void write(final FriendlyByteBuf buf) {
         buf.writeOptional(pos, FriendlyByteBuf::writeBlockPos);
         sound.writeToNetwork(buf);
-        buf.writeOptional(hand, FriendlyByteBuf::writeEnum);
 
         buf.writeInt(pitch);
         buf.writeInt(volume);
@@ -93,7 +87,7 @@ public class InstrumentPacket implements INoteIdentifierSender {
 
     protected void sendPlayNotePackets(final ServerPlayer player) {
 
-        ServerUtil.sendPlayNotePackets(player, pos, hand,
+        ServerUtil.sendPlayNotePackets(player, pos,
             sound, instrumentId, noteIdentifier.orElse(null),
             pitch, volume,
             PlayNotePacket::new
