@@ -5,14 +5,13 @@ import com.cstav.genshinstrument.block.partial.AbstractInstrumentBlock;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
-import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.client.midi.MidiController;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent.ByPlayer;
 import com.cstav.genshinstrument.item.ItemPoseModifier;
 import com.cstav.genshinstrument.sound.NoteSound;
-import com.cstav.genshinstrument.util.CommonUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -20,7 +19,6 @@ import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(bus = Bus.FORGE, modid = GInstrumentMod.MODID, value = Dist.CLIENT)
@@ -36,29 +34,34 @@ public class ClientEvents {
 
 
     // Behaviour copied from Fabric:
-    private static boolean poseForBlockInstrument(final PosePlayerArmEvent event) {
-        final Player player = event.player;
-
-        if (!InstrumentOpenProvider.isOpen(player) || InstrumentOpenProvider.isItem(player))
-            return false;
-
+    private static void poseForBlockInstrument(PosePlayerArmEvent event, Player player) {
         final Block block = player.level.getBlockState(InstrumentOpenProvider.getBlockPos(player)).getBlock();
         if (!(block instanceof AbstractInstrumentBlock blockInstrument))
-            return false;
+            return;
 
         blockInstrument.onPosePlayerArm(event);
-        return true;
+    }
+    private static void poseForItemInstrument(PosePlayerArmEvent event, Player player) {
+        final ItemStack instrumentItem = player.getItemInHand(InstrumentOpenProvider.getHand(player));
+        if (instrumentItem == ItemStack.EMPTY)
+            return;
+
+        if (!(instrumentItem.getItem() instanceof ItemPoseModifier item))
+            return;
+
+        item.onPosePlayerArm(event);
     }
 
     @SubscribeEvent
     public static void posePlayerArmEvent(final PosePlayerArmEvent event) {
-        if (poseForBlockInstrument(event))
+        final Player player = event.player;
+        if (!InstrumentOpenProvider.isOpen(player))
             return;
 
-        // For items
-        CommonUtil.getItemInHands(ItemPoseModifier.class, event.player).ifPresent((item) ->
-            item.onPosePlayerArm(event)
-        );
+        if (InstrumentOpenProvider.isItem(player))
+            poseForItemInstrument(event, player);
+        else
+            poseForBlockInstrument(event, player);
     }
 
     
