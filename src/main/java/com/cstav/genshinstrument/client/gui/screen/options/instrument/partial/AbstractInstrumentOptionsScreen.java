@@ -1,18 +1,15 @@
 package com.cstav.genshinstrument.client.gui.screen.options.instrument.partial;
 
-import java.awt.Color;
-import java.util.HashMap;
-
-import javax.annotation.Nullable;
-
-import org.slf4j.Logger;
-
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
+import com.cstav.genshinstrument.client.gui.widget.copied.AbstractContainerWidget;
 import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
-
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.CycleButton.TooltipSupplier;
+import net.minecraft.client.gui.components.TooltipAccessor;
+import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
@@ -22,6 +19,7 @@ import org.slf4j.Logger;
 import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.HashMap;
+import java.util.function.Function;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractInstrumentOptionsScreen extends Screen {
