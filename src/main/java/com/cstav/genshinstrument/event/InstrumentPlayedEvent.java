@@ -82,7 +82,7 @@ public class InstrumentPlayedEvent extends Event {
          */
         public boolean isBlockInstrument() {
             return !isItemInstrument()
-                && player.level().getBlockEntity(playPos) instanceof InstrumentBlockEntity;
+                && player.getLevel().getBlockEntity(playPos) instanceof InstrumentBlockEntity;
         }
 
         /**
