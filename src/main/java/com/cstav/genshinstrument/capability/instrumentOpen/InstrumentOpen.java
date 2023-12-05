@@ -44,7 +44,7 @@ public class InstrumentOpen {
     }
     /**
      * The hand holding the instrument.
-     * Present only for when {@link InstrumentOpen#isItem() not an item}.
+     * Present only for when {@link InstrumentOpen#isItem() is an item}.
      */
     public InteractionHand getHand() {
         return hand;
