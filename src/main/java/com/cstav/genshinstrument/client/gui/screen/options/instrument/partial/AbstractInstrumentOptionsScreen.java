@@ -1,23 +1,21 @@
 package com.cstav.genshinstrument.client.gui.screen.options.instrument.partial;
 
-import java.awt.Color;
-import java.util.HashMap;
-
-import javax.annotation.Nullable;
-
-import org.slf4j.Logger;
-
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
 
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.slf4j.Logger;
+
+import javax.annotation.Nullable;
+import java.awt.*;
+import java.util.HashMap;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractInstrumentOptionsScreen extends Screen {
@@ -88,7 +86,7 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
 
     @Override
     public void onClose() {
-        onSave();
+        saveOptions();
 
         if (isOverlay) {
             super.onClose();
@@ -125,15 +123,14 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
             appliedOptions.put(optionKey, saveRunnable);
     }
 
-    protected void onSave() {
+    protected void saveOptions() {
         if (appliedOptions.isEmpty())
             return;
 
         appliedOptions.values().forEach(Runnable::run);
         ModClientConfigs.CONFIGS.save();
         
-        LOGGER.info("Successfully saved "+appliedOptions.size()+" option"+((appliedOptions.size() == 1) ? "" : "s")
-            + " for "+title.getString());
+        LOGGER.info("Successfully saved "+appliedOptions.size()+" option(s) for "+title.getString());
     }
 
 
