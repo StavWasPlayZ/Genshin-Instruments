@@ -1,10 +1,8 @@
 package com.cstav.genshinstrument.event;
 
-import java.util.Optional;
-
+import com.cstav.genshinstrument.block.partial.InstrumentBlockEntity;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -13,6 +11,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
+
+import java.util.Optional;
 
 /**
  * An event fired when an instrument sound has been produced.
@@ -67,8 +67,29 @@ public class InstrumentPlayedEvent extends Event {
         public final Optional<InteractionHand> hand;
 
 
+        /**
+         * <p>Returns whether this event was fired by an item instrument.</p>
+         * A {@code false} result does NOT indicate a block instrument.
+         * @see ByPlayer#isBlockInstrument
+         */
+        public boolean isItemInstrument() {
+            return hand.isPresent();
+        }
+        /**
+         * <p>Returns whether this event was fired by a block instrument.</p>
+         * A {@code false} result does NOT indicate an instrument item.
+         * @see ByPlayer#isItemInstrument()
+         */
         public boolean isBlockInstrument() {
-            return hand.isEmpty();
+            return !isItemInstrument()
+                && player.level().getBlockEntity(playPos) instanceof InstrumentBlockEntity;
+        }
+
+        /**
+         * @return Whether the played sound was not produced by an instrument
+         */
+        public boolean isNotInstrument() {
+            return !isBlockInstrument() && !isItemInstrument();
         }
 
 
@@ -78,8 +99,9 @@ public class InstrumentPlayedEvent extends Event {
             this.player = player;
             this.hand = Optional.ofNullable(hand);
 
-            itemInstrument = isBlockInstrument() ? Optional.empty()
-                : Optional.of(player.getItemInHand(hand));
+            itemInstrument = isItemInstrument()
+                ? Optional.of(player.getItemInHand(hand))
+                : Optional.empty();
         }
     }
     
