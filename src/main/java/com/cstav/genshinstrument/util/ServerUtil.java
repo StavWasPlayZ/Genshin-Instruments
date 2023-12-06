@@ -93,7 +93,7 @@ public class ServerUtil {
         MinecraftForge.EVENT_BUS.post(
             new InstrumentPlayedEvent.ByPlayer(
                 sound, pitch, volume,
-                player, playeredPos, InstrumentOpenProvider.getHand(player),
+                player, playeredPos,
                 instrumentId, noteIdentifier,
                 false
             )
