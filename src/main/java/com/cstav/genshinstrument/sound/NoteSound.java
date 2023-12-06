@@ -3,7 +3,6 @@ package com.cstav.genshinstrument.sound;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
@@ -178,7 +177,7 @@ public class NoteSound {
                 this, pitch, volume, level, pos, instrumentId, buttonIdentifier.orElse(null), true
             )
             : new InstrumentPlayedEvent.ByPlayer(
-                this, pitch, volume, initiator, pos, InstrumentOpenProvider.getHand(initiator),
+                this, pitch, volume, initiator, pos,
                 instrumentId, buttonIdentifier.orElse(null), true
             )
         );
