@@ -6,8 +6,6 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.Instrument
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
 import com.cstav.genshinstrument.client.util.TogglablePedalSound;
 import com.cstav.genshinstrument.event.MidiEvent;
-
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.CycleButton;
@@ -18,8 +16,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-
-import java.awt.*;
 
 /**
  * An options screen that implements a button to cycle through the instrument's sounds.
