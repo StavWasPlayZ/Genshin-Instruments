@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument.event;
 
 import com.cstav.genshinstrument.block.partial.InstrumentBlockEntity;
+import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
 import net.minecraft.core.BlockPos;
@@ -73,7 +74,7 @@ public class InstrumentPlayedEvent extends Event {
          * @see ByPlayer#isBlockInstrument
          */
         public boolean isItemInstrument() {
-            return hand.isPresent();
+            return itemInstrument.isPresent();
         }
         /**
          * <p>Returns whether this event was fired by a block instrument.</p>
@@ -93,15 +94,18 @@ public class InstrumentPlayedEvent extends Event {
         }
 
 
-        public ByPlayer(NoteSound sound, int pitch, int volume, Player player, BlockPos pos, InteractionHand hand,
+        public ByPlayer(NoteSound sound, int pitch, int volume, Player player, BlockPos pos,
                 ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, boolean isClientSide) {
             super(sound, pitch, volume, player.getLevel(), pos, instrumentId, noteIdentifier, isClientSide);
             this.player = player;
-            this.hand = Optional.ofNullable(hand);
 
-            itemInstrument = isItemInstrument()
-                ? Optional.of(player.getItemInHand(hand))
-                : Optional.empty();
+            if (InstrumentOpenProvider.isItem(player)) {
+                this.hand = Optional.of(InstrumentOpenProvider.getHand(player));
+                this.itemInstrument = Optional.of(player.getItemInHand(hand.get()));
+            } else {
+                this.hand = Optional.empty();
+                this.itemInstrument = Optional.empty();
+            }
         }
     }
     
