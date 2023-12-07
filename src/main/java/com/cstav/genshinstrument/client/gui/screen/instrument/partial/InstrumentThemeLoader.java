@@ -1,20 +1,11 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.function.Consumer;
-import java.util.function.Function;
-
-import org.slf4j.Logger;
-
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.util.CommonUtil;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.logging.LogUtils;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
@@ -24,6 +15,13 @@ import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import org.slf4j.Logger;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -60,9 +58,9 @@ public class InstrumentThemeLoader {
     private final boolean ignoreGlobal;
 
     private Color
-        labelPressed, labelReleased,
-        notePressed, noteReleased,
-        noteRing
+        labelPressed = Color.BLACK, labelReleased = Color.BLACK,
+        notePressed = Color.BLACK, noteReleased = Color.BLACK,
+        noteRing = Color.BLACK
     ;
 
     private final ArrayList<Consumer<JsonObject>> listeners = new ArrayList<>();
