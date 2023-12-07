@@ -60,9 +60,9 @@ public class InstrumentThemeLoader {
     private final boolean ignoreGlobal;
 
     private Color
-        labelPressed, labelReleased,
-        notePressed, noteReleased,
-        noteRing
+        labelPressed = Color.BLACK, labelReleased = Color.BLACK,
+        notePressed = Color.BLACK, noteReleased = Color.BLACK,
+        noteRing = Color.BLACK
     ;
 
     private final ArrayList<Consumer<JsonObject>> listeners = new ArrayList<>();
