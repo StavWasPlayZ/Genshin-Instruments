@@ -198,7 +198,7 @@ public class InstrumentThemeLoader {
         isGlobalThemed = false;
 
         try {
-            final boolean isGlobalThemed = getJsonFromResource(resourceManager, INSTRUMENTS_META_LOC).get("is_global_pack").getAsBoolean();
+            isGlobalThemed = getJsonFromResource(resourceManager, INSTRUMENTS_META_LOC).get("is_global_pack").getAsBoolean();
 
             if (isGlobalThemed)
                 LOGGER.info("Instrument global themes enabled; loading all instrument resources from "+GLOBAL_LOC);
