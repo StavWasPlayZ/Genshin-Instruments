@@ -4,7 +4,7 @@
 	"compatibilityLevel": "JAVA_17",
 	"refmap": "mixins.genshinstrument.refmap.json",
 	"mixins": [
-        "CriterionRegisterInvoker"
+
 	],
 	"minVersion": "0.8"
 }

@@ -1,11 +1,11 @@
 package com.cstav.genshinstrument;
 
 import com.cstav.genshinstrument.client.ModArmPose;
+import com.cstav.genshinstrument.criteria.ModCriteria;
 import com.cstav.genshinstrument.item.ModItems;
 import com.cstav.genshinstrument.item.clientExtensions.ModItemPredicates;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.sound.ModSounds;
-
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -33,6 +33,8 @@ public class GInstrumentMod
         ModItems.register(bus);
         // ModBlocks.register(bus);
         // ModBlockEntities.register(bus);
+
+        ModCriteria.register(bus);
 
         ModSounds.register(bus);
         ModCreativeModeTabs.regsiter(bus);
