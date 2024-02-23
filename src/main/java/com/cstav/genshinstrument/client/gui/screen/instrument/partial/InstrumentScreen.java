@@ -7,6 +7,7 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.GenshinConsentScre
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.AbstractInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.InstrumentOptionsScreen;
+import com.cstav.genshinstrument.client.gui.widget.IconToggleButton;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.client.midi.InstrumentMidiReceiver;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
@@ -17,7 +18,7 @@ import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.platform.InputConstants.Type;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
@@ -37,6 +38,9 @@ import java.util.function.Consumer;
  */
 @OnlyIn(Dist.CLIENT)
 public abstract class InstrumentScreen extends Screen {
+    private static final int VISIBILITY_BUTTON_MARGIN = 6;
+    private static final String VISIBILITY_SPRITE_LOC = "textures/gui/sprites/icon/visibility/";
+
     @SuppressWarnings("resource")
     public int getNoteSize() {
         return switch (Minecraft.getInstance().options.guiScale().get()) {
@@ -63,8 +67,12 @@ public abstract class InstrumentScreen extends Screen {
         notesIterable().forEach((note) -> note.setPitch(this.pitch));
     }
 
+    /**
+     * Supplies the given consumer with the configured default pitch
+     * set in {@link ModClientConfigs#PITCH}.
+     */
     protected void initPitch(final Consumer<Integer> pitchConsumer) {
-        pitchConsumer.accept(ModClientConfigs.PITCH.get().intValue());
+        pitchConsumer.accept(ModClientConfigs.PITCH.get());
     }
     public void resetPitch() {
         initPitch(this::setPitch);
@@ -208,7 +216,7 @@ public abstract class InstrumentScreen extends Screen {
     }
 
     /**
-     * Upon {@link InstrumentScreen#getNoteButton(NoteSound, int) retrieving a note button}
+     * Upon {@link InstrumentScreen#getNoteButton(NoteSound, int) retrieving a note button},
      * defines whether the notes' pitch will be taken account by the comparator.
      *
      * @see InstrumentScreen#getNoteButton(NoteSound, int)
@@ -295,21 +303,31 @@ public abstract class InstrumentScreen extends Screen {
     }
 
 
+    /**
+     * The button responsible for hiding the screen's GUI.
+     * If enabled, the screen is hidden.
+     */
+    protected IconToggleButton visibilityButton;
+
     @Override
     protected void init() {
         resetPitch();
         optionsScreen.init(minecraft, width, height);
 
+        visibilityButton = initVisibilityButton();
+        addRenderableWidget(visibilityButton);
+
         if (isGenshinInstrument() && !ModClientConfigs.ACCEPTED_GENSHIN_CONSENT.get())
             minecraft.setScreen(new GenshinConsentScreen(this));
     }
+
     /**
      * Initializes a new button responsible for popping up the options menu for this instrument.
      * Called during {@link Screen#init}.
      * @param vertOffset The vertical offset at which this button will be rendered.
      * @return A new Instrument Options button
      */
-    protected AbstractWidget initOptionsButton(final int vertOffset) {
+    protected Button initOptionsButton(final int vertOffset) {
         final Button button = Button.builder(
             Component.translatable("button.genshinstrument.instrumentOptions").append("..."), (btn) -> onOptionsOpen()
         )
@@ -321,7 +339,35 @@ public abstract class InstrumentScreen extends Screen {
         addRenderableWidget(button);
         return button;
     }
+    /**
+     * Initialized a new button responsible for hiding the screen's GUI.
+     * If enabled, the screen is hidden.
+     * @return A new visibility toggle button
+     */
+    protected IconToggleButton initVisibilityButton() {
+        return new IconToggleButton(
+            VISIBILITY_BUTTON_MARGIN, VISIBILITY_BUTTON_MARGIN,
+            new ResourceLocation(GInstrumentMod.MODID, VISIBILITY_SPRITE_LOC + "enabled.png"),
+            new ResourceLocation(GInstrumentMod.MODID, VISIBILITY_SPRITE_LOC + "disabled.png")
+        );
+    }
 
+
+    /**
+     * @apiNote Prefer overwriting {@link InstrumentScreen#renderInstrument} instead.
+     */
+    @Override
+    public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+        if (visibilityButton.enabled()) {
+            visibilityButton.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
+            return;
+        }
+
+        renderInstrument(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
+    }
+    public void renderInstrument(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+        super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
+    }
 
     @Override
     public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
@@ -462,14 +508,28 @@ public abstract class InstrumentScreen extends Screen {
         onClose(true);
     }
     public void onClose(final boolean notify) {
-        if (notify) {
-            InstrumentOpenProvider.setClosed(minecraft.player);
-            ModPacketHandler.sendToServer(new CloseInstrumentPacket());
-        }
+        if (notify)
+            notifyClosed();
 
         if (isOptionsScreenActive)
             optionsScreen.onClose();
+
         super.onClose();
+    }
+
+    @Override
+    public void removed() {
+        notifyClosed();
+
+        if (isOptionsScreenActive)
+            optionsScreen.saveOptions();
+
+        super.removed();
+    }
+
+    private void notifyClosed() {
+        InstrumentOpenProvider.setClosed(minecraft.player);
+        ModPacketHandler.sendToServer(new CloseInstrumentPacket());
     }
 
 

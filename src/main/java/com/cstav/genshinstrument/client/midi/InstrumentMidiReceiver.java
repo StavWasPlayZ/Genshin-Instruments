@@ -71,7 +71,7 @@ public abstract class InstrumentMidiReceiver {
         // Handle dynamic touch
         final float prevVolume = instrument.volume();
         if (!ModClientConfigs.FIXED_TOUCH.get())
-            instrument.volume *= Math.max(MIN_MIDI_VELOCITY, message[2]) / 127D;
+            instrument.volume *= (1.05 * Math.sqrt(127 * message[2]) + MIN_MIDI_VELOCITY) / 127;
 
 
         pressedMidiNote = handleMidiPress(note, pitch);
