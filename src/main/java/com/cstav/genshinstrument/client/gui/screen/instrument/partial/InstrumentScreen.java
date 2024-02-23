@@ -19,6 +19,7 @@ import com.mojang.blaze3d.platform.InputConstants.Type;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
@@ -356,6 +357,12 @@ public abstract class InstrumentScreen extends Screen {
         if (!isVisible) {
             notesIterable().forEach((note) -> note.getRenderer().ResetAnimations());
         }
+
+        renderables.forEach((renderable) -> {
+            if (renderable instanceof AbstractWidget widget)
+                widget.active = isVisible;
+        });
+        visibilityButton.active = true;
     }
 
     /**
@@ -473,7 +480,6 @@ public abstract class InstrumentScreen extends Screen {
     @Override
     public boolean mouseReleased(double pMouseX, double pMouseY, int pButton) {
         unlockFocused();
-
         return super.mouseReleased(pMouseX, pMouseY, pButton);
     }
 
