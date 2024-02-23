@@ -38,7 +38,7 @@ import java.util.function.Consumer;
  */
 @OnlyIn(Dist.CLIENT)
 public abstract class InstrumentScreen extends Screen {
-    private static final int VISIBILITY_BUTTON_MARGIN = 10;
+    private static final int VISIBILITY_BUTTON_MARGIN = 6;
     private static final String VISIBILITY_SPRITE_LOC = "textures/gui/sprites/icon/visibility/";
 
     @SuppressWarnings("resource")
