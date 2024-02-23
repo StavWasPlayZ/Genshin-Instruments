@@ -191,6 +191,11 @@ public class NoteButtonRenderer {
         rings.add(new NoteRing(noteButton, isForeign));
     }
 
+    public void ResetAnimations() {
+        rings.clear();
+        noteAnimation.stop();
+    }
+
 
     /**
      * Obtains a resource from this instrument's directory.
