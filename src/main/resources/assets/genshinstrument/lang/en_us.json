@@ -89,12 +89,12 @@
     "genshinstrument.label.re": "re",
     "genshinstrument.label.mi": "mi",
     "genshinstrument.label.fa": "fa",
-    "genshinstrument.label.so": "sol",
+    "genshinstrument.label.so": "so",
     "genshinstrument.label.la": "la",
     "genshinstrument.label.ti": "ti",
 
-    "genshinstrument.label.glorious_drum.ka": "Ka",
-    "genshinstrument.label.glorious_drum.don": "Don",
+    "genshinstrument.label.glorious_drum.ka": "ka",
+    "genshinstrument.label.glorious_drum.don": "don",
 
 
     "button.genshinstrument.label.keyboard_layout": "Keyboard",
