@@ -50,7 +50,7 @@ public class IconToggleButton extends Button {
 
     @Override
     public void onPress() {
-        super.onPress();
         enabled = !enabled;
+        super.onPress();
     }
 }
