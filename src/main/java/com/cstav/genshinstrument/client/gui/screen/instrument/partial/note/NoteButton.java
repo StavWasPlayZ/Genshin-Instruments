@@ -1,9 +1,5 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note;
 
-import java.awt.Point;
-
-import org.slf4j.Logger;
-
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.NoteLabelSupplier;
@@ -14,7 +10,6 @@ import com.cstav.genshinstrument.networking.packet.instrument.InstrumentPacket;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.LabelUtil;
 import com.mojang.logging.LogUtils;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
@@ -25,8 +20,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
+import java.awt.*;
 
 /**
  * The abstract implementation of an instrument's note button.
@@ -71,6 +68,9 @@ public abstract class NoteButton extends AbstractButton {
         this(sound, labelSupplier, instrumentScreen, instrumentScreen.getPitch());
     }
 
+    public NoteButtonRenderer getRenderer() {
+        return noteRenderer;
+    }
 
     public void setLabelSupplier(final NoteLabelSupplier labelSupplier) {
         this.labelSupplier = labelSupplier;
@@ -190,7 +190,8 @@ public abstract class NoteButton extends AbstractButton {
 
 
     public void playNoteAnimation(final boolean isForeign) {
-        noteRenderer.playNoteAnimation(isForeign);
+        if (instrumentScreen.instrumentRenders())
+            noteRenderer.playNoteAnimation(isForeign);
     }
 
 

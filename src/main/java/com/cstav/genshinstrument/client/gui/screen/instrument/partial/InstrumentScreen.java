@@ -19,6 +19,7 @@ import com.mojang.blaze3d.platform.InputConstants.Type;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
@@ -55,7 +56,7 @@ public abstract class InstrumentScreen extends Screen {
             default -> 35;
         };
     }
-    
+
     /**
      * The set pitch of all note buttons in this screen
      */
@@ -119,7 +120,7 @@ public abstract class InstrumentScreen extends Screen {
 
     public abstract InstrumentThemeLoader getThemeLoader();
     public abstract ResourceLocation getInstrumentId();
-    
+
     protected abstract InstrumentOptionsScreen initInstrumentOptionsScreen();
 
 
@@ -275,7 +276,7 @@ public abstract class InstrumentScreen extends Screen {
         return getInstrumentId().getNamespace();
     }
 
-    
+
     /**
      * @param path The desired path to obtain from the instrument's root directory
      * @param considerGlobal If {@link InstrumentThemeLoader#isGlobalThemed() a global resource pack is enabled}, take the resource from there
@@ -303,11 +304,6 @@ public abstract class InstrumentScreen extends Screen {
         midiReceiver = initMidiReceiver();
     }
 
-
-    /**
-     * The button responsible for hiding the screen's GUI.
-     * If enabled, the screen is hidden.
-     */
     protected IconToggleButton visibilityButton;
 
     @Override
@@ -349,17 +345,33 @@ public abstract class InstrumentScreen extends Screen {
         return new IconToggleButton(
             VISIBILITY_BUTTON_MARGIN, VISIBILITY_BUTTON_MARGIN,
             new ResourceLocation(GInstrumentMod.MODID, VISIBILITY_SPRITE_LOC + "enabled.png"),
-            new ResourceLocation(GInstrumentMod.MODID, VISIBILITY_SPRITE_LOC + "disabled.png")
+            new ResourceLocation(GInstrumentMod.MODID, VISIBILITY_SPRITE_LOC + "disabled.png"),
+            (btn) -> onInstrumentRenderStateChanged(instrumentRenders())
         );
     }
 
+
+    public boolean instrumentRenders() {
+        return !visibilityButton.enabled();
+    }
+    protected void onInstrumentRenderStateChanged(final boolean isVisible) {
+        if (!isVisible) {
+            notesIterable().forEach((note) -> note.getRenderer().ResetAnimations());
+        }
+
+        renderables.forEach((renderable) -> {
+            if (renderable instanceof AbstractWidget widget)
+                widget.active = isVisible;
+        });
+        visibilityButton.active = true;
+    }
 
     /**
      * @apiNote Prefer overwriting {@link InstrumentScreen#renderInstrument} instead.
      */
     @Override
     public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
-        if (visibilityButton.enabled()) {
+        if (!instrumentRenders()) {
             visibilityButton.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
             return;
         }
@@ -378,7 +390,7 @@ public abstract class InstrumentScreen extends Screen {
             return true;
 
         final NoteButton note = getNoteByKey(pKeyCode);
-        
+
         if (note != null) {
             note.play();
             return true;
@@ -471,7 +483,6 @@ public abstract class InstrumentScreen extends Screen {
     @Override
     public boolean mouseReleased(double pMouseX, double pMouseY, int pButton) {
         unlockFocused();
-        
         return super.mouseReleased(pMouseX, pMouseY, pButton);
     }
 
@@ -553,7 +564,7 @@ public abstract class InstrumentScreen extends Screen {
     public static Optional<InstrumentScreen> getCurrentScreen() {
         return getCurrentScreen(Minecraft.getInstance());
     }
-    
+
 
     @Override
     public boolean isPauseScreen() {
