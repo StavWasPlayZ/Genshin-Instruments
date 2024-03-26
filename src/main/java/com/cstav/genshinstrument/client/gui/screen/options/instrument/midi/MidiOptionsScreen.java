@@ -6,7 +6,7 @@ import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.Ab
 import com.cstav.genshinstrument.client.gui.widget.SliderButton;
 import com.cstav.genshinstrument.client.midi.MidiController;
 import com.cstav.genshinstrument.client.util.ClientUtil;
-
+import com.cstav.genshinstrument.util.CommonUtil;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
@@ -21,6 +21,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.text.DecimalFormat;
+import java.util.List;
+import java.util.stream.IntStream;
 
 @OnlyIn(Dist.CLIENT)
 public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
@@ -111,7 +113,7 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
                     MidiController.infoAsString(MidiController.getInfoFromIndex(value))
                 );
             })
-                .withValues(MidiController.getValuesForOption())
+                .withValues(getMidiDevicesRange())
                 .withInitialValue(ModClientConfigs.MIDI_DEVICE_INDEX.get())
                 .create(0, 0,
                     getBigButtonWidth(), getButtonHeight(),
@@ -194,30 +196,24 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
         initThatOtherSection(grid, rowHelper);
     }
 
+    /**
+     * @return A list of available MIDI devices by their indexes, including -1 for None
+     */
+    public static List<Integer> getMidiDevicesRange() {
+        return IntStream.range(-1, MidiController.DEVICES.size())
+            .boxed().toList();
+    }
+
 
     
     protected void onMidiEnabledChanged(final CycleButton<Boolean> button, final boolean value) {
-        if (!value)
-            MidiController.unloadDevice();
-        else
-            MidiController.openForListen();
-
         ModClientConfigs.MIDI_ENABLED.set(value);
+        MidiController.loadByConfigs();
     }
 
     protected void onMidiDeviceChanged(final CycleButton<Integer> button, final int value) {
-        if (value == -1)
-            MidiController.unloadDevice();
-        else {
-            MidiController.loadDevice(value);
-            if (ModClientConfigs.MIDI_ENABLED.get())
-                MidiController.openForListen();
-        }
-        
-        queueToSave("midi_device_index", () -> saveMidiDeviceIndex(value));
-    }
-    protected void saveMidiDeviceIndex(final int index) {
-        ModClientConfigs.MIDI_DEVICE_INDEX.set(index);
+        ModClientConfigs.MIDI_DEVICE_INDEX.set(value);
+        MidiController.loadByConfigs();
     }
 
     
@@ -232,7 +228,9 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
     protected void onFixedTouchChanged(final CycleButton<Boolean> button, final boolean value) {
         ModClientConfigs.FIXED_TOUCH.set(value);
     }
-    protected void onMidiSensitivityChanged(final AbstractSliderButton button, final double value) {
+    protected void onMidiSensitivityChanged(final AbstractSliderButton button, double value) {
+        value = CommonUtil.round(value, 3);
+
         if (ModClientConfigs.MIDI_IN_SENSITIVITY.get() != value)
             ModClientConfigs.MIDI_IN_SENSITIVITY.set(value);
     }

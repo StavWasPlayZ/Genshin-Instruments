@@ -1,8 +1,5 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.drum;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
@@ -12,13 +9,16 @@ import com.cstav.genshinstrument.client.gui.screen.options.instrument.DrumOption
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.InstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.midi.InstrumentMidiReceiver;
 import com.mojang.blaze3d.platform.InputConstants.Key;
-
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.layouts.LinearLayout.Orientation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
 //NOTE: There just to make it load on mod setup
@@ -116,7 +116,7 @@ public class AratakisGreatAndGloriousDrumScreen extends InstrumentScreen {
             private static boolean donRight = false, kaRight = false;
 
             @Override
-            protected NoteButton handleMidiPress(int note, int key) {
+            protected @Nullable NoteButton handleMidiPress(int note, int key) {
                 final boolean isKa = (ddt() == DominantDrumType.KA) || ((ddt() == DominantDrumType.BOTH) && (note >= 12));
 
                 setPitch(note - (isKa ? 19 : 2));
