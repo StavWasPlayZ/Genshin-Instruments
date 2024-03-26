@@ -76,7 +76,6 @@ public abstract class InstrumentMidiReceiver {
                 ) / 127D;
             instrument.volume = (int)(instrument.volume * volMultiplier);
         }
-//            instrument.volume *= (1.05 * Math.sqrt(127 * message[2]) + MIN_MIDI_VELOCITY) / 127;
 
 
         pressedMidiNote = handleMidiPress(note, pitch);
