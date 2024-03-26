@@ -20,6 +20,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import java.text.DecimalFormat;
+
 @OnlyIn(Dist.CLIENT)
 public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
     public static final int
@@ -60,20 +62,44 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
         final CycleButton<Boolean> midiEnabled = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(ModClientConfigs.MIDI_ENABLED.get())
             .create(0, 0,
-                getSmallButtonWidth(), getButtonHeight(),
+                getBigButtonWidth(), getButtonHeight(),
                 Component.translatable("button.genshinstrument.midiEnabled"), this::onMidiEnabledChanged
             );
-        rowHelper.addChild(midiEnabled);
+        rowHelper.addChild(midiEnabled, 2);
+
+        final SliderButton inputSensitivity = new SliderButton(getSmallButtonWidth(),
+                ModClientConfigs.MIDI_IN_SENSITIVITY.get(), 0, 1) {
+
+            private static final DecimalFormat D_FORMAT = new DecimalFormat("0.0");
+
+            @Override
+            public Component getMessage() {
+                return Component.translatable("button.genshinstrument.inputSensitivity").append(": "
+                    + D_FORMAT.format(ModClientConfigs.MIDI_IN_SENSITIVITY.get() * 100)+"%"
+                );
+            }
+
+            @Override
+            protected void applyValue() {
+                onMidiSensitivityChanged(this, value);
+            }
+        };
 
         final CycleButton<Boolean> fixedTouch = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(ModClientConfigs.FIXED_TOUCH.get())
             .withTooltip((value) -> Tooltip.create(Component.translatable("button.genshinstrument.fixedTouch.tooltip")))
             .create(0, 0,
                 getSmallButtonWidth(), getButtonHeight(),
-                Component.translatable("button.genshinstrument.fixedTouch"), this::onFixedTouchChanged
+                Component.translatable("button.genshinstrument.fixedTouch"), (btn, val) -> {
+                    onFixedTouchChanged(btn, val);
+                    inputSensitivity.active = !val;
+                }
             );
-        rowHelper.addChild(fixedTouch);
 
+        inputSensitivity.active = !ModClientConfigs.FIXED_TOUCH.get();
+
+        rowHelper.addChild(fixedTouch);
+        rowHelper.addChild(inputSensitivity);
 
         MidiController.reloadDevices();
 
@@ -205,6 +231,10 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
 
     protected void onFixedTouchChanged(final CycleButton<Boolean> button, final boolean value) {
         ModClientConfigs.FIXED_TOUCH.set(value);
+    }
+    protected void onMidiSensitivityChanged(final AbstractSliderButton button, final double value) {
+        if (ModClientConfigs.MIDI_IN_SENSITIVITY.get() != value)
+            ModClientConfigs.MIDI_IN_SENSITIVITY.set(value);
     }
     protected void onAcceptAllChannelsChanged(final CycleButton<Boolean> button, final boolean value) {
         ModClientConfigs.ACCEPT_ALL_CHANNELS.set(value);

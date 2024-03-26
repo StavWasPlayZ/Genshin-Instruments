@@ -42,6 +42,7 @@
 
     "button.genshinstrument.fixedTouch": "מגע קבוע",
     "button.genshinstrument.fixedTouch.tooltip": "מגדיר אם מהירות הלחיצה על תו לא תשפיע על הווליום של כלי הנגינה",
+    "button.genshinstrument.inputSensitivity": "רגישות",
 
     "button.genshinstrument.extendOctaves": "הרחב אוקטבות",
     "button.genshinstrument.extendOctaves.tooltip": "כאשר תו העובר את מגבלת האוקטבות המובנת מתנגן, יעלה/יוריד את גובה הצליל כדיי להתאימו. בגלל איך שמיינקראפט בנוי, יכול להעלות/לרדת עד דו מז'ור.",
