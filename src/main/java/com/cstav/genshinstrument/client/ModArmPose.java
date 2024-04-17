@@ -8,7 +8,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public abstract class ModArmPose {
     public static final float HAND_HEIGHT_ROT = .9f;
 
-    public static void register() {}
+    public static void load() {}
 
 
     public static final ArmPose PLAYING_ITEM_INSTRUMENT = ArmPose.create("playing_item_instrument", true,
@@ -20,6 +20,20 @@ public abstract class ModArmPose {
             model.leftArm.zRot = 0.85f;
         }
     );
+
+    public static final ArmPose PLAYING_WIND_INSTRUMENT = ArmPose.create("playing_trombone_instrument", true,
+        (model, entity, arm) -> {
+            model.rightArm.xRot = -1.5f;
+            model.rightArm.zRot = -0.35f;
+            model.rightArm.yRot = -0.5f;
+
+            model.leftArm.xRot = -1.5f;
+            model.leftArm.zRot = 0.55f;
+            model.leftArm.yRot = 0.5f;
+        }
+    );
+
+
     public static final ArmPose PLAYING_BLOCK_INSTRUMENT = ArmPose.create("playing_block_instrument", true,
         (model, entity, arm) -> {
             model.rightArm.xRot = -HAND_HEIGHT_ROT;
