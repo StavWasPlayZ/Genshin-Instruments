@@ -12,10 +12,10 @@ import net.minecraftforge.common.util.LazyOptional;
 @AutoRegisterCapability
 public class InstrumentOpen {
     public static final String
-        OPEN_TAG = "instrumentOpen",
-        IS_ITEM_TAG = "isItem",
-        BLOCK_POS_TAG = "blockPos",
-        HAND_TAG = "inOffhand"
+        OPEN_TAG = "InstrumentOpen",
+        IS_ITEM_TAG = "IsItem",
+        BLOCK_POS_TAG = "BlockPos",
+        HAND_TAG = "InOffhand"
     ;
 
     private boolean isOpen = false, isItem = false;
