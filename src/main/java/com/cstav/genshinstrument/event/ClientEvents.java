@@ -57,7 +57,7 @@ public class ClientEvents {
     // Responsible for showing the notes other players play
     @SubscribeEvent
     public static void onInstrumentPlayed(final InstrumentPlayedEvent event) {
-        if (!event.isClientSide)
+        if (!event.level.isClientSide)
             return;
         if (!ModClientConfigs.SHARED_INSTRUMENT.get())
             return;

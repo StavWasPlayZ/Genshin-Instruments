@@ -8,7 +8,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
@@ -26,7 +25,6 @@ public class InstrumentPlayedEvent extends Event {
     public final int pitch, volume;
 
     public final Level level;
-    public final boolean isClientSide;
     
     public final ResourceLocation instrumentId;
     public final Optional<NoteButtonIdentifier> noteIdentifier;
@@ -43,7 +41,7 @@ public class InstrumentPlayedEvent extends Event {
     
 
     public InstrumentPlayedEvent(NoteSound sound, int pitch, int volume, Level level, BlockPos pos,
-            ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, boolean isClientSide) {
+            ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier) {
 
         this.sound = sound;
         this.pitch = pitch;
@@ -51,7 +49,6 @@ public class InstrumentPlayedEvent extends Event {
 
         this.level = level;
         this.playPos = pos;
-        this.isClientSide = isClientSide;
 
         this.instrumentId = instrumentId;
         this.noteIdentifier = Optional.ofNullable(noteIdentifier);
@@ -61,9 +58,7 @@ public class InstrumentPlayedEvent extends Event {
     public static class ByPlayer extends InstrumentPlayedEvent {
         public final Player player;
 
-        // The values below will only be supplied if initiated from an item
-        /** The instrument held by the player who initiated the sound */
-        public final Optional<ItemStack> itemInstrument;
+        // The value below will only be supplied if initiated from an item
         /** The hand holding the instrument played by this player */
         public final Optional<InteractionHand> hand;
 
@@ -74,7 +69,7 @@ public class InstrumentPlayedEvent extends Event {
          * @see ByPlayer#isBlockInstrument
          */
         public boolean isItemInstrument() {
-            return itemInstrument.isPresent();
+            return hand.isPresent();
         }
         /**
          * <p>Returns whether this event was fired by a block instrument.</p>
@@ -95,22 +90,19 @@ public class InstrumentPlayedEvent extends Event {
 
 
         public ByPlayer(NoteSound sound, int pitch, int volume, Player player, BlockPos pos,
-                ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, boolean isClientSide) {
+                ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier) {
             super(
                 sound, pitch, volume,
                 player.level(), pos,
-                instrumentId, noteIdentifier,
-                isClientSide
+                instrumentId, noteIdentifier
             );
 
             this.player = player;
 
             if (InstrumentOpenProvider.isItem(player)) {
                 this.hand = Optional.of(InstrumentOpenProvider.getHand(player));
-                this.itemInstrument = Optional.of(player.getItemInHand(hand.get()));
             } else {
                 this.hand = Optional.empty();
-                this.itemInstrument = Optional.empty();
             }
         }
     }
