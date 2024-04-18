@@ -16,7 +16,6 @@ import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.LabelUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarratedElementType;
@@ -25,8 +24,10 @@ import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
+import java.awt.*;
 
 /**
  * The abstract implementation of an instrument's note button.
@@ -71,6 +72,9 @@ public abstract class NoteButton extends AbstractButton {
         this(sound, labelSupplier, instrumentScreen, instrumentScreen.getPitch());
     }
 
+    public NoteButtonRenderer getRenderer() {
+        return noteRenderer;
+    }
 
     public void setLabelSupplier(final NoteLabelSupplier labelSupplier) {
         this.labelSupplier = labelSupplier;
@@ -191,7 +195,8 @@ public abstract class NoteButton extends AbstractButton {
 
 
     public void playNoteAnimation(final boolean isForeign) {
-        noteRenderer.playNoteAnimation(isForeign);
+        if (instrumentScreen.instrumentRenders())
+            noteRenderer.playNoteAnimation(isForeign);
     }
 
 

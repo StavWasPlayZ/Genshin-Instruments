@@ -94,8 +94,7 @@ public class ServerUtil {
             new InstrumentPlayedEvent.ByPlayer(
                 sound, pitch, volume,
                 player, playeredPos,
-                instrumentId, noteIdentifier,
-                false
+                instrumentId, noteIdentifier
             )
         );
     }
@@ -157,7 +156,7 @@ public class ServerUtil {
 
 
         MinecraftForge.EVENT_BUS.post(
-            new InstrumentPlayedEvent(sound, pitch, volume, level, pos, instrumentId, noteIdentifier, false)
+            new InstrumentPlayedEvent(sound, pitch, volume, level, pos, instrumentId, noteIdentifier)
         );
     }
 

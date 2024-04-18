@@ -173,11 +173,11 @@ public class NoteSound {
         
         MinecraftForge.EVENT_BUS.post(initiator == null
             ? new InstrumentPlayedEvent(
-                this, pitch, volume, level, pos, instrumentId, buttonIdentifier.orElse(null), true
+                this, pitch, volume, level, pos, instrumentId, buttonIdentifier.orElse(null)
             )
             : new InstrumentPlayedEvent.ByPlayer(
                 this, pitch, volume, initiator, pos,
-                instrumentId, buttonIdentifier.orElse(null), true
+                instrumentId, buttonIdentifier.orElse(null)
             )
         );
         

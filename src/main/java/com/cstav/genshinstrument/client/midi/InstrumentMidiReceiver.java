@@ -5,7 +5,8 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.Instrument
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.event.MidiEvent;
 import com.cstav.genshinstrument.sound.NoteSound;
-import com.mojang.logging.LogUtils;
+import net.minecraft.util.Mth;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class InstrumentMidiReceiver {
     public static final int MIN_MIDI_VELOCITY = 6;
@@ -13,30 +14,11 @@ public abstract class InstrumentMidiReceiver {
     public final InstrumentScreen instrument;
     public InstrumentMidiReceiver(InstrumentScreen instrument) {
         this.instrument = instrument;
-        loadMidiDevices();
-    }
-
-    protected void loadMidiDevices() {
-        final int infoIndex = ModClientConfigs.MIDI_DEVICE_INDEX.get();
-        if (infoIndex == -1)
-            return;
-
-
-        MidiController.reloadIfEmpty();
-        if (infoIndex > (MidiController.DEVICES.size() - 1)) {
-            LogUtils.getLogger().warn("MIDI device out of range; setting device to none");
-            ModClientConfigs.MIDI_DEVICE_INDEX.set(-1);
-            return;
-        }
-
-        if (!MidiController.isLoaded(infoIndex)) {
-            MidiController.loadDevice(infoIndex);
-            MidiController.openForListen();
-        }
+        MidiController.loadByConfigs();
     }
 
     
-    private NoteButton pressedMidiNote = null;
+    private @Nullable NoteButton pressedMidiNote = null;
 
     /**
      * Fires when a MIDI note is being pressed successfully, only if this is {@link InstrumentScreen#isMidiInstrument a midi instrument}.
@@ -44,7 +26,7 @@ public abstract class InstrumentMidiReceiver {
      * @param key The scale played by the MIDI device; the absolute value of current pitch saved in the client configs (Always set to 0 here)
      * @return The pressed note button. Null if none.
      */
-    protected abstract NoteButton handleMidiPress(int note, int key);
+    protected abstract @Nullable NoteButton handleMidiPress(int note, int key);
     
 
     public void onMidi(final MidiEvent event) {
@@ -70,8 +52,12 @@ public abstract class InstrumentMidiReceiver {
 
         // Handle dynamic touch
         final float prevVolume = instrument.volume();
-        if (!ModClientConfigs.FIXED_TOUCH.get())
-            instrument.volume *= Math.max(MIN_MIDI_VELOCITY, message[2]) / 127D;
+        final float sensitivity = ModClientConfigs.MIDI_IN_SENSITIVITY.get().floatValue();
+        // 0 sensitivity = fixed touch:
+        if (!ModClientConfigs.FIXED_TOUCH.get() && (sensitivity != 0)) {
+            double volMultiplier = (message[2] / 127D) / sensitivity;
+            instrument.volume = (int)Mth.clamp(instrument.volume * volMultiplier, MIN_MIDI_VELOCITY, 100);
+        }
 
 
         pressedMidiNote = handleMidiPress(note, pitch);

@@ -15,6 +15,7 @@ import com.cstav.genshinstrument.client.gui.widget.copied.LinearLayoutWidget.Ori
 import com.cstav.genshinstrument.client.gui.widget.copied.SpacerWidget;
 import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.sound.NoteSound;
+import com.cstav.genshinstrument.util.CommonUtil;
 import com.cstav.genshinstrument.util.LabelUtil;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
@@ -273,7 +274,7 @@ public abstract class InstrumentOptionsScreen extends AbstractInstrumentOptionsS
         queueToSave("volume", () -> saveVolume(newVolume / 100d));
     }
     protected void saveVolume(final double newVolume) {
-        ModClientConfigs.VOLUME.set(newVolume);
+        ModClientConfigs.VOLUME.set(CommonUtil.round(newVolume, 4));
     }
 
     // These values derive from the config directly, so just update them on-spot
