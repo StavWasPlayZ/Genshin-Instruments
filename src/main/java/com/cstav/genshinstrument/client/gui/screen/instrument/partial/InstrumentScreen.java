@@ -8,6 +8,7 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteB
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.AbstractInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.InstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.widget.IconToggleButton;
+import com.cstav.genshinstrument.client.gui.widget.copied.AbstractContainerWidget;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.client.midi.InstrumentMidiReceiver;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
@@ -17,11 +18,12 @@ import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.CommonUtil;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.platform.InputConstants.Type;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -325,11 +327,11 @@ public abstract class InstrumentScreen extends Screen {
      * @return A new Instrument Options button
      */
     protected Button initOptionsButton(final int vertOffset) {
-        final Button button = Button.builder(
-            Component.translatable("button.genshinstrument.instrumentOptions").append("..."), (btn) -> onOptionsOpen()
-        )
-            .width(150)
-            .build();
+        final Button button = new Button(0, 0,
+            150, 20,
+            new TranslatableComponent("button.genshinstrument.instrumentOptions").append("..."),
+            (btn) -> onOptionsOpen()
+        );
 
         button.x = (width - button.getWidth())/2;
         button.y = vertOffset - button.getHeight()/2;
@@ -360,27 +362,34 @@ public abstract class InstrumentScreen extends Screen {
             notesIterable().forEach((note) -> note.getRenderer().ResetAnimations());
         }
 
-        renderables.forEach((renderable) -> {
-            if (renderable instanceof AbstractWidget widget)
-                widget.active = isVisible;
-        });
+
+        renderables.stream()
+            .map((widget) -> (GuiEventListener) widget)
+            .forEach((renderable) -> setActive(renderable, isVisible));
         visibilityButton.active = true;
     }
+    private static void setActive(GuiEventListener renderable, final boolean isActive) {
+        if (renderable instanceof AbstractWidget widget)
+            widget.active = isActive;
+        if (renderable instanceof AbstractContainerWidget container)
+            container.children().forEach((innerRenderable) -> setActive(innerRenderable, isActive));
+    }
+
 
     /**
      * @apiNote Prefer overwriting {@link InstrumentScreen#renderInstrument} instead.
      */
     @Override
-    public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(PoseStack stack, int pMouseX, int pMouseY, float pPartialTick) {
         if (!instrumentRenders()) {
-            visibilityButton.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
+            visibilityButton.render(stack, pMouseX, pMouseY, pPartialTick);
             return;
         }
 
-        renderInstrument(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
+        renderInstrument(stack, pMouseX, pMouseY, pPartialTick);
     }
-    public void renderInstrument(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
-        super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
+    public void renderInstrument(PoseStack stack, int pMouseX, int pMouseY, float pPartialTick) {
+        super.render(stack, pMouseX, pMouseY, pPartialTick);
     }
 
     @Override
@@ -502,7 +511,7 @@ public abstract class InstrumentScreen extends Screen {
     }
     /**
      * Unlocks the specified {@link NoteButton} that matches the given key.
-     * If it is not present, will perform {@link AbstractInstrumentScreen#unlockFocused} instead.
+     * If it is not present, will perform {@link InstrumentScreen#unlockFocused} instead.
      */
     private void unlockFocused(final int keyCode) {
         final NoteButton note = getNoteByKey(keyCode);

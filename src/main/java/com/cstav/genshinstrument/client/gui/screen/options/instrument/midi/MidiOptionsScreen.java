@@ -76,7 +76,7 @@ public class MidiOptionsScreen extends AbstractInstrumentOptionsScreen {
 
             @Override
             public Component getMessage() {
-                return Component.translatable("button.genshinstrument.inputSensitivity").append(": "
+                return new TranslatableComponent("button.genshinstrument.inputSensitivity").append(": "
                     + D_FORMAT.format(ModClientConfigs.MIDI_IN_SENSITIVITY.get() * 100)+"%"
                 );
             }

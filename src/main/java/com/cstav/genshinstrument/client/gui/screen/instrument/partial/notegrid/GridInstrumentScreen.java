@@ -13,9 +13,6 @@ import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifie
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.layouts.AbstractLayout;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraftforge.api.distmarker.Dist;
@@ -174,11 +171,11 @@ public abstract class GridInstrumentScreen extends InstrumentScreen {
 
 
     @Override
-    public void renderInstrument(GuiGraphics gui, int pMouseX, int pMouseY, float pPartialTick) {
+    public void renderInstrument(PoseStack stack, int pMouseX, int pMouseY, float pPartialTick) {
         if (ModClientConfigs.RENDER_BACKGROUND.get())
             renderInstrumentBackground(stack);
             
-        super.renderInstrument(gui, pMouseX, pMouseY, pPartialTick);
+        super.renderInstrument(stack, pMouseX, pMouseY, pPartialTick);
     }
 
 
