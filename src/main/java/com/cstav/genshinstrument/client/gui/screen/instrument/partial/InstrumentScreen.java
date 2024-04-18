@@ -362,10 +362,7 @@ public abstract class InstrumentScreen extends Screen {
             notesIterable().forEach((note) -> note.getRenderer().ResetAnimations());
         }
 
-
-        renderables.stream()
-            .map((widget) -> (GuiEventListener) widget)
-            .forEach((renderable) -> setActive(renderable, isVisible));
+        children().forEach((renderable) -> setActive(renderable, isVisible));
         visibilityButton.active = true;
     }
     private static void setActive(GuiEventListener renderable, final boolean isActive) {
