@@ -49,6 +49,7 @@
 
     "button.genshinstrument.fixedTouch": "Fixed Touch",
     "button.genshinstrument.fixedTouch.tooltip": "Defines whether the velocity of a note press will not affect the instrument's volume",
+    "button.genshinstrument.inputSensitivity": "Sensitivity",
 
     "button.genshinstrument.extendOctaves": "Extend Octaves",
     "button.genshinstrument.extendOctaves.tooltip": "When a note that is higher/lower than the usual octave range is played, will automatically adjust the pitch to match your playings. Can only extend up to 1 octave per side: high and low C.\nBlame Minecraft.",
@@ -89,12 +90,12 @@
     "genshinstrument.label.re": "re",
     "genshinstrument.label.mi": "mi",
     "genshinstrument.label.fa": "fa",
-    "genshinstrument.label.so": "sol",
+    "genshinstrument.label.so": "so",
     "genshinstrument.label.la": "la",
     "genshinstrument.label.ti": "ti",
 
-    "genshinstrument.label.glorious_drum.ka": "Ka",
-    "genshinstrument.label.glorious_drum.don": "Don",
+    "genshinstrument.label.glorious_drum.ka": "ka",
+    "genshinstrument.label.glorious_drum.don": "don",
 
 
     "button.genshinstrument.label.keyboard_layout": "Keyboard",
@@ -111,7 +112,7 @@
     "genshinstrument.advancements.main.root.description": "Though wine may not be by your side, the instruments will always walk you through the Game of Freedom.",
 
     "genshinstrument.advancements.main.master.title": "A Band of One",
-    "genshinstrument.advancements.main.master.description": "Have all instruments in your inventory at once",
+    "genshinstrument.advancements.main.master.description": "Have all Genshin instruments in your inventory at once",
 
     "genshinstrument.advancements.main.windsong_lyre.title": "The Sound of Wind",
     "genshinstrument.advancements.main.windsong_lyre.description": "Play the Windsong Lyre",

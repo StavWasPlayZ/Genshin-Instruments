@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid;
 
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.midi.InstrumentMidiReceiver;
+import org.jetbrains.annotations.Nullable;
 
 public class GridInstrumentMidiReceiver extends InstrumentMidiReceiver {
 
@@ -16,7 +17,7 @@ public class GridInstrumentMidiReceiver extends InstrumentMidiReceiver {
 
 
     @Override
-    protected NoteButton handleMidiPress(int note, int key) {
+    protected @Nullable NoteButton handleMidiPress(int note, int key) {
         final GridInstrumentScreen instrumentScreen = (GridInstrumentScreen)instrument;
 
         final int layoutNote = note % 12;

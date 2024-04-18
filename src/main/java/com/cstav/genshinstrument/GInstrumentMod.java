@@ -5,7 +5,6 @@ import com.cstav.genshinstrument.item.ModItems;
 import com.cstav.genshinstrument.item.clientExtensions.ModItemPredicates;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.sound.ModSounds;
-
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -41,7 +40,7 @@ public class GInstrumentMod
     }
 
     private static void clientSetup(final FMLClientSetupEvent event) {
-        ModArmPose.register();
+        ModArmPose.load();
         ModItemPredicates.register();
     }
 }

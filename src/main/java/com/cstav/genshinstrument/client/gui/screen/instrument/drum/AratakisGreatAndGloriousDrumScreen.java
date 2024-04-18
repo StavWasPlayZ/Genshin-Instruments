@@ -11,10 +11,16 @@ import com.cstav.genshinstrument.client.gui.widget.copied.LinearLayoutWidget.Ori
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.InstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.midi.InstrumentMidiReceiver;
 import com.mojang.blaze3d.platform.InputConstants.Key;
+import net.minecraft.client.gui.layouts.LinearLayout;
+import net.minecraft.client.gui.layouts.LinearLayout.Orientation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -117,7 +123,7 @@ public class AratakisGreatAndGloriousDrumScreen extends InstrumentScreen {
             private static boolean donRight = false, kaRight = false;
 
             @Override
-            protected NoteButton handleMidiPress(int note, int key) {
+            protected @Nullable NoteButton handleMidiPress(int note, int key) {
                 final boolean isKa = (ddt() == DominantDrumType.KA) || ((ddt() == DominantDrumType.BOTH) && (note >= 12));
 
                 setPitch(note - (isKa ? 19 : 2));

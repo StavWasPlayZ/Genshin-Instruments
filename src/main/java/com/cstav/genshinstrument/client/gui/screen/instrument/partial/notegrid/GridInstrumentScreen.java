@@ -1,9 +1,5 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid;
 
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.function.Consumer;
-
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
@@ -20,8 +16,14 @@ import com.mojang.blaze3d.platform.InputConstants.Key;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.layouts.AbstractLayout;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.function.Consumer;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class GridInstrumentScreen extends InstrumentScreen {
@@ -172,11 +174,11 @@ public abstract class GridInstrumentScreen extends InstrumentScreen {
 
 
     @Override
-    public void render(PoseStack stack, int pMouseX, int pMouseY, float pPartialTick) {
+    public void renderInstrument(GuiGraphics gui, int pMouseX, int pMouseY, float pPartialTick) {
         if (ModClientConfigs.RENDER_BACKGROUND.get())
             renderInstrumentBackground(stack);
             
-        super.render(stack, pMouseX, pMouseY, pPartialTick);
+        super.renderInstrument(gui, pMouseX, pMouseY, pPartialTick);
     }
 
 
