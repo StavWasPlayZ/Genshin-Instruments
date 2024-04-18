@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument.client.gui.widget;
 
-import net.minecraft.client.gui.GuiGraphics;
+import com.cstav.genshinstrument.client.util.ClientUtil;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.resources.ResourceLocation;
@@ -14,10 +15,7 @@ public class IconToggleButton extends Button {
     public IconToggleButton(int x, int y, int size,
                             ResourceLocation iconEnabled, ResourceLocation iconDisabled,
                             OnPress onPress) {
-        super(new Button.Builder(CommonComponents.EMPTY, onPress)
-            .pos(x, y)
-        );
-        width = height = size;
+        super(x, y, size, size, CommonComponents.EMPTY, onPress);
 
         this.iconDisabled = iconDisabled;
         this.iconEnabled = iconEnabled;
@@ -34,13 +32,14 @@ public class IconToggleButton extends Button {
     }
 
     @Override
-    protected void renderWidget(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
-        super.renderWidget(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
+    public void renderButton(PoseStack stack, int pMouseX, int pMouseY, float pPartialTick) {
+        super.renderButton(stack, pMouseX, pMouseY, pPartialTick);
 
         final int size = getHeight() - ICON_MARGIN;
-        pGuiGraphics.blit(
-            enabled ? iconEnabled : iconDisabled,
-            getX() + ICON_MARGIN, getY() + ICON_MARGIN,
+
+        ClientUtil.displaySprite(enabled ? iconEnabled : iconDisabled);
+        blit(stack,
+            x + ICON_MARGIN, y + ICON_MARGIN,
 
             0, 0,
             size, size,
