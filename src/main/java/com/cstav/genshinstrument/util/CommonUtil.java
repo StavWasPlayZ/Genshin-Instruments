@@ -1,16 +1,17 @@
 package com.cstav.genshinstrument.util;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.google.common.collect.Lists;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.List;
+import java.util.Optional;
 
 public abstract class CommonUtil {
     
@@ -55,7 +56,7 @@ public abstract class CommonUtil {
 
 
     /**
-     * Provides a similar behaviour to python's indexing,
+     * Provides a similar behaviour to Python's indexing,
      * where negatives are counted backwards.
      */
     public static int pyWrap(int index, final int arrLength) {
@@ -71,9 +72,19 @@ public abstract class CommonUtil {
         return index % arrLength;
     }
     /**
-     * Performs both {@link LabelUtil#pyWrap} and {@link LabelUtil#wrapAround}
+     * Performs both {@link CommonUtil#pyWrap} and {@link CommonUtil#wrapAround}
      */
     public static int doublyPyWrap(int index, final int arrLength) {
         return wrapAround(pyWrap(index, arrLength), arrLength);
+    }
+
+
+    /**
+     * @return The given {@code value} rounded by the provided {@code places}.
+     */
+    public static double round(double value, int places) {
+        return BigDecimal.valueOf(value)
+            .setScale(places, RoundingMode.HALF_UP)
+            .doubleValue();
     }
 }

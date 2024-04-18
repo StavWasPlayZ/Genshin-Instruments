@@ -21,7 +21,7 @@ public class ModCriteria {
 
     @SubscribeEvent
     public static void onInstrumentPlayed(final InstrumentPlayedEvent.ByPlayer event) {
-        if (!event.isClientSide)
+        if (!event.level.isClientSide)
             INSTRUMENT_PLAYED_TRIGGER.trigger((ServerPlayer)event.player, new ItemStack(ForgeRegistries.ITEMS.getValue(event.instrumentId)));
     }
 
@@ -29,5 +29,5 @@ public class ModCriteria {
     private static <T extends CriterionTrigger<?>> T register(final String id, final T criterion) {
         return CriterionRegisterInvoker.callRegister(id, criterion);
     }
-    
+
 }

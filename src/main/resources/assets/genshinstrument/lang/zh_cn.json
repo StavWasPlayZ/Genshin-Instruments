@@ -33,6 +33,7 @@
     "button.genshinstrument.midiDevice": "MIDI设备",
     "button.genshinstrument.fixedTouch": "固定按键音量",
     "button.genshinstrument.fixedTouch.tooltip": "定义按键强度是否会影响乐器的音量",
+    "button.genshinstrument.inputSensitivity": "灵敏度",
     "button.genshinstrument.extendOctaves": "扩展八度",
     "button.genshinstrument.extendOctaves.tooltip": "当演奏的音符超出了通常的八度音域时，会自动调整音高以匹配您的演奏。每侧最多只能扩展1个八度：高C和低C。\n怪Minecraft。",
     "button.genshinstrument.midiOctaveShift": "八度移位",

@@ -33,5 +33,9 @@
 
     "requirements": [
         ["gottem_all"]
-    ]
+    ],
+
+    "rewards": {
+        "experience": 5
+    }
 }

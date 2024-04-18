@@ -1,15 +1,11 @@
 package com.cstav.genshinstrument.block.partial;
 
-import java.util.function.Consumer;
-
 import com.cstav.genshinstrument.block.partial.client.IClientArmPoseProvider;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.ModArmPose;
 import com.cstav.genshinstrument.networking.ModPacketHandler;
-import com.cstav.genshinstrument.networking.OpenInstrumentPacketSender;
 import com.cstav.genshinstrument.networking.packet.instrument.NotifyInstrumentOpenPacket;
 import com.cstav.genshinstrument.util.ServerUtil;
-
 import net.minecraft.client.model.HumanoidModel.ArmPose;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,6 +21,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
+import java.util.function.Consumer;
+
 public abstract class AbstractInstrumentBlock extends BaseEntityBlock {
 
     public AbstractInstrumentBlock(Properties pProperties) {
@@ -38,11 +36,10 @@ public abstract class AbstractInstrumentBlock extends BaseEntityBlock {
     // Abstract implementations
 
     /**
-     * A server-side event fired when the player has requested to interact
-     * with the instrument.
+     * A server-side event fired when the player has interacted with the instrument.
      * It should send a packet to the given player for opening this instrument's screen.
      */
-    protected abstract OpenInstrumentPacketSender instrumentPacketSender();
+    protected abstract void onInstrumentOpen(final ServerPlayer player);
     @Override
     public abstract InstrumentBlockEntity newBlockEntity(BlockPos pPos, BlockState pState);
 
@@ -72,7 +69,7 @@ public abstract class AbstractInstrumentBlock extends BaseEntityBlock {
         if (!(be instanceof InstrumentBlockEntity))
             return InteractionResult.FAIL;
 
-        if (ServerUtil.sendOpenPacket((ServerPlayer)pPlayer, instrumentPacketSender(), pPos)) {
+        if (ServerUtil.sendOpenPacket((ServerPlayer)pPlayer, this::onInstrumentOpen, pPos)) {
             ((InstrumentBlockEntity)be).users.add(pPlayer.getUUID());
             return InteractionResult.SUCCESS;
         }

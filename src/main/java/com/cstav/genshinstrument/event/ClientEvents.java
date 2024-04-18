@@ -8,7 +8,6 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.Instrument
 import com.cstav.genshinstrument.client.midi.MidiController;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent.ByPlayer;
 import com.cstav.genshinstrument.sound.NoteSound;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -58,7 +57,7 @@ public class ClientEvents {
     // Responsible for showing the notes other players play
     @SubscribeEvent
     public static void onInstrumentPlayed(final InstrumentPlayedEvent event) {
-        if (!event.isClientSide)
+        if (!event.level.isClientSide)
             return;
         if (!ModClientConfigs.SHARED_INSTRUMENT.get())
             return;
@@ -74,7 +73,9 @@ public class ClientEvents {
 
         InstrumentScreen.getCurrentScreen(MINECRAFT)
             // Filter instruments that do not match the one we're on
-            .filter((screen) -> screen.getInstrumentId().equals(event.instrumentId))
+            // If the note identifier is empty, it matters not - since the check is on the sound itself,
+            // which is bound to be unique for every note.
+            .filter((screen) -> event.noteIdentifier.isEmpty() || screen.getInstrumentId().equals(event.instrumentId))
             .ifPresent((screen) -> {
                 try {
                     screen.getNoteButton(event.noteIdentifier, event.sound, event.pitch)
