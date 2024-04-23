@@ -6,7 +6,7 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.Instrument
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.VintageLyreOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.InstrumentOptionsScreen;
-import com.cstav.genshinstrument.sound.ModSounds;
+import com.cstav.genshinstrument.sound.GISounds;
 import com.cstav.genshinstrument.sound.NoteSound;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -32,7 +32,7 @@ public class VintageLyreScreen extends GridInstrumentScreen {
 
     @Override
     public NoteSound[] getInitSounds() {
-        return ModSounds.VINTAGE_LYRE_NOTE_SOUNDS;
+        return GISounds.VINTAGE_LYRE_NOTE_SOUNDS;
     }
 
     @Override
