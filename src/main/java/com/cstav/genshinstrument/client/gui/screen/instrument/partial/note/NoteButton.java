@@ -4,7 +4,7 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.client.util.ClientUtil;
-import com.cstav.genshinstrument.networking.ModPacketHandler;
+import com.cstav.genshinstrument.networking.GIPacketHandler;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.packet.instrument.InstrumentPacket;
 import com.cstav.genshinstrument.sound.NoteSound;
@@ -185,7 +185,7 @@ public abstract class NoteButton extends AbstractButton {
     }
 
     protected void sendNotePlayPacket() {
-        ModPacketHandler.sendToServer(new InstrumentPacket(this));
+        GIPacketHandler.sendToServer(new InstrumentPacket(this));
     }
 
 
