@@ -1,9 +1,8 @@
 package com.cstav.genshinstrument.networking.packet.instrument;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
+import com.cstav.genshinstrument.networking.GIPacketHandler;
 import com.cstav.genshinstrument.networking.IModPacket;
-import com.cstav.genshinstrument.networking.ModPacketHandler;
-
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -23,7 +22,7 @@ public class CloseInstrumentPacket implements IModPacket {
         InstrumentOpenProvider.setClosed(player);
 
         for (final Player oPlayer : player.getLevel().players())
-            ModPacketHandler.sendToClient(new NotifyInstrumentOpenPacket(player.getUUID()), (ServerPlayer)oPlayer);
+            GIPacketHandler.sendToClient(new NotifyInstrumentOpenPacket(player.getUUID()), (ServerPlayer)oPlayer);
     }
     
 }

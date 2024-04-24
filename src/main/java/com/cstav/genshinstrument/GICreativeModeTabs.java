@@ -5,7 +5,7 @@ import com.cstav.genshinstrument.item.ModItems;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
-public class ModCreativeModeTabs {
+public class GICreativeModeTabs {
 
     public static final CreativeModeTab instrumentsTab = new CreativeModeTab("genshinstrument.instruments") {
 

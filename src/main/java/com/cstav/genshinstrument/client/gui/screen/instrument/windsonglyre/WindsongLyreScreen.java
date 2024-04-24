@@ -3,9 +3,8 @@ package com.cstav.genshinstrument.client.gui.screen.instrument.windsonglyre;
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
-import com.cstav.genshinstrument.sound.ModSounds;
+import com.cstav.genshinstrument.sound.GISounds;
 import com.cstav.genshinstrument.sound.NoteSound;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -25,7 +24,7 @@ public class WindsongLyreScreen extends GridInstrumentScreen {
 
     @Override
     public NoteSound[] getInitSounds() {
-        return ModSounds.WINDSONG_LYRE_NOTE_SOUNDS;
+        return GISounds.WINDSONG_LYRE_NOTE_SOUNDS;
     }
 
 
