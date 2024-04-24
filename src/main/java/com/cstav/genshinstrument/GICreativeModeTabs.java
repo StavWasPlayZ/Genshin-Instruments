@@ -1,7 +1,6 @@
 package com.cstav.genshinstrument;
 
-import com.cstav.genshinstrument.item.ModItems;
-
+import com.cstav.genshinstrument.item.GIItems;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -13,7 +12,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
 @EventBusSubscriber(modid = GInstrumentMod.MODID, bus = Bus.MOD)
-public class ModCreativeModeTabs {
+public class GICreativeModeTabs {
 
     private static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, GInstrumentMod.MODID);
 
@@ -26,10 +25,10 @@ public class ModCreativeModeTabs {
             () -> CreativeModeTab.builder()
 
                 .title(Component.translatable("genshinstrument.itemGroup.instruments"))
-                .icon(() -> new ItemStack(ModItems.FLORAL_ZITHER.get()))
+                .icon(() -> new ItemStack(GIItems.FLORAL_ZITHER.get()))
                 
                 .displayItems((displayParams, out) ->
-                    ModItems.ITEMS.getEntries().forEach((item) ->
+                    GIItems.ITEMS.getEntries().forEach((item) ->
                         out.accept(item.get())
                     )
                 )
