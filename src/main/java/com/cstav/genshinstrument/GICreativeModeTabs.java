@@ -1,7 +1,6 @@
 package com.cstav.genshinstrument;
 
-import com.cstav.genshinstrument.item.ModItems;
-
+import com.cstav.genshinstrument.item.GIItems;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
@@ -11,7 +10,7 @@ public class GICreativeModeTabs {
 
         @Override
         public ItemStack makeIcon() {
-            return new ItemStack(ModItems.FLORAL_ZITHER.get());
+            return new ItemStack(GIItems.FLORAL_ZITHER.get());
         }
 
     };

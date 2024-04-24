@@ -1,13 +1,10 @@
 package com.cstav.genshinstrument.item;
 
-import java.util.function.Consumer;
-
-import com.cstav.genshinstrument.ModCreativeModeTabs;
+import com.cstav.genshinstrument.GICreativeModeTabs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.item.clientExtensions.ClientInstrumentItem;
 import com.cstav.genshinstrument.networking.OpenInstrumentPacketSender;
 import com.cstav.genshinstrument.util.ServerUtil;
-
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -17,6 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+
+import java.util.function.Consumer;
 
 /**
  * An item responsible for opening an {@link InstrumentScreen}.
@@ -31,7 +30,7 @@ public class InstrumentItem extends Item {
      * It should send a packet to the given player for opening this instrument's screen.
      */
     public InstrumentItem(final OpenInstrumentPacketSender onOpenRequest) {
-        this(onOpenRequest, new Properties().tab(ModCreativeModeTabs.instrumentsTab));
+        this(onOpenRequest, new Properties().tab(GICreativeModeTabs.instrumentsTab));
     }
     /**
      * @param onOpenRequest A server-side event fired when the player has requested to interact
