@@ -2,7 +2,6 @@ package com.cstav.genshinstrument;
 
 import com.cstav.genshinstrument.client.ModArmPose;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
-import com.cstav.genshinstrument.item.ModItems;
 import com.cstav.genshinstrument.item.GIItems;
 import com.cstav.genshinstrument.item.clientExtensions.ModItemPredicates;
 import com.cstav.genshinstrument.networking.GIPacketHandler;

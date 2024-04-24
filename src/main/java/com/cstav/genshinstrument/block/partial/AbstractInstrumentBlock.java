@@ -1,15 +1,11 @@
 package com.cstav.genshinstrument.block.partial;
 
-import com.cstav.genshinstrument.block.partial.client.IClientArmPoseProvider;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.ModArmPose;
 import com.cstav.genshinstrument.event.PosePlayerArmEvent;
-import com.cstav.genshinstrument.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.GIPacketHandler;
 import com.cstav.genshinstrument.networking.packet.instrument.NotifyInstrumentOpenPacket;
 import com.cstav.genshinstrument.util.ServerUtil;
-
-import net.minecraft.client.model.HumanoidModel.ArmPose;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -22,8 +18,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.util.function.Consumer;
 
 public abstract class AbstractInstrumentBlock extends BaseEntityBlock {
 

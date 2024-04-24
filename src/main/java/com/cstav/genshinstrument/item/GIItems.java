@@ -1,9 +1,6 @@
 package com.cstav.genshinstrument.item;
 
 import com.cstav.genshinstrument.GInstrumentMod;
-import net.minecraft.world.item.CreativeModeTabs;
-import static com.cstav.genshinstrument.util.ServerUtil.sendInternalOpenPacket;
-
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;

@@ -1,6 +1,6 @@
 package com.cstav.genshinstrument.item;
 
-import com.cstav.genshinstrument.ModCreativeModeTabs;
+import com.cstav.genshinstrument.GICreativeModeTabs;
 import com.cstav.genshinstrument.client.ModArmPose;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.event.PosePlayerArmEvent;
@@ -29,7 +29,7 @@ public class InstrumentItem extends Item implements ItemPoseModifier {
      * It should send a packet to the given player for opening this instrument's screen.
      */
     public InstrumentItem(final OpenInstrumentPacketSender onOpenRequest) {
-        this(onOpenRequest, new Properties().tab(ModCreativeModeTabs.instrumentsTab));
+        this(onOpenRequest, new Properties().tab(GICreativeModeTabs.instrumentsTab));
     }
     /**
      * @param onOpenRequest A server-side event fired when the player has requested to interact

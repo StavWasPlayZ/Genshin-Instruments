@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial;
 
 import com.cstav.genshinstrument.GInstrumentMod;
+import com.cstav.genshinstrument.util.CommonUtil;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -19,9 +20,11 @@ import org.slf4j.Logger;
 
 import java.awt.*;
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -203,14 +206,16 @@ public class InstrumentThemeLoader {
     }
     private static void updateIsGlobalThemed(final ResourceManager resourceManager) {
         isGlobalThemed = false;
-        final Optional<Resource> instrumentsMeta = resourceManager.getResource(INSTRUMENTS_META_LOC);
+        final Resource instrumentsMeta;
 
-        if (instrumentsMeta.isEmpty()) {
+        try {
+            instrumentsMeta = resourceManager.getResource(INSTRUMENTS_META_LOC);
+        } catch (IOException e) {
             LOGGER.warn("No instrument meta found for " + INSTRUMENTS_META_LOC + "!");
             return;
         }
 
-        try (final BufferedReader reader = instrumentsMeta.get().openAsReader()) {
+        try (final BufferedReader reader = openResourceReader(instrumentsMeta)) {
             isGlobalThemed = JsonParser.parseReader(reader)
                 .getAsJsonObject()
                 .get("is_global_pack")
@@ -243,14 +248,16 @@ public class InstrumentThemeLoader {
             LOGGER.error("Met an exception upon loading the instrument styler from "+styleLocation + logSuffix, e);
         }
 
-        // Make sure styler exists
-        final Optional<Resource> styler = resourceManager.getResource(styleLocation);
-        if (styler.isEmpty()) {
+        // Read from styler
+        final Resource styler;
+        try {
+            styler = resourceManager.getResource(styleLocation);
+        } catch (IOException e) {
             LOGGER.error("Could not retrieve styler information from "+styleLocation+"!");
             return;
         }
 
-        try (final BufferedReader reader = styler.get().openAsReader()) {
+        try (final BufferedReader reader = openResourceReader(styler)) {
             styleInfo = JsonParser.parseReader(reader).getAsJsonObject();
 
             // Call all load listeners on the current loader
@@ -265,6 +272,12 @@ public class InstrumentThemeLoader {
         LOGGER.info("Loaded and cached instrument style from "+styleLocation + logSuffix);
     }
 
+    private static BufferedReader openResourceReader(final Resource resource) {
+        return new BufferedReader(
+            new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8)
+        );
+    }
+
 
 
     public ResourceLocation getResourcesRootDir() {
@@ -272,8 +285,10 @@ public class InstrumentThemeLoader {
     }
 
     public ResourceLocation getStylerLocation() {
-        return ((!ignoreGlobal && isGlobalThemed) ? GLOBAL_LOC : getResourcesRootDir())
-            .withSuffix("/"+JSON_STYLER_NAME);
+        return CommonUtil.withSuffix(
+            (!ignoreGlobal && isGlobalThemed) ? GLOBAL_LOC : getResourcesRootDir(),
+            "/"+JSON_STYLER_NAME
+        );
     }
 
 
