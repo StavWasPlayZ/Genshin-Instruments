@@ -1,14 +1,13 @@
 package com.cstav.genshinstrument.sound;
 
 import com.cstav.genshinstrument.GInstrumentMod;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class ModSounds {
+public class GISounds {
     
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, GInstrumentMod.MODID);
     public static void register(final IEventBus bus) {
@@ -39,7 +38,7 @@ public class ModSounds {
      * Shorthand for {@code new NoteSoundRegistrar(soundRegistrar, instrumentId)}
      */
     private static NoteSoundRegistrar nsr(ResourceLocation instrumentId) {
-        return new NoteSoundRegistrar(ModSounds.SOUNDS, instrumentId);
+        return new NoteSoundRegistrar(GISounds.SOUNDS, instrumentId);
     }
 
 }

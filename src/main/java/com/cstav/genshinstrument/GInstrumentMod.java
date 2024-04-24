@@ -3,9 +3,10 @@ package com.cstav.genshinstrument;
 import com.cstav.genshinstrument.client.ModArmPose;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.item.ModItems;
+import com.cstav.genshinstrument.item.GIItems;
 import com.cstav.genshinstrument.item.clientExtensions.ModItemPredicates;
-import com.cstav.genshinstrument.networking.ModPacketHandler;
-import com.cstav.genshinstrument.sound.ModSounds;
+import com.cstav.genshinstrument.networking.GIPacketHandler;
+import com.cstav.genshinstrument.sound.GISounds;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -26,15 +27,15 @@ public class GInstrumentMod
     public GInstrumentMod()
     {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-        ModPacketHandler.registerPackets();
+        GIPacketHandler.registerPackets();
         bus.addListener(GInstrumentMod::clientSetup);
 
 
-        ModItems.register(bus);
+        GIItems.register(bus);
         // ModBlocks.register(bus);
         // ModBlockEntities.register(bus);
 
-        ModSounds.register(bus);
+        GISounds.register(bus);
 
         
         MinecraftForge.EVENT_BUS.register(this);
