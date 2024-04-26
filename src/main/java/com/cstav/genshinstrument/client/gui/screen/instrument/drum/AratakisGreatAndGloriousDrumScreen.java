@@ -14,15 +14,12 @@ import com.mojang.blaze3d.platform.InputConstants.Key;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
-//NOTE: There just to make it load on mod setup
-@EventBusSubscriber(Dist.CLIENT)
 public class AratakisGreatAndGloriousDrumScreen extends InstrumentScreen {
     public static final ResourceLocation INSTRUMENT_ID = new ResourceLocation(GInstrumentMod.MODID, "glorious_drum");
     public static final String[] NOTE_LAYOUT = {"D", "G"};
