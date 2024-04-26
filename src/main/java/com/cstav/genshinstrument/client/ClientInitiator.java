@@ -5,6 +5,7 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.drum.AratakisGreat
 import com.cstav.genshinstrument.client.gui.screen.instrument.floralzither.FloralZitherScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.vintagelyre.VintageLyreScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.windsonglyre.WindsongLyreScreen;
+import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.item.clientExtensions.ModItemPredicates;
 import com.cstav.genshinstrument.util.CommonUtil;
 import net.minecraftforge.api.distmarker.Dist;
@@ -25,6 +26,8 @@ public class ClientInitiator {
     public static void initClient(final FMLClientSetupEvent event) {
         ModArmPose.load();
         ModItemPredicates.register();
+
+        InstrumentKeyMappings.registerKeybinds();
 
         CommonUtil.loadClasses(LOAD_ME);
     }
