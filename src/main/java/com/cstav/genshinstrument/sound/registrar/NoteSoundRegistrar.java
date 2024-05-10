@@ -2,6 +2,8 @@ package com.cstav.genshinstrument.sound.registrar;
 
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
 import com.cstav.genshinstrument.sound.NoteSound;
+import com.cstav.genshinstrument.sound.registrar.impl.ChainableNoteSoundRegistrar;
+import com.cstav.genshinstrument.sound.registrar.impl.ChainedNoteSoundRegistrar;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;

@@ -1,6 +1,4 @@
-package com.cstav.genshinstrument.sound.registrar;
-
-import com.cstav.genshinstrument.sound.NoteSound;
+package com.cstav.genshinstrument.sound;
 
 public class HeldNoteSound {
 

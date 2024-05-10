@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.sound.registrar;
+package com.cstav.genshinstrument.sound.registrar.impl;
 
 import java.util.ArrayList;
 
