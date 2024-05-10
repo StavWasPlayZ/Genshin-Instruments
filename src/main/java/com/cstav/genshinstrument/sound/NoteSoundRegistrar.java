@@ -9,20 +9,25 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 
 public class NoteSoundRegistrar extends ChainableNoteSoundRegistrar<NoteSound, NoteSoundRegistrar> {
+    public static final String STEREO_SUFFIX = "_stereo";
+
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final HashMap<ResourceLocation, NoteSound[]> SOUNDS_REGISTRY = new HashMap<>();
     public static NoteSound[] getSounds(final ResourceLocation baseSoundName) {
         return SOUNDS_REGISTRY.get(baseSoundName);
     }
 
-    protected boolean alreadyRegistered = false;
+
+    protected final DeferredRegister<SoundEvent> soundRegistrar;
 
     public NoteSoundRegistrar(DeferredRegister<SoundEvent> soundRegistrar, ResourceLocation baseSoundLocation) {
-        super(soundRegistrar, baseSoundLocation);
+        super(baseSoundLocation);
+        this.soundRegistrar = soundRegistrar;
     }
 
     @Override
@@ -36,7 +41,15 @@ public class NoteSoundRegistrar extends ChainableNoteSoundRegistrar<NoteSound, N
      * For use with already registered sounds.
      */
     public NoteSoundRegistrar alreadyRegistered() {
-        alreadyRegistered = true;
+        paramsMap.put("ALREADY_REGISTERED", true);
+        return getThis();
+    }
+    /**
+     * Defines that this note sound will support stereo.
+     * Stereo sounds are suffixed with {@code "_stereo"}.
+     */
+    public NoteSoundRegistrar stereo() {
+        paramsMap.put("HAS_STEREO", true);
         return getThis();
     }
 
@@ -68,22 +81,25 @@ public class NoteSoundRegistrar extends ChainableNoteSoundRegistrar<NoteSound, N
         return registerGrid(GridInstrumentScreen.DEF_ROWS, GridInstrumentScreen.DEF_COLUMNS);
     }
 
-    protected NoteSound createNote(ResourceLocation soundLocation, int index) {
+    protected NoteSound createNote(ResourceLocation soundLocation, int index, Map<String, Object> paramMap) {
         final NoteSound sound = new NoteSound(index, baseSoundLocation);
 
         setSoundField((soundEvent) -> sound.mono = soundEvent, soundLocation);
-        if (hasStereo) {
+        if (getBool(paramMap, "HAS_STEREO")) {
             setSoundField((soundEvent) -> sound.stereo = soundEvent, soundLocation.withSuffix(STEREO_SUFFIX));
         }
 
         return sound;
     }
+    protected NoteSound createNote(ResourceLocation soundLocation, int index) {
+        return createNote(soundLocation, index, paramsMap);
+    }
     /**
-     * Registers a sound event to the {@link AbstractNoteSoundRegistrar#soundRegistrar} if necessary,
+     * Registers a sound event to the {@link NoteSoundRegistrar#soundRegistrar} if necessary,
      * and passes it to the consumer upon its registration.
      */
     protected void setSoundField(Function<SoundEvent, SoundEvent> fieldConsumer, ResourceLocation soundLocation) {
-        if (alreadyRegistered) {
+        if (getBool(paramsMap, "ALREADY_REGISTERED")) {
             fieldConsumer.apply(ForgeRegistries.SOUND_EVENTS.getValue(soundLocation));
         } else {
             soundRegistrar.register(soundLocation.getPath(), () ->
@@ -101,13 +117,38 @@ public class NoteSoundRegistrar extends ChainableNoteSoundRegistrar<NoteSound, N
      * <p>Call {@link NoteSoundRegistrar#registerAll()} after all registrations
      * are complete.</p>
      */
-    public ChainedNoteSoundRegistrar<NoteSound, NoteSoundRegistrar> chain(ResourceLocation soundLocation) {
-        return new ChainedNoteSoundRegistrar<>(getThis()) {
-            @Override
-            protected NoteSound createNote() {
-                return NoteSoundRegistrar.this.createNote(soundLocation, stackedSounds.size());
-            }
-        };
+    public Chained chain(ResourceLocation soundLocation) {
+        return new Chained(soundLocation);
+    }
+    public final class Chained extends ChainedNoteSoundRegistrar<NoteSound, NoteSoundRegistrar> {
+        private final ResourceLocation soundLocation;
+        public Chained(ResourceLocation soundLocation) {
+            super(NoteSoundRegistrar.this.getThis());
+            this.soundLocation = soundLocation;
+        }
+
+
+        @Override
+        protected NoteSound createNote() {
+            return NoteSoundRegistrar.this.createNote(soundLocation, stackedSounds.size(), paramsMap);
+        }
+
+        /**
+         * Skips the process of registering this note's SoundEvents with Minecraft.
+         * For use with already registered sounds.
+         */
+        public ChainedNoteSoundRegistrar<NoteSound, NoteSoundRegistrar> alreadyRegistered() {
+            paramsMap.put("ALREADY_REGISTERED", true);
+            return getThis();
+        }
+        /**
+         * Defines that this note sound will support stereo.
+         * Stereo sounds are suffixed with {@code "_stereo"}.
+         */
+        public ChainedNoteSoundRegistrar<NoteSound, NoteSoundRegistrar> stereo() {
+            paramsMap.put("HAS_STEREO", true);
+            return getThis();
+        }
     }
 
 
