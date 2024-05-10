@@ -207,6 +207,8 @@ public class NoteSound {
      */
     @OnlyIn(Dist.CLIENT)
     public void playLocally(final float pitch, final float volume) {
+        //TODO return the sound instance (check if server booms)
+        // Use this to disable held sounds
         Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(
             getByPreference().getLocation(), SoundSource.RECORDS,
             volume, pitch, SoundInstance.createUnseededRandom(),
