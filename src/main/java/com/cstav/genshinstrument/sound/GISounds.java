@@ -34,7 +34,8 @@ public class GISounds {
 
     public static final HeldNoteSound[]
         NIGHTWIND_HORN = hnsr(loc("nightwind_horn"))
-            .buildForAll((builder) -> builder.registerGrid(GridInstrumentScreen.DEF_ROWS, 2))
+            .buildForAll((builder) ->
+                builder.stereo().registerGrid(GridInstrumentScreen.DEF_ROWS, 2))
         .register()
     ;
 
