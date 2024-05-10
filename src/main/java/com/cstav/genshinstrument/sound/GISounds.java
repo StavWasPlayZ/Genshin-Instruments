@@ -2,6 +2,9 @@ package com.cstav.genshinstrument.sound;
 
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
+import com.cstav.genshinstrument.sound.registrar.HeldNoteSound;
+import com.cstav.genshinstrument.sound.registrar.HeldNoteSoundRegistrar;
+import com.cstav.genshinstrument.sound.registrar.NoteSoundRegistrar;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.eventbus.api.IEventBus;

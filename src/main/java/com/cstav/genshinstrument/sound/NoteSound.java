@@ -4,6 +4,7 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
+import com.cstav.genshinstrument.sound.registrar.NoteSoundRegistrar;
 import com.cstav.genshinstrument.util.CommonUtil;
 import com.cstav.genshinstrument.util.LabelUtil;
 import net.minecraft.client.Minecraft;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -52,13 +54,15 @@ public class NoteSound {
     public final int index;
     public final ResourceLocation baseSoundLocation;
 
-    SoundEvent mono;
-    SoundEvent stereo;
+    public SoundEvent mono;
+    public SoundEvent stereo;
 
     /**
      * Constructor for assigning mono & stereo lazily
+     * @apiNote Please use {@link NoteSoundRegistrar}!
      */
-    NoteSound(int index, ResourceLocation baseSoundLocation) {
+    @Internal
+    public NoteSound(int index, ResourceLocation baseSoundLocation) {
         this.index = index;
         this.baseSoundLocation = baseSoundLocation;
     }

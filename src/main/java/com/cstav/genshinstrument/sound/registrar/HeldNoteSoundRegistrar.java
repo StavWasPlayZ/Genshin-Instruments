@@ -1,5 +1,6 @@
-package com.cstav.genshinstrument.sound;
+package com.cstav.genshinstrument.sound.registrar;
 
+import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
