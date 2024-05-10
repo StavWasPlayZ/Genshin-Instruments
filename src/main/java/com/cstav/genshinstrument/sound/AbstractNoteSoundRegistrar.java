@@ -59,18 +59,6 @@ public abstract class AbstractNoteSoundRegistrar<T, R extends AbstractNoteSoundR
 
     protected final ArrayList<T> stackedSounds = new ArrayList<>();
 
-    /**
-     * <p>Chains a note sound to this registrar.</p>
-     * <p>Call back {@link ChainedNoteSoundRegistrar#add()}
-     * to perform the chain and return here.</p>
-     *
-     * <p>Call {@link NoteSoundRegistrar#registerAll()} after all registrations
-     * are complete.</p>
-     */
-    public ChainedNoteSoundRegistrar<T, R> chain(ResourceLocation soundLocation) {
-        validateNotChained();
-        return new ChainedNoteSoundRegistrar<>(getThis(), soundLocation);
-    }
 
     /**
      * @return The head of the stacked sounds
@@ -89,38 +77,11 @@ public abstract class AbstractNoteSoundRegistrar<T, R extends AbstractNoteSoundR
     }
     protected abstract IntFunction<T[]> noteArrayGenerator();
 
-    private void validateNotChained() {
+    protected void validateNotChained() {
         if (this instanceof ChainedNoteSoundRegistrar)
             throw new IllegalStateException("Called non-chainable method on a chained registrar!");
     }
 
     //#endregion
-
-
-    // Single register
-    /**
-     * Creates a singular {@link T} with null sounds, that will get filled
-     * upon registration.
-     */
-    public T registerNote() {
-        return createNote(baseSoundLocation, 0);
-    }
-
-
-    /**
-     * Creates a singular {@link NoteSound} with null sounds, that will get filled
-     * upon registration.
-     */
-    protected abstract T createNote(ResourceLocation soundLocation, int index);
-
-    /**
-     * Creates and registers a {@link NoteSound} with null sounds, that will get filled
-     * upon registration.
-     * The name of the registered sound entry will be suffixed by "_note{@code noteIndex}".
-     * @param noteIndex The index of the note
-     */
-    public T createNote(int noteIndex) {
-        return createNote(baseSoundLocation.withSuffix("_note_"+noteIndex), noteIndex);
-    }
 
 }

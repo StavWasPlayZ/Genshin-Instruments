@@ -1,27 +1,24 @@
 package com.cstav.genshinstrument.sound;
 
-import net.minecraft.resources.ResourceLocation;
-
 import java.util.ArrayList;
 import java.util.function.IntFunction;
 
-public class ChainedNoteSoundRegistrar<T, R extends AbstractNoteSoundRegistrar<T, R>> extends AbstractNoteSoundRegistrar<T, ChainedNoteSoundRegistrar<T, R>> {
-
-    private final ResourceLocation soundLocation;
+public abstract class ChainedNoteSoundRegistrar<T, R extends AbstractNoteSoundRegistrar<T, R>> extends AbstractNoteSoundRegistrar<T, ChainedNoteSoundRegistrar<T, R>> {
     private final R original;
 
-    public ChainedNoteSoundRegistrar(R original, ResourceLocation soundLocation) {
+    public ChainedNoteSoundRegistrar(R original) {
         super(original.soundRegistrar, original.baseSoundLocation);
-        this.soundLocation = soundLocation;
         this.original = original;
     }
 
     public R add() {
         final ArrayList<T> stackedSounds = original.stackedSounds;
 
-        stackedSounds.add(original.createNote(soundLocation, stackedSounds.size()));
+        stackedSounds.add(createNote(stackedSounds.size()));
         return original;
     }
+
+    protected abstract T createNote(final int noteIndex);
 
     @Override
     public ChainedNoteSoundRegistrar<T, R> getThis() {
@@ -36,10 +33,6 @@ public class ChainedNoteSoundRegistrar<T, R extends AbstractNoteSoundRegistrar<T
     @Override
     public T[] registerGrid(int rows, int columns) {
         throw new IllegalStateException("Called registerGrid in ChainedNoteRegistrar!");
-    }
-    @Override
-    protected T createNote(ResourceLocation soundLocation, int index) {
-        throw new IllegalStateException("Called createNote in ChainedNoteRegistrar!");
     }
     @Override
     protected IntFunction<T[]> noteArrayGenerator() {

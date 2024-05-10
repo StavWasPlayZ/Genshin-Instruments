@@ -40,7 +40,6 @@ public class NoteSoundRegistrar extends AbstractNoteSoundRegistrar<NoteSound, No
     }
 
 
-
     @Override
     public NoteSound[] register(final NoteSound[] noteSounds) {
         SOUNDS_REGISTRY.put(baseSoundLocation, noteSounds);
@@ -83,8 +82,47 @@ public class NoteSoundRegistrar extends AbstractNoteSoundRegistrar<NoteSound, No
         }
     }
 
+
+    /**
+     * <p>Chains a note sound to this registrar.</p>
+     * <p>Call back {@link ChainedNoteSoundRegistrar#add()}
+     * to perform the chain and return here.</p>
+     *
+     * <p>Call {@link NoteSoundRegistrar#registerAll()} after all registrations
+     * are complete.</p>
+     */
+    public ChainedNoteSoundRegistrar<NoteSound, NoteSoundRegistrar> chain(ResourceLocation soundLocation) {
+        return new ChainedNoteSoundRegistrar<>(getThis()) {
+            @Override
+            protected NoteSound createNote(int noteIndex) {
+                return NoteSoundRegistrar.this.createNote(soundLocation, noteIndex);
+            }
+        };
+    }
+
+
     @Override
     protected IntFunction<NoteSound[]> noteArrayGenerator() {
         return NoteSound[]::new;
+    }
+
+
+    // Single register
+    /**
+     * Creates a singular {@link NoteSound} with null sounds, that will get filled
+     * upon registration.
+     */
+    public NoteSound registerNote() {
+        return createNote(baseSoundLocation, 0);
+    }
+
+    /**
+     * Creates and registers a {@link NoteSound} with null sounds, that will get filled
+     * upon registration.
+     * The name of the registered sound entry will be suffixed by "_note{@code noteIndex}".
+     * @param noteIndex The index of the note
+     */
+    public NoteSound createNote(int noteIndex) {
+        return createNote(baseSoundLocation.withSuffix("_note_"+noteIndex), noteIndex);
     }
 }
