@@ -4,9 +4,11 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
 
 import java.util.HashMap;
+import java.util.function.Function;
 import java.util.function.IntFunction;
 
 public class NoteSoundRegistrar extends AbstractNoteSoundRegistrar<NoteSound, NoteSoundRegistrar> {
@@ -16,6 +18,8 @@ public class NoteSoundRegistrar extends AbstractNoteSoundRegistrar<NoteSound, No
         return SOUNDS_REGISTRY.get(baseSoundName);
     }
 
+    protected boolean alreadyRegistered = false;
+
     public NoteSoundRegistrar(DeferredRegister<SoundEvent> soundRegistrar, ResourceLocation baseSoundLocation) {
         super(soundRegistrar, baseSoundLocation);
     }
@@ -24,6 +28,17 @@ public class NoteSoundRegistrar extends AbstractNoteSoundRegistrar<NoteSound, No
     public NoteSoundRegistrar getThis() {
         return this;
     }
+
+
+    /**
+     * Skips the process of registering this note's SoundEvents with Minecraft.
+     * For use with already registered sounds.
+     */
+    public NoteSoundRegistrar alreadyRegistered() {
+        alreadyRegistered = true;
+        return getThis();
+    }
+
 
 
     @Override
@@ -53,6 +68,19 @@ public class NoteSoundRegistrar extends AbstractNoteSoundRegistrar<NoteSound, No
         }
 
         return sound;
+    }
+    /**
+     * Registers a sound event to the {@link AbstractNoteSoundRegistrar#soundRegistrar} if necessary,
+     * and passes it to the consumer upon its registration.
+     */
+    protected void setSoundField(Function<SoundEvent, SoundEvent> fieldConsumer, ResourceLocation soundLocation) {
+        if (alreadyRegistered) {
+            fieldConsumer.apply(ForgeRegistries.SOUND_EVENTS.getValue(soundLocation));
+        } else {
+            soundRegistrar.register(soundLocation.getPath(), () ->
+                fieldConsumer.apply(SoundEvent.createVariableRangeEvent(soundLocation))
+            );
+        }
     }
 
     @Override

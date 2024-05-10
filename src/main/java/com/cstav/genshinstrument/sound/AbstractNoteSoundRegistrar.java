@@ -4,10 +4,8 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.G
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
-import java.util.function.Function;
 import java.util.function.IntFunction;
 
 public abstract class AbstractNoteSoundRegistrar<T, R extends AbstractNoteSoundRegistrar<T, R>> {
@@ -20,7 +18,6 @@ public abstract class AbstractNoteSoundRegistrar<T, R extends AbstractNoteSoundR
     protected final ResourceLocation baseSoundLocation;
 
     protected boolean hasStereo = false;
-    protected boolean alreadyRegistered = false;
 
     public AbstractNoteSoundRegistrar(DeferredRegister<SoundEvent> soundRegistrar, ResourceLocation baseSoundLocation) {
         this.soundRegistrar = soundRegistrar;
@@ -38,15 +35,6 @@ public abstract class AbstractNoteSoundRegistrar<T, R extends AbstractNoteSoundR
         hasStereo = true;
         return getThis();
     }
-    /**
-     * Skips the process of registering this note's SoundEvents with Minecraft.
-     * For use with already registered sounds.
-     */
-    public R alreadyRegistered() {
-        alreadyRegistered = true;
-        return getThis();
-    }
-
 
     /* ----------- Registration Methods ----------- */
 
@@ -124,20 +112,6 @@ public abstract class AbstractNoteSoundRegistrar<T, R extends AbstractNoteSoundR
      * upon registration.
      */
     protected abstract T createNote(ResourceLocation soundLocation, int index);
-
-    /**
-     * Registers a sound event to the {@link AbstractNoteSoundRegistrar#soundRegistrar} if necessary,
-     * and passes it to the consumer upon its registration.
-     */
-    protected void setSoundField(Function<SoundEvent, SoundEvent> fieldConsumer, ResourceLocation soundLocation) {
-        if (alreadyRegistered) {
-            fieldConsumer.apply(ForgeRegistries.SOUND_EVENTS.getValue(soundLocation));
-        } else {
-            soundRegistrar.register(soundLocation.getPath(), () ->
-                fieldConsumer.apply(SoundEvent.createVariableRangeEvent(soundLocation))
-            );
-        }
-    }
 
     /**
      * Creates and registers a {@link NoteSound} with null sounds, that will get filled
