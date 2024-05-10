@@ -43,6 +43,12 @@ public class GIItems {
             new InstrumentItem(
                 (player) -> sendInternalOpenPacket(player, "glorious_drum")
             )
+        ),
+
+        NIGHTWIND_HORN = ITEMS.register("nightwind_horn", () ->
+        new WindInstrumentItem(
+                (player) -> sendInternalOpenPacket(player, "nightwind_horn")
+            )
         )
     ;
 

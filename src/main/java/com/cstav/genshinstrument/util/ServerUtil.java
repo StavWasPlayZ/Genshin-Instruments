@@ -26,6 +26,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent.Context;
 import net.minecraftforge.network.simple.SimpleChannel;
+import org.jetbrains.annotations.ApiStatus.Internal;
 import org.slf4j.Logger;
 
 import java.util.List;
@@ -248,6 +249,7 @@ public class ServerUtil {
     /**
      * @apiNote This method should only be used by the internal Genshin Instruments mod!
      */
+    @Internal
     public static void sendInternalOpenPacket(ServerPlayer player, String instrumentType) {
         GIPacketHandler.sendToClient(new OpenInstrumentPacket(instrumentType), player);
     }

@@ -1,14 +1,11 @@
 package com.cstav.genshinstrument.networking.packet.instrument;
 
-import java.util.Map;
-import java.util.function.Supplier;
-
 import com.cstav.genshinstrument.client.gui.screen.instrument.drum.AratakisGreatAndGloriousDrumScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.floralzither.FloralZitherScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.nightwind_horn.windsonglyre.NightwindHornScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.vintagelyre.VintageLyreScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.windsonglyre.WindsongLyreScreen;
 import com.cstav.genshinstrument.networking.IModPacket;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.FriendlyByteBuf;
@@ -17,13 +14,17 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent.Context;
 
+import java.util.Map;
+import java.util.function.Supplier;
+
 public class OpenInstrumentPacket implements IModPacket {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_CLIENT;
     private static final Map<String, Supplier<Supplier<Screen>>> INSTRUMENT_MAP = Map.of(
         "windsong_lyre", () -> WindsongLyreScreen::new,
         "vintage_lyre", () -> VintageLyreScreen::new,
         "floral_zither", () -> FloralZitherScreen::new,
-        "glorious_drum", () -> AratakisGreatAndGloriousDrumScreen::new
+        "glorious_drum", () -> AratakisGreatAndGloriousDrumScreen::new,
+        "nightwind_horn", () -> NightwindHornScreen::new
     );
 
     protected Map<String, Supplier<Supplier<Screen>>> getInstrumentMap() {
