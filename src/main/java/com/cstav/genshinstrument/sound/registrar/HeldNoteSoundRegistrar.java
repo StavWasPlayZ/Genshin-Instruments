@@ -36,7 +36,6 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
     public HeldNoteSoundRegistrar buildForAll(final Function<NoteSoundRegistrar, NoteSound[]> builder) {
         return getThis()
             .attackBuilder(builder)
-            .releaseBuilder(builder)
             .holdBuilder(builder);
     }
 
@@ -46,10 +45,6 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
     }
     public HeldNoteSoundRegistrar holdBuilder(final Function<NoteSoundRegistrar, NoteSound[]> builder) {
         this.hold = builder.apply(nsr(baseSoundLocation.withSuffix("_hold")));
-        return getThis();
-    }
-    public HeldNoteSoundRegistrar releaseBuilder(final Function<NoteSoundRegistrar, NoteSound[]> builder) {
-        this.release = builder.apply(nsr(baseSoundLocation.withSuffix("_release")));
         return getThis();
     }
 
@@ -71,7 +66,7 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
         final HeldNoteSound[] noteSounds = new HeldNoteSound[sounds()];
 
         for (int i = 0; i < sounds(); i++) {
-            noteSounds[i] = new HeldNoteSound(attack[i], hold[i], release[i]);
+            noteSounds[i] = new HeldNoteSound(attack[i], hold[i]);
         }
 
         SOUNDS_REGISTRY.put(baseSoundLocation, noteSounds);
