@@ -1,6 +1,8 @@
 package com.cstav.genshinstrument.sound;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraftforge.registries.DeferredRegister;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,8 +16,8 @@ import java.util.function.IntFunction;
  * @param <R> The registrar type
  */
 public abstract class ChainableNoteSoundRegistrar<T, R extends AbstractNoteSoundRegistrar<T, R>> extends AbstractNoteSoundRegistrar<T, R> {
-    public ChainableNoteSoundRegistrar(ResourceLocation baseSoundLocation) {
-        super(baseSoundLocation);
+    public ChainableNoteSoundRegistrar(DeferredRegister<SoundEvent> soundRegistrar, ResourceLocation baseSoundLocation) {
+        super(soundRegistrar, baseSoundLocation);
     }
 
     public abstract T[] register(final T[] noteSounds);

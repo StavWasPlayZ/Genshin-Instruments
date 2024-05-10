@@ -6,7 +6,7 @@ public abstract class ChainedNoteSoundRegistrar<T, R extends ChainableNoteSoundR
     private final R original;
 
     public ChainedNoteSoundRegistrar(R original) {
-        super(original.baseSoundLocation);
+        super(original.soundRegistrar, original.baseSoundLocation);
         this.original = original;
     }
 

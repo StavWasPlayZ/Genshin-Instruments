@@ -23,11 +23,8 @@ public class NoteSoundRegistrar extends ChainableNoteSoundRegistrar<NoteSound, N
     }
 
 
-    protected final DeferredRegister<SoundEvent> soundRegistrar;
-
     public NoteSoundRegistrar(DeferredRegister<SoundEvent> soundRegistrar, ResourceLocation baseSoundLocation) {
-        super(baseSoundLocation);
-        this.soundRegistrar = soundRegistrar;
+        super(soundRegistrar, baseSoundLocation);
     }
 
     @Override
