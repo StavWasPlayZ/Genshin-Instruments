@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument.sound;
 
 import com.cstav.genshinstrument.GInstrumentMod;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -28,6 +29,13 @@ public class GISounds {
         .registerAll()
     ;
 
+    public static final HeldNoteSound[]
+        NIGHTWIND_HORN = hnsr(loc("nightwind_horn"))
+            .buildForAll((builder) -> builder.registerGrid(GridInstrumentScreen.DEF_ROWS, 2))
+        .register()
+    ;
+
+
     /**
      * Shorthand for {@code new ResourceLocation(Main.MODID, name)}
      */
@@ -39,6 +47,12 @@ public class GISounds {
      */
     private static NoteSoundRegistrar nsr(ResourceLocation instrumentId) {
         return new NoteSoundRegistrar(GISounds.SOUNDS, instrumentId);
+    }
+    /**
+     * Shorthand for {@code new HeldNoteSoundRegistrar(soundRegistrar, instrumentId)}
+     */
+    private static HeldNoteSoundRegistrar hnsr(ResourceLocation instrumentId) {
+        return new HeldNoteSoundRegistrar(GISounds.SOUNDS, instrumentId);
     }
 
 }
