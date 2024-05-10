@@ -1,5 +1,6 @@
 package com.cstav.genshinstrument.sound;
 
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -11,7 +12,7 @@ import java.util.HashMap;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 
-public class NoteSoundRegistrar extends AbstractNoteSoundRegistrar<NoteSound, NoteSoundRegistrar> {
+public class NoteSoundRegistrar extends ChainableNoteSoundRegistrar<NoteSound, NoteSoundRegistrar> {
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final HashMap<ResourceLocation, NoteSound[]> SOUNDS_REGISTRY = new HashMap<>();
     public static NoteSound[] getSounds(final ResourceLocation baseSoundName) {
@@ -48,7 +49,9 @@ public class NoteSoundRegistrar extends AbstractNoteSoundRegistrar<NoteSound, No
         return noteSounds;
     }
 
-    @Override
+    /**
+     * Registers a matrix of sounds for a grid instrument.
+     */
     public NoteSound[] registerGrid(final int rows, final int columns) {
         final NoteSound[] sounds = new NoteSound[rows * columns];
 
@@ -56,6 +59,13 @@ public class NoteSoundRegistrar extends AbstractNoteSoundRegistrar<NoteSound, No
             sounds[i] = createNote(i);
 
         return register(sounds);
+    }
+    /**
+     * Registers a matrix of sounds for a grid instrument, with the
+     * default amount of {@link GridInstrumentScreen#DEF_ROWS rows} and {@link GridInstrumentScreen#DEF_COLUMNS columns}.
+     */
+    public NoteSound[] registerGrid() {
+        return registerGrid(GridInstrumentScreen.DEF_ROWS, GridInstrumentScreen.DEF_COLUMNS);
     }
 
     protected NoteSound createNote(ResourceLocation soundLocation, int index) {
@@ -94,8 +104,8 @@ public class NoteSoundRegistrar extends AbstractNoteSoundRegistrar<NoteSound, No
     public ChainedNoteSoundRegistrar<NoteSound, NoteSoundRegistrar> chain(ResourceLocation soundLocation) {
         return new ChainedNoteSoundRegistrar<>(getThis()) {
             @Override
-            protected NoteSound createNote(int noteIndex) {
-                return NoteSoundRegistrar.this.createNote(soundLocation, noteIndex);
+            protected NoteSound createNote() {
+                return NoteSoundRegistrar.this.createNote(soundLocation, stackedSounds.size());
             }
         };
     }
