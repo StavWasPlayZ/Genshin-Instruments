@@ -32,7 +32,7 @@ public abstract class HeldNoteButton extends NoteButton implements IHoldableNote
     public void release() {
         super.release();
         isHeld = false;
-        ((HeldNoteButtonRenderer)noteRenderer).playRelease();
+        ((HeldNoteButtonRenderer<?>)noteRenderer).playRelease();
     }
 
     @Override
@@ -45,5 +45,5 @@ public abstract class HeldNoteButton extends NoteButton implements IHoldableNote
     }
 
     @Override
-    protected abstract HeldNoteButtonRenderer initNoteRenderer();
+    protected abstract HeldNoteButtonRenderer<?> initNoteRenderer();
 }
