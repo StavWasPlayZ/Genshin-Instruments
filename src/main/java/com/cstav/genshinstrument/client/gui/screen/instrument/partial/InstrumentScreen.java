@@ -404,7 +404,7 @@ public abstract class InstrumentScreen extends Screen {
 
         final NoteButton note = getNoteByKey(pKeyCode);
         if (note != null)
-            note.locked = false;
+            note.release();
 
         return super.keyReleased(pKeyCode, pScanCode, pModifiers);
     }
@@ -491,8 +491,10 @@ public abstract class InstrumentScreen extends Screen {
      * Unlocks any focused {@link NoteButton}s
      */
     private void unlockFocused() {
-        if ((getFocused() != null) && (getFocused() instanceof NoteButton))
-            ((NoteButton)getFocused()).locked = false;
+        if ((getFocused() != null) && (getFocused() instanceof NoteButton)) {
+            ((NoteButton)getFocused()).release();
+            setFocused(null);
+        }
     }
 
 

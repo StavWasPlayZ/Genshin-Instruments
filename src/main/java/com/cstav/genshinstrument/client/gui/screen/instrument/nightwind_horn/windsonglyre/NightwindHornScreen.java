@@ -3,6 +3,8 @@ package com.cstav.genshinstrument.client.gui.screen.instrument.nightwind_horn.wi
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.NoteGridButton;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.held.HeldGridNoteButton;
 import com.cstav.genshinstrument.sound.GISounds;
 import com.cstav.genshinstrument.sound.HeldNoteSound;
 import com.cstav.genshinstrument.sound.HeldNoteSound.Phase;
@@ -26,10 +28,15 @@ public class NightwindHornScreen extends GridInstrumentScreen {
         return 2;
     }
 
-    //TODO: THIS SHOULD BE A HOLD INSTRUMENT
+
     @Override
     public NoteSound[] getInitSounds() {
         return HeldNoteSound.getSounds(GISounds.NIGHTWIND_HORN, Phase.ATTACK);
+    }
+
+    @Override
+    public NoteGridButton createNote(int row, int column) {
+        return new HeldGridNoteButton(row, column, this);
     }
 
     @Override

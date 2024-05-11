@@ -73,7 +73,9 @@ public abstract class InstrumentMidiReceiver {
 
         // Release the previously pressed note
         if (pressedMidiNote != null)
-            pressedMidiNote.locked = false;
+            //TODO this should not call release, but rather directly unlock!
+            // Call release on MIDI release signal.
+            pressedMidiNote.release();
 
         // We only care for press events:
         

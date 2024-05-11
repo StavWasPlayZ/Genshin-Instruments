@@ -168,16 +168,25 @@ public abstract class NoteButton extends AbstractButton {
     }
 
 
-    public boolean locked = false;
-    public void play() {
+    private boolean locked = false;
+    public void release() {
+        locked = false;
+    }
+
+    /**
+     * Plays this note button.
+     * @return Whether the operation succeed
+     */
+    public boolean play() {
         if (locked)
-            return;
+            return false;
         
         sound.playLocally(getPitch(), instrumentScreen.volume());
         sendNotePlayPacket();
         playNoteAnimation(false);
 
         locked = true;
+        return true;
     }
     @Override
     public void onPress() {

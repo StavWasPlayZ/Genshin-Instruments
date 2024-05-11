@@ -17,6 +17,7 @@ public class NoteButtonRenderer {
     private static final Minecraft MINECRAFT = Minecraft.getInstance();
 
     private static final double SHARP_MULTIPLIER = .9;
+    protected static final double NOTE_DUR = .15, NOTE_TARGET_VAL = 9;
     
     public final NoteButton noteButton;
     protected final InstrumentScreen instrumentScreen;
@@ -30,8 +31,12 @@ public class NoteButtonRenderer {
 
     // Animations
     public final NoteAnimationController noteAnimation;
-    private boolean foreignPlaying = false;
+    protected boolean foreignPlaying = false;
     protected final ArrayList<NoteRing> rings = new ArrayList<>();
+
+    protected NoteAnimationController initNoteAnimation() {
+        return new NoteAnimationController(NOTE_DUR, NOTE_TARGET_VAL, noteButton);
+    }
 
 
     public NoteButtonRenderer(NoteButton noteButton, Supplier<ResourceLocation> noteTextureProvider) {
@@ -39,7 +44,7 @@ public class NoteButtonRenderer {
         this.noteTextureProvider = noteTextureProvider;
         this.instrumentScreen = noteButton.instrumentScreen;
 
-        noteAnimation = new NoteAnimationController(.15f, 9, noteButton);
+        noteAnimation = initNoteAnimation();
 
         
         rootLocation = instrumentScreen.getResourceFromRoot("note");
