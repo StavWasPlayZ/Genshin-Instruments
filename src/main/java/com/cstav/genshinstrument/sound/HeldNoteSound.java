@@ -1,5 +1,7 @@
 package com.cstav.genshinstrument.sound;
 
+import java.util.Arrays;
+
 public class HeldNoteSound {
 
     NoteSound attack, hold;
@@ -14,6 +16,11 @@ public class HeldNoteSound {
             case HOLD -> hold;
             case ATTACK -> attack;
         };
+    }
+    public static NoteSound[] getSounds(final HeldNoteSound[] sounds, final Phase phase) {
+        return Arrays.stream(sounds)
+            .map((sound) -> sound.getSound(phase))
+            .toArray(NoteSound[]::new);
     }
 
     public static enum Phase {
