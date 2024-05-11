@@ -199,7 +199,9 @@ public class NoteButtonRenderer {
         addRing();
     }
     public void addRing() {
-        rings.add(new NoteRing(noteButton, foreignPlaying));
+        final NoteRing ring = new NoteRing(noteButton, foreignPlaying);
+        rings.add(ring);
+        ring.playAnim();
     }
 
     public void resetAnimations() {

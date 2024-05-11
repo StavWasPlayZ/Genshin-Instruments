@@ -19,12 +19,14 @@ public class NoteRing {
     public final NoteButton note;
     public int size;
     public float alpha;
+    protected boolean isForeign;
 
     public NoteRing(final NoteButton note, final boolean isForeign) {
         this.note = note;
+        this.isForeign = isForeign;
         ringAnimation = new RingAnimationController(.3, 40, this);
-
-        // Immediately play
+    }
+    public void playAnim() {
         if (isForeign)
             ringAnimation.play(-.4f);
         else

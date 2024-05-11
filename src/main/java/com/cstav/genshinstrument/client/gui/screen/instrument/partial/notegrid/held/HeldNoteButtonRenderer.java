@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.
 
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButtonRenderer;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteRing;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.animation.HeldNoteAnimationController;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.animation.NoteAnimationController;
 import net.minecraft.client.gui.GuiGraphics;
@@ -28,8 +29,8 @@ public class HeldNoteButtonRenderer extends NoteButtonRenderer {
     public void render(GuiGraphics gui, int mouseX, int mouseY, float partialTick, InstrumentThemeLoader themeLoader) {
         if (getBtn().isHeld()) {
             ringTimeAlive += partialTick;
-            if (ringTimeAlive > 4) {
-                addRing();
+            if (ringTimeAlive > RING_ADDITION_INTERVAL) {
+                addRing(true);
                 ringTimeAlive = 0;
             }
         } else {
@@ -42,6 +43,16 @@ public class HeldNoteButtonRenderer extends NoteButtonRenderer {
         foreignPlaying = isForeign;
         playHold();
         addRing();
+    }
+
+    @Override
+    public void addRing() {
+        addRing(false);
+    }
+    public void addRing(final boolean isConsecutive) {
+        final NoteRing ring = new HeldNoteRing(getBtn(), foreignPlaying, isConsecutive);
+        rings.add(ring);
+        ring.playAnim();
     }
 
     @Override

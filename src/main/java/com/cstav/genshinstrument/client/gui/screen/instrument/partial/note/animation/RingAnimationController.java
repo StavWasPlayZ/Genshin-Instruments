@@ -7,9 +7,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class RingAnimationController extends AnimationController {
+    public static final float INIT_ALPHA = -.08f;
 
     protected final double initSize;
-    protected final float initAlpha = -.08f;
     protected final NoteRing ring;
     
     protected final double ringSizeMultiplier;
@@ -41,7 +41,7 @@ public class RingAnimationController extends AnimationController {
         super.resetAnimVars();
 
         ring.size = (int)(dSize = initSize);
-        ring.alpha = initAlpha;
+        ring.alpha = INIT_ALPHA;
     }
 
     public void play(final float initAlpha) {
