@@ -3,10 +3,13 @@ package com.cstav.genshinstrument.client.midi;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.held.HeldGridNoteButton;
 import com.cstav.genshinstrument.event.MidiEvent;
 import com.cstav.genshinstrument.sound.NoteSound;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
 
 public abstract class InstrumentMidiReceiver {
     public static final int MIN_MIDI_VELOCITY = 6;
@@ -17,8 +20,10 @@ public abstract class InstrumentMidiReceiver {
         MidiController.loadByConfigs();
     }
 
-    
-    private @Nullable NoteButton pressedMidiNote = null;
+    /**
+     * Maps a note message to a note button
+     */
+    private final HashMap<Byte, NoteButton> pressedMidiNotes = new HashMap<>();
 
     /**
      * Fires when a MIDI note is being pressed successfully, only if this is {@link InstrumentScreen#isMidiInstrument a midi instrument}.
@@ -60,10 +65,11 @@ public abstract class InstrumentMidiReceiver {
         }
 
 
-        pressedMidiNote = handleMidiPress(note, pitch);
-        if (pressedMidiNote != null)
+        final NoteButton pressedMidiNote = handleMidiPress(note, pitch);
+        if (pressedMidiNote != null) {
             pressedMidiNote.play();
-
+            pressedMidiNotes.put(message[1], pressedMidiNote);
+        }
 
         instrument.setVolume(prevVolume);
     }
@@ -71,24 +77,29 @@ public abstract class InstrumentMidiReceiver {
     protected boolean canPerformMidi(final MidiEvent event) {
         final byte[] message = event.message.getMessage();
 
+        final NoteButton prevBtn = pressedMidiNotes.get(message[1]);
+        boolean isHoldableBtn = prevBtn instanceof HeldGridNoteButton;
         // Release the previously pressed note
-        if (pressedMidiNote != null)
-            //TODO this should not call release, but rather directly unlock!
-            // Call release on MIDI release signal.
-            pressedMidiNote.release();
+        if (prevBtn != null && !isHoldableBtn) {
+            prevBtn.release();
+        }
 
-        // We only care for press events:
-        
+
         // Ignore last 4 bits (don't care about the channel atm)
         final int eventType = (message[0] >> 4) << 4;
-        if (eventType != -112)
-            return false;
 
-        if (!ModClientConfigs.ACCEPT_ALL_CHANNELS.get())
-            return (message[0] - eventType) == ModClientConfigs.MIDI_CHANNEL.get();
+        switch (eventType) {
+            case -112: // press
+                if (!ModClientConfigs.ACCEPT_ALL_CHANNELS.get())
+                    return (message[0] - eventType) == ModClientConfigs.MIDI_CHANNEL.get();
 
+                return true;
+            case -128: // release
+                if (isHoldableBtn)
+                    prevBtn.release();
+        }
 
-        return true;
+        return false;
     }
 
 
