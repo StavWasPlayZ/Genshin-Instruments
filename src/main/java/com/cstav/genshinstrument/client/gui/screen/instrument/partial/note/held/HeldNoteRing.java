@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.held;
+package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held;
 
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteRing;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.animation.RingAnimationController;

@@ -1,6 +1,6 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.animation;
 
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.held.HeldGridNoteButton;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.HeldGridNoteButton;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 

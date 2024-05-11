@@ -3,7 +3,7 @@ package com.cstav.genshinstrument.client.midi;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.held.HeldGridNoteButton;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.HeldGridNoteButton;
 import com.cstav.genshinstrument.event.MidiEvent;
 import com.cstav.genshinstrument.sound.NoteSound;
 import net.minecraft.util.Mth;
