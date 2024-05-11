@@ -25,24 +25,16 @@ public class HeldNoteAnimationController extends NoteAnimationController {
 
     @Override
     protected void resetAnimVars() {
-        if (!holding) {
-            // Keep holdin; call super-super reset only
-            duration = initDuration;
-            targetValue = initTargetValue;
+        super.resetAnimVars();
 
-            animTime = 0;
-        } else {
-            super.resetAnimVars();
+        if (!holding) {
+            final int size = (int)(button.instrumentScreen.getNoteSize() - targetValue);
+            button.setWidth(size);
+            button.setHeight(size);
+            dSize = size;
+
+            button.moveToCenter();
         }
-//        super.resetAnimVars();
-//        //TODO make these the holding params
-//        if (holding) {
-//            button.setWidth(button.instrumentScreen.getNoteSize());
-//            button.setHeight(button.instrumentScreen.getNoteSize());
-//            dSize = button.instrumentScreen.getNoteSize();
-//
-//            button.setPosition(button.getInitX(), button.getInitY());
-//        }
     }
 
     public void playReleased(final boolean isForeign) {
