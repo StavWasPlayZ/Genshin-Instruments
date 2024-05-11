@@ -1,9 +1,10 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.held;
 
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButtonRenderer;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteRing;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.animation.HeldNoteAnimationController;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.animation.NoteAnimationController;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -12,12 +13,35 @@ import java.util.function.Supplier;
 
 @OnlyIn(Dist.CLIENT)
 public class HeldNoteButtonRenderer extends NoteButtonRenderer {
+    private static final int RING_ADDITION_INTERVAL = 4;
+
     public HeldNoteButtonRenderer(HeldGridNoteButton noteButton, Supplier<ResourceLocation> noteTextureProvider) {
         super(noteButton, noteTextureProvider);
     }
 
     private HeldGridNoteButton getBtn() {
         return (HeldGridNoteButton) noteButton;
+    }
+
+    private float ringTimeAlive = 0;
+    @Override
+    public void render(GuiGraphics gui, int mouseX, int mouseY, float partialTick, InstrumentThemeLoader themeLoader) {
+        if (getBtn().isHeld()) {
+            ringTimeAlive += partialTick;
+            if (ringTimeAlive > 4) {
+                addRing();
+                ringTimeAlive = 0;
+            }
+        } else {
+            ringTimeAlive = 0;
+        }
+
+        super.render(gui, mouseX, mouseY, partialTick, themeLoader);
+    }
+    public void playNoteAnimation(final boolean isForeign) {
+        foreignPlaying = isForeign;
+        playHold();
+        addRing();
     }
 
     @Override
@@ -33,11 +57,7 @@ public class HeldNoteButtonRenderer extends NoteButtonRenderer {
     public void playRelease() {
         noteAnimation().playReleased(foreignPlaying);
     }
-
-    public void playNoteAnimation(final boolean isForeign) {
-        foreignPlaying = isForeign;
-
-        noteAnimation().playHold(isForeign);
-        rings.add(new NoteRing(noteButton, isForeign));
+    public void playHold() {
+        noteAnimation().playHold(foreignPlaying);
     }
 }

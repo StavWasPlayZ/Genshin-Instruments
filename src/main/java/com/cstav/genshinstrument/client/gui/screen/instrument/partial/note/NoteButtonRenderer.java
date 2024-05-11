@@ -17,7 +17,7 @@ import java.util.function.Supplier;
 
 @OnlyIn(Dist.CLIENT)
 public class NoteButtonRenderer {
-    private static final Minecraft MINECRAFT = Minecraft.getInstance();
+    protected static final Minecraft MINECRAFT = Minecraft.getInstance();
 
     private static final double SHARP_MULTIPLIER = .9;
     protected static final double NOTE_DUR = .15, NOTE_TARGET_VAL = 9;
@@ -196,7 +196,10 @@ public class NoteButtonRenderer {
         foreignPlaying = isForeign;
 
         noteAnimation.play(isForeign);
-        rings.add(new NoteRing(noteButton, isForeign));
+        addRing();
+    }
+    public void addRing() {
+        rings.add(new NoteRing(noteButton, foreignPlaying));
     }
 
     public void resetAnimations() {
