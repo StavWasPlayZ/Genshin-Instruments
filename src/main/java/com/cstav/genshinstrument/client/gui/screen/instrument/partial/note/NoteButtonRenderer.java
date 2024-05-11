@@ -9,10 +9,13 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.ArrayList;
 import java.util.function.Supplier;
 
+@OnlyIn(Dist.CLIENT)
 public class NoteButtonRenderer {
     private static final Minecraft MINECRAFT = Minecraft.getInstance();
 
