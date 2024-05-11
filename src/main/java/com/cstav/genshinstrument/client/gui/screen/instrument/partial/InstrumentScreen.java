@@ -355,7 +355,7 @@ public abstract class InstrumentScreen extends Screen {
     }
     protected void onInstrumentRenderStateChanged(final boolean isVisible) {
         if (!isVisible) {
-            notesIterable().forEach((note) -> note.getRenderer().ResetAnimations());
+            notesIterable().forEach((note) -> note.getRenderer().resetAnimations());
         }
 
         renderables.forEach((renderable) -> {

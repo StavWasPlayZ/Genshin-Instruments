@@ -199,7 +199,7 @@ public class NoteButtonRenderer {
         rings.add(new NoteRing(noteButton, isForeign));
     }
 
-    public void ResetAnimations() {
+    public void resetAnimations() {
         rings.clear();
         noteAnimation.stop();
     }
