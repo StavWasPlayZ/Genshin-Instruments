@@ -71,8 +71,8 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
 
         SOUNDS_REGISTRY.put(baseSoundLocation, noteSounds);
 
-        LOGGER.info("Successfully loaded {} (x3, {} total) held note sounds for {}",
-            noteSounds.length, noteSounds.length * 3, baseSoundLocation);
+        LOGGER.info("Successfully loaded {} (x2, {} total) held note sounds for {}",
+            noteSounds.length, noteSounds.length * 2, baseSoundLocation);
 
         return noteSounds;
     }
