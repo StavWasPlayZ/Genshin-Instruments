@@ -3,7 +3,7 @@ package com.cstav.genshinstrument.client.midi;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.HeldGridNoteButton;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.IHoldableNoteButton;
 import com.cstav.genshinstrument.event.MidiEvent;
 import com.cstav.genshinstrument.sound.NoteSound;
 import net.minecraft.util.Mth;
@@ -78,7 +78,7 @@ public abstract class InstrumentMidiReceiver {
         final byte[] message = event.message.getMessage();
 
         final NoteButton prevBtn = pressedMidiNotes.get(message[1]);
-        boolean isHoldableBtn = prevBtn instanceof HeldGridNoteButton;
+        boolean isHoldableBtn = prevBtn instanceof IHoldableNoteButton;
         // Release the previously pressed note
         if (prevBtn != null && !isHoldableBtn) {
             prevBtn.release();

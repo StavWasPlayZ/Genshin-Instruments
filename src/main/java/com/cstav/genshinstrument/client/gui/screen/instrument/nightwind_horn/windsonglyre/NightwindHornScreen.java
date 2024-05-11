@@ -2,8 +2,8 @@ package com.cstav.genshinstrument.client.gui.screen.instrument.nightwind_horn.wi
 
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.HeldGridNoteButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.HeldGridNoteButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.NoteGridButton;
 import com.cstav.genshinstrument.sound.GISounds;
 import com.cstav.genshinstrument.sound.HeldNoteSound;

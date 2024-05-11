@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held;
 
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButtonRenderer;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteRing;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.animation.HeldNoteAnimationController;
@@ -13,15 +14,16 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.function.Supplier;
 
 @OnlyIn(Dist.CLIENT)
-public class HeldNoteButtonRenderer extends NoteButtonRenderer {
+public class HeldNoteButtonRenderer<T extends NoteButton & IHoldableNoteButton> extends NoteButtonRenderer {
     private static final int RING_ADDITION_INTERVAL = 4;
 
-    public HeldNoteButtonRenderer(HeldGridNoteButton noteButton, Supplier<ResourceLocation> noteTextureProvider) {
+    public HeldNoteButtonRenderer(T noteButton, Supplier<ResourceLocation> noteTextureProvider) {
         super(noteButton, noteTextureProvider);
     }
 
-    private HeldGridNoteButton getBtn() {
-        return (HeldGridNoteButton) noteButton;
+    @SuppressWarnings("unchecked")
+    private T getBtn() {
+        return (T) noteButton;
     }
 
     private float ringTimeAlive = 0;

@@ -1,12 +1,12 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.animation;
 
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.HeldGridNoteButton;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class HeldNoteAnimationController extends NoteAnimationController {
-    public HeldNoteAnimationController(double duration, double targetValue, HeldGridNoteButton button) {
+    public HeldNoteAnimationController(double duration, double targetValue, NoteButton button) {
         super(duration, targetValue, button);
     }
 
