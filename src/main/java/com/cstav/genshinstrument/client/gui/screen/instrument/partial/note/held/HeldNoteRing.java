@@ -8,7 +8,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * A note ring designed for use with a {@link IHoldableNoteButton}.
- * If it is a consecutive ring, will shade it slightly,
+ * If it is a consecutive ring, will shade it slightly.
  */
 @OnlyIn(Dist.CLIENT)
 public class HeldNoteRing extends NoteRing {
