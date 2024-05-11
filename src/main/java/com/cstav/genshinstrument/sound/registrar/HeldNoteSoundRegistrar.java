@@ -20,7 +20,7 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
     }
 
 
-    protected NoteSound[] attack, hold, release;
+    protected NoteSound[] attack, hold;
 
 
     public HeldNoteSoundRegistrar(DeferredRegister<SoundEvent> sounds, ResourceLocation baseSoundLocation) {
@@ -79,7 +79,6 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
 
     protected boolean validateLengths() {
         return (attack.length == hold.length)
-            && (hold.length == release.length)
             && (sounds() != 0);
     }
 
