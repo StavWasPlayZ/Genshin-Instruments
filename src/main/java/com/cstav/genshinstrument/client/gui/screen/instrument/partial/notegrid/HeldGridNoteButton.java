@@ -47,6 +47,7 @@ public class HeldGridNoteButton extends NoteGridButton implements IHoldableNoteB
     @Override
     protected void playSound() {
         isHeld = true;
+        getHeldNoteSound().startPlaying();
     }
 
     @Override

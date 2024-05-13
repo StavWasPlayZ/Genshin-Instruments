@@ -27,6 +27,12 @@ public class HeldNoteSound {
             .toArray(NoteSound[]::new);
     }
 
+
+    public void startPlaying() {
+
+    }
+
+
     public static enum Phase {
         ATTACK, HOLD
     }

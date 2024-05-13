@@ -46,6 +46,7 @@ public abstract class HeldNoteButton extends NoteButton implements IHoldableNote
     @Override
     protected void playSound() {
         isHeld = true;
+        getHeldNoteSound().startPlaying();
     }
 
     @Override
