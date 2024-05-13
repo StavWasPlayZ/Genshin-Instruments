@@ -64,6 +64,8 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
     }
 
 
+    private boolean fadingOut = false;
+
     protected int timeAlive = 0;
     @Override
     public void tick() {
@@ -72,7 +74,18 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
 
         if (noteButton.isHeld())
             handleHolding();
+        else
+            triggerFadeout();
+
+        if (fadingOut) {
+            volume -= .05f;
+        }
     }
+
+    public void triggerFadeout() {
+        fadingOut = true;
+    }
+
 
     private void handleHolding() {
         switch (phase) {
@@ -83,8 +96,6 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
                 break;
 
             case HOLD:
-                //TODO fade in & out
-
                 // Hold wants to chain the next hold:
                 if (timeAlive == (int)((heldSoundContainer.holdDuration() + heldSoundContainer.chainedHoldDelay()) * 20 - 2.5f))
                     queueHoldPhase(true);
