@@ -97,14 +97,14 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
 
             case HOLD:
                 // Hold wants to chain the next hold:
-                if (timeAlive == (int)((heldSoundContainer.holdDuration() + heldSoundContainer.chainedHoldDelay()) * 20 - 2.5f))
+                if (timeAlive == (int)((heldSoundContainer.holdDuration() + heldSoundContainer.chainedHoldDelay()) * 20 + 2.2f))
                     queueHoldPhase(true);
                 break;
         }
     }
 
     protected void queueHoldPhase(final boolean decreaseVol) {
-        if (volume <= 0)
+        if (volume <= .2f)
             return;
 
         Minecraft.getInstance().getSoundManager().queueTickingSound(new HeldNoteSoundInstance(
