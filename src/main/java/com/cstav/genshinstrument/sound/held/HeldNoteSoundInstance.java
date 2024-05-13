@@ -1,5 +1,7 @@
 package com.cstav.genshinstrument.sound.held;
 
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.IHoldableNoteButton;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound.Phase;
 import net.minecraft.client.Minecraft;
@@ -14,12 +16,13 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
     public final HeldNoteSound heldSoundContainer;
     public final Player player;
     public final HeldNoteSound.Phase phase;
+    private IHoldableNoteButton noteButton;
 
     /**
      * A held note sound instance for 3rd party trigger
      */
-    protected HeldNoteSoundInstance(HeldNoteSound heldSoundContainer, HeldNoteSound.Phase phase,
-                                    final float pitch, final float volume,
+    public HeldNoteSoundInstance(HeldNoteSound heldSoundContainer, HeldNoteSound.Phase phase,
+                                    IHoldableNoteButton noteButton, float volume,
                                     Player player, double distFromPlayer) {
         super(
             heldSoundContainer.getSound(phase).getByPreference(distFromPlayer),
@@ -29,22 +32,37 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
 
         this.heldSoundContainer = heldSoundContainer;
         this.phase = phase;
+        this.noteButton = noteButton;
 
         this.player = player;
         updatePlayerPos();
 
         this.volume = volume;
-        this.pitch = pitch;
+        this.pitch = NoteSound.getPitchByNoteOffset(noteButton().getPitch());
         attenuation = Attenuation.NONE;
     }
 
+    public HeldNoteSoundInstance(HeldNoteSound heldSoundContainer, HeldNoteSound.Phase phase,
+                                    IHoldableNoteButton noteButton,
+                                    Player player, double distFromPlayer) {
+        this(
+            heldSoundContainer, phase,
+            noteButton, ((NoteButton)noteButton).instrumentScreen.volume(),
+            player, distFromPlayer
+        );
+    }
     /**
      * A held note sound instance for local playing
      */
-    protected HeldNoteSoundInstance(HeldNoteSound heldSoundContainer,
-                                    final float pitch, final float volume, HeldNoteSound.Phase phase) {
-        this(heldSoundContainer, phase, pitch, volume, Minecraft.getInstance().player, 0);
+    public HeldNoteSoundInstance(HeldNoteSound heldSoundContainer,
+                                    IHoldableNoteButton noteButton, HeldNoteSound.Phase phase) {
+        this(heldSoundContainer, phase, noteButton, Minecraft.getInstance().player, 0);
     }
+
+    protected NoteButton noteButton() {
+        return (NoteButton) noteButton;
+    }
+
 
     protected int timeAlive = 0;
     @Override
@@ -52,26 +70,32 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
         timeAlive++;
         updatePlayerPos();
 
+        if (noteButton.isHeld())
+            handleHolding();
+    }
+
+    private void handleHolding() {
         switch (phase) {
             case ATTACK:
                 // Attack wants to chain the first hold:
-                if (timeAlive == heldSoundContainer.holdDelay())
-                    queueHoldPhase();
+                if (timeAlive == (int)(heldSoundContainer.holdDelay() * 20 - 2))
+                    queueHoldPhase(false);
                 break;
 
             case HOLD:
                 //TODO fade in & out
 
                 // Hold wants to chain the next hold:
-                if (timeAlive == heldSoundContainer.chainedHoldDelay())
-                    queueHoldPhase();
+                if (timeAlive == (int)((heldSoundContainer.holdDuration() + heldSoundContainer.chainedHoldDelay()) * 20 - 2.5f))
+                    queueHoldPhase(true);
                 break;
         }
     }
 
-    protected void queueHoldPhase() {
+    protected void queueHoldPhase(final boolean decreaseVol) {
+        final float volume = noteButton().instrumentScreen.volume();
         Minecraft.getInstance().getSoundManager().queueTickingSound(new HeldNoteSoundInstance(
-            heldSoundContainer, Phase.HOLD, pitch, volume,
+            heldSoundContainer, Phase.HOLD, noteButton, volume * (decreaseVol ? .75f : 1),
             player, player.position().distanceTo(Minecraft.getInstance().player.position())
         ));
     }

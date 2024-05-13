@@ -47,7 +47,7 @@ public class HeldGridNoteButton extends NoteGridButton implements IHoldableNoteB
     @Override
     protected void playLocalSound() {
         isHeld = true;
-        getHeldNoteSound().startPlaying(getPitch(), instrumentScreen.volume(), minecraft.player);
+        getHeldNoteSound().startPlaying(this, minecraft.player);
     }
 
     @Override

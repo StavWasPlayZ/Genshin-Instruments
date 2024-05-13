@@ -40,7 +40,7 @@ public class GISounds {
             .chainedHoldDelay(-.65f)
             .buildSoundsForAll((builder) ->
                 builder.stereo().registerGrid(GridInstrumentScreen.DEF_ROWS, 2))
-        .register(.67f)
+        .register(1.85f)
     ;
 
 

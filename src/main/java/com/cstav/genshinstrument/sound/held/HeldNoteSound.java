@@ -1,5 +1,6 @@
 package com.cstav.genshinstrument.sound.held;
 
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.IHoldableNoteButton;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.registrar.HeldNoteSoundRegistrar;
 import net.minecraft.client.Minecraft;
@@ -41,9 +42,9 @@ public record HeldNoteSound(
 
 
     @OnlyIn(Dist.CLIENT)
-    public void startPlaying(final float pitch, final float volume, final Player player) {
+    public void startPlaying(final IHoldableNoteButton noteButton, final Player player) {
         Minecraft.getInstance().getSoundManager().queueTickingSound(new HeldNoteSoundInstance(
-            this, Phase.ATTACK, pitch, volume,
+            this, Phase.ATTACK, noteButton,
             player, player.position().distanceTo(Minecraft.getInstance().player.position())
         ));
     }
