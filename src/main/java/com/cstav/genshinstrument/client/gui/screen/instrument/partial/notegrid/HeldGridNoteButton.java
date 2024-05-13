@@ -6,7 +6,7 @@ import com.cstav.genshinstrument.sound.HeldNoteSound;
 
 public class HeldGridNoteButton extends NoteGridButton implements IHoldableNoteButton {
     private boolean isHeld = false;
-    private final HeldNoteSound heldNoteSound;
+    private HeldNoteSound heldNoteSound;
 
     public HeldGridNoteButton(int row, int column, GridInstrumentScreen instrumentScreen, HeldNoteSound[] heldNoteSounds) {
         super(row, column, instrumentScreen);
@@ -21,7 +21,10 @@ public class HeldGridNoteButton extends NoteGridButton implements IHoldableNoteB
     public HeldNoteSound getHeldNoteSound() {
         return heldNoteSound;
     }
-
+    @Override
+    public void setHeldNoteSound(HeldNoteSound heldNoteSound) {
+        this.heldNoteSound = heldNoteSound;
+    }
 
     @Override
     public boolean isPlaying() {

@@ -5,4 +5,5 @@ import com.cstav.genshinstrument.sound.HeldNoteSound;
 public interface IHoldableNoteButton {
     public boolean isHeld();
     public HeldNoteSound getHeldNoteSound();
+    public void setHeldNoteSound(final HeldNoteSound sound);
 }
