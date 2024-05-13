@@ -35,7 +35,7 @@ import java.util.function.Supplier;
 
 public class ServerUtil {
     private static final Logger LOGGER = LogUtils.getLogger();
-    public static final int PLAY_DISTANCE = 16;
+    public static final int PLAY_DISTANCE = 24;
 
     
     /**
