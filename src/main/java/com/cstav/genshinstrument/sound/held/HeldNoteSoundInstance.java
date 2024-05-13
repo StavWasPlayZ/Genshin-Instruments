@@ -104,9 +104,11 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
     }
 
     protected void queueHoldPhase(final boolean decreaseVol) {
-        final float volume = noteButton().instrumentScreen.volume();
+        if (volume <= 0)
+            return;
+
         Minecraft.getInstance().getSoundManager().queueTickingSound(new HeldNoteSoundInstance(
-            heldSoundContainer, Phase.HOLD, noteButton, volume * (decreaseVol ? .75f : 1),
+            heldSoundContainer, Phase.HOLD, noteButton, volume - (decreaseVol ? .05f : 0),
             player, player.position().distanceTo(Minecraft.getInstance().player.position())
         ));
     }
