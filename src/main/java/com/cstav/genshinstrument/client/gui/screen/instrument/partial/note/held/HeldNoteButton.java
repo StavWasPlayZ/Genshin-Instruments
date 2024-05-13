@@ -29,19 +29,15 @@ public abstract class HeldNoteButton extends NoteButton implements IHoldableNote
     }
 
     @Override
+    protected void playSound() {
+        isHeld = true;
+    }
+
+    @Override
     public void release() {
         super.release();
         isHeld = false;
         ((HeldNoteButtonRenderer<?>)noteRenderer).playRelease();
-    }
-
-    @Override
-    public boolean play() {
-        if (!super.play())
-            return false;
-
-        isHeld = true;
-        return true;
     }
 
     @Override

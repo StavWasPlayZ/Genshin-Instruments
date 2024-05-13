@@ -2,16 +2,26 @@ package com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid;
 
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.HeldNoteButtonRenderer;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.IHoldableNoteButton;
+import com.cstav.genshinstrument.sound.HeldNoteSound;
 
 public class HeldGridNoteButton extends NoteGridButton implements IHoldableNoteButton {
     private boolean isHeld = false;
+    private final HeldNoteSound heldNoteSound;
 
-    public HeldGridNoteButton(int row, int column, GridInstrumentScreen instrumentScreen) {
+    public HeldGridNoteButton(int row, int column, GridInstrumentScreen instrumentScreen, HeldNoteSound[] heldNoteSounds) {
         super(row, column, instrumentScreen);
+        this.heldNoteSound = heldNoteSounds[posToIndex()];
     }
-    public HeldGridNoteButton(int row, int column, GridInstrumentScreen instrumentScreen, int pitch) {
+    public HeldGridNoteButton(int row, int column, GridInstrumentScreen instrumentScreen, int pitch, HeldNoteSound[] heldNoteSounds) {
         super(row, column, instrumentScreen, pitch);
+        this.heldNoteSound = heldNoteSounds[posToIndex()];
     }
+
+    @Override
+    public HeldNoteSound getHeldNoteSound() {
+        return heldNoteSound;
+    }
+
 
     @Override
     public boolean isPlaying() {
@@ -32,12 +42,8 @@ public class HeldGridNoteButton extends NoteGridButton implements IHoldableNoteB
     }
 
     @Override
-    public boolean play() {
-        if (!super.play())
-            return false;
-
+    protected void playSound() {
         isHeld = true;
-        return true;
     }
 
     @Override

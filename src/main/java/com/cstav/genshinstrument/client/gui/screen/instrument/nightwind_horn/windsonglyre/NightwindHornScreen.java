@@ -36,7 +36,7 @@ public class NightwindHornScreen extends GridInstrumentScreen {
 
     @Override
     public NoteGridButton createNote(int row, int column) {
-        return new HeldGridNoteButton(row, column, this);
+        return new HeldGridNoteButton(row, column, this, GISounds.NIGHTWIND_HORN);
     }
 
     @Override

@@ -30,7 +30,7 @@ import java.awt.*;
  */
 @OnlyIn(Dist.CLIENT)
 public abstract class NoteButton extends AbstractButton {
-    private static Logger LOGGER = LogUtils.getLogger();
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     protected final Minecraft minecraft = Minecraft.getInstance();
 
@@ -172,20 +172,25 @@ public abstract class NoteButton extends AbstractButton {
     public void release() {
         locked = false;
     }
+    protected void lockInput() {
+        locked = true;
+    }
 
     /**
      * Plays this note button.
      * @return Whether the operation succeed
+     * @implNote Overriders should call {@link NoteButton#lockInput}
+     * before a true signal.
      */
     public boolean play() {
         if (locked)
             return false;
         
-        sound.playLocally(getPitch(), instrumentScreen.volume());
+        playSound();
         sendNotePlayPacket();
         playNoteAnimation(false);
 
-        locked = true;
+        lockInput();
         return true;
     }
     @Override
@@ -193,6 +198,9 @@ public abstract class NoteButton extends AbstractButton {
         play();
     }
 
+    protected void playSound() {
+        getSound().playLocally(getPitch(), instrumentScreen.volume());
+    }
     protected void sendNotePlayPacket() {
         GIPacketHandler.sendToServer(new InstrumentPacket(this));
     }
