@@ -1,7 +1,7 @@
 package com.cstav.genshinstrument.sound.registrar;
 
-import com.cstav.genshinstrument.sound.HeldNoteSound;
 import com.cstav.genshinstrument.sound.NoteSound;
+import com.cstav.genshinstrument.sound.held.HeldNoteSound;
 import com.cstav.genshinstrument.sound.registrar.impl.AbstractNoteSoundRegistrar;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
@@ -21,7 +21,7 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
 
 
     protected NoteSound[] attack, hold;
-    protected int holdFadeIn = 0, holdFadeOut = 0, holdDelay = 0;
+    protected int holdFadeIn = 0, holdFadeOut = 0, holdDelay = 0, chainedHoldDelay = 0;
 
 
     public HeldNoteSoundRegistrar(DeferredRegister<SoundEvent> sounds, ResourceLocation baseSoundLocation) {
@@ -34,8 +34,19 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
     }
 
 
+    /**
+     * The delay after which the Hold phase should take
+     * place after the Attack phase
+     */
     public HeldNoteSoundRegistrar holdDelay(int holdDelay) {
         this.holdDelay = holdDelay;
+        return getThis();
+    }
+    /**
+     * The delay after which the next Hold phase should take
+     */
+    public HeldNoteSoundRegistrar chainedHoldDelay(int chainedHoldDelay) {
+        this.chainedHoldDelay = chainedHoldDelay;
         return getThis();
     }
 
@@ -43,7 +54,6 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
         this.holdFadeIn = holdFadeIn;
         return getThis();
     }
-
     public HeldNoteSoundRegistrar holdFadeOut(int holdFadeOut) {
         this.holdFadeOut = holdFadeOut;
         return getThis();
@@ -83,7 +93,13 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
         final HeldNoteSound[] noteSounds = new HeldNoteSound[sounds()];
 
         for (int i = 0; i < sounds(); i++) {
-            noteSounds[i] = new HeldNoteSound(attack[i], hold[i], holdFadeIn, holdFadeOut, holdDelay);
+            noteSounds[i] = new HeldNoteSound(
+                baseSoundLocation, i,
+                attack[i], hold[i],
+                holdDelay,
+                holdFadeIn, holdFadeOut,
+                chainedHoldDelay
+            );
         }
 
         SOUNDS_REGISTRY.put(baseSoundLocation, noteSounds);

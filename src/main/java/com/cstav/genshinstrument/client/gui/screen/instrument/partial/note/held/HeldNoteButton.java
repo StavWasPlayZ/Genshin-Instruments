@@ -3,8 +3,8 @@ package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.NoteLabelSupplier;
-import com.cstav.genshinstrument.sound.HeldNoteSound;
 import com.cstav.genshinstrument.sound.NoteSound;
+import com.cstav.genshinstrument.sound.held.HeldNoteSound;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -46,7 +46,7 @@ public abstract class HeldNoteButton extends NoteButton implements IHoldableNote
     @Override
     protected void playSound() {
         isHeld = true;
-        getHeldNoteSound().startPlaying();
+        getHeldNoteSound().startPlaying(getPitch(), instrumentScreen.volume(), minecraft.player);
     }
 
     @Override

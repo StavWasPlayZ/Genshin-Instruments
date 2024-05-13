@@ -6,9 +6,9 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.G
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.HeldGridNoteButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.NoteGridButton;
 import com.cstav.genshinstrument.sound.GISounds;
-import com.cstav.genshinstrument.sound.HeldNoteSound;
-import com.cstav.genshinstrument.sound.HeldNoteSound.Phase;
 import com.cstav.genshinstrument.sound.NoteSound;
+import com.cstav.genshinstrument.sound.held.HeldNoteSound;
+import com.cstav.genshinstrument.sound.held.HeldNoteSound.Phase;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;

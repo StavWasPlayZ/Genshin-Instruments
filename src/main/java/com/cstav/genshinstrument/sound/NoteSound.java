@@ -31,6 +31,8 @@ import java.util.UUID;
  * A class holding sound information for an instrument's note
  */
 public class NoteSound {
+    public static final SoundSource INSTRUMENT_SOUND_SOURCE = SoundSource.RECORDS;
+
     /**
      * The range at which players with Mixed instrument sound type will start to hear Mono.
     */
@@ -124,22 +126,13 @@ public class NoteSound {
     }
     /**
      * Returns the literal preference of the client. Defaults to Stereo.
-     * <p>This method is fired from the client.</p>
+     * <p>This method is usually fired from the client.</p>
+     * <p>Shorthand for {@code getByPreference(0)}</p>
      * @return Either the Mono or Stereo sound, based on the client's preference
      */
     @OnlyIn(Dist.CLIENT)
     public SoundEvent getByPreference() {
-        if (!hasStereo())
-            return mono;
-        
-        final InstrumentChannelType preference = ModClientConfigs.CHANNEL_TYPE.get();
-
-        return switch (preference) {
-            case MIXED -> metInstrumentVolume() ? getStereo() : mono;
-
-            case STEREO -> getStereo();
-            case MONO -> mono;
-        };
+        return getByPreference(0);
     }
 
     /**
@@ -147,7 +140,7 @@ public class NoteSound {
      */
     @SuppressWarnings("resource")
     private static boolean metInstrumentVolume() {
-        return Minecraft.getInstance().options.getSoundSourceVolume(SoundSource.RECORDS) == 1;
+        return Minecraft.getInstance().options.getSoundSourceVolume(INSTRUMENT_SOUND_SOURCE) == 1;
     }
 
 
@@ -169,7 +162,7 @@ public class NoteSound {
         final BlockPos pos = CommonUtil.getPlayeredPosition(initiator, playPos);
         
 
-        final double distanceFromPlayer = Math.sqrt(pos.distToCenterSqr(player.position()));
+        final double distanceFromPlayer = pos.getCenter().distanceTo(player.position());
         
         if (ModClientConfigs.STOP_MUSIC_ON_PLAY.get() && (distanceFromPlayer < NoteSound.STOP_SOUND_DISTANCE))
             minecraft.getMusicManager().stopPlaying();
@@ -195,7 +188,7 @@ public class NoteSound {
             
         if (distanceFromPlayer > LOCAL_RANGE)
             level.playLocalSound(pos,
-                getByPreference(distanceFromPlayer), SoundSource.RECORDS,
+                getByPreference(distanceFromPlayer), INSTRUMENT_SOUND_SOURCE,
                 1, mcPitch
             , false);
         else
@@ -207,10 +200,8 @@ public class NoteSound {
      */
     @OnlyIn(Dist.CLIENT)
     public void playLocally(final float pitch, final float volume) {
-        //TODO return the sound instance (check if server booms)
-        // Use this to disable held sounds
         Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(
-            getByPreference().getLocation(), SoundSource.RECORDS,
+            getByPreference().getLocation(), INSTRUMENT_SOUND_SOURCE,
             volume, pitch, SoundInstance.createUnseededRandom(),
             false, 0, SoundInstance.Attenuation.NONE,
             0, 0, 0, true

@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.sound;
 
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
+import com.cstav.genshinstrument.sound.held.HeldNoteSound;
 import com.cstav.genshinstrument.sound.registrar.HeldNoteSoundRegistrar;
 import com.cstav.genshinstrument.sound.registrar.NoteSoundRegistrar;
 import net.minecraft.resources.ResourceLocation;
@@ -34,9 +35,10 @@ public class GISounds {
     public static final HeldNoteSound[]
         NIGHTWIND_HORN = hnsr(loc("nightwind_horn"))
             //TODO fill data
-//            .holdFadeIn()
-//            .holdFadeOut()
-//            .holdDelay()
+            .holdDelay(60)
+            .holdFadeIn(60)
+            .holdFadeOut(60)
+            .chainedHoldDelay(-60)
             .buildSoundsForAll((builder) ->
                 builder.stereo().registerGrid(GridInstrumentScreen.DEF_ROWS, 2))
         .register()
