@@ -44,7 +44,7 @@ public abstract class HeldNoteButton extends NoteButton implements IHoldableNote
 
 
     @Override
-    protected void playSound() {
+    protected void playLocalSound() {
         isHeld = true;
         getHeldNoteSound().startPlaying(getPitch(), instrumentScreen.volume(), minecraft.player);
     }

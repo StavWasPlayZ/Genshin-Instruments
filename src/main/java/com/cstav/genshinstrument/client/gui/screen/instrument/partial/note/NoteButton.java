@@ -186,7 +186,7 @@ public abstract class NoteButton extends AbstractButton {
         if (locked)
             return false;
         
-        playSound();
+        playLocalSound();
         sendNotePlayPacket();
         playNoteAnimation(false);
 
@@ -198,7 +198,7 @@ public abstract class NoteButton extends AbstractButton {
         play();
     }
 
-    protected void playSound() {
+    protected void playLocalSound() {
         getSound().playLocally(getPitch(), instrumentScreen.volume());
     }
     protected void sendNotePlayPacket() {
