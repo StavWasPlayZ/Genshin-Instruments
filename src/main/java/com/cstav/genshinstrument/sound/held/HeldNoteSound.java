@@ -11,12 +11,19 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Arrays;
 
+/**
+ * A container for {@link NoteSound}s that act together
+ * as a holdable note sound.
+ * <p>The attack sound plays once at the beginning, and the hold
+ * sound is held and repeated until released.</p>
+ * All time units are in seconds.
+ */
 public record HeldNoteSound(
     ResourceLocation baseSoundLocation, int index,
-    NoteSound attack, NoteSound hold,
-    int holdDelay,
-    int holdFadeIn, int holdFadeOut,
-    int chainedHoldDelay
+    NoteSound attack, NoteSound hold, float holdDuration,
+    float holdDelay,
+    float holdFadeIn, float holdFadeOut,
+    float chainedHoldDelay
 ) {
 
     public NoteSound getSound(final Phase phase) {

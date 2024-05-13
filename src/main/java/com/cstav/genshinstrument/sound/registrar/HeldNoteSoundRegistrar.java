@@ -21,7 +21,7 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
 
 
     protected NoteSound[] attack, hold;
-    protected int holdFadeIn = 0, holdFadeOut = 0, holdDelay = 0, chainedHoldDelay = 0;
+    protected float holdFadeIn = 0, holdFadeOut = 0, holdDelay = 0, chainedHoldDelay = 0;
 
 
     public HeldNoteSoundRegistrar(DeferredRegister<SoundEvent> sounds, ResourceLocation baseSoundLocation) {
@@ -38,23 +38,23 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
      * The delay after which the Hold phase should take
      * place after the Attack phase
      */
-    public HeldNoteSoundRegistrar holdDelay(int holdDelay) {
+    public HeldNoteSoundRegistrar holdDelay(float holdDelay) {
         this.holdDelay = holdDelay;
         return getThis();
     }
     /**
      * The delay after which the next Hold phase should take
      */
-    public HeldNoteSoundRegistrar chainedHoldDelay(int chainedHoldDelay) {
+    public HeldNoteSoundRegistrar chainedHoldDelay(float chainedHoldDelay) {
         this.chainedHoldDelay = chainedHoldDelay;
         return getThis();
     }
 
-    public HeldNoteSoundRegistrar holdFadeIn(int holdFadeIn) {
+    public HeldNoteSoundRegistrar holdFadeIn(float holdFadeIn) {
         this.holdFadeIn = holdFadeIn;
         return getThis();
     }
-    public HeldNoteSoundRegistrar holdFadeOut(int holdFadeOut) {
+    public HeldNoteSoundRegistrar holdFadeOut(float holdFadeOut) {
         this.holdFadeOut = holdFadeOut;
         return getThis();
     }
@@ -83,7 +83,7 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
     }
 
 
-    public HeldNoteSound[] register() {
+    public HeldNoteSound[] register(final float holdDuration) {
         if (!validateLengths())
             throw new IllegalStateException(
                 "Invalid lengths of sounds provided to HeldNoteSoundRegistrar!" +
@@ -95,7 +95,7 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
         for (int i = 0; i < sounds(); i++) {
             noteSounds[i] = new HeldNoteSound(
                 baseSoundLocation, i,
-                attack[i], hold[i],
+                attack[i], hold[i], holdDuration,
                 holdDelay,
                 holdFadeIn, holdFadeOut,
                 chainedHoldDelay
