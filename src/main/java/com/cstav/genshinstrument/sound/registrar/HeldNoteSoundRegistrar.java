@@ -21,6 +21,7 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
 
 
     protected NoteSound[] attack, hold;
+    protected int holdFadeIn = 0, holdFadeOut = 0, holdDelay = 0;
 
 
     public HeldNoteSoundRegistrar(DeferredRegister<SoundEvent> sounds, ResourceLocation baseSoundLocation) {
@@ -33,7 +34,23 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
     }
 
 
-    public HeldNoteSoundRegistrar buildForAll(final Function<NoteSoundRegistrar, NoteSound[]> builder) {
+    public HeldNoteSoundRegistrar holdDelay(int holdDelay) {
+        this.holdDelay = holdDelay;
+        return getThis();
+    }
+
+    public HeldNoteSoundRegistrar holdFadeIn(int holdFadeIn) {
+        this.holdFadeIn = holdFadeIn;
+        return getThis();
+    }
+
+    public HeldNoteSoundRegistrar holdFadeOut(int holdFadeOut) {
+        this.holdFadeOut = holdFadeOut;
+        return getThis();
+    }
+
+
+    public HeldNoteSoundRegistrar buildSoundsForAll(final Function<NoteSoundRegistrar, NoteSound[]> builder) {
         return getThis()
             .attackBuilder(builder)
             .holdBuilder(builder);
@@ -66,7 +83,7 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
         final HeldNoteSound[] noteSounds = new HeldNoteSound[sounds()];
 
         for (int i = 0; i < sounds(); i++) {
-            noteSounds[i] = new HeldNoteSound(attack[i], hold[i]);
+            noteSounds[i] = new HeldNoteSound(attack[i], hold[i], holdFadeIn, holdFadeOut, holdDelay);
         }
 
         SOUNDS_REGISTRY.put(baseSoundLocation, noteSounds);

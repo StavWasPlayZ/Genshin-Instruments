@@ -4,11 +4,15 @@ import java.util.Arrays;
 
 public class HeldNoteSound {
 
-    NoteSound attack, hold;
+    public final NoteSound attack, hold;
+    public final int holdFadeIn, holdFadeOut, holdDelay;
 
-    public HeldNoteSound(NoteSound attack, NoteSound hold) {
+    public HeldNoteSound(NoteSound attack, NoteSound hold, int holdFadeIn, int holdFadeOut, int holdDelay) {
         this.attack = attack;
         this.hold = hold;
+        this.holdFadeIn = holdFadeIn;
+        this.holdFadeOut = holdFadeOut;
+        this.holdDelay = holdDelay;
     }
 
     public NoteSound getSound(final Phase phase) {
