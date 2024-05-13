@@ -16,7 +16,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
     public final HeldNoteSound heldSoundContainer;
     public final Player player;
     public final HeldNoteSound.Phase phase;
-    private IHoldableNoteButton noteButton;
+    private final IHoldableNoteButton noteButton;
 
     /**
      * A held note sound instance for 3rd party trigger
@@ -78,7 +78,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
             triggerFadeout();
 
         if (fadingOut) {
-            volume -= .05f;
+            volume -= .1f;
         }
     }
 
@@ -91,7 +91,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
         switch (phase) {
             case ATTACK:
                 // Attack wants to chain the first hold:
-                if (timeAlive == (int)(heldSoundContainer.holdDelay() * 20 - 2))
+                if (timeAlive == (int)(heldSoundContainer.holdDelay() * 20 - 1.75f))
                     queueHoldPhase(false);
                 break;
 
