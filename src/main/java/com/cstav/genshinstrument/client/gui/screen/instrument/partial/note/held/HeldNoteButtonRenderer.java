@@ -14,22 +14,21 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.function.Supplier;
 
 @OnlyIn(Dist.CLIENT)
-public class HeldNoteButtonRenderer<T extends NoteButton & IHoldableNoteButton> extends NoteButtonRenderer {
+public class HeldNoteButtonRenderer extends NoteButtonRenderer {
     private static final int RING_ADDITION_INTERVAL = 4;
 
-    public HeldNoteButtonRenderer(T noteButton, Supplier<ResourceLocation> noteTextureProvider) {
-        super(noteButton, noteTextureProvider);
+    public HeldNoteButtonRenderer(IHoldableNoteButton noteButton, Supplier<ResourceLocation> noteTextureProvider) {
+        super((NoteButton) noteButton, noteTextureProvider);
     }
 
-    @SuppressWarnings("unchecked")
-    private T getBtn() {
-        return (T) noteButton;
+    private IHoldableNoteButton getHeldBtn() {
+        return (IHoldableNoteButton) noteButton;
     }
 
     private float ringTimeAlive = 0;
     @Override
     public void render(GuiGraphics gui, int mouseX, int mouseY, float partialTick, InstrumentThemeLoader themeLoader) {
-        if (getBtn().isHeld()) {
+        if (getHeldBtn().isHeld()) {
             ringTimeAlive += partialTick;
             if (ringTimeAlive > RING_ADDITION_INTERVAL) {
                 addRing(true);
@@ -52,7 +51,7 @@ public class HeldNoteButtonRenderer<T extends NoteButton & IHoldableNoteButton> 
         addRing(false);
     }
     public void addRing(final boolean isConsecutive) {
-        final NoteRing ring = new HeldNoteRing(getBtn(), foreignPlaying, isConsecutive);
+        final NoteRing ring = new HeldNoteRing(noteButton, foreignPlaying, isConsecutive);
         rings.add(ring);
         ring.playAnim();
     }
@@ -61,7 +60,7 @@ public class HeldNoteButtonRenderer<T extends NoteButton & IHoldableNoteButton> 
     protected NoteAnimationController initNoteAnimation() {
         // Divide by 2 because we are doing the start-end animation for each
         // Unlike NoteAnimationController which does them at once
-        return new HeldNoteAnimationController(NOTE_DUR / 2, NOTE_TARGET_VAL / 2, getBtn());
+        return new HeldNoteAnimationController(NOTE_DUR / 2, NOTE_TARGET_VAL / 2, noteButton);
     }
     private HeldNoteAnimationController noteAnimation() {
         return (HeldNoteAnimationController)noteAnimation;

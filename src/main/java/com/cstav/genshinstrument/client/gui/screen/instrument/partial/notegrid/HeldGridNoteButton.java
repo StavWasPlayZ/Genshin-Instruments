@@ -35,23 +35,25 @@ public class HeldGridNoteButton extends NoteGridButton implements IHoldableNoteB
     public boolean isHeld() {
         return isHeld;
     }
+    @Override
+    public void setHeld(boolean held) {
+        isHeld = held;
+    }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void release() {
         super.release();
-        isHeld = false;
-        ((HeldNoteButtonRenderer<HeldGridNoteButton>) noteRenderer).playRelease();
+        releaseHeld();
     }
 
     @Override
     protected void playLocalSound() {
         isHeld = true;
-        getHeldNoteSound().startPlaying(this, minecraft.player);
+        getHeldNoteSound().startPlaying(getPitch(), instrumentScreen.volume(), minecraft.player);
     }
 
     @Override
-    protected HeldNoteButtonRenderer<HeldGridNoteButton> initNoteRenderer() {
-        return new HeldNoteButtonRenderer<>(this, this::getTextureAtRow);
+    protected HeldNoteButtonRenderer initNoteRenderer() {
+        return new HeldNoteButtonRenderer(this, this::getTextureAtRow);
     }
 }

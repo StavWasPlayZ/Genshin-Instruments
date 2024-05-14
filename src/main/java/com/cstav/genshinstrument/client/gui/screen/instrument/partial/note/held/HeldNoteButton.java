@@ -31,6 +31,10 @@ public abstract class HeldNoteButton extends NoteButton implements IHoldableNote
     public boolean isHeld() {
         return isHeld;
     }
+    @Override
+    public void setHeld(boolean held) {
+        isHeld = held;
+    }
 
     @Override
     public HeldNoteSound getHeldNoteSound() {
@@ -46,16 +50,15 @@ public abstract class HeldNoteButton extends NoteButton implements IHoldableNote
     @Override
     protected void playLocalSound() {
         isHeld = true;
-        getHeldNoteSound().startPlaying(this, minecraft.player);
+        getHeldNoteSound().startPlaying(getPitch(), instrumentScreen.volume(), minecraft.player);
     }
 
     @Override
     public void release() {
         super.release();
-        isHeld = false;
-        ((HeldNoteButtonRenderer<?>)noteRenderer).playRelease();
+        releaseHeld();
     }
 
     @Override
-    protected abstract HeldNoteButtonRenderer<?> initNoteRenderer();
+    protected abstract HeldNoteButtonRenderer initNoteRenderer();
 }

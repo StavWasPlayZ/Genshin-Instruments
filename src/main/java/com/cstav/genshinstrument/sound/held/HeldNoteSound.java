@@ -1,6 +1,5 @@
 package com.cstav.genshinstrument.sound.held;
 
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.IHoldableNoteButton;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.registrar.HeldNoteSoundRegistrar;
 import net.minecraft.client.Minecraft;
@@ -41,12 +40,31 @@ public record HeldNoteSound(
     }
 
 
+    /**
+     * A held note sound instance for 3rd party trigger
+     */
     @OnlyIn(Dist.CLIENT)
-    public void startPlaying(final IHoldableNoteButton noteButton, final Player player) {
-        Minecraft.getInstance().getSoundManager().queueTickingSound(new HeldNoteSoundInstance(
-            this, Phase.ATTACK, noteButton,
+    public void startPlaying(final int notePitch, final float volume, final Player player) {
+        new HeldNoteSoundInstance(
+            this, Phase.ATTACK,
+            NoteSound.getPitchByNoteOffset(notePitch), volume,
             player, player.position().distanceTo(Minecraft.getInstance().player.position())
-        ));
+        ).queueAndAddInstance();
+    }
+    /**
+     * A held note sound instance for local playing
+     */
+    @OnlyIn(Dist.CLIENT)
+    public void startPlaying(final int notePitch, final float volume) {
+        new HeldNoteSoundInstance(
+            this, Phase.ATTACK,
+            NoteSound.getPitchByNoteOffset(notePitch), volume
+        ).queueAndAddInstance();
+    }
+
+
+    public HeldNoteSoundKey getKey(final Player player) {
+        return new HeldNoteSoundKey(player, baseSoundLocation, index);
     }
 
 
