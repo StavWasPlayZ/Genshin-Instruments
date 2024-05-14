@@ -10,6 +10,7 @@
     "item.genshinstrument.floral_zither": "Floral Zither",
     "item.genshinstrument.vintage_lyre": "Vintage Lyre",
     "item.genshinstrument.glorious_drum": "Arataki's Great and Glorious Drum",
+    "item.genshinstrument.nightwind_horn": "Nightwind Horn",
 
 
     "soundCategory.record": "Instruments",
@@ -124,6 +125,9 @@
     "genshinstrument.advancements.main.glorious_drum.description": "Play Arataki's Glorious Drum",
 
     "genshinstrument.advancements.main.floral_zither.title": "Incognito Player",
-    "genshinstrument.advancements.main.floral_zither.description": "Play the Floral Zither"
+    "genshinstrument.advancements.main.floral_zither.description": "Play the Floral Zither",
+
+    "genshinstrument.advancements.main.nightwind_horn.title": "Compte à Rebours Final",
+    "genshinstrument.advancements.main.nightwind_horn.description": "Play the Nightwind Horn"
 
 }

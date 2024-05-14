@@ -10,6 +10,7 @@
     "item.genshinstrument.floral_zither": "הציטר הפרחי",
     "item.genshinstrument.vintage_lyre": "נבל הבציר",
     "item.genshinstrument.glorious_drum": "התוף הגדול והמפואר של ארטאקי",
+    "item.genshinstrument.nightwind_horn": "צופר רוח הלילות",
 
 
     "genshinstrument.genshin_disclaimer.content": "מוד כלי הנגינה של גנשין הינו %s ו%s, כלפי שום קשר עם Genshin Impact או HoYoverse.\n\nלכן, כל נכס הנעשה בו שימוש בתוסף, כגון צלילים, תמונות, כלי נגינה וכו' שייכים במלואן ל- HoYoverse.\n\nכמשתמש, עליך מוטלת האחריות המלאה על מעשיך במשחק זה, הכולל ניגון ושיתוף של כל שיר/פיסת מוזיקה המוגן תחת זכויות יוצרים ועוד.",
@@ -117,6 +118,8 @@
     "genshinstrument.advancements.main.glorious_drum.description": "נגן בטוף של ארטאקי",
 
     "genshinstrument.advancements.main.floral_zither.title": "נגן בסתר",
-    "genshinstrument.advancements.main.floral_zither.description": "נגן בציטר הפרחי"
+    "genshinstrument.advancements.main.floral_zither.description": "נגן בציטר הפרחי",
+
+    "genshinstrument.advancements.main.nightwind_horn.description": "נגן בצופר רוח הלילות"
 
 }
