@@ -21,7 +21,7 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
 
 
     protected NoteSound[] attack, hold;
-    protected float holdFadeIn = 0, holdFadeOut = 0, holdDelay = 0, chainedHoldDelay = 0;
+    protected float holdDelay = 0, chainedHoldDelay = 0;
 
 
     public HeldNoteSoundRegistrar(DeferredRegister<SoundEvent> sounds, ResourceLocation baseSoundLocation) {
@@ -47,15 +47,6 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
      */
     public HeldNoteSoundRegistrar chainedHoldDelay(float chainedHoldDelay) {
         this.chainedHoldDelay = chainedHoldDelay;
-        return getThis();
-    }
-
-    public HeldNoteSoundRegistrar holdFadeIn(float holdFadeIn) {
-        this.holdFadeIn = holdFadeIn;
-        return getThis();
-    }
-    public HeldNoteSoundRegistrar holdFadeOut(float holdFadeOut) {
-        this.holdFadeOut = holdFadeOut;
         return getThis();
     }
 
@@ -97,7 +88,6 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
                 baseSoundLocation, i,
                 attack[i], hold[i], holdDuration,
                 holdDelay,
-                holdFadeIn, holdFadeOut,
                 chainedHoldDelay
             );
         }
