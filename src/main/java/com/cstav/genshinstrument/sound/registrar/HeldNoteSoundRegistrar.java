@@ -61,6 +61,9 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
     }
 
 
+    /**
+     * Builds both Attack and Hold phase's note sounds
+     */
     public HeldNoteSoundRegistrar buildSoundsForAll(final Function<NoteSoundRegistrar, NoteSound[]> builder) {
         return getThis()
             .attackBuilder(builder)
