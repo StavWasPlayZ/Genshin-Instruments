@@ -72,7 +72,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
     }
 
 
-    private boolean fadingOut = false;
+    private boolean released = false;
 
     protected int timeAlive = 0;
     @Override
@@ -80,10 +80,9 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
         timeAlive++;
         updatePlayerPos();
 
-        // Assume holding until not called release
-        handleHolding();
-
-        if (fadingOut) {
+        if (!released) {
+            handleHolding();
+        } else {
             volume -= .1f;
         }
 
@@ -91,7 +90,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
     }
 
     public void triggerRelease() {
-        fadingOut = true;
+        released = true;
     }
 
 
