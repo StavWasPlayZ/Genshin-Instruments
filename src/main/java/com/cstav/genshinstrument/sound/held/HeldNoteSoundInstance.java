@@ -67,6 +67,9 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
     }
 
     public static void triggerRelease(final HeldNoteSoundKey key) {
+        if (!SOUND_INSTANCES.containsKey(key))
+            return;
+
         SOUND_INSTANCES.get(key).forEach(HeldNoteSoundInstance::triggerRelease);
         SOUND_INSTANCES.remove(key);
     }

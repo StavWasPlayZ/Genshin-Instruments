@@ -20,6 +20,9 @@ public abstract class InstrumentMidiReceiver {
         MidiController.loadByConfigs();
     }
 
+    //TODO this should map a byte AND the current instrument's pitch.
+    // Upon deletion, make a new HeldNoteSoundInstance#triggerRelease that removes
+    // such specific entry.
     /**
      * Maps a note message to a note button
      */
