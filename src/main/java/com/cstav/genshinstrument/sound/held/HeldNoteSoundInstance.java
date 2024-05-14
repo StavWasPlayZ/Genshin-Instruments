@@ -88,8 +88,6 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
         } else {
             volume -= .1f;
         }
-
-        //TODO if stopped broadcast event
     }
 
     public void triggerRelease() {
