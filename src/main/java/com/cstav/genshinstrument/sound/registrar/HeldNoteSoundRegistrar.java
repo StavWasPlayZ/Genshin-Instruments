@@ -22,6 +22,7 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
 
     protected NoteSound[] attack, hold;
     protected float holdDelay = 0, chainedHoldDelay = 0;
+    protected float decay = -1;
 
 
     public HeldNoteSoundRegistrar(DeferredRegister<SoundEvent> sounds, ResourceLocation baseSoundLocation) {
@@ -47,6 +48,15 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
      */
     public HeldNoteSoundRegistrar chainedHoldDelay(float chainedHoldDelay) {
         this.chainedHoldDelay = chainedHoldDelay;
+        return getThis();
+    }
+
+    /**
+     * The holding sound will decay by the given unit
+     * every new iteration
+     */
+    public HeldNoteSoundRegistrar decays(float unit) {
+        decay = unit;
         return getThis();
     }
 
@@ -88,7 +98,7 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
                 baseSoundLocation, i,
                 attack[i], hold[i], holdDuration,
                 holdDelay,
-                chainedHoldDelay
+                chainedHoldDelay, decay
             );
         }
 

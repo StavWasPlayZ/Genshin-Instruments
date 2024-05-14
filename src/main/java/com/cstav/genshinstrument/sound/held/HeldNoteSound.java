@@ -22,7 +22,7 @@ public record HeldNoteSound(
     ResourceLocation baseSoundLocation, int index,
     NoteSound attack, NoteSound hold, float holdDuration,
     float holdDelay,
-    float chainedHoldDelay
+    float chainedHoldDelay, float decay
 ) {
 
     public NoteSound getSound(final Phase phase) {

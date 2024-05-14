@@ -105,7 +105,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
             case HOLD:
                 // Hold wants to chain the next hold:
                 if (timeAlive == (int)((heldSoundContainer.holdDuration() + heldSoundContainer.chainedHoldDelay()) * 20))
-                    queueHoldPhase(true);
+                    queueHoldPhase(heldSoundContainer.decay() > 0);
                 break;
         }
     }
@@ -115,7 +115,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
             return;
 
         new HeldNoteSoundInstance(
-            heldSoundContainer, Phase.HOLD, pitch, volume - (decreaseVol ? .05f : 0),
+            heldSoundContainer, Phase.HOLD, pitch, volume - (decreaseVol ? heldSoundContainer.decay() : 0),
             player, player.position().distanceTo(Minecraft.getInstance().player.position())
         ).queueAndAddInstance();
     }
