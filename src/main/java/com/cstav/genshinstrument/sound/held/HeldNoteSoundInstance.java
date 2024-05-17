@@ -86,7 +86,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
         if (!released) {
             handleHolding();
         } else {
-            volume -= .1f;
+            volume -= .035f;
         }
     }
 
