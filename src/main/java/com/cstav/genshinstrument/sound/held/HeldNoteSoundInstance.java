@@ -95,7 +95,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
     }
 
 
-    private void handleHolding() {
+    protected void handleHolding() {
         switch (phase) {
             case ATTACK:
                 // Attack wants to chain the first hold:
