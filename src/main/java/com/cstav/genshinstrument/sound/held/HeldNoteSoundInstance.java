@@ -80,7 +80,6 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
     protected int timeAlive = 0;
     @Override
     public void tick() {
-        timeAlive++;
         updatePlayerPos();
 
         if (!released) {
@@ -88,6 +87,8 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
         } else {
             volume -= heldSoundContainer.releaseFadeOut();
         }
+
+        timeAlive++;
     }
 
     public void triggerRelease() {

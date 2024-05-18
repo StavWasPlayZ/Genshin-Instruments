@@ -34,7 +34,6 @@ public class GISounds {
 
     public static final HeldNoteSound[]
         NIGHTWIND_HORN = hnsr(loc("nightwind_horn"))
-            .holdDelay(.083f)
             .chainedHoldDelay(-1.35f)
             .releaseFadeOut(.035f)
             .decays(.025f)
