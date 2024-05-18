@@ -16,17 +16,19 @@ import java.util.Map;
 @OnlyIn(Dist.CLIENT)
 public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
     private static final Map<HeldNoteSoundKey, List<HeldNoteSoundInstance>> SOUND_INSTANCES = new HashMap<>();
+    /**
+     * The time in ticks before which the fade out
+     * release time will be shorter
+     */
+    private static final float FULL_HOLD_FADE_OUT_TIME = 2 * 20;
 
     public final HeldNoteSound heldSoundContainer;
     public final Player player;
     public final HeldNoteSound.Phase phase;
 
-    /**
-     * A held note sound instance for 3rd party trigger
-     */
-    public HeldNoteSoundInstance(HeldNoteSound heldSoundContainer, HeldNoteSound.Phase phase,
+    protected HeldNoteSoundInstance(HeldNoteSound heldSoundContainer, HeldNoteSound.Phase phase,
                                     float pitch, float volume,
-                                    Player player, double distFromPlayer) {
+                                    Player player, double distFromPlayer, int timeAlive) {
         super(
             heldSoundContainer.getSound(phase).getByPreference(distFromPlayer),
             NoteSound.INSTRUMENT_SOUND_SOURCE,
@@ -35,6 +37,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
 
         this.heldSoundContainer = heldSoundContainer;
         this.phase = phase;
+        this.overallTimeAlive = timeAlive;
 
         this.player = player;
         updatePlayerPos();
@@ -44,6 +47,14 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
         attenuation = Attenuation.NONE;
     }
 
+    /**
+     * A held note sound instance for 3rd party trigger
+     */
+    public HeldNoteSoundInstance(HeldNoteSound heldSoundContainer, HeldNoteSound.Phase phase,
+                                 float pitch, float volume,
+                                 Player player, double distFromPlayer) {
+        this(heldSoundContainer, phase, pitch, volume, player, distFromPlayer, 0);
+    }
     /**
      * A held note sound instance for local playing
      */
@@ -77,7 +88,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
 
     private boolean released = false;
 
-    protected int timeAlive = 0;
+    protected int timeAlive = 0, overallTimeAlive;
     @Override
     public void tick() {
         updatePlayerPos();
@@ -85,10 +96,17 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
         if (!released) {
             handleHolding();
         } else {
-            volume -= heldSoundContainer.releaseFadeOut();
+            // Lesser the significance of hold in the first FULL_HOLD_FADE_OUT_TIME ticks
+            // Basically fade in the fade out
+            float fadeOutMultiplier = phase == Phase.HOLD
+                ? (1 / (((overallTimeAlive + 1) / FULL_HOLD_FADE_OUT_TIME)))
+                : 1;
+
+            volume -= heldSoundContainer.releaseFadeOut() * fadeOutMultiplier;
         }
 
         timeAlive++;
+        overallTimeAlive++;
     }
 
     public void triggerRelease() {
@@ -118,7 +136,8 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
 
         new HeldNoteSoundInstance(
             heldSoundContainer, Phase.HOLD, pitch, volume - (decreaseVol ? heldSoundContainer.decay() : 0),
-            player, player.position().distanceTo(Minecraft.getInstance().player.position())
+            player, player.position().distanceTo(Minecraft.getInstance().player.position()),
+            overallTimeAlive
         ).queueAndAddInstance();
     }
 
