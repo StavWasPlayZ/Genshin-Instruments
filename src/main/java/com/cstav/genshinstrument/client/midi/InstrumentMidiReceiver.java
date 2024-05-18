@@ -95,6 +95,8 @@ public abstract class InstrumentMidiReceiver {
             if (!isHoldableBtn) {
                 prevButton.release();
             }
+
+            pressedMidiNotes.remove(message[1]);
         }
 
 
@@ -108,8 +110,17 @@ public abstract class InstrumentMidiReceiver {
 
                 return true;
             case -128: // release
-                if (isHoldableBtn)
-                    ((IHoldableNoteButton)prevButton).releaseHeld(prevBtnTuple.obj1());
+                if (isHoldableBtn) {
+                    boolean hasAnother = false;
+                    for (BiValue<Integer, NoteButton> val : pressedMidiNotes.values()) {
+                        if (!val.equals(prevBtnTuple) && (val.obj2() == prevButton)) {
+                            hasAnother = true;
+                            break;
+                        }
+                    }
+                    ((IHoldableNoteButton)prevButton).releaseHeld(prevBtnTuple.obj1(), !hasAnother);
+                }
+                break;
         }
 
         return false;
