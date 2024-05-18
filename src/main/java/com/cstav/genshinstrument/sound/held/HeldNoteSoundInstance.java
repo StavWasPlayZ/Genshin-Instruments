@@ -99,7 +99,9 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
             // Lesser the significance of hold in the first FULL_HOLD_FADE_OUT_TIME ticks
             // Basically fade in the fade out
             float fadeOutMultiplier = phase == Phase.HOLD
-                ? (1 / (((overallTimeAlive + 1) / FULL_HOLD_FADE_OUT_TIME)))
+                ? (overallTimeAlive < FULL_HOLD_FADE_OUT_TIME)
+                    ? (1 / (((overallTimeAlive + 1) / FULL_HOLD_FADE_OUT_TIME)))
+                    : 1
                 : 1;
 
             volume -= heldSoundContainer.releaseFadeOut() * fadeOutMultiplier;
