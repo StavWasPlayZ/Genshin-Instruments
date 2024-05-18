@@ -42,8 +42,12 @@ public class HeldGridNoteButton extends NoteGridButton implements IHoldableNoteB
 
     @Override
     public void release() {
-        super.release();
         releaseHeld();
+    }
+    @Override
+    public void releaseHeld(int notePitch) {
+        super.release();
+        IHoldableNoteButton.super.releaseHeld(notePitch);
     }
 
     @Override

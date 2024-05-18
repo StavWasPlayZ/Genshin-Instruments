@@ -16,10 +16,13 @@ public interface IHoldableNoteButton {
     public void setHeldNoteSound(final HeldNoteSound sound);
 
     default void releaseHeld() {
+        releaseHeld(asNoteBtn().getPitch());
+    }
+    default void releaseHeld(int notePitch) {
         setHeld(false);
 
         ((HeldNoteButtonRenderer) asNoteBtn().getRenderer()).playRelease();
-        HeldNoteSoundInstance.triggerRelease(getHeldNoteSound().getKey(Minecraft.getInstance().player));
+        HeldNoteSoundInstance.triggerRelease(getHeldNoteSound().getKey(Minecraft.getInstance().player, notePitch));
     }
 
     default NoteButton asNoteBtn() {

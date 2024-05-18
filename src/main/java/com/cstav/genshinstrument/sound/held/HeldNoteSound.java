@@ -47,7 +47,7 @@ public record HeldNoteSound(
     public void startPlaying(final int notePitch, final float volume, final Player player) {
         new HeldNoteSoundInstance(
             this, Phase.ATTACK,
-            NoteSound.getPitchByNoteOffset(notePitch), volume,
+            notePitch, volume,
             player, player.position().distanceTo(Minecraft.getInstance().player.position())
         ).queueAndAddInstance();
     }
@@ -58,13 +58,13 @@ public record HeldNoteSound(
     public void startPlaying(final int notePitch, final float volume) {
         new HeldNoteSoundInstance(
             this, Phase.ATTACK,
-            NoteSound.getPitchByNoteOffset(notePitch), volume
+            notePitch, volume
         ).queueAndAddInstance();
     }
 
 
-    public HeldNoteSoundKey getKey(final Player player) {
-        return new HeldNoteSoundKey(player, baseSoundLocation, index);
+    public HeldNoteSoundKey getKey(final Player player, int notePitch) {
+        return new HeldNoteSoundKey(player, baseSoundLocation, index, notePitch);
     }
 
 

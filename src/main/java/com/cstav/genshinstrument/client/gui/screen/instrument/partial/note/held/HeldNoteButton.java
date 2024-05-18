@@ -55,8 +55,12 @@ public abstract class HeldNoteButton extends NoteButton implements IHoldableNote
 
     @Override
     public void release() {
-        super.release();
         releaseHeld();
+    }
+    @Override
+    public void releaseHeld(int notePitch) {
+        super.release();
+        IHoldableNoteButton.super.releaseHeld(notePitch);
     }
 
     @Override

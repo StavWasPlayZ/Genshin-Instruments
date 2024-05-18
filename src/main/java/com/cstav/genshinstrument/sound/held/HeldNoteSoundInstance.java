@@ -25,9 +25,11 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
     public final HeldNoteSound heldSoundContainer;
     public final Player player;
     public final HeldNoteSound.Phase phase;
+    // This is so we can cache this to the key
+    protected int notePitch;
 
     protected HeldNoteSoundInstance(HeldNoteSound heldSoundContainer, HeldNoteSound.Phase phase,
-                                    float pitch, float volume,
+                                    int notePitch, float volume,
                                     Player player, double distFromPlayer, int timeAlive) {
         super(
             heldSoundContainer.getSound(phase).getByPreference(distFromPlayer),
@@ -43,7 +45,8 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
         updatePlayerPos();
 
         this.volume = volume;
-        this.pitch = pitch;
+        this.notePitch = notePitch;
+        this.pitch = NoteSound.getPitchByNoteOffset(notePitch);
         attenuation = Attenuation.NONE;
     }
 
@@ -51,16 +54,16 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
      * A held note sound instance for 3rd party trigger
      */
     public HeldNoteSoundInstance(HeldNoteSound heldSoundContainer, HeldNoteSound.Phase phase,
-                                 float pitch, float volume,
+                                 int notePitch, float volume,
                                  Player player, double distFromPlayer) {
-        this(heldSoundContainer, phase, pitch, volume, player, distFromPlayer, 0);
+        this(heldSoundContainer, phase, notePitch, volume, player, distFromPlayer, 0);
     }
     /**
      * A held note sound instance for local playing
      */
     public HeldNoteSoundInstance(HeldNoteSound heldSoundContainer, HeldNoteSound.Phase phase,
-                                 float pitch, float volume) {
-        this(heldSoundContainer, phase, pitch, volume, Minecraft.getInstance().player, 0);
+                                 int notePitch, float volume) {
+        this(heldSoundContainer, phase, notePitch, volume, Minecraft.getInstance().player, 0);
     }
 
 
@@ -71,7 +74,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
     public void addSoundInstance() {
         SOUND_INSTANCES
             .computeIfAbsent(
-                new HeldNoteSoundKey(player, heldSoundContainer.baseSoundLocation(), heldSoundContainer.index()),
+                new HeldNoteSoundKey(player, heldSoundContainer.baseSoundLocation(), heldSoundContainer.index(), notePitch),
                 (_s) -> new ArrayList<>()
             )
             .add(this);
@@ -137,7 +140,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
             return;
 
         new HeldNoteSoundInstance(
-            heldSoundContainer, Phase.HOLD, pitch, volume - (decreaseVol ? heldSoundContainer.decay() : 0),
+            heldSoundContainer, Phase.HOLD, notePitch, volume - (decreaseVol ? heldSoundContainer.decay() : 0),
             player, player.position().distanceTo(Minecraft.getInstance().player.position()),
             overallTimeAlive
         ).queueAndAddInstance();

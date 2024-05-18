@@ -6,10 +6,12 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteB
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.IHoldableNoteButton;
 import com.cstav.genshinstrument.event.MidiEvent;
 import com.cstav.genshinstrument.sound.NoteSound;
+import com.cstav.genshinstrument.util.BiValue;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public abstract class InstrumentMidiReceiver {
     public static final int MIN_MIDI_VELOCITY = 6;
@@ -24,9 +26,9 @@ public abstract class InstrumentMidiReceiver {
     // Upon deletion, make a new HeldNoteSoundInstance#triggerRelease that removes
     // such specific entry.
     /**
-     * Maps a note message to a note button
+     * Maps a note message to an instrument pitch to pressed note button.
      */
-    private final HashMap<Byte, NoteButton> pressedMidiNotes = new HashMap<>();
+    private final Map<Byte, BiValue<Integer, NoteButton>> pressedMidiNotes = new HashMap<>();
 
     /**
      * Fires when a MIDI note is being pressed successfully, only if this is {@link InstrumentScreen#isMidiInstrument a midi instrument}.
@@ -70,8 +72,10 @@ public abstract class InstrumentMidiReceiver {
 
         final NoteButton pressedMidiNote = handleMidiPress(note, pitch);
         if (pressedMidiNote != null) {
+            pressedMidiNote.unlockInput();
             pressedMidiNote.play();
-            pressedMidiNotes.put(message[1], pressedMidiNote);
+            // Remember the note to later release it
+            pressedMidiNotes.put(message[1], new BiValue<>(instrument.getPitch(), pressedMidiNote));
         }
 
         instrument.setVolume(prevVolume);
@@ -80,11 +84,17 @@ public abstract class InstrumentMidiReceiver {
     protected boolean canPerformMidi(final MidiEvent event) {
         final byte[] message = event.message.getMessage();
 
-        final NoteButton prevBtn = pressedMidiNotes.get(message[1]);
-        boolean isHoldableBtn = prevBtn instanceof IHoldableNoteButton;
-        // Release the previously pressed note
-        if (prevBtn != null && !isHoldableBtn) {
-            prevBtn.release();
+        final BiValue<Integer, NoteButton> prevBtnTuple = pressedMidiNotes.get(message[1]);
+        NoteButton prevButton = null;
+        boolean isHoldableBtn = false;
+        if (prevBtnTuple != null) {
+            prevButton = prevBtnTuple.obj2();
+            isHoldableBtn = prevButton instanceof IHoldableNoteButton;
+
+            // Release the previously pressed note
+            if (!isHoldableBtn) {
+                prevButton.release();
+            }
         }
 
 
@@ -99,7 +109,7 @@ public abstract class InstrumentMidiReceiver {
                 return true;
             case -128: // release
                 if (isHoldableBtn)
-                    prevBtn.release();
+                    ((IHoldableNoteButton)prevButton).releaseHeld(prevBtnTuple.obj1());
         }
 
         return false;

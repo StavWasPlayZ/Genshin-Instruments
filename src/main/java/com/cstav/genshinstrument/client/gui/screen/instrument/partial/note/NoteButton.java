@@ -170,10 +170,14 @@ public abstract class NoteButton extends AbstractButton {
 
     private boolean locked = false;
     public void release() {
-        locked = false;
+        unlockInput();
     }
+
     protected void lockInput() {
         locked = true;
+    }
+    public void unlockInput() {
+        locked = false;
     }
 
     /**
