@@ -1,12 +1,9 @@
 package com.cstav.genshinstrument.item;
 
-import java.util.function.Consumer;
-
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
-import com.cstav.genshinstrument.item.clientExtensions.ClientInstrumentItem;
+import com.cstav.genshinstrument.item.clientExtensions.InstrumentItemClientExt;
 import com.cstav.genshinstrument.networking.OpenInstrumentPacketSender;
 import com.cstav.genshinstrument.util.ServerUtil;
-
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -16,6 +13,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+
+import java.util.function.Consumer;
 
 /**
  * An item responsible for opening an {@link InstrumentScreen}.
@@ -59,7 +58,7 @@ public class InstrumentItem extends Item {
     }
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        consumer.accept(new ClientInstrumentItem());
+        consumer.accept(new InstrumentItemClientExt());
     }
     
 }

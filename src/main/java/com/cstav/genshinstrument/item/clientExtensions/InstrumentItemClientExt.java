@@ -14,16 +14,14 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import javax.annotation.Nullable;
 
 @OnlyIn(Dist.CLIENT)
-public class ClientInstrumentItem implements IClientItemExtensions {
+public class InstrumentItemClientExt implements IClientItemExtensions {
     @Override
     public @Nullable ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
-        if (!(entityLiving instanceof Player))
+        if (!(entityLiving instanceof Player player))
             return null;
-        final Player player = (Player)entityLiving;
         
         if (!InstrumentOpenProvider.isOpen(player) || !InstrumentOpenProvider.isItem(player))
             return null;
-
 
         return ModArmPose.PLAYING_ITEM_INSTRUMENT;
     }
