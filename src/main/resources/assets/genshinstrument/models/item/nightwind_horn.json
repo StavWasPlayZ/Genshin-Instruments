@@ -8,6 +8,9 @@
 	"perspectives": {
 		"gui": {
 			"parent": "genshinstrument:item/floral_zither"
+		},
+		"ground": {
+			"parent": "genshinstrument:item/floral_zither"
 		}
 	},
 
