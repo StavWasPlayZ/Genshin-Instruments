@@ -29,10 +29,10 @@
 	},
 	"perspectives": {
 		"gui": {
-			"parent": "genshinstrument:item/floral_zither"
+			"parent": "genshinstrument:item/nightwind_horn_item"
 		},
 		"ground": {
-			"parent": "genshinstrument:item/floral_zither"
+			"parent": "genshinstrument:item/nightwind_horn_item"
 		}
 	}
 }
