@@ -9,6 +9,8 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.windsonglyre.Winds
 import com.cstav.genshinstrument.item.clientExtensions.ModItemPredicates;
 import com.cstav.genshinstrument.util.CommonUtil;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.client.model.SeparateTransformsModel;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -29,6 +31,11 @@ public class ClientInitiator {
         ModItemPredicates.register();
 
         CommonUtil.loadClasses(LOAD_ME);
+    }
+
+    @SubscribeEvent
+    public static void modelLoadEvent(final ModelEvent.RegisterGeometryLoaders event) {
+        event.register("separate_transforms", SeparateTransformsModel.Loader.INSTANCE);
     }
 
 }
