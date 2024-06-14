@@ -1,25 +1,34 @@
 {
-	"parent": "genshinstrument:item/nightwind_horn",
+	"loader":"genshinstrument:separate_transforms",
 
-	"display": {
-		"thirdperson_righthand": {
-			"rotation": [-2.07, 32.38, 72.61],
-			"translation": [-4.75, -1.5, -1],
-			"scale": [0.7, 0.7, 0.7]
-		},
-		"thirdperson_lefthand": {
-			"rotation": [-40.94, 16.01, 93.91],
-			"translation": [-3.75, -1.75, 0.25],
-			"scale": [0.7, 0.7, 0.7]
-		},
+	"base" : {
+		"parent": "genshinstrument:item/nightwind_horn_idle",
 
-		"firstperson_righthand": {
-			"rotation": [0, 57.75, 108],
-			"translation": [-12.25, -1.5, 0.5]
-		},
-		"firstperson_lefthand": {
-			"rotation": [0, 52.5, 108],
-			"translation": [-12.75, 0, 2]
+		"display": {
+			"thirdperson_righthand": {
+				"rotation": [-2.07, 32.38, 72.61],
+				"translation": [-4.75, -1.5, -1],
+				"scale": [0.7, 0.7, 0.7]
+			},
+			"thirdperson_lefthand": {
+				"rotation": [-40.94, 16.01, 93.91],
+				"translation": [-3.75, -1.75, 0.25],
+				"scale": [0.7, 0.7, 0.7]
+			},
+
+			"firstperson_righthand": {
+				"rotation": [0, 57.75, 108],
+				"translation": [-12.25, -1.5, 0.5]
+			},
+			"firstperson_lefthand": {
+				"rotation": [0, 52.5, 108],
+				"translation": [-12.75, 0, 2]
+			}
+		}
+	},
+	"perspectives": {
+		"gui": {
+			"parent": "genshinstrument:item/floral_zither"
 		}
 	}
 }
