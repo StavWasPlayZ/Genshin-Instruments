@@ -13,12 +13,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
-public class WindInstrumentItem extends InstrumentItem {
-
-    public WindInstrumentItem(OpenInstrumentPacketSender onOpenRequest) {
+public class NightwindHornItem extends WindInstrumentItem {
+    public NightwindHornItem(OpenInstrumentPacketSender onOpenRequest) {
         super(onOpenRequest);
     }
-    public WindInstrumentItem(OpenInstrumentPacketSender onOpenRequest, Properties properties) {
+    public NightwindHornItem(OpenInstrumentPacketSender onOpenRequest, Properties properties) {
         super(onOpenRequest, properties);
     }
 
@@ -31,7 +30,7 @@ public class WindInstrumentItem extends InstrumentItem {
             return (
                 (entityLiving instanceof Player player)
                 ? (InstrumentOpenProvider.isOpen(player) && InstrumentOpenProvider.isItem(player))
-                    ? ModArmPose.PLAYING_WIND_INSTRUMENT
+                    ? ModArmPose.PLAYING_NIGHTWIND_HORN_INSTRUMENT
                     : null
                 : null
             );
@@ -39,5 +38,4 @@ public class WindInstrumentItem extends InstrumentItem {
 
         });
     }
-
 }

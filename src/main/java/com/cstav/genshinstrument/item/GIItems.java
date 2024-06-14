@@ -46,7 +46,7 @@ public class GIItems {
         ),
 
         NIGHTWIND_HORN = ITEMS.register("nightwind_horn", () ->
-        new WindInstrumentItem(
+        new NightwindHornItem(
                 (player) -> sendInternalOpenPacket(player, "nightwind_horn")
             )
         )
