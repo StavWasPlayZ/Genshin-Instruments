@@ -1,5 +1,6 @@
 {
 	"loader":"genshinstrument:separate_transforms",
+	"gui_light": "front",
 
 	"base" : {
 		"parent": "genshinstrument:item/nightwind_horn_idle",
