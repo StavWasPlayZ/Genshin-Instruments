@@ -4,16 +4,6 @@
 		"0": "genshinstrument:item/nightwind_gold",
 		"1": "genshinstrument:item/nightwind_body"
 	},
-
-	"overrides": [
-		{
-			"predicate": {
-				"genshinstrument:instrument_open": 1
-			},
-			"model": "genshinstrument:item/nightwind_horn_played"
-		}
-	],
-
 	"elements": [
 		{
 			"from": [8.59281, 6.4385, 7.3347],
@@ -757,7 +747,7 @@
 			}
 		},
 		{
-			"from": [8.52506, -0.50753, 4.22879],
+			"from": [8.52506, -0.50753, 4.00379],
 			"to": [9.60906, 2.87997, 5.04179],
 			"rotation": {"angle": 22.5, "axis": "x", "origin": [8, 6.87888, 8]},
 			"faces": {
@@ -770,7 +760,7 @@
 			}
 		},
 		{
-			"from": [6.35706, -0.50753, 4.22879],
+			"from": [6.35706, -0.50753, 4.00379],
 			"to": [7.50881, 2.87997, 5.04179],
 			"rotation": {"angle": 22.5, "axis": "x", "origin": [8, 6.87888, 8]},
 			"faces": {
@@ -783,7 +773,7 @@
 			}
 		},
 		{
-			"from": [7.50881, 1.72822, 4.22879],
+			"from": [7.50881, 1.72822, 4.00379],
 			"to": [8.52506, 2.87997, 5.04179],
 			"rotation": {"angle": 22.5, "axis": "x", "origin": [8, 6.87888, 8]},
 			"faces": {
@@ -796,7 +786,7 @@
 			}
 		},
 		{
-			"from": [7.50881, -0.50753, 4.22879],
+			"from": [7.50881, -0.50753, 4.00379],
 			"to": [8.52506, 0.64422, 5.04179],
 			"rotation": {"angle": 22.5, "axis": "x", "origin": [8, 6.87888, 8]},
 			"faces": {
@@ -848,8 +838,8 @@
 			}
 		},
 		{
-			"from": [5.88281, -1.45603, 3.14479],
-			"to": [9.94781, -0.50753, 4.16104],
+			"from": [5.88281, -1.45603, 3.09479],
+			"to": [9.94781, -0.50753, 4.22979],
 			"rotation": {"angle": 22.5, "axis": "x", "origin": [8, 6.87888, 8]},
 			"faces": {
 				"north": {"uv": [4.01146, 6.27997, 6.76422, 4.58929], "texture": "#0"},
@@ -862,7 +852,7 @@
 		},
 		{
 			"from": [5.88281, 2.87997, 3.14479],
-			"to": [9.94781, 3.82847, 4.22879],
+			"to": [9.94781, 3.82847, 4.22979],
 			"rotation": {"angle": 22.5, "axis": "x", "origin": [8, 6.87888, 8]},
 			"faces": {
 				"north": {"uv": [2.09853, 5.7892, 9, 4.09853], "rotation": 180, "texture": "#0"},
@@ -940,6 +930,9 @@
 		}
 	],
 	"gui_light": "front",
+	"overrides": [
+		{"predicate": {"genshinstrument:instrument_open": 1}, "model": "genshinstrument:item/nightwind_horn_played"}
+	],
 	"display": {
 		"thirdperson_righthand": {
 			"rotation": [36.85, 12.63, 28.55],
