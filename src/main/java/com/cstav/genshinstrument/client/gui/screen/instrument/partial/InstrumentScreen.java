@@ -425,6 +425,10 @@ public abstract class InstrumentScreen extends Screen {
         if (checkTransposeDown(pKeyCode, pScanCode))
             return true;
 
+        // Release a focused note (in case pressed Enter)
+        if (isFocused() && (getFocused() instanceof NoteButton btn))
+            btn.release();
+
         if (!isKeyConsumed(pKeyCode, pScanCode))
             return false;
 
