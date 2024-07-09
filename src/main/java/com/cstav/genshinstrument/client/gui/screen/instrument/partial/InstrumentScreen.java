@@ -429,6 +429,7 @@ public abstract class InstrumentScreen extends Screen {
         if (isFocused() && (getFocused() instanceof NoteButton btn))
             btn.release();
 
+        // Filter non-instrument keys
         if (!isKeyConsumed(pKeyCode, pScanCode))
             return false;
 
