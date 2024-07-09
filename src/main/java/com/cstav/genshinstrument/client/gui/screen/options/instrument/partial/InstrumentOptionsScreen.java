@@ -88,7 +88,7 @@ public abstract class InstrumentOptionsScreen extends AbstractInstrumentOptionsS
             .build();
 
         // Add MIDI options button for MIDI instruments
-        if (!isOverlay || instrumentScreen.isMidiInstrument()) {
+        if (!isOverlay || instrumentScreen.get().isMidiInstrument()) {
             final LinearLayout buttonLayout = new LinearLayout(
                 grid.getX() + getSmallButtonWidth() - buttonsWidth + ClientUtil.GRID_HORZ_PADDING, buttonsY,
                 (buttonsWidth + ClientUtil.GRID_HORZ_PADDING) * 2, getButtonHeight(),
@@ -159,7 +159,7 @@ public abstract class InstrumentOptionsScreen extends AbstractInstrumentOptionsS
             rowHelper.addChild(pitchSlider);
         }
 
-        final SliderButton volumeSlider = new SliderButton(getSmallButtonWidth(), ModClientConfigs.VOLUME.get(), 0, 1) {
+        final SliderButton volumeSlider = new SliderButton(getSmallButtonWidth(), getVolume(), 0, 1) {
 
             @Override
             public Component getMessage() {
@@ -235,34 +235,31 @@ public abstract class InstrumentOptionsScreen extends AbstractInstrumentOptionsS
     }
 
     private int getPitch() {
-        return (isOverlay)
-            ? instrumentScreen.getPitch()
-            : ModClientConfigs.PITCH.get().intValue();
+        return instrumentScreen.map(InstrumentScreen::getPitch).orElseGet(ModClientConfigs.PITCH);
+    }
+    private double getVolume() {
+        return instrumentScreen.map(screen -> (double) screen.volume()).orElseGet(ModClientConfigs.VOLUME);
     }
 
 
     // Change handlers
-    protected void onLabelChanged(final CycleButton<INoteLabel> button, final INoteLabel label) {
-        if (isOverlay)
-            instrumentScreen.notesIterable().forEach((note) -> note.setLabelSupplier(label.getLabelSupplier()));
-
-        queueToSave("note_label", () -> saveLabel(label));
-    }
-    protected abstract void saveLabel(final INoteLabel newLabel);
-
     protected void onPitchChanged(final AbstractSliderButton slider, final int pitch) {
-        if (isOverlay) {
-            // This is a double slide, hence conversions to int would
-            // make unnecessary calls
-            if (instrumentScreen.getPitch() == pitch)
-                return;
+        instrumentScreen.ifPresentOrElse(
+            (screen) -> {
+                // This is a double slide, hence conversions to int would
+                // make unnecessary calls
+                if (screen.getPitch() == pitch)
+                    return;
 
-            // Directly save the pitch if we're on an instrument
-            // Otherwise transpositions will reset to their previous pitch
-            instrumentScreen.setPitch(pitch);
-            savePitch(pitch);
-        } else
-            queueToSave("pitch", () -> savePitch(pitch));
+                // Directly save the pitch if we're on an instrument
+                // Otherwise transpositions will reset to their previous pitch
+                screen.setPitch(pitch);
+                savePitch(pitch);
+            },
+            () -> {
+                queueToSave("pitch", () -> savePitch(pitch));
+            }
+        );
     }
     protected void savePitch(final int newPitch) {
         ModClientConfigs.PITCH.set(newPitch);
@@ -270,15 +267,20 @@ public abstract class InstrumentOptionsScreen extends AbstractInstrumentOptionsS
 
     protected void onVolumeChanged(final AbstractSliderButton slider, final double volume) {
         final int newVolume = (int)(volume * 100);
-
-        if (isOverlay)
-            instrumentScreen.volume = newVolume;
+        instrumentScreen.ifPresent((screen) -> screen.volume = newVolume);
 
         queueToSave("volume", () -> saveVolume(newVolume / 100d));
     }
     protected void saveVolume(final double newVolume) {
         ModClientConfigs.VOLUME.set(CommonUtil.round(newVolume, 4));
     }
+
+    // The label enum is not cached anywhere; just save it.
+    protected void onLabelChanged(final CycleButton<INoteLabel> button, final INoteLabel label) {
+        instrumentScreen.ifPresent((screen) -> screen.setLabelSupplier(label.getLabelSupplier()));
+        saveLabel(label);
+    }
+    protected abstract void saveLabel(final INoteLabel newLabel);
 
     // These values derive from the config directly, so just update them on-spot
     protected void onChannelTypeChanged(CycleButton<InstrumentChannelType> button, InstrumentChannelType type) {
@@ -293,8 +295,9 @@ public abstract class InstrumentOptionsScreen extends AbstractInstrumentOptionsS
     protected void onAccurateNotesChanged(final CycleButton<Boolean> button, final boolean value) {
         ModClientConfigs.ACCURATE_NOTES.set(value);
 
-        if (isOverlay)
-            instrumentScreen.notesIterable().forEach(NoteButton::updateNoteLabel);
+        instrumentScreen.ifPresent((screen) ->
+            screen.notesIterable().forEach(NoteButton::updateNoteLabel)
+        );
     }
 
 
@@ -314,8 +317,7 @@ public abstract class InstrumentOptionsScreen extends AbstractInstrumentOptionsS
     @Override
     public void onClose() {
         super.onClose();
-        if (isOverlay)
-            instrumentScreen.onOptionsClose();
+        instrumentScreen.ifPresent(InstrumentScreen::onOptionsClose);
     }
 
 

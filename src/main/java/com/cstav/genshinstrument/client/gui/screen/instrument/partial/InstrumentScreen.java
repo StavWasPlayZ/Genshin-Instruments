@@ -5,6 +5,7 @@ import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvide
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.GenshinConsentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.AbstractInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.InstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.widget.IconToggleButton;
@@ -63,6 +64,11 @@ public abstract class InstrumentScreen extends Screen {
     public int getPitch() {
         return pitch;
     }
+
+    /**
+     * Sets the pitch of all notes in this instrument
+     * @param pitch The new pitch to apply
+     */
     public void setPitch(int pitch) {
         this.pitch = NoteSound.clampPitch(pitch);
         notesIterable().forEach((note) -> note.setPitch(this.pitch));
@@ -114,6 +120,20 @@ public abstract class InstrumentScreen extends Screen {
 
         if (noteIterator.hasNext() || (i < sounds.length))
             LogUtils.getLogger().warn("Not all sounds were set for instrument "+getInstrumentId()+"!");
+    }
+
+    private NoteLabelSupplier noteLabelSupplier;
+    /**
+     * Updates all buttons in this instrument to use
+     * the specified label supplier
+     * @param supplier The new supplier to use
+     */
+    public void setLabelSupplier(final NoteLabelSupplier supplier) {
+        noteLabelSupplier = supplier;
+        notesIterable().forEach((note) -> note.setLabelSupplier(supplier));
+    }
+    public NoteLabelSupplier getNoteLabelSupplier() {
+        return noteLabelSupplier;
     }
 
 
@@ -560,8 +580,7 @@ public abstract class InstrumentScreen extends Screen {
             return Optional.of((InstrumentScreen)minecraft.screen);
 
         if (minecraft.screen instanceof AbstractInstrumentOptionsScreen instrumentOptionsScreen) {
-            if (instrumentOptionsScreen.isOverlay)
-                return Optional.of(instrumentOptionsScreen.instrumentScreen);
+            return instrumentOptionsScreen.instrumentScreen;
         }
 
         return Optional.empty();

@@ -3,7 +3,6 @@ package com.cstav.genshinstrument.client.gui.screen.options.instrument.midi;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.drum.DominantDrumType;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
-
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.layouts.GridLayout;
@@ -14,11 +13,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import java.util.Optional;
+
 @OnlyIn(Dist.CLIENT)
 public class DrumMidiOptionsScreen extends MidiOptionsScreen {
     public static final String DDT_KEY = "button.genshinstrument.dominantDrumType";
 
-    public DrumMidiOptionsScreen(Component pTitle, Screen prevScreen, InstrumentScreen instrumentScreen) {
+    public DrumMidiOptionsScreen(Component pTitle, Screen prevScreen, Optional<InstrumentScreen> instrumentScreen) {
         super(pTitle, prevScreen, instrumentScreen);
     }
     
