@@ -202,7 +202,6 @@ public abstract class InstrumentScreen extends Screen {
             return getNoteButton(noteSound, pitch);
         else
             return getNoteButton(noteIdentifier.get());
-
     }
 
     /**
@@ -425,6 +424,9 @@ public abstract class InstrumentScreen extends Screen {
     public boolean keyReleased(int pKeyCode, int pScanCode, int pModifiers) {
         if (checkTransposeDown(pKeyCode, pScanCode))
             return true;
+
+        if (!isKeyConsumed(pKeyCode, pScanCode))
+            return false;
 
         unlockFocused();
 
