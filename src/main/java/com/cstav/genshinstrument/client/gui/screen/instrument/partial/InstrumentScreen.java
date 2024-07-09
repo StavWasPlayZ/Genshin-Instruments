@@ -310,8 +310,14 @@ public abstract class InstrumentScreen extends Screen {
         resetPitch();
         optionsScreen.init(minecraft, width, height);
 
+        boolean wasEnabled = false;
+        // Could be not null on screen refresh event
+        if (visibilityButton != null)
+            wasEnabled = visibilityButton.enabled();
+
         visibilityButton = initVisibilityButton();
         addRenderableWidget(visibilityButton);
+        visibilityButton.setEnabled(wasEnabled);
 
         if (isGenshinInstrument() && !ModClientConfigs.ACCEPTED_GENSHIN_CONSENT.get())
             minecraft.setScreen(new GenshinConsentScreen(this));
