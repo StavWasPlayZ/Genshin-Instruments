@@ -16,7 +16,6 @@ import java.util.Arrays;
  * as a holdable note sound.
  * <p>The attack sound plays once at the beginning, and the hold
  * sound is held and repeated until released.</p>
- * All time units are in seconds.
  */
 public record HeldNoteSound(
     ResourceLocation baseSoundLocation, int index,

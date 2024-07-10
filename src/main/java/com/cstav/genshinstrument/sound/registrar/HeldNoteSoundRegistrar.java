@@ -105,6 +105,9 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
     }
 
 
+    /**
+     * @param holdDuration The duration of the held sound in seconds
+     */
     public HeldNoteSound[] register(final float holdDuration) {
         if (!validateLengths())
             throw new IllegalStateException(
