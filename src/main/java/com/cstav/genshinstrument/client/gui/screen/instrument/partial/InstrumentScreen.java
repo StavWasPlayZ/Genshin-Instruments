@@ -375,6 +375,10 @@ public abstract class InstrumentScreen extends Screen {
     }
 
 
+    /**
+     * @return True whether this instrument's GUI
+     * is to be rendered
+     */
     public boolean instrumentRenders() {
         return !visibilityButton.enabled();
     }
