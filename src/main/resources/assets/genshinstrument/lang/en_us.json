@@ -85,7 +85,8 @@
     "button.genshinstrument.zither.soundType.new": "New",
 
 
-    "button.genshinstrument.label.do_re_mi": "Do Re Mi",
+    "button.genshinstrument.label.do_re_mi": "do re mi",
+    "button.genshinstrument.label.do_re_mi.description": "Labels will be of the musical notation \"do re mi.\"",
 
     "genshinstrument.label.do": "do",
     "genshinstrument.label.re": "re",
@@ -100,10 +101,19 @@
 
 
     "button.genshinstrument.label.keyboard_layout": "Keyboard",
+    "button.genshinstrument.label.keyboard_layout.description": "Labels will be of your local keyboard layout",
     "button.genshinstrument.label.qwerty": "Keyboard (QWERTY)",
-    "button.genshinstrument.label.note_name": "Note Name",
-    "button.genshinstrument.label.abc": "ABC",
+    "button.genshinstrument.label.qwerty.description": "Labels will be of the QWERTY keyboard layout",
+    "button.genshinstrument.label.note_name": "ABC",
+    "button.genshinstrument.label.note_name.description": "Labels will be of the musical notation \"ABC\"",
+
+    "button.genshinstrument.label.fixed_abc": "Fixed ABC",
+    "button.genshinstrument.label.fixed_abc.description": "ABC labels that are not affected by custom transpositions (pitch)",
+    "button.genshinstrument.label.fixed_do_re_mi": "Fixed do re mi",
+    "button.genshinstrument.label.fixed_do_re_mi.description": "do re mi labels that are not affected by custom transpositions (pitch)",
+
     "button.genshinstrument.label.none": "No Label",
+    "button.genshinstrument.label.none.description": "",
 
     "button.genshinstrument.label.don_ka": "Don-Ka",
 
@@ -122,12 +132,12 @@
     "genshinstrument.advancements.main.vintage_lyre.description": "Play the Vintage Lyre",
 
     "genshinstrument.advancements.main.glorious_drum.title": "Totally Not a Scam",
-    "genshinstrument.advancements.main.glorious_drum.description": "Play Arataki's Glorious Drum",
+    "genshinstrument.advancements.main.glorious_drum.description": "Play Arataki's Great and Glorious Drum",
 
     "genshinstrument.advancements.main.floral_zither.title": "Incognito Player",
     "genshinstrument.advancements.main.floral_zither.description": "Play the Floral Zither",
 
-    "genshinstrument.advancements.main.nightwind_horn.title": "Compte à Rebours Final",
+    "genshinstrument.advancements.main.nightwind_horn.title": "The Final Symphony",
     "genshinstrument.advancements.main.nightwind_horn.description": "Play the Nightwind Horn"
 
 }

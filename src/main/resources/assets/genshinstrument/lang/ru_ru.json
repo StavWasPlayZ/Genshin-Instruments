@@ -46,7 +46,8 @@
     "button.genshinstrument.zither.soundType.new": "Новый",
 
 
-    "button.genshinstrument.label.do_re_mi": "До Ре Ми",
+    "button.genshinstrument.label.do_re_mi": "до ре ми",
+    "button.genshinstrument.label.do_re_mi.description": "Наклейки будут иметь нотную запись \"до ре ми\".",
 
     "genshinstrument.label.do": "до",
     "genshinstrument.label.re": "ре",
@@ -56,10 +57,16 @@
     "genshinstrument.label.la": "ля",
     "genshinstrument.label.ti": "ти",
 
+    "button.genshinstrument.label.note_name.description": "Этикетки будут иметь нотную запись \"ABC\".",
 
     "button.genshinstrument.label.keyboard_layout": "Клавиатура",
+    "button.genshinstrument.label.keyboard_layout.description": "Метки будут соответствовать вашей локальной раскладке клавиатуры",
     "button.genshinstrument.label.qwerty": "Клавиатура (QWERTY)",
-    "button.genshinstrument.label.note_name": "Название Ноты",
+    "button.genshinstrument.label.qwerty.description": "Ярлыки будут иметь раскладку клавиатуры QWERTY",
+    "button.genshinstrument.label.fixed_do_re_mi": "фиксированные до ре ми",
+    "button.genshinstrument.label.fixed_do_re_mi.description": "Метки ABC, на которые не влияют пользовательские транспозиции (питч)",
+    "button.genshinstrument.label.fixed_abc": "фиксированные ABC",
+    "button.genshinstrument.label.fixed_abc.description": "до ре ми метки, на которые не влияют пользовательские транспозиции (питч)",
     "button.genshinstrument.label.none": "Без этикетки",
 
 
@@ -80,6 +87,9 @@
     "genshinstrument.advancements.main.glorious_drum.description": "Играйте на славном барабане Аратаки",
     
     "genshinstrument.advancements.main.floral_zither.title": "Проигрыватель инкогнито",
-    "genshinstrument.advancements.main.floral_zither.description": "Играть на цветочной цитре"
+    "genshinstrument.advancements.main.floral_zither.description": "Играть на цветочной цитре",
+
+    "genshinstrument.advancements.main.nightwind_horn.title": "Заключительная симфония",
+    "genshinstrument.advancements.main.nightwind_horn.description": "Играть в Горн ночного ветра"
 
 }

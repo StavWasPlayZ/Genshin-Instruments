@@ -15,6 +15,9 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Optional;
 
+/**
+ * The base class for all instrument options screens.
+ */
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractInstrumentOptionsScreen extends Screen {
 

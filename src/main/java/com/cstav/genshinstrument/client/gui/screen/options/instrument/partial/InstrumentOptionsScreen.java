@@ -31,6 +31,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.text.DecimalFormat;
 
+/**
+ * The base class for all main instrument options screens.
+ * Includes basic configurations all instruments should share
+ * by default.
+ */
 @OnlyIn(Dist.CLIENT)
 public abstract class InstrumentOptionsScreen extends AbstractInstrumentOptionsScreen {
     public static final MutableComponent MIDI_OPTIONS = Component.translatable("label.genshinstrument.midiOptions");
@@ -212,6 +217,7 @@ public abstract class InstrumentOptionsScreen extends AbstractInstrumentOptionsS
             final CycleButton<INoteLabel> labelType = CycleButton.<INoteLabel>builder((label) -> Component.translatable(label.getKey()))
                 .withValues(labels)
                 .withInitialValue(currLabel)
+                .withTooltip((value) -> Tooltip.create(Component.translatable(value.getKey()+".description")))
                 .create(0, 0,
                     getBigButtonWidth(), getButtonHeight(),
                     Component.translatable("button.genshinstrument.label"), this::onLabelChanged
