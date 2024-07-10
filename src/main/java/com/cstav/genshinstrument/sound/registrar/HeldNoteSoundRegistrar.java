@@ -44,7 +44,7 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
         return getThis();
     }
     /**
-     * The delay after which the next Hold phase should take
+     * The delay in seconds after which the next Hold phase should take
      */
     public HeldNoteSoundRegistrar chainedHoldDelay(float chainedHoldDelay) {
         this.chainedHoldDelay = chainedHoldDelay;
