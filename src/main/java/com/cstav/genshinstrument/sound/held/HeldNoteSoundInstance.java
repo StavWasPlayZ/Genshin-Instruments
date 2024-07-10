@@ -16,11 +16,6 @@ import java.util.Map;
 @OnlyIn(Dist.CLIENT)
 public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
     private static final Map<HeldNoteSoundKey, List<HeldNoteSoundInstance>> SOUND_INSTANCES = new HashMap<>();
-    /**
-     * The time in ticks before which the fade out
-     * release time will be shorter
-     */
-    private static final float FULL_HOLD_FADE_OUT_TIME = 2 * 20;
 
     public final HeldNoteSound heldSoundContainer;
     public final Player player;
@@ -99,13 +94,16 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
         if (!released) {
             handleHolding();
         } else {
+            float fadeOutMultiplier = 1;
+            float fhft = heldSoundContainer.fullHoldFadeoutTime();
+
             // Lesser the significance of hold in the first FULL_HOLD_FADE_OUT_TIME ticks
             // Basically fade in the fade out
-            float fadeOutMultiplier = phase == Phase.HOLD
-                ? (overallTimeAlive < FULL_HOLD_FADE_OUT_TIME)
-                    ? (1 / (((overallTimeAlive + 1) / FULL_HOLD_FADE_OUT_TIME)))
-                    : 1
-                : 1;
+            if ((phase == Phase.HOLD) && (fhft != 0)) {
+                if (overallTimeAlive < fhft) {
+                    fadeOutMultiplier = 1 / (((overallTimeAlive + 1) / fhft));
+                }
+            }
 
             volume -= heldSoundContainer.releaseFadeOut() * fadeOutMultiplier;
         }

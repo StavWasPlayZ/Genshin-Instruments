@@ -22,7 +22,7 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
 
     protected NoteSound[] attack, hold;
     protected float holdDelay = 0, chainedHoldDelay = 0;
-    protected float decay = -1, releaseFadeOut = 0;
+    protected float decay = -1, releaseFadeOut = 0, fullHoldFadeoutTime = 0;
 
 
     public HeldNoteSoundRegistrar(DeferredRegister<SoundEvent> sounds, ResourceLocation baseSoundLocation) {
@@ -61,6 +61,16 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
     }
     public HeldNoteSoundRegistrar releaseFadeOut(float releaseFadeOut) {
         this.releaseFadeOut = releaseFadeOut;
+        return getThis();
+    }
+
+    /**
+     * Defines the length a note must be pressed in order
+     * to activate a full fade out (in ticks).
+     * Applies in linear time.
+     */
+    public HeldNoteSoundRegistrar fullHoldFadeoutTime(float fullHoldFadeoutTime) {
+        this.fullHoldFadeoutTime = fullHoldFadeoutTime;
         return getThis();
     }
 
@@ -106,7 +116,8 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
                 attack[i], hold[i], holdDuration,
                 holdDelay,
                 chainedHoldDelay, decay,
-                releaseFadeOut
+                releaseFadeOut,
+                fullHoldFadeoutTime
             );
         }
 

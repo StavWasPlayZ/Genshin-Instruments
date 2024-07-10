@@ -37,6 +37,7 @@ public class GISounds {
             .chainedHoldDelay(-1.35f)
             .releaseFadeOut(.035f)
             .decays(.025f)
+            .fullHoldFadeoutTime(40)
             .buildSoundsForAll((builder) ->
                 builder.stereo().registerGrid(GridInstrumentScreen.DEF_ROWS, 2))
         .register(1.85f)

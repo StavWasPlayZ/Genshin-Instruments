@@ -23,7 +23,8 @@ public record HeldNoteSound(
     NoteSound attack, NoteSound hold, float holdDuration,
     float holdDelay,
     float chainedHoldDelay, float decay,
-    float releaseFadeOut
+    float releaseFadeOut,
+    float fullHoldFadeoutTime
 ) {
 
     public NoteSound getSound(final Phase phase) {
