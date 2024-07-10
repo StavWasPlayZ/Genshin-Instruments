@@ -119,17 +119,18 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
 
     protected void handleHolding() {
         switch (phase) {
-            case ATTACK:
+            case ATTACK: {
                 // Attack wants to chain the first hold:
                 if (timeAlive == (int)(heldSoundContainer.holdDelay() * 20))
                     queueHoldPhase(false);
                 break;
-
-            case HOLD:
+            }
+            case HOLD: {
                 // Hold wants to chain the next hold:
                 if (timeAlive == (int)((heldSoundContainer.holdDuration() + heldSoundContainer.chainedHoldDelay()) * 20))
                     queueHoldPhase(heldSoundContainer.decay() > 0);
                 break;
+            }
         }
     }
 
