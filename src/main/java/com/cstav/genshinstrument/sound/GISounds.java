@@ -34,14 +34,14 @@ public class GISounds {
 
     public static final HeldNoteSound[]
         NIGHTWIND_HORN = hnsr(loc("nightwind_horn"))
-            .chainedHoldDelay(-1.35f)
+            .chainedHoldDelay(-1.45f)
             .releaseFadeOut(.035f)
             .fullHoldFadeoutTime(40)
             .decays(.025f)
             .buildSoundsForAll((builder) ->
                 builder.stereo().registerGrid(GridInstrumentScreen.DEF_ROWS, 2)
             )
-        .register(1.85f)
+        .register(1.755f)
     ;
 
 
