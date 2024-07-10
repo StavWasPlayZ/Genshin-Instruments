@@ -59,6 +59,10 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
         decay = unit;
         return getThis();
     }
+
+    /**
+     * The fade out time (in ticks) when releasing a held note
+     */
     public HeldNoteSoundRegistrar releaseFadeOut(float releaseFadeOut) {
         this.releaseFadeOut = releaseFadeOut;
         return getThis();

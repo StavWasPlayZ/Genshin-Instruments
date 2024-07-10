@@ -36,10 +36,11 @@ public class GISounds {
         NIGHTWIND_HORN = hnsr(loc("nightwind_horn"))
             .chainedHoldDelay(-1.35f)
             .releaseFadeOut(.035f)
-            .decays(.025f)
             .fullHoldFadeoutTime(40)
+            .decays(.025f)
             .buildSoundsForAll((builder) ->
-                builder.stereo().registerGrid(GridInstrumentScreen.DEF_ROWS, 2))
+                builder.stereo().registerGrid(GridInstrumentScreen.DEF_ROWS, 2)
+            )
         .register(1.85f)
     ;
 
