@@ -52,16 +52,20 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
     }
 
     /**
-     * The holding sound will decay by the given unit
-     * every new iteration
+     * <p>The holding sound will decay for {@code iterations}
+     * hold iterations until inaudible.</p>
+     * <br/>
+     * The exact formula is:
+     * <p>{@code 1 / iterations},<p>
+     * which gets subtracted from the volume (1.0) every 1 hold iteration, until it hits 0.
      */
-    public HeldNoteSoundRegistrar decays(float unit) {
-        decay = unit;
+    public HeldNoteSoundRegistrar decays(float iterations) {
+        decay = 1 / iterations;
         return getThis();
     }
 
     /**
-     * The fade out time (in ticks) when releasing a held note
+     * The fade out unit per tick when releasing a held note
      */
     public HeldNoteSoundRegistrar releaseFadeOut(float releaseFadeOut) {
         this.releaseFadeOut = releaseFadeOut;
@@ -70,7 +74,7 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
 
     /**
      * Defines the length a note must be pressed in order
-     * to activate a full fade out (in ticks).
+     * to activate a full fade out (in seconds).
      * Applies in linear time.
      */
     public HeldNoteSoundRegistrar fullHoldFadeoutTime(float fullHoldFadeoutTime) {

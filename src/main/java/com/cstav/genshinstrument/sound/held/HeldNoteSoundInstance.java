@@ -95,7 +95,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
             handleHolding();
         } else {
             float fadeOutMultiplier = 1;
-            float fhft = heldSoundContainer.fullHoldFadeoutTime();
+            float fhft = heldSoundContainer.fullHoldFadeoutTime() * 20;
 
             // Lesser the significance of hold in the first FULL_HOLD_FADE_OUT_TIME ticks
             // Basically fade in the fade out
