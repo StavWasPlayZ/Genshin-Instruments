@@ -106,6 +106,8 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
             }
 
             volume -= heldSoundContainer.releaseFadeOut() * fadeOutMultiplier;
+            if (volume <= 0)
+                stop();
         }
 
         timeAlive++;
