@@ -57,7 +57,7 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
      * <br/>
      * The exact formula is:
      * <p>{@code 1 / iterations},<p>
-     * which gets subtracted from the volume (1.0) every 1 hold iteration, until it hits 0.
+     * which gets subtracted from the volume (1.0) every 1 hold iteration, until it hits 0.2.
      */
     public HeldNoteSoundRegistrar decays(float iterations) {
         decay = 1 / iterations;

@@ -44,7 +44,7 @@ public class GISounds {
             .chainedHoldDelay(-WINDSONG_FADE_TIME * 2)
             .releaseFadeOut(WINDSONG_FADE_TIME / 10)
             .fullHoldFadeoutTime(2)
-            .decays(7) // total of ~18 seconds
+            .decays(7)
             .buildSoundsForAll((builder) ->
                 builder.stereo().registerGrid(GridInstrumentScreen.DEF_ROWS, 2)
             )
