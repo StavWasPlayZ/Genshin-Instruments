@@ -497,34 +497,6 @@
         "category": "record",
         "sounds": ["genshinstrument:nightwind_horn/hold/13"]
     },
-    "nightwind_horn_hold_note_14": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/hold/14"]
-    },
-    "nightwind_horn_hold_note_15": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/hold/15"]
-    },
-    "nightwind_horn_hold_note_16": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/hold/16"]
-    },
-    "nightwind_horn_hold_note_17": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/hold/17"]
-    },
-    "nightwind_horn_hold_note_18": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/hold/18"]
-    },
-    "nightwind_horn_hold_note_19": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/hold/19"]
-    },
-    "nightwind_horn_hold_note_20": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/hold/20"]
-    },
 
     "nightwind_horn_hold_note_0_stereo": {
         "catrgory": "record",
@@ -581,34 +553,6 @@
     "nightwind_horn_hold_note_13_stereo": {
         "category": "record",
         "sounds": ["genshinstrument:nightwind_horn/hold/13.stereo"]
-    },
-    "nightwind_horn_hold_note_14_stereo": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/hold/14.stereo"]
-    },
-    "nightwind_horn_hold_note_15_stereo": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/hold/15.stereo"]
-    },
-    "nightwind_horn_hold_note_16_stereo": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/hold/16.stereo"]
-    },
-    "nightwind_horn_hold_note_17_stereo": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/hold/17.stereo"]
-    },
-    "nightwind_horn_hold_note_18_stereo": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/hold/18.stereo"]
-    },
-    "nightwind_horn_hold_note_19_stereo": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/hold/19.stereo"]
-    },
-    "nightwind_horn_hold_note_20_stereo": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/hold/20.stereo"]
     },
 
     "nightwind_horn_attack_note_0": {
@@ -667,34 +611,6 @@
         "category": "record",
         "sounds": ["genshinstrument:nightwind_horn/attack/13"]
     },
-    "nightwind_horn_attack_note_14": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/attack/14"]
-    },
-    "nightwind_horn_attack_note_15": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/attack/15"]
-    },
-    "nightwind_horn_attack_note_16": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/attack/16"]
-    },
-    "nightwind_horn_attack_note_17": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/attack/17"]
-    },
-    "nightwind_horn_attack_note_18": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/attack/18"]
-    },
-    "nightwind_horn_attack_note_19": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/attack/19"]
-    },
-    "nightwind_horn_attack_note_20": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/attack/20"]
-    },
 
     "nightwind_horn_attack_note_0_stereo": {
         "catrgory": "record",
@@ -751,33 +667,5 @@
     "nightwind_horn_attack_note_13_stereo": {
         "category": "record",
         "sounds": ["genshinstrument:nightwind_horn/attack/13.stereo"]
-    },
-    "nightwind_horn_attack_note_14_stereo": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/attack/14.stereo"]
-    },
-    "nightwind_horn_attack_note_15_stereo": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/attack/15.stereo"]
-    },
-    "nightwind_horn_attack_note_16_stereo": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/attack/16.stereo"]
-    },
-    "nightwind_horn_attack_note_17_stereo": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/attack/17.stereo"]
-    },
-    "nightwind_horn_attack_note_18_stereo": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/attack/18.stereo"]
-    },
-    "nightwind_horn_attack_note_19_stereo": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/attack/19.stereo"]
-    },
-    "nightwind_horn_attack_note_20_stereo": {
-        "category": "record",
-        "sounds": ["genshinstrument:nightwind_horn/attack/20.stereo"]
     }
 }
