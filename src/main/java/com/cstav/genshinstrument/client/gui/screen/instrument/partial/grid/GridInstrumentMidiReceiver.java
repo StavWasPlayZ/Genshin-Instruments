@@ -10,6 +10,9 @@ public class GridInstrumentMidiReceiver extends InstrumentMidiReceiver {
     public GridInstrumentMidiReceiver(GridInstrumentScreen instrument) {
         super(instrument);
     }
+    protected GridInstrumentScreen gridInstrument() {
+        return (GridInstrumentScreen) instrument;
+    }
 
     @Override
     public boolean allowMidiOverflow() {
@@ -17,7 +20,16 @@ public class GridInstrumentMidiReceiver extends InstrumentMidiReceiver {
     }
 
     protected int maxMidiNote() {
-        return NoteSound.MAX_PITCH * ((GridInstrumentScreen)instrument).columns();
+        return NoteSound.MAX_PITCH * gridInstrument().columns();
+    }
+
+    @Override
+    protected NoteButton getHighestNote() {
+        return gridInstrument().getNoteButton(gridInstrument().rows() - 1, gridInstrument().columns() - 1);
+    }
+    @Override
+    protected NoteButton getLowestNote() {
+        return gridInstrument().getNoteButton(0, 0);
     }
 
 

@@ -8,6 +8,7 @@ import com.cstav.genshinstrument.event.MidiEvent;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.BiValue;
 import net.minecraft.util.Mth;
+import org.apache.commons.lang3.NotImplementedException;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -34,6 +35,21 @@ public abstract class InstrumentMidiReceiver {
      * @return The pressed note button. Null if none.
      */
     protected abstract @Nullable NoteButton handleMidiPress(int note, int key);
+
+    /**
+     * @return The lowest-pitched note button of this instrument.
+     * Must be overwritten for an overflowable instrument.
+     */
+    protected NoteButton getLowestNote() {
+        throw new NotImplementedException("Overflow instrument does not implement getLowestNote");
+    }
+    /**
+     * @return The highest-pitched note button of this instrument.
+     * Must be overwritten for an overflow-able instrument.
+     */
+    protected NoteButton getHighestNote() {
+        throw new NotImplementedException("Overflow instrument does not implement getHighestNote");
+    }
     
 
     public void onMidi(final MidiEvent event) {
@@ -41,39 +57,53 @@ public abstract class InstrumentMidiReceiver {
             return;
 
         final byte[] message = event.message.getMessage();
-        final byte midiNote = message[1];
 
-        if (doesMidiOverflow(midiNote))
+        final byte midiNote = message[1];
+        int note = getLowC(midiNote);
+
+        if (isMIDIOutOfBounds(note))
             return;
+
+
+        final float prevVolume = instrument.volume();
+        handleDynamicTouch(message[2]);
 
         // So we don't do transpositions on a sharpened scale
         instrument.resetTransposition();
 
-        final int note;
-        try {
-            note = handleMidiOverflow(getLowC(midiNote));
-        } catch (MidiOutOfRangeException e) {
-            return;
-        }
-
-
         //NOTE: Math.abs(getPitch()) was here instead, but transposition seems fair enough
         final int pitch = 0;
 
-        // Handle dynamic touch
-        final float prevVolume = instrument.volume();
-        final float sensitivity = ModClientConfigs.MIDI_IN_SENSITIVITY.get().floatValue();
-        // 0 sensitivity = fixed touch:
-        if (!ModClientConfigs.FIXED_TOUCH.get() && (sensitivity != 0)) {
-            double volMultiplier = (message[2] / 127D) / sensitivity;
-            instrument.volume = (int)Mth.clamp(instrument.volume * volMultiplier, MIN_MIDI_VELOCITY, 100);
+
+        // Handle MIDI overflow
+        final MidiOverflowResult overflowRes = handleMidiOverflow(note);
+        note = overflowRes.fixedOctaveNote();
+
+        // Handle overflowing from Minecraft pitch limitations
+        if (overflowRes.newNoteSound() != null) {
+            int newInsPitch = overflowRes.pitchOffset() + instrument.getPitch();
+            if ((newInsPitch < NoteSound.MIN_PITCH) || (newInsPitch > NoteSound.MIN_PITCH)) {
+                // Reset their pitch to middle C.
+                if (!ModClientConfigs.PITCH.get().equals(0))
+                    ModClientConfigs.PITCH.set(0);
+                instrument.setPitch(0);
+            }
         }
 
 
+        // Actually play the note
+        int basePitch = instrument.getPitch();
         final NoteButton pressedMidiNote = handleMidiPress(note, pitch);
+
         if (pressedMidiNote != null) {
             pressedMidiNote.unlockInput();
-            pressedMidiNote.play();
+
+            if (overflowRes.newNoteSound() == null) {
+                pressedMidiNote.play();
+            } else {
+                pressedMidiNote.play(overflowRes.newNoteSound(), basePitch + overflowRes.pitchOffset());
+            }
+
             // Remember the note to later release it
             pressedMidiNotes.put(midiNote, new BiValue<>(instrument.getPitch(), pressedMidiNote));
         }
@@ -126,6 +156,21 @@ public abstract class InstrumentMidiReceiver {
         return false;
     }
 
+    /**
+     * Handles changing the volume of the instrument
+     * depending on the velocity of the MIDI press.
+     * @param velocity The MIDI-IN velocity
+     */
+    protected void handleDynamicTouch(int velocity) {
+        final float sensitivity = ModClientConfigs.MIDI_IN_SENSITIVITY.get().floatValue();
+
+        // 0 sensitivity = fixed touch:
+        if (!ModClientConfigs.FIXED_TOUCH.get() && (sensitivity != 0)) {
+            double volMultiplier = (velocity / 127D) / sensitivity;
+            instrument.volume = (int)Mth.clamp(instrument.volume * volMultiplier, MIN_MIDI_VELOCITY, 100);
+        }
+    }
+
 
     protected boolean shouldSharpen(final int layoutNote, final int key) {
         final boolean higherThan3 = layoutNote > key + 4;
@@ -165,58 +210,97 @@ public abstract class InstrumentMidiReceiver {
      * @return Whether the provided {@code note} is not in bounds of:
      * <p>{@link InstrumentMidiReceiver#minMidiNote minMidiNote} < {@code note} < {@link InstrumentMidiReceiver#maxMidiNote maxMidiNote}</p>
      */
-    protected boolean doesMidiOverflow(int note) {
-        return (note < minMidiNote()) || (note >= maxMidiNote());
+    protected boolean isMIDIOutOfBounds(int note) {
+        final int minNote = canMidiOverflow() ? minMidiOverflow() : minMidiNote();
+        final int maxNote = canMidiOverflow() ? maxMidiOverflow() : maxMidiNote();
+        return (note < minNote) || (note >= maxNote);
+    }
+
+
+    /**
+     * @return Whether both this instrument and the client agrees
+     * that this instrument may be overflown
+     */
+    protected boolean canMidiOverflow() {
+        return allowMidiOverflow() && ModClientConfigs.EXTEND_OCTAVES.get();
     }
 
     /**
-     * Extends the usual limitation of octaves by 2 by adjusting the pitch higher/lower
-     * when necessary
+     * Extends the usual limitation of octaves by providing the
+     * {@link InstrumentMidiReceiver#getLowestNote lowest}/{@link InstrumentMidiReceiver#getHighestNote highest} note button,
+     * pitched up or down.
      * @param note The current note
-     * @return The new shifted (or not) note to handle
-     * @throws MidiOutOfRangeException If the pressed note exceeds the allowed MIDI range (overflows)
+     * @return The MIDI overflow result, or the same when not overflowing - with the note sound excluded (null).
      */
-    protected int handleMidiOverflow(int note) throws MidiOutOfRangeException {
-        if (!allowMidiOverflow() || !ModClientConfigs.EXTEND_OCTAVES.get())
-            return note;
+    protected MidiOverflowResult handleMidiOverflow(int note) {
+        if (!canMidiOverflow())
+            return new MidiOverflowResult(null, 0, note);
 
-        final int minPitch = NoteSound.MIN_PITCH, maxPitch = NoteSound.MAX_PITCH;
-
-        // Set the pitch
         if (note < minMidiNote()) {
-            if (note < minMidiOverflow())
-                throw new MidiOutOfRangeException();
-
-            if (instrument.getPitch() != minPitch)
-                overflowMidi(minPitch);
-                
+            return new MidiOverflowResult(
+                getLowestNote().getSound(),
+                note - minMidiNote(),
+                note + 12
+            );
         } else if (note >= maxMidiNote()) {
-            if (note >= maxMidiOverflow())
-                throw new MidiOutOfRangeException();
-
-            if (instrument.getPitch() != maxPitch)
-                overflowMidi(maxPitch);
+            return new MidiOverflowResult(
+                getHighestNote().getSound(),
+                note - maxMidiNote() + 1,
+                note - 12
+            );
         }
 
-        // Check if we are an octave above/below
-        // and reset back to pitch C
-        if (instrument.getPitch() == minPitch) {
-            if (note >= minMidiNote())
-                instrument.setPitch(0);
-            // Shift the note to the higher octave
-            else
-                note += 12;
-        }
-        else if (instrument.getPitch() == maxPitch) {
-            if (note < maxMidiNote())
-                instrument.setPitch(0);
-            // Shift the note to the lower octave
-            else
-                note -= 12;
-        }
-
-        return note;
+        return new MidiOverflowResult(null, 0, note);
     }
+
+//    /**
+//     * Extends the usual limitation of octaves by adjusting the pitch higher/lower
+//     * when necessary
+//     * @param note The current note
+//     * @return The new shifted (or not) note to handle
+//     * @throws MidiOutOfRangeException If the pressed note exceeds the allowed MIDI range (overflows)
+//     */
+//    protected int handleMidiOverflow(int note) throws MidiOutOfRangeException {
+//        if (!allowMidiOverflow() || !ModClientConfigs.EXTEND_OCTAVES.get())
+//            return note;
+//
+//        final int minPitch = NoteSound.MIN_PITCH, maxPitch = NoteSound.MAX_PITCH;
+//
+//        // Set the pitch
+//        if (note < minMidiNote()) {
+//            if (note < minMidiOverflow())
+//                throw new MidiOutOfRangeException();
+//
+//            if (instrument.getPitch() != minPitch)
+//                overflowMidi(minPitch);
+//
+//        } else if (note >= maxMidiNote()) {
+//            if (note >= maxMidiOverflow())
+//                throw new MidiOutOfRangeException();
+//
+//            if (instrument.getPitch() != maxPitch)
+//                overflowMidi(maxPitch);
+//        }
+//
+//        // Check if we are an octave above/below
+//        // and reset back to pitch C
+//        if (instrument.getPitch() == minPitch) {
+//            if (note >= minMidiNote())
+//                instrument.setPitch(0);
+//            // Shift the note to the higher octave
+//            else
+//                note += 12;
+//        }
+//        else if (instrument.getPitch() == maxPitch) {
+//            if (note < maxMidiNote())
+//                instrument.setPitch(0);
+//            // Shift the note to the lower octave
+//            else
+//                note -= 12;
+//        }
+//
+//        return note;
+//    }
 
     private void overflowMidi(final int desiredPitch) {
         instrument.setPitch(desiredPitch);

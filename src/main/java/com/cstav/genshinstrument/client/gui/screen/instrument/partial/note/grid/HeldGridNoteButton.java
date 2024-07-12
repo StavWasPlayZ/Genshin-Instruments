@@ -3,6 +3,7 @@ package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.grid
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.GridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.HeldNoteButtonRenderer;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.IHoldableNoteButton;
+import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound;
 
 public class HeldGridNoteButton extends NoteGridButton implements IHoldableNoteButton {
@@ -52,8 +53,9 @@ public class HeldGridNoteButton extends NoteGridButton implements IHoldableNoteB
     }
 
     @Override
-    protected void playLocalSound() {
+    protected void playLocalSound(final NoteSound sound, final int pitch) {
         isHeld = true;
+        //TODO match provided sound to actual sound
         getHeldNoteSound().startPlaying(getPitch(), instrumentScreen.volume(), minecraft.player);
     }
 

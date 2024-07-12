@@ -142,6 +142,41 @@ public class AratakisGreatAndGloriousDrumScreen extends InstrumentScreen {
             }
 
             @Override
+            protected NoteButton getLowestNote() {
+                // Get the first don
+                return notes.values().stream()
+                    .map((btn) -> ((DrumNoteButton)btn))
+                    .filter((btn) -> btn.btnType == getDrumTypeOf(DrumButtonType.DON))
+                    .findFirst().get();
+            }
+            @Override
+            protected NoteButton getHighestNote() {
+                // Get the first ka
+                return notes.values().stream()
+                    .map((btn) -> ((DrumNoteButton)btn))
+                    .filter((btn) -> btn.btnType == getDrumTypeOf(DrumButtonType.KA))
+                    .findFirst().get();
+            }
+
+            /**
+             * @param btnType The preferred button type
+             * @return The preferred button type if {@code ddt} is {@link DominantDrumType#BOTH both},
+             * or the other when forced to.
+             */
+            private DrumButtonType getDrumTypeOf(DrumButtonType btnType) {
+                DominantDrumType ddt = ddt();
+
+                return (ddt == DominantDrumType.BOTH)
+                    ? btnType
+                    : ((ddt == DominantDrumType.DON)
+                        ? DrumButtonType.DON
+                        : DrumButtonType.KA
+                    )
+                ;
+            }
+
+
+            @Override
             protected int minMidiNote() {
                 return ((ddt() == DominantDrumType.BOTH) || ddt() == DominantDrumType.DON) ? -10 : 7;
             }
@@ -157,7 +192,7 @@ public class AratakisGreatAndGloriousDrumScreen extends InstrumentScreen {
     /**
      * Shorthand for {@code ModClientConfigs.DOMINANT_DRUM_TYPE.get()}
      */
-    private final static DominantDrumType ddt() {
+    private static DominantDrumType ddt() {
         return ModClientConfigs.DOMINANT_DRUM_TYPE.get();
     }
 

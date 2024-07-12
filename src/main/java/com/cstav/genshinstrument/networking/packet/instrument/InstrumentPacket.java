@@ -1,14 +1,11 @@
 package com.cstav.genshinstrument.networking.packet.instrument;
 
-import java.util.Optional;
-
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.packet.INoteIdentifierSender;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.ServerUtil;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -17,6 +14,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent.Context;
+
+import java.util.Optional;
 
 public class InstrumentPacket implements INoteIdentifierSender {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_SERVER;
@@ -43,9 +42,9 @@ public class InstrumentPacket implements INoteIdentifierSender {
         this.noteIdentifier = noteIdentifier;
     }
     @OnlyIn(Dist.CLIENT)
-    public InstrumentPacket(final NoteButton noteButton) {
-        this(Optional.empty(), noteButton.getSound(),
-            noteButton.getPitch(), noteButton.instrumentScreen.volume,
+    public InstrumentPacket(NoteButton noteButton, NoteSound sound, int pitch) {
+        this(Optional.empty(), sound, pitch,
+            noteButton.instrumentScreen.volume,
             noteButton.instrumentScreen.getInstrumentId(),
             Optional.ofNullable(noteButton.getIdentifier())
         );

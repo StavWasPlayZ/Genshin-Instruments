@@ -188,33 +188,38 @@ public abstract class NoteButton extends AbstractButton {
         locked = false;
     }
 
+
     /**
      * Plays this note button.
      * @return Whether the operation succeed
      * @implNote Overriders should call {@link NoteButton#lockInput}
      * before a true signal.
      */
-    public boolean play() {
+    public boolean play(final NoteSound sound, final int pitch) {
         if (locked)
             return false;
-        
-        playLocalSound();
-        sendNotePlayPacket();
+
+        playLocalSound(sound, pitch);
+        sendNotePlayPacket(sound, pitch);
         playNoteAnimation(false);
 
         lockInput();
         return true;
     }
+    public boolean play() {
+        return play(getSound(), getPitch());
+    }
+
     @Override
     public void onPress() {
         play();
     }
 
-    protected void playLocalSound() {
-        getSound().playLocally(getPitch(), instrumentScreen.volume());
+    protected void playLocalSound(final NoteSound sound, final int pitch) {
+        sound.playLocally(pitch, instrumentScreen.volume());
     }
-    protected void sendNotePlayPacket() {
-        GIPacketHandler.sendToServer(new InstrumentPacket(this));
+    protected void sendNotePlayPacket(final NoteSound sound, final int pitch) {
+        GIPacketHandler.sendToServer(new InstrumentPacket(this, sound, pitch));
     }
 
 
