@@ -22,9 +22,6 @@ public abstract class InstrumentMidiReceiver {
         MidiController.loadByConfigs();
     }
 
-    //TODO this should map a byte AND the current instrument's pitch.
-    // Upon deletion, make a new HeldNoteSoundInstance#triggerRelease that removes
-    // such specific entry.
     /**
      * Maps a note message to an instrument pitch to pressed note button.
      */
@@ -100,27 +97,27 @@ public abstract class InstrumentMidiReceiver {
         }
 
 
-        // Ignore last 4 bits (don't care about the channel atm)
+        // Ignore last 4 bits (channel bits)
         final int eventType = (message[0] >> 4) << 4;
+        final int midiChannel = message[0] - eventType;
 
         switch (eventType) {
-            case -112: // press
+            case -112: {
+                // press
                 if (!ModClientConfigs.ACCEPT_ALL_CHANNELS.get())
-                    return (message[0] - eventType) == ModClientConfigs.MIDI_CHANNEL.get();
+                    return midiChannel == ModClientConfigs.MIDI_CHANNEL.get();
 
                 return true;
-            case -128: // release
+            }
+
+            case -128: {
+                // release
                 if (isHoldableBtn) {
-                    boolean hasAnother = false;
-                    for (BiValue<Integer, NoteButton> val : pressedMidiNotes.values()) {
-                        if (!val.equals(prevBtnTuple) && (val.obj2() == prevButton)) {
-                            hasAnother = true;
-                            break;
-                        }
-                    }
-                    ((IHoldableNoteButton)prevButton).releaseHeld(prevBtnTuple.obj1(), !hasAnother);
+                    ((IHoldableNoteButton)prevButton).releaseHeld(prevBtnTuple.obj1(), true);
                 }
+
                 break;
+            }
         }
 
         return false;

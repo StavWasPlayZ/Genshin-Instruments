@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument.sound.held;
 
 import com.cstav.genshinstrument.sound.NoteSound;
+import com.cstav.genshinstrument.sound.held.cached.HeldNoteSoundKey;
 import com.cstav.genshinstrument.sound.registrar.HeldNoteSoundRegistrar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -63,8 +64,8 @@ public record HeldNoteSound(
     }
 
 
-    public HeldNoteSoundKey getKey(final Player player, int notePitch) {
-        return new HeldNoteSoundKey(player, baseSoundLocation, index, notePitch);
+    public HeldNoteSoundKey getKey(final Player initiator) {
+        return new HeldNoteSoundKey(initiator, baseSoundLocation, index);
     }
 
 

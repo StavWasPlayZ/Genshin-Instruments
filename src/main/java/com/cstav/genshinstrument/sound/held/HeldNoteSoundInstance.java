@@ -1,6 +1,8 @@
 package com.cstav.genshinstrument.sound.held;
+
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound.Phase;
+import com.cstav.genshinstrument.sound.held.cached.HeldNoteSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
@@ -8,24 +10,17 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 @OnlyIn(Dist.CLIENT)
 public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
-    private static final Map<HeldNoteSoundKey, List<HeldNoteSoundInstance>> SOUND_INSTANCES = new HashMap<>();
-
     public final HeldNoteSound heldSoundContainer;
-    public final Player player;
+    public final Player initiator;
     public final HeldNoteSound.Phase phase;
     // This is so we can cache this to the key
     protected int notePitch;
 
     protected HeldNoteSoundInstance(HeldNoteSound heldSoundContainer, HeldNoteSound.Phase phase,
                                     int notePitch, float volume,
-                                    Player player, double distFromPlayer, int timeAlive) {
+                                    Player initiator, double distFromPlayer, int timeAlive) {
         super(
             heldSoundContainer.getSound(phase).getByPreference(distFromPlayer),
             NoteSound.INSTRUMENT_SOUND_SOURCE,
@@ -36,7 +31,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
         this.phase = phase;
         this.overallTimeAlive = timeAlive;
 
-        this.player = player;
+        this.initiator = initiator;
         updatePlayerPos();
 
         this.volume = volume;
@@ -50,8 +45,8 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
      */
     public HeldNoteSoundInstance(HeldNoteSound heldSoundContainer, HeldNoteSound.Phase phase,
                                  int notePitch, float volume,
-                                 Player player, double distFromPlayer) {
-        this(heldSoundContainer, phase, notePitch, volume, player, distFromPlayer, 0);
+                                 Player initiator, double distFromPlayer) {
+        this(heldSoundContainer, phase, notePitch, volume, initiator, distFromPlayer, 0);
     }
     /**
      * A held note sound instance for local playing
@@ -67,25 +62,17 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
         addSoundInstance();
     }
     public void addSoundInstance() {
-        SOUND_INSTANCES
-            .computeIfAbsent(
-                new HeldNoteSoundKey(player, heldSoundContainer.baseSoundLocation(), heldSoundContainer.index(), notePitch),
-                (_s) -> new ArrayList<>()
-            )
-            .add(this);
+        HeldNoteSounds.put(heldSoundContainer.getKey(initiator), notePitch, this);
     }
 
-    public static void triggerRelease(final HeldNoteSoundKey key) {
-        if (!SOUND_INSTANCES.containsKey(key))
-            return;
-
-        SOUND_INSTANCES.get(key).forEach(HeldNoteSoundInstance::triggerRelease);
-        SOUND_INSTANCES.remove(key);
+    /**
+     * Marks this held sound as being released
+     */
+    public void setReleased() {
+        this.released = true;
     }
-
 
     private boolean released = false;
-
     protected int timeAlive = 0, overallTimeAlive;
     @Override
     public void tick() {
@@ -114,10 +101,6 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
         overallTimeAlive++;
     }
 
-    public void triggerRelease() {
-        released = true;
-    }
-
 
     protected void handleHolding() {
         switch (phase) {
@@ -142,15 +125,15 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
 
         new HeldNoteSoundInstance(
             heldSoundContainer, Phase.HOLD, notePitch, volume - (decreaseVol ? heldSoundContainer.decay() : 0),
-            player, player.position().distanceTo(Minecraft.getInstance().player.position()),
+            initiator, initiator.position().distanceTo(Minecraft.getInstance().player.position()),
             overallTimeAlive
         ).queueAndAddInstance();
     }
 
     protected void updatePlayerPos() {
-        x = player.getX();
-        y = player.getY();
-        z = player.getZ();
+        x = initiator.getX();
+        y = initiator.getY();
+        z = initiator.getZ();
     }
 
     // We don't want to randomly distort this stuff unlike the parent
