@@ -30,11 +30,9 @@ public interface IHoldableNoteButton {
             HeldNoteSounds.release(soundKey);
         }
 
-        //TODO also notify in server
-
         // If this is the last note playing; release it.
         // If we target everyone then ofc it will be empty.
-        if (!targetPitch || HeldNoteSounds.hasInstances(soundKey)) {
+        if (!targetPitch || !HeldNoteSounds.hasInstances(soundKey)) {
             setHeld(false);
             ((HeldNoteButtonRenderer) asNoteBtn().getRenderer()).playRelease();
         }
