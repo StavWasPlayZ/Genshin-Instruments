@@ -253,62 +253,6 @@ public abstract class InstrumentMidiReceiver {
         return new MidiOverflowResult(null, 0, note);
     }
 
-//    /**
-//     * Extends the usual limitation of octaves by adjusting the pitch higher/lower
-//     * when necessary
-//     * @param note The current note
-//     * @return The new shifted (or not) note to handle
-//     * @throws MidiOutOfRangeException If the pressed note exceeds the allowed MIDI range (overflows)
-//     */
-//    protected int handleMidiOverflow(int note) throws MidiOutOfRangeException {
-//        if (!allowMidiOverflow() || !ModClientConfigs.EXTEND_OCTAVES.get())
-//            return note;
-//
-//        final int minPitch = NoteSound.MIN_PITCH, maxPitch = NoteSound.MAX_PITCH;
-//
-//        // Set the pitch
-//        if (note < minMidiNote()) {
-//            if (note < minMidiOverflow())
-//                throw new MidiOutOfRangeException();
-//
-//            if (instrument.getPitch() != minPitch)
-//                overflowMidi(minPitch);
-//
-//        } else if (note >= maxMidiNote()) {
-//            if (note >= maxMidiOverflow())
-//                throw new MidiOutOfRangeException();
-//
-//            if (instrument.getPitch() != maxPitch)
-//                overflowMidi(maxPitch);
-//        }
-//
-//        // Check if we are an octave above/below
-//        // and reset back to pitch C
-//        if (instrument.getPitch() == minPitch) {
-//            if (note >= minMidiNote())
-//                instrument.setPitch(0);
-//            // Shift the note to the higher octave
-//            else
-//                note += 12;
-//        }
-//        else if (instrument.getPitch() == maxPitch) {
-//            if (note < maxMidiNote())
-//                instrument.setPitch(0);
-//            // Shift the note to the lower octave
-//            else
-//                note -= 12;
-//        }
-//
-//        return note;
-//    }
-
-    private void overflowMidi(final int desiredPitch) {
-        instrument.setPitch(desiredPitch);
-        // Reset pitch to C to avoid coming back down for a mess
-        if (!ModClientConfigs.PITCH.get().equals(0))
-            ModClientConfigs.PITCH.set(0);
-    }
-
 
     protected int minMidiNote() {
         return 0;
