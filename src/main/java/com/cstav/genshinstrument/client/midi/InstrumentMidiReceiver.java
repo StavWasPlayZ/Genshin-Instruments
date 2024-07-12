@@ -143,6 +143,7 @@ public abstract class InstrumentMidiReceiver {
                 return true;
             }
 
+            //TODO perhaps separate this logic
             case -128: {
                 // release
                 if (isHoldableBtn) {
