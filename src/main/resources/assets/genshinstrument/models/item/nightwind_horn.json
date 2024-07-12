@@ -11,6 +11,9 @@
 		},
 		"ground": {
 			"parent": "genshinstrument:item/nightwind_horn_item"
+		},
+		"fixed": {
+			"parent": "genshinstrument:item/nightwind_horn_item"
 		}
 	},
 
