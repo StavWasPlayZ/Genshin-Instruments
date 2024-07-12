@@ -77,10 +77,11 @@ public abstract class InstrumentMidiReceiver {
 
         // Handle MIDI overflow
         final MidiOverflowResult overflowRes = handleMidiOverflow(note);
-        note = overflowRes.fixedOctaveNote();
 
-        // Handle overflowing from Minecraft pitch limitations
-        if (overflowRes.newNoteSound() != null) {
+        if (overflowRes != null) {
+            note = overflowRes.fixedOctaveNote();
+
+            // Handle overflowing from Minecraft pitch limitations
             int newInsPitch = overflowRes.pitchOffset() + instrument.getPitch();
             if ((newInsPitch < NoteSound.MIN_PITCH) || (newInsPitch > NoteSound.MIN_PITCH)) {
                 // Reset their pitch to middle C.
@@ -98,7 +99,7 @@ public abstract class InstrumentMidiReceiver {
         if (pressedMidiNote != null) {
             pressedMidiNote.unlockInput();
 
-            if (overflowRes.newNoteSound() == null) {
+            if (overflowRes == null) {
                 pressedMidiNote.play();
             } else {
                 pressedMidiNote.play(overflowRes.newNoteSound(), basePitch + overflowRes.pitchOffset());
@@ -231,11 +232,11 @@ public abstract class InstrumentMidiReceiver {
      * {@link InstrumentMidiReceiver#getLowestNote lowest}/{@link InstrumentMidiReceiver#getHighestNote highest} note button,
      * pitched up or down.
      * @param note The current note
-     * @return The MIDI overflow result, or the same when not overflowing - with the note sound excluded (null).
+     * @return The MIDI overflow result, or null when not overflowing.
      */
-    protected MidiOverflowResult handleMidiOverflow(int note) {
+    protected @Nullable MidiOverflowResult handleMidiOverflow(int note) {
         if (!canMidiOverflow())
-            return new MidiOverflowResult(null, 0, note);
+            return null;
 
         if (note < minMidiNote()) {
             return new MidiOverflowResult(
@@ -251,7 +252,7 @@ public abstract class InstrumentMidiReceiver {
             );
         }
 
-        return new MidiOverflowResult(null, 0, note);
+        return null;
     }
 
 
