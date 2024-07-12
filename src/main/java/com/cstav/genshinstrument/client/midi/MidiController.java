@@ -42,7 +42,7 @@ public abstract class MidiController {
                 DEVICES.put(infos[i], device);
 
             } catch (MidiUnavailableException e) {
-                LOGGER.warn("MIDI device "+infos[i]+" cannot transmit MIDI; ommitting!");
+                LOGGER.warn("MIDI device "+infos[i].getName().strip()+" cannot transmit MIDI; omitting!");
             } catch (Exception e) {
                 LOGGER.error("Unexpected error occurred while trying to obtain MIDI device!", e);
             }
@@ -183,7 +183,7 @@ public abstract class MidiController {
     }
 
     public static String infoAsString(final Info info) {
-        return info.getName() +" - "+ info.getDescription() + " ("+info.getVendor()+")";
+        return info.getName().strip() +" - "+ info.getDescription() + " ("+info.getVendor()+")";
     }
     
 
