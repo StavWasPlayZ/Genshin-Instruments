@@ -158,7 +158,6 @@ public abstract class InstrumentMidiReceiver {
 
 
 
-
     /**
      * Extends the usual limitation of octaves by 2 by adjusting the pitch higher/lower
      * when necessary
@@ -223,9 +222,7 @@ public abstract class InstrumentMidiReceiver {
     protected int minMidiNote() {
         return 0;
     }
-    protected int maxMidiNote() {
-        return NoteSound.MAX_PITCH * 3;
-    }
+    protected abstract int maxMidiNote();
 
 
     /**

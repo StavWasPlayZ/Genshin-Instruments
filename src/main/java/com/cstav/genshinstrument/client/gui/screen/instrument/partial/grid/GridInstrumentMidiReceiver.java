@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid;
 
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.midi.InstrumentMidiReceiver;
+import com.cstav.genshinstrument.sound.NoteSound;
 import org.jetbrains.annotations.Nullable;
 
 public class GridInstrumentMidiReceiver extends InstrumentMidiReceiver {
@@ -13,6 +14,10 @@ public class GridInstrumentMidiReceiver extends InstrumentMidiReceiver {
     @Override
     public boolean allowMidiOverflow() {
         return true;
+    }
+
+    protected int maxMidiNote() {
+        return NoteSound.MAX_PITCH * ((GridInstrumentScreen)instrument).columns();
     }
 
 
@@ -36,15 +41,10 @@ public class GridInstrumentMidiReceiver extends InstrumentMidiReceiver {
             // 12th note should go to the next column
             + playedNote / (12 + key);
 
-        //TODO fix 2 columned screens overflowing weirdly
-        try {
-            return instrumentScreen.getNoteButton(
-                currNote % instrumentScreen.rows(),
-                currNote / instrumentScreen.rows()
-            );
-        } catch (IndexOutOfBoundsException e) {
-            return null;
-        }
+        return instrumentScreen.getNoteButton(
+            currNote % instrumentScreen.rows(),
+            currNote / instrumentScreen.rows()
+        );
     }
 
 }
