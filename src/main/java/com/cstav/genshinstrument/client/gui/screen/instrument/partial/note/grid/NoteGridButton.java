@@ -1,7 +1,9 @@
-package com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid;
+package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.grid;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.GridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.NoteGrid;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButtonRenderer;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
@@ -30,7 +32,7 @@ public class NoteGridButton extends NoteButton {
     public NoteGridButton(int row, int column, GridInstrumentScreen instrumentScreen) {
         super(
             getSoundFromArr(instrumentScreen, instrumentScreen.getInitSounds(), row, column),
-            instrumentScreen.getInitLabelSupplier(), instrumentScreen
+            GridInstrumentScreen.getInitLabelSupplier(), instrumentScreen
         );
         
         this.row = row;
@@ -65,7 +67,7 @@ public class NoteGridButton extends NoteButton {
      * @return The position of this button ({@link NoteGridButton#row}, {@link NoteGridButton#column})
      * as an array index
      */
-    protected int posToIndex() {
+    public int posToIndex() {
         return row + NoteGrid.getFlippedColumn(column, gridInstrument().columns()) * gridInstrument().rows();
     }
     /**

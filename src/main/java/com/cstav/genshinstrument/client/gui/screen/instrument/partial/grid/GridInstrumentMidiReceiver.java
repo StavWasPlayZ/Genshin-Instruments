@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid;
+package com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid;
 
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.midi.InstrumentMidiReceiver;

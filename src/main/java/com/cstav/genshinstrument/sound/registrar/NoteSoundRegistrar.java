@@ -1,6 +1,6 @@
 package com.cstav.genshinstrument.sound.registrar;
 
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.GridInstrumentScreen;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.registrar.impl.ChainableNoteSoundRegistrar;
 import com.cstav.genshinstrument.sound.registrar.impl.ChainedNoteSoundRegistrar;

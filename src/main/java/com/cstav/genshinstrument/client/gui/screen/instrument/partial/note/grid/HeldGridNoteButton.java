@@ -1,5 +1,6 @@
-package com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid;
+package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.grid;
 
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.GridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.HeldNoteButtonRenderer;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.IHoldableNoteButton;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound;

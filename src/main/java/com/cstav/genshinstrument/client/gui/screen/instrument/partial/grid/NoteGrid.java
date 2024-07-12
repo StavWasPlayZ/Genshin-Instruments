@@ -1,18 +1,18 @@
-package com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid;
-
-import java.util.HashMap;
-import java.util.Iterator;
+package com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid;
 
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.grid.NoteGridButton;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
-
 import net.minecraft.client.gui.layouts.AbstractLayout;
 import net.minecraft.client.gui.layouts.FrameLayout;
 import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.layouts.GridLayout.RowHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.HashMap;
+import java.util.Iterator;
 
 
 /**

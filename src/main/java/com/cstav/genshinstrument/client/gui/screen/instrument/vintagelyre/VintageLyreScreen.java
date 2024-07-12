@@ -3,7 +3,7 @@ package com.cstav.genshinstrument.client.gui.screen.instrument.vintagelyre;
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.GridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.VintageLyreOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.InstrumentOptionsScreen;
 import com.cstav.genshinstrument.sound.GISounds;

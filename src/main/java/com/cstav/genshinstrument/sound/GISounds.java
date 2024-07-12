@@ -1,7 +1,7 @@
 package com.cstav.genshinstrument.sound;
 
 import com.cstav.genshinstrument.GInstrumentMod;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.GridInstrumentScreen;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound;
 import com.cstav.genshinstrument.sound.registrar.HeldNoteSoundRegistrar;
 import com.cstav.genshinstrument.sound.registrar.NoteSoundRegistrar;

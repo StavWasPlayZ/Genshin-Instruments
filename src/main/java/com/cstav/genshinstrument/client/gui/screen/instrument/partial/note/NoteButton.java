@@ -129,6 +129,13 @@ public abstract class NoteButton extends AbstractButton {
         this.pitch = NoteSound.clampPitch(pitch);
         updateNoteLabel();
     }
+
+    /**
+     * @return The sound index of this note
+     */
+    public int soundIndex() {
+        return getSound().index;
+    }
     
     // Note labeling
     public NoteNotation getNotation() {
