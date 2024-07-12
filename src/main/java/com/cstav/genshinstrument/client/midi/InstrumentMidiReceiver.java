@@ -4,6 +4,7 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.IHoldableNoteButton;
+import com.cstav.genshinstrument.client.midi.MidiOverflowResult.OverflowType;
 import com.cstav.genshinstrument.event.MidiEvent;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.BiValue;
@@ -98,19 +99,32 @@ public abstract class InstrumentMidiReceiver {
 
         if (pressedMidiNote != null) {
             pressedMidiNote.unlockInput();
-
-            if (overflowRes == null) {
-                pressedMidiNote.play();
-            } else {
-                pressedMidiNote.play(overflowRes.newNoteSound(), basePitch + overflowRes.pitchOffset());
+            if (playNote(pressedMidiNote, overflowRes, basePitch)) {
+                // Remember the note to later release it
+                pressedMidiNotes.put(midiNote, new BiValue<>(instrument.getPitch(), pressedMidiNote));
             }
-
-            // Remember the note to later release it
-            pressedMidiNotes.put(midiNote, new BiValue<>(instrument.getPitch(), pressedMidiNote));
         }
 
         instrument.setVolume(prevVolume);
     }
+
+    /**
+     * Plays the note button, accounting for the provided overflow.
+     * @param noteBtn The note button to play
+     * @param midiOverflow The MIDI overflow context
+     * @param basePitch The pitch of the instrument, before any transformations
+     * @return Whether the operation succeed
+     */
+    protected boolean playNote(NoteButton noteBtn, @Nullable  MidiOverflowResult midiOverflow, int basePitch) {
+        if (midiOverflow == null) {
+            noteBtn.play();
+        } else {
+            noteBtn.play(midiOverflow.newNoteSound(), basePitch + midiOverflow.pitchOffset());
+        }
+
+        return true;
+    }
+
 
     protected boolean canPerformMidi(final MidiEvent event) {
         final byte[] message = event.message.getMessage();
@@ -242,13 +256,15 @@ public abstract class InstrumentMidiReceiver {
             return new MidiOverflowResult(
                 getLowestNote().getSound(),
                 note - minMidiNote(),
-                note + 12
+                note + 12,
+                OverflowType.BOTTOM
             );
         } else if (note >= maxMidiNote()) {
             return new MidiOverflowResult(
                 getHighestNote().getSound(),
                 note - maxMidiNote() + 1,
-                note - 12
+                note - 12,
+                OverflowType.TOP
             );
         }
 

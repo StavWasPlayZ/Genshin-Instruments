@@ -8,5 +8,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public record MidiOverflowResult(
     NoteSound newNoteSound,
     int pitchOffset,
-    int fixedOctaveNote
-) {}
+    int fixedOctaveNote,
+    OverflowType type
+) {
+    public static enum OverflowType {TOP, BOTTOM}
+}
