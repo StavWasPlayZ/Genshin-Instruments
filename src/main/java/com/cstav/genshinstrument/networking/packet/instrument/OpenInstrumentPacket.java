@@ -1,5 +1,6 @@
 package com.cstav.genshinstrument.networking.packet.instrument;
 
+import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screen.instrument.drum.AratakisGreatAndGloriousDrumScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.floralzither.FloralZitherScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.nightwind_horn.windsonglyre.NightwindHornScreen;
@@ -49,10 +50,14 @@ public class OpenInstrumentPacket implements IModPacket {
 
     @Override
     public void handle(final Context context) {
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
-            Minecraft.getInstance().setScreen(
-                getInstrumentMap().get(instrumentType).get().get()
-            )
-        );
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+            try {
+                Minecraft.getInstance().setScreen(
+                    getInstrumentMap().get(instrumentType).get().get()
+                );
+            } catch (Exception e) {
+                GInstrumentMod.LOGGER.error("Exception thrown trying to open an instrument screen " + instrumentType, e);
+            }
+        });
     }
 }
