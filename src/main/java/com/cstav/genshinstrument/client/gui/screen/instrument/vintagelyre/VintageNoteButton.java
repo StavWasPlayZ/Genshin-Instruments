@@ -32,17 +32,21 @@ public class VintageNoteButton extends NoteGridButton {
     }
 
 
-    @Override
-    public int getPitch() {
-        final int pitch = super.getPitch();
+    /**
+     * @return Whether this note should be sharpened
+     * for a Vintage normalization
+     */
+    public boolean shouldSharpen() {
         if (!gridInstrument().shouldSoundNormalize())
-            return pitch;
+            return false;
 
         // Only normalize the Genshin flattened notes
-        if (!isDefaultFlat())
-            return pitch;
-
-        return pitch + 1;
+        return isDefaultFlat();
     }
-    
+
+    @Override
+    public int getPitch() {
+        return super.getPitch() + (shouldSharpen() ? 1 : 0);
+    }
+
 }
