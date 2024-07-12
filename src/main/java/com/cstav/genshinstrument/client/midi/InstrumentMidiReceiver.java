@@ -41,14 +41,17 @@ public abstract class InstrumentMidiReceiver {
             return;
 
         final byte[] message = event.message.getMessage();
+        final byte midiNote = message[1];
 
+        if (doesMidiOverflow(midiNote))
+            return;
 
         // So we don't do transpositions on a sharpened scale
         instrument.resetTransposition();
 
         final int note;
         try {
-            note = handleMidiOverflow(getLowC(message[1]));
+            note = handleMidiOverflow(getLowC(midiNote));
         } catch (MidiOutOfRangeException e) {
             return;
         }
@@ -72,7 +75,7 @@ public abstract class InstrumentMidiReceiver {
             pressedMidiNote.unlockInput();
             pressedMidiNote.play();
             // Remember the note to later release it
-            pressedMidiNotes.put(message[1], new BiValue<>(instrument.getPitch(), pressedMidiNote));
+            pressedMidiNotes.put(midiNote, new BiValue<>(instrument.getPitch(), pressedMidiNote));
         }
 
         instrument.setVolume(prevVolume);
@@ -157,6 +160,14 @@ public abstract class InstrumentMidiReceiver {
     }
 
 
+    /**
+     * @param note The MIDI note to check
+     * @return Whether the provided {@code note} is not in bounds of:
+     * <p>{@link InstrumentMidiReceiver#minMidiNote minMidiNote} < {@code note} < {@link InstrumentMidiReceiver#maxMidiNote maxMidiNote}</p>
+     */
+    protected boolean doesMidiOverflow(int note) {
+        return (note < minMidiNote()) || (note >= maxMidiNote());
+    }
 
     /**
      * Extends the usual limitation of octaves by 2 by adjusting the pitch higher/lower
@@ -166,13 +177,8 @@ public abstract class InstrumentMidiReceiver {
      * @throws MidiOutOfRangeException If the pressed note exceeds the allowed MIDI range (overflows)
      */
     protected int handleMidiOverflow(int note) throws MidiOutOfRangeException {
-        if (!allowMidiOverflow() || !ModClientConfigs.EXTEND_OCTAVES.get()) {
-            if ((note < minMidiNote()) || (note >= maxMidiNote()))
-                throw new MidiOutOfRangeException();
-
+        if (!allowMidiOverflow() || !ModClientConfigs.EXTEND_OCTAVES.get())
             return note;
-        }
-
 
         final int minPitch = NoteSound.MIN_PITCH, maxPitch = NoteSound.MAX_PITCH;
 
@@ -204,6 +210,7 @@ public abstract class InstrumentMidiReceiver {
         else if (instrument.getPitch() == maxPitch) {
             if (note < maxMidiNote())
                 instrument.setPitch(0);
+            // Shift the note to the lower octave
             else
                 note -= 12;
         }
