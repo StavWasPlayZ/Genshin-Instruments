@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.networking.packet.instrument;
+package com.cstav.genshinstrument.networking.packet.instrument.s2c;
 
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screen.instrument.drum.AratakisGreatAndGloriousDrumScreen;
@@ -18,6 +18,10 @@ import net.minecraftforge.network.NetworkEvent.Context;
 import java.util.Map;
 import java.util.function.Supplier;
 
+/**
+ * A S2C packet telling the target client
+ * to open a specific instrument screen
+ */
 public class OpenInstrumentPacket implements IModPacket {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_CLIENT;
     private static final Map<String, Supplier<Supplier<Screen>>> INSTRUMENT_MAP = Map.of(

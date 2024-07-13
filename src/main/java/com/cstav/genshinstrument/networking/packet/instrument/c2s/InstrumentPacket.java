@@ -1,9 +1,10 @@
-package com.cstav.genshinstrument.networking.packet.instrument;
+package com.cstav.genshinstrument.networking.packet.instrument.c2s;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.packet.INoteIdentifierSender;
+import com.cstav.genshinstrument.networking.packet.instrument.s2c.PlayNotePacket;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.ServerUtil;
 import net.minecraft.core.BlockPos;
@@ -17,6 +18,10 @@ import net.minecraftforge.network.NetworkEvent.Context;
 
 import java.util.Optional;
 
+/**
+ * A C2S packet notifying the server that a
+ * specific note should be played in the level
+ */
 public class InstrumentPacket implements INoteIdentifierSender {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_SERVER;
 

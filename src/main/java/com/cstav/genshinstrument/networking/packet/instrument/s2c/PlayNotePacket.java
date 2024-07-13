@@ -1,18 +1,21 @@
-package com.cstav.genshinstrument.networking.packet.instrument;
-
-import java.util.Optional;
-import java.util.UUID;
+package com.cstav.genshinstrument.networking.packet.instrument.s2c;
 
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.packet.INoteIdentifierSender;
 import com.cstav.genshinstrument.sound.NoteSound;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent.Context;
 
+import java.util.Optional;
+import java.util.UUID;
+
+/**
+ * A S2C packet notifying the client to play
+ * a specific {@link NoteSound}.
+ */
 public class PlayNotePacket implements INoteIdentifierSender {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_CLIENT;
 

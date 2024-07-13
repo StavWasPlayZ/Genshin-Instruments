@@ -1,11 +1,7 @@
-package com.cstav.genshinstrument.networking.packet.instrument;
-
-import java.util.Optional;
-import java.util.UUID;
+package com.cstav.genshinstrument.networking.packet.instrument.s2c;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.networking.IModPacket;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -14,6 +10,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent.Context;
 
+import java.util.Optional;
+import java.util.UUID;
+
+/**
+ * A S2C packet to update the {@code instrument open} state
+ * of a certain player
+ */
 public class NotifyInstrumentOpenPacket implements IModPacket {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_CLIENT;
 
@@ -33,6 +36,11 @@ public class NotifyInstrumentOpenPacket implements IModPacket {
         this.pos = Optional.empty();
         this.hand = Optional.empty();
     }
+
+    /**
+     * Constructs packet notifying of an open block instrument
+     * at the provided position
+     */
     public NotifyInstrumentOpenPacket(UUID playerUUID, BlockPos pos) {
         this.playerUUID = playerUUID;
 
@@ -40,6 +48,10 @@ public class NotifyInstrumentOpenPacket implements IModPacket {
         this.pos = Optional.of(pos);
         this.hand = Optional.empty();
     }
+    /**
+     * Constructs packet notifying of an open item instrument
+     * at the specified hand
+     */
     public NotifyInstrumentOpenPacket(UUID playerUUID, InteractionHand hand) {
         this.playerUUID = playerUUID;
 
