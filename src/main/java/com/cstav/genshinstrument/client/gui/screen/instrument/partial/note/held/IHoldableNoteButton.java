@@ -25,8 +25,9 @@ public interface IHoldableNoteButton {
      * @param notePitch The note pitch to target
      * @param targetPitch Should only release the provided pitch?
      * @param heldSound The sound being released
+     * @param playAnimation Should the release animation be played?
      */
-    default void releaseHeld(int notePitch, boolean targetPitch, HeldNoteSound heldSound) {
+    default void releaseHeld(int notePitch, boolean targetPitch, HeldNoteSound heldSound, boolean playAnimation) {
         final HeldNoteSoundKey soundKey = heldSound.getKey(Minecraft.getInstance().player);
 
         if (targetPitch) {
@@ -35,9 +36,7 @@ public interface IHoldableNoteButton {
             HeldNoteSounds.release(soundKey);
         }
 
-        // If this is the last note playing; release it.
-        // If we target everyone then ofc it will be empty.
-        if (!targetPitch || !HeldNoteSounds.hasInstances(soundKey)) {
+        if (playAnimation) {
             setHeld(false);
             ((HeldNoteButtonRenderer) asNoteBtn().getRenderer()).playRelease();
         }
@@ -48,7 +47,16 @@ public interface IHoldableNoteButton {
      * @param targetPitch Should only release the provided pitch?
      */
     default void releaseHeld(int notePitch, boolean targetPitch) {
-        releaseHeld(notePitch, targetPitch, getHeldNoteSound());
+        final HeldNoteSoundKey soundKey = getHeldNoteSound().getKey(Minecraft.getInstance().player);
+
+        releaseHeld(
+            notePitch,
+            targetPitch,
+            getHeldNoteSound(),
+            // If this is the last note playing; release it.
+            // If we target everyone then ofc it will be empty.
+            !targetPitch || !HeldNoteSounds.hasInstances(soundKey)
+        );
     }
     /**
      * Releases all notes of the matching sound type

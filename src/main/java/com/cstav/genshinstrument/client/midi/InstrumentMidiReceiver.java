@@ -165,7 +165,11 @@ public abstract class InstrumentMidiReceiver {
                     heldBtn.releaseHeld(
                         prevNoteBtn.notePitch(),
                         true,
-                        heldBtn.toHeldSound(prevNoteBtn.sound())
+                        heldBtn.toHeldSound(prevNoteBtn.sound()),
+                        // Play the animation only if
+                        // there are no more note buttons here
+                        pressedMidiNotes.values().stream()
+                            .noneMatch((midiNote) -> midiNote.pressedNote() == prevNoteBtn.pressedNote())
                     );
                 }
 
