@@ -11,6 +11,7 @@ import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.In
 import com.cstav.genshinstrument.client.midi.InstrumentMidiReceiver;
 import com.cstav.genshinstrument.client.midi.MidiOverflowResult;
 import com.cstav.genshinstrument.client.midi.MidiOverflowResult.OverflowType;
+import com.cstav.genshinstrument.client.midi.PressedMIDINote;
 import com.cstav.genshinstrument.sound.GISounds;
 import com.cstav.genshinstrument.sound.NoteSound;
 import net.minecraft.resources.ResourceLocation;
@@ -71,7 +72,7 @@ public class VintageLyreScreen extends GridInstrumentScreen {
     public InstrumentMidiReceiver initMidiReceiver() {
         return new GridInstrumentMidiReceiver(this) {
             @Override
-            protected boolean playNote(NoteButton noteBtn, @Nullable MidiOverflowResult midiOverflow, int basePitch) {
+            protected PressedMIDINote playNote(NoteButton noteBtn, @Nullable MidiOverflowResult midiOverflow, int basePitch) {
                 if ((midiOverflow == null) || (midiOverflow.type() != OverflowType.TOP))
                     return super.playNote(noteBtn, midiOverflow, basePitch);
 
@@ -82,7 +83,7 @@ public class VintageLyreScreen extends GridInstrumentScreen {
                 // Account for Minecraft pitch overflow
                 final int newPitch = basePitch + offsetFix;
                 if (newPitch + midiOverflow.pitchOffset() > NoteSound.MAX_PITCH)
-                    return false;
+                    return null;
 
                 return super.playNote(noteBtn, midiOverflow, newPitch);
             }

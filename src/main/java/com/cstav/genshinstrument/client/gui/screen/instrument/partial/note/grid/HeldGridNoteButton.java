@@ -1,5 +1,6 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.grid;
 
+import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.GridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.HeldNoteButtonRenderer;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.IHoldableNoteButton;
@@ -18,6 +19,12 @@ public class HeldGridNoteButton extends NoteGridButton implements IHoldableNoteB
         super(row, column, instrumentScreen, pitch);
         this.heldNoteSound = heldNoteSounds[posToIndex()];
     }
+
+    @Override
+    public void setSound(NoteSound sound) {
+        GInstrumentMod.LOGGER.warn("Attempted to set the sound of a held note button; ignoring");
+    }
+
 
     @Override
     public HeldNoteSound getHeldNoteSound() {
@@ -47,16 +54,15 @@ public class HeldGridNoteButton extends NoteGridButton implements IHoldableNoteB
         releaseHeld(false);
     }
     @Override
-    public void releaseHeld(int notePitch, boolean targetPitch) {
+    public void releaseHeld(int notePitch, boolean targetPitch, HeldNoteSound heldSound) {
         super.release();
-        IHoldableNoteButton.super.releaseHeld(notePitch, targetPitch);
+        IHoldableNoteButton.super.releaseHeld(notePitch, targetPitch, heldSound);
     }
 
     @Override
     protected void playLocalSound(final NoteSound sound, final int pitch) {
         isHeld = true;
-        //TODO match provided sound to actual sound
-        getHeldNoteSound().startPlaying(getPitch(), instrumentScreen.volume(), minecraft.player);
+        playLocalHeldSound(sound, pitch);
     }
 
     @Override

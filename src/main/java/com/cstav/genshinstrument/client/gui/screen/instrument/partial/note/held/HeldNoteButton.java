@@ -1,5 +1,6 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held;
 
+import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.NoteLabelSupplier;
@@ -21,6 +22,12 @@ public abstract class HeldNoteButton extends NoteButton implements IHoldableNote
         super(sound, labelSupplier, instrumentScreen, pitch);
         this.heldNoteSound = heldNoteSound;
     }
+
+    @Override
+    public void setSound(NoteSound sound) {
+        GInstrumentMod.LOGGER.warn("Attempted to set the sound of a held note button; ignoring");
+    }
+
 
     @Override
     public boolean isPlaying() {
@@ -50,8 +57,7 @@ public abstract class HeldNoteButton extends NoteButton implements IHoldableNote
     @Override
     protected void playLocalSound(final NoteSound sound, final int pitch) {
         isHeld = true;
-        //TODO match provided sound to actual sound
-        getHeldNoteSound().startPlaying(getPitch(), instrumentScreen.volume(), minecraft.player);
+        playLocalHeldSound(sound, pitch);
     }
 
     @Override
@@ -59,9 +65,9 @@ public abstract class HeldNoteButton extends NoteButton implements IHoldableNote
         releaseHeld(false);
     }
     @Override
-    public void releaseHeld(int notePitch, boolean targetPitch) {
+    public void releaseHeld(int notePitch, boolean targetPitch, HeldNoteSound heldSound) {
         super.release();
-        IHoldableNoteButton.super.releaseHeld(notePitch, targetPitch);
+        IHoldableNoteButton.super.releaseHeld(notePitch, targetPitch, heldSound);
     }
 
     @Override

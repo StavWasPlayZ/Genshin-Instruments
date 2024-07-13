@@ -7,7 +7,6 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.
 import com.cstav.genshinstrument.client.midi.MidiOverflowResult.OverflowType;
 import com.cstav.genshinstrument.event.MidiEvent;
 import com.cstav.genshinstrument.sound.NoteSound;
-import com.cstav.genshinstrument.util.BiValue;
 import net.minecraft.util.Mth;
 import org.apache.commons.lang3.NotImplementedException;
 import org.jetbrains.annotations.Nullable;
@@ -24,10 +23,7 @@ public abstract class InstrumentMidiReceiver {
         MidiController.loadByConfigs();
     }
 
-    /**
-     * Maps a note message to an instrument pitch to pressed note button.
-     */
-    private final Map<Byte, BiValue<Integer, NoteButton>> pressedMidiNotes = new HashMap<>();
+    private final Map<Byte, PressedMIDINote> pressedMidiNotes = new HashMap<>();
 
     /**
      * Fires when a MIDI note is being pressed successfully, only if this is {@link InstrumentScreen#isMidiInstrument a midi instrument}.
@@ -95,13 +91,14 @@ public abstract class InstrumentMidiReceiver {
 
         // Actually play the note
         int basePitch = instrument.getPitch();
-        final NoteButton pressedMidiNote = handleMidiPress(note, pitch);
+        final NoteButton pressedNote = handleMidiPress(note, pitch);
 
-        if (pressedMidiNote != null) {
-            pressedMidiNote.unlockInput();
-            if (playNote(pressedMidiNote, overflowRes, basePitch)) {
+        if (pressedNote != null) {
+            pressedNote.unlockInput();
+            PressedMIDINote pressedMidiNote = playNote(pressedNote, overflowRes, basePitch);
+            if (pressedMidiNote != null) {
                 // Remember the note to later release it
-                pressedMidiNotes.put(midiNote, new BiValue<>(instrument.getPitch(), pressedMidiNote));
+                pressedMidiNotes.put(midiNote, pressedMidiNote);
             }
         }
 
@@ -113,27 +110,28 @@ public abstract class InstrumentMidiReceiver {
      * @param noteBtn The note button to play
      * @param midiOverflow The MIDI overflow context
      * @param basePitch The pitch of the instrument, before any transformations
-     * @return Whether the operation succeed
+     * @return A pressed MIDI note result if succeeded; null otherwise
      */
-    protected boolean playNote(NoteButton noteBtn, @Nullable  MidiOverflowResult midiOverflow, int basePitch) {
+    protected PressedMIDINote playNote(NoteButton noteBtn, @Nullable MidiOverflowResult midiOverflow, int basePitch) {
         if (midiOverflow == null) {
             noteBtn.play();
+            return new PressedMIDINote(noteBtn.getPitch(), noteBtn, noteBtn.getSound());
         } else {
-            noteBtn.play(midiOverflow.newNoteSound(), basePitch + midiOverflow.pitchOffset());
+            int newPitch = basePitch + midiOverflow.pitchOffset();
+            noteBtn.play(midiOverflow.newNoteSound(), newPitch);
+            return new PressedMIDINote(newPitch, noteBtn, midiOverflow.newNoteSound());
         }
-
-        return true;
     }
 
 
     protected boolean canPerformMidi(final MidiEvent event) {
         final byte[] message = event.message.getMessage();
 
-        final BiValue<Integer, NoteButton> prevBtnTuple = pressedMidiNotes.get(message[1]);
+        final PressedMIDINote prevNoteBtn = pressedMidiNotes.get(message[1]);
         NoteButton prevButton = null;
         boolean isHoldableBtn = false;
-        if (prevBtnTuple != null) {
-            prevButton = prevBtnTuple.obj2();
+        if (prevNoteBtn != null) {
+            prevButton = prevNoteBtn.pressedNote();
             isHoldableBtn = prevButton instanceof IHoldableNoteButton;
 
             // Release the previously pressed note
@@ -162,7 +160,13 @@ public abstract class InstrumentMidiReceiver {
             case -128: {
                 // release
                 if (isHoldableBtn) {
-                    ((IHoldableNoteButton)prevButton).releaseHeld(prevBtnTuple.obj1(), true);
+                    IHoldableNoteButton heldBtn = (IHoldableNoteButton)prevButton;
+
+                    heldBtn.releaseHeld(
+                        prevNoteBtn.notePitch(),
+                        true,
+                        heldBtn.toHeldSound(prevNoteBtn.sound())
+                    );
                 }
 
                 break;
