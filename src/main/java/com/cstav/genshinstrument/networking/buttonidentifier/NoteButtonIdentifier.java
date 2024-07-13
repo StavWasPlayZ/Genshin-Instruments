@@ -1,16 +1,15 @@
 package com.cstav.genshinstrument.networking.buttonidentifier;
 
-import java.util.List;
-import java.util.function.Function;
-
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.networking.packet.INoteIdentifierSender;
-import com.cstav.genshinstrument.util.ServerUtil;
+import com.cstav.genshinstrument.networking.packet.instrument.InstrumentPacketUtil;
 import com.mojang.logging.LogUtils;
-
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.List;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -46,7 +45,7 @@ public abstract class NoteButtonIdentifier {
             List<Class<? extends NoteButtonIdentifier>> acceptableIdentifiers) {
 
         try {
-            return ServerUtil.getValidNoteIdentifier(buf.readUtf(), acceptableIdentifiers)
+            return InstrumentPacketUtil.getValidNoteIdentifier(buf.readUtf(), acceptableIdentifiers)
                 .getDeclaredConstructor(FriendlyByteBuf.class).newInstance(buf);
         } catch (Exception e) {
             LogUtils.getLogger().error("Error initializing button identifier", e);

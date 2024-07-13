@@ -12,7 +12,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import static com.cstav.genshinstrument.util.ServerUtil.sendInternalOpenPacket;
+import static com.cstav.genshinstrument.networking.packet.instrument.InstrumentPacketUtil.sendInternalOpenPacket;
 
 @EventBusSubscriber(modid = GInstrumentMod.MODID, bus = Bus.MOD)
 public class GIItems {

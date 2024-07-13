@@ -3,10 +3,10 @@ package com.cstav.genshinstrument.networking.packet.instrument.c2s;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.packet.INoteIdentifierSender;
+import com.cstav.genshinstrument.networking.packet.instrument.InstrumentPacketUtil;
 import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
 import com.cstav.genshinstrument.networking.packet.instrument.s2c.PlayNotePacket;
 import com.cstav.genshinstrument.sound.NoteSound;
-import com.cstav.genshinstrument.util.ServerUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -72,7 +72,7 @@ public class InstrumentPacket implements INoteIdentifierSender {
 
     protected void sendPlayNotePackets(final ServerPlayer player) {
 
-        ServerUtil.sendPlayNotePackets(player, meta.pos(),
+        InstrumentPacketUtil.sendPlayNotePackets(player, meta.pos(),
             sound, meta.instrumentId(), meta.noteIdentifier().orElse(null),
             meta.pitch(), meta.volume(),
             PlayNotePacket::new
