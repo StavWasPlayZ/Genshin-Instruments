@@ -67,18 +67,21 @@ public class ClientEvents {
             return;
 
         // Only show play notes in the local range
-        if (!event.playPos.closerThan(MINECRAFT.player.blockPosition(), NoteSound.LOCAL_RANGE))
+        if (!event.soundMeta.pos().closerThan(MINECRAFT.player.blockPosition(), NoteSound.LOCAL_RANGE))
             return;
 
 
         InstrumentScreen.getCurrentScreen(MINECRAFT)
-            // Filter instruments that do not match the one we're on
-            // If the note identifier is empty, it matters not - since the check is on the sound itself,
-            // which is bound to be unique for every note.
-            .filter((screen) -> event.noteIdentifier.isEmpty() || screen.getInstrumentId().equals(event.instrumentId))
+            // Filter instruments that do not match the one we're on.
+            // If the note identifier is empty, it matters not - as the check
+            // will be performed on the sound itself, which is bound to be unique for every note.
+            .filter((screen) ->
+                event.soundMeta.noteIdentifier().isEmpty()
+                || screen.getInstrumentId().equals(event.soundMeta.instrumentId())
+            )
             .ifPresent((screen) -> {
                 try {
-                    screen.getNoteButton(event.noteIdentifier, event.sound, event.pitch)
+                    screen.getNoteButton(event.soundMeta.noteIdentifier(), event.sound, event.soundMeta.pitch())
                         .playNoteAnimation(true);
                 } catch (Exception e) {
                     // Button was prolly just not found

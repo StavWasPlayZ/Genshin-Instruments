@@ -6,7 +6,7 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label
 import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.networking.GIPacketHandler;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
-import com.cstav.genshinstrument.networking.packet.instrument.c2s.InstrumentPacket;
+import com.cstav.genshinstrument.networking.packet.instrument.c2s.C2SNoteSoundPacket;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.LabelUtil;
 import com.mojang.logging.LogUtils;
@@ -219,7 +219,7 @@ public abstract class NoteButton extends AbstractButton {
         sound.playLocally(pitch, instrumentScreen.volume());
     }
     protected void sendNotePlayPacket(final NoteSound sound, final int pitch) {
-        GIPacketHandler.sendToServer(new InstrumentPacket(this, sound, pitch));
+        GIPacketHandler.sendToServer(new C2SNoteSoundPacket(this, sound, pitch));
     }
 
 

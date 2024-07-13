@@ -3,14 +3,12 @@ package com.cstav.genshinstrument.sound;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
-import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
+import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
 import com.cstav.genshinstrument.sound.registrar.NoteSoundRegistrar;
-import com.cstav.genshinstrument.util.CommonUtil;
 import com.cstav.genshinstrument.util.LabelUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -147,22 +145,18 @@ public class NoteSound {
     /**
      * A method for packets to use for playing this note on the client's end.
      * Will also stop the client's background music per preference.
-     * @param playerUUID The UUID of the player who initiated the sound. Empty for when it wasn't a player.
-     * @param playPos The position at which the sound was fired from. Null for the player's.
+     * @param initiatorUUID The UUID of the player who initiated the sound. Empty for when it wasn't a player.
+     * @param meta Additional metadata of the Note Sound being played
      */
     @OnlyIn(Dist.CLIENT)
-    public void play(int pitch, int volume, Optional<UUID> playerUUID,
-            ResourceLocation instrumentId, Optional<NoteButtonIdentifier> buttonIdentifier, Optional<BlockPos> playPos) {
+    public void play(Optional<UUID> initiatorUUID, NoteSoundMetadata meta) {
         final Minecraft minecraft = Minecraft.getInstance();
         final Player player = minecraft.player;
 
         final Level level = minecraft.level;
-        final Player initiator = playerUUID.map(level::getPlayerByUUID).orElse(null);
+        final Player initiator = initiatorUUID.map(level::getPlayerByUUID).orElse(null);
 
-        final BlockPos pos = CommonUtil.getPlayeredPosition(initiator, playPos);
-        
-
-        final double distanceFromPlayer = pos.getCenter().distanceTo(player.position());
+        final double distanceFromPlayer = meta.pos().getCenter().distanceTo(player.position());
         
         if (ModClientConfigs.STOP_MUSIC_ON_PLAY.get() && (distanceFromPlayer < NoteSound.STOP_SOUND_DISTANCE))
             minecraft.getMusicManager().stopPlaying();
@@ -170,13 +164,8 @@ public class NoteSound {
 
         
         MinecraftForge.EVENT_BUS.post(initiator == null
-            ? new InstrumentPlayedEvent(
-                this, pitch, volume, level, pos, instrumentId, buttonIdentifier.orElse(null)
-            )
-            : new InstrumentPlayedEvent.ByPlayer(
-                this, pitch, volume, initiator, pos,
-                instrumentId, buttonIdentifier.orElse(null)
-            )
+            ? new InstrumentPlayedEvent(level, this, meta)
+            : new InstrumentPlayedEvent.ByPlayer(initiator, this, meta)
         );
         
 
@@ -184,15 +173,15 @@ public class NoteSound {
             return;
 
         
-        final float mcPitch = getPitchByNoteOffset(clampPitch(pitch));
+        final float mcPitch = getPitchByNoteOffset(clampPitch(meta.pitch()));
             
         if (distanceFromPlayer > LOCAL_RANGE)
-            level.playLocalSound(pos,
+            level.playLocalSound(meta.pos(),
                 getByPreference(distanceFromPlayer), INSTRUMENT_SOUND_SOURCE,
                 1, mcPitch
             , false);
         else
-            playLocally(mcPitch, volume / 100f);
+            playLocally(mcPitch, meta.volume() / 100f);
     }
 
     /**

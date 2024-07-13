@@ -4,11 +4,11 @@ import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.networking.buttonidentifier.DrumNoteIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
+import com.cstav.genshinstrument.networking.packet.instrument.c2s.C2SNoteSoundPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.c2s.CloseInstrumentPacket;
-import com.cstav.genshinstrument.networking.packet.instrument.c2s.InstrumentPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.s2c.NotifyInstrumentOpenPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.s2c.OpenInstrumentPacket;
-import com.cstav.genshinstrument.networking.packet.instrument.s2c.PlayNotePacket;
+import com.cstav.genshinstrument.networking.packet.instrument.s2c.S2CNoteSoundPacket;
 import com.cstav.genshinstrument.util.ServerUtil;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,7 +24,7 @@ import java.util.List;
 public class GIPacketHandler {
     @SuppressWarnings("unchecked")
     public static final List<Class<IModPacket>> ACCEPTABLE_PACKETS = List.of(new Class[] {
-        InstrumentPacket.class, PlayNotePacket.class, OpenInstrumentPacket.class, CloseInstrumentPacket.class,
+        C2SNoteSoundPacket.class, S2CNoteSoundPacket.class, OpenInstrumentPacket.class, CloseInstrumentPacket.class,
         NotifyInstrumentOpenPacket.class
     });
 

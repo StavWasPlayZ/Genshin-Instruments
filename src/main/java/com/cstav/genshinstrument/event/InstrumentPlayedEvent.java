@@ -2,10 +2,8 @@ package com.cstav.genshinstrument.event;
 
 import com.cstav.genshinstrument.block.partial.InstrumentBlockEntity;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
-import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
+import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
 import com.cstav.genshinstrument.sound.NoteSound;
-import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -22,36 +20,22 @@ import java.util.Optional;
 public class InstrumentPlayedEvent extends Event {
 
     public final NoteSound sound;
-    public final int pitch, volume;
-
+    public final NoteSoundMetadata soundMeta;
     public final Level level;
-    
-    public final ResourceLocation instrumentId;
-    public final Optional<NoteButtonIdentifier> noteIdentifier;
-    public final BlockPos playPos;
-
 
     /**
      * Convenience method to convert the volume of the note
      * into a {@code float} percentage
      */
     public float volume() {
-        return volume / 100f;
+        return soundMeta.volume() / 100f;
     }
     
 
-    public InstrumentPlayedEvent(NoteSound sound, int pitch, int volume, Level level, BlockPos pos,
-            ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier) {
-
-        this.sound = sound;
-        this.pitch = pitch;
-        this.volume = volume;
-
+    public InstrumentPlayedEvent(Level level, NoteSound sound, NoteSoundMetadata soundMeta) {
         this.level = level;
-        this.playPos = pos;
-
-        this.instrumentId = instrumentId;
-        this.noteIdentifier = Optional.ofNullable(noteIdentifier);
+        this.sound = sound;
+        this.soundMeta = soundMeta;
     }
 
     @Cancelable
@@ -61,7 +45,6 @@ public class InstrumentPlayedEvent extends Event {
         // The value below will only be supplied if initiated from an item
         /** The hand holding the instrument played by this player */
         public final Optional<InteractionHand> hand;
-
 
         /**
          * <p>Returns whether this event was fired by an item instrument.</p>
@@ -78,7 +61,7 @@ public class InstrumentPlayedEvent extends Event {
          */
         public boolean isBlockInstrument() {
             return !isItemInstrument()
-                && player.level().getBlockEntity(playPos) instanceof InstrumentBlockEntity;
+                && player.level().getBlockEntity(soundMeta.pos()) instanceof InstrumentBlockEntity;
         }
 
         /**
@@ -89,13 +72,8 @@ public class InstrumentPlayedEvent extends Event {
         }
 
 
-        public ByPlayer(NoteSound sound, int pitch, int volume, Player player, BlockPos pos,
-                ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier) {
-            super(
-                sound, pitch, volume,
-                player.level(), pos,
-                instrumentId, noteIdentifier
-            );
+        public ByPlayer(Player player, NoteSound sound, NoteSoundMetadata soundMeta) {
+            super(player.level(), sound, soundMeta);
 
             this.player = player;
 

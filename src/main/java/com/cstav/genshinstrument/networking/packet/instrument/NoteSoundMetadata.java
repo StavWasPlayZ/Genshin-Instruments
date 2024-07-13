@@ -8,15 +8,17 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Metadata to be passed around in instrument packets; usually tied to a {@link NoteSound}.
+ * @param pos The position of the sound being produced
+ * @param instrumentId The ID of the instrument initiating the sound
+ * @param pitch The pitch of the sound to initiate
+ * @param volume The volume of the sound to initiate
+ * @param noteIdentifier The identifier of the note
  */
 public record NoteSoundMetadata(
-    Optional<UUID> playerUUID,
-    /* Optionally pass a position that defers from the player's */
-    Optional<BlockPos> pos,
+    BlockPos pos,
 
     int pitch,
     int volume,
@@ -25,8 +27,7 @@ public record NoteSoundMetadata(
 ) {
     public static NoteSoundMetadata read(final FriendlyByteBuf buf, INoteIdentifierSender noteIdentifierSender) {
         return new NoteSoundMetadata(
-            buf.readOptional(FriendlyByteBuf::readUUID),
-            buf.readOptional(FriendlyByteBuf::readBlockPos),
+            buf.readBlockPos(),
 
             buf.readInt(),
             buf.readInt(),
@@ -36,8 +37,7 @@ public record NoteSoundMetadata(
     }
 
     public void write(final FriendlyByteBuf buf) {
-        buf.writeOptional(playerUUID, FriendlyByteBuf::writeUUID);
-        buf.writeOptional(pos, FriendlyByteBuf::writeBlockPos);
+        buf.writeBlockPos(pos);
 
         buf.writeInt(pitch);
         buf.writeInt(volume);
