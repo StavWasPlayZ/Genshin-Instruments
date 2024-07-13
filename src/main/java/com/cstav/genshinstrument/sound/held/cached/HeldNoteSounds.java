@@ -47,8 +47,6 @@ public abstract class HeldNoteSounds {
         if (!SOUND_INSTANCES.containsKey(key))
             return;
 
-        //TODO also notify in server
-
         SOUND_INSTANCES.get(key).values().forEach((heldSounds) -> heldSounds.forEach(HeldNoteSoundInstance::setReleased));
         SOUND_INSTANCES.remove(key);
     }
@@ -59,9 +57,10 @@ public abstract class HeldNoteSounds {
         if (!SOUND_INSTANCES.containsKey(key))
             return;
 
-        //TODO also notify in server
-
         final Map<Integer, List<HeldNoteSoundInstance>> p2i = SOUND_INSTANCES.get(key);
+        if (!p2i.containsKey(notePitch))
+            return;
+
         p2i.get(notePitch).forEach(HeldNoteSoundInstance::setReleased);
         p2i.remove(notePitch);
 
