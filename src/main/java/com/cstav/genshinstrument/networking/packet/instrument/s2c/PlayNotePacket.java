@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.networking.packet.instrument.s2c;
 
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.packet.INoteIdentifierSender;
+import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
 import com.cstav.genshinstrument.sound.NoteSound;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -19,59 +20,39 @@ import java.util.UUID;
 public class PlayNotePacket implements INoteIdentifierSender {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_CLIENT;
 
-    private final int pitch, volume;
-
-    private final Optional<BlockPos> position;
     private final NoteSound sound;
-    private final ResourceLocation instrumentId;
-    private final Optional<NoteButtonIdentifier> noteIdentifier;
-    
-    private final Optional<UUID> playerUUID;
+    private final NoteSoundMetadata meta;
 
     public PlayNotePacket(Optional<BlockPos> pos, NoteSound sound, int pitch, int volume, ResourceLocation instrumentId,
-        Optional<NoteButtonIdentifier> noteIdentifier, Optional<UUID> playerUUID) {
-
-        this.pitch = pitch;
-        this.volume = volume;
-
-        this.position = pos;
+                          Optional<NoteButtonIdentifier> noteIdentifier, Optional<UUID> playerUUID) {
         this.sound = sound;
-        this.instrumentId = instrumentId;
-        this.noteIdentifier = noteIdentifier;
+        meta = new NoteSoundMetadata(
+            playerUUID,
+            pos,
 
-        this.playerUUID = playerUUID;
+            pitch,
+            volume,
+            instrumentId,
+            noteIdentifier
+        );
     }
     public PlayNotePacket(FriendlyByteBuf buf) {
-        pitch = buf.readInt();
-        volume = buf.readInt();
-
-        position = buf.readOptional(FriendlyByteBuf::readBlockPos);
         sound = NoteSound.readFromNetwork(buf);
-        instrumentId = buf.readResourceLocation();
-        noteIdentifier = buf.readOptional(this::readNoteIdentifierFromNetwork);
-
-        playerUUID = buf.readOptional(FriendlyByteBuf::readUUID);
+        meta = NoteSoundMetadata.read(buf, this);
     }
 
     @Override
     public void write(FriendlyByteBuf buf) {
-        buf.writeInt(pitch);
-        buf.writeInt(volume);
-
-        buf.writeOptional(position, FriendlyByteBuf::writeBlockPos);
         sound.writeToNetwork(buf);
-        buf.writeResourceLocation(instrumentId);
-        buf.writeOptional(noteIdentifier, (fbb, identifier) -> identifier.writeToNetwork(fbb));
-
-        buf.writeOptional(playerUUID, FriendlyByteBuf::writeUUID);
+        meta.write(buf);
     }
 
 
     @Override
     public void handle(final Context context) {
         sound.play(
-            pitch, volume, playerUUID,
-            instrumentId, noteIdentifier, position
+            meta.pitch(), meta.volume(), meta.playerUUID(),
+            meta.instrumentId(), meta.noteIdentifier(), meta.pos()
         );
     }
 }
