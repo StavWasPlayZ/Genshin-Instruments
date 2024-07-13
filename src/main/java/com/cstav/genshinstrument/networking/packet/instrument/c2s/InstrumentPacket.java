@@ -1,6 +1,5 @@
 package com.cstav.genshinstrument.networking.packet.instrument.c2s;
 
-import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.packet.INoteIdentifierSender;
@@ -83,9 +82,6 @@ public class InstrumentPacket implements INoteIdentifierSender {
     @Override
     public void handle(final Context context) {
         final ServerPlayer player = context.getSender();
-        if (!InstrumentOpen.isOpen(player))
-            return;
-
         sendPlayNotePackets(player);
     }
 
