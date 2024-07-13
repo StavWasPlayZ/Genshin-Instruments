@@ -3,7 +3,7 @@ package com.cstav.genshinstrument.event;
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.item.InstrumentItem;
-import com.cstav.genshinstrument.networking.packet.instrument.InstrumentPacketUtil;
+import com.cstav.genshinstrument.networking.packet.instrument.util.InstrumentPacketUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;

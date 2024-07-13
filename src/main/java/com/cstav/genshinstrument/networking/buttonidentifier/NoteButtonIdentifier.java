@@ -2,7 +2,7 @@ package com.cstav.genshinstrument.networking.buttonidentifier;
 
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.networking.packet.INoteIdentifierSender;
-import com.cstav.genshinstrument.networking.packet.instrument.InstrumentPacketUtil;
+import com.cstav.genshinstrument.networking.packet.instrument.util.InstrumentPacketUtil;
 import com.mojang.logging.LogUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
