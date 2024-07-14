@@ -10,6 +10,7 @@ import com.cstav.genshinstrument.networking.packet.instrument.s2c.OpenInstrument
 import com.cstav.genshinstrument.networking.packet.instrument.s2c.S2CNotePacket;
 import com.cstav.genshinstrument.util.CommonUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -57,6 +58,27 @@ public class InstrumentPacketUtil {
             GameEvent.Context.of(initiator)
         );
     }
+    /**
+     * Sends play note packets in the specified {@link InstrumentPacketUtil#PLAY_DISTANCE}.
+     * @param initiator The player producing the sounds
+     * @param sound The sound to initiate
+     * @param instrumentId The ID of the instrument initiating the sound
+     * @param pitch The pitch of the sound to initiate
+     * @param volume The volume of the sound to initiate
+     */
+    public static <T> void sendPlayerPlayNotePackets(ServerPlayer initiator,
+                                                     T sound, ResourceLocation instrumentId, int pitch, int volume,
+                                                     S2CNotePacketDelegate<T> notePacketDelegate) {
+        sendPlayerPlayNotePackets(
+            initiator, sound, new NoteSoundMetadata(
+                initiator.blockPosition(),
+                pitch, volume,
+                instrumentId,
+                Optional.empty()
+            ),
+            notePacketDelegate
+        );
+    }
 
     /**
      * Sends play note packets in the specified {@link InstrumentPacketUtil#PLAY_DISTANCE}.
@@ -68,7 +90,7 @@ public class InstrumentPacketUtil {
      * @param <T> The sound object type
      */
     public static <T> void sendPlayNotePackets(Level level, T sound, NoteSoundMetadata soundMeta,
-                                           S2CNotePacketDelegate<T> notePacketDelegate) {
+                                               S2CNotePacketDelegate<T> notePacketDelegate) {
 
         final S2CNotePacket<T> packet = notePacketDelegate.create(
             Optional.empty(), sound, soundMeta
@@ -88,6 +110,28 @@ public class InstrumentPacketUtil {
             // idk what else
         else
             level.gameEvent(null, GameEvent.INSTRUMENT_PLAY, soundMeta.pos());;
+    }
+    /**
+     * Sends play note packets in the specified {@link InstrumentPacketUtil#PLAY_DISTANCE}.
+     * This method treats the sound as it was NOT produced by a player.
+     * @param level The world that the sound should initiate in
+     * @param pos The position of the sound to initiate
+     * @param sound The sound to initiate
+     * @param instrumentId The ID of the instrument initiating the sound
+     * @param pitch The pitch of the sound to initiate
+     */
+    public static <T> void sendPlayNotePackets(Level level, BlockPos pos, T sound, ResourceLocation instrumentId,
+                                               int pitch, int volume,
+                                               S2CNotePacketDelegate<T> notePacketDelegate) {
+        sendPlayNotePackets(
+            level, sound, new NoteSoundMetadata(
+                pos,
+                pitch, volume,
+                instrumentId,
+                Optional.empty()
+            ),
+            notePacketDelegate
+        );
     }
 
 

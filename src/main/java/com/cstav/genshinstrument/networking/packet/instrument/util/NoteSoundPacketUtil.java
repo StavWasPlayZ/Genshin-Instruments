@@ -10,8 +10,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 
-import java.util.Optional;
-
 /**
  * A helper class for dealing with {@link NoteSound} packets.
  */
@@ -27,13 +25,8 @@ public class NoteSoundPacketUtil {
      */
     public static void sendPlayerPlayNotePackets(ServerPlayer initiator,
                                            NoteSound sound, ResourceLocation instrumentId, int pitch, int volume) {
-        sendPlayerPlayNotePackets(
-            initiator, sound, new NoteSoundMetadata(
-                initiator.blockPosition(),
-                pitch, volume,
-                instrumentId,
-                Optional.empty()
-            ),
+        InstrumentPacketUtil.sendPlayerPlayNotePackets(
+            initiator, sound, instrumentId, pitch, volume,
             S2CNoteSoundPacket::new
         );
     }
@@ -64,13 +57,8 @@ public class NoteSoundPacketUtil {
      */
     public static void sendPlayNotePackets(Level level, BlockPos pos, NoteSound sound, ResourceLocation instrumentId,
                                            int pitch, int volume) {
-        sendPlayNotePackets(
-            level, sound, new NoteSoundMetadata(
-                pos,
-                pitch, volume,
-                instrumentId,
-                Optional.empty()
-            ),
+        InstrumentPacketUtil.sendPlayNotePackets(
+            level, pos, sound, instrumentId, pitch, volume,
             S2CNoteSoundPacket::new
         );
     }
