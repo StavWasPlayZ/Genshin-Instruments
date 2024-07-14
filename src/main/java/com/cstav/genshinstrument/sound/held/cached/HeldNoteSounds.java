@@ -1,8 +1,10 @@
 package com.cstav.genshinstrument.sound.held.cached;
 
 import com.cstav.genshinstrument.sound.held.HeldNoteSoundInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,10 +17,33 @@ import java.util.Map;
 @OnlyIn(Dist.CLIENT)
 public abstract class HeldNoteSounds {
     /**
-     * A map matching a held note sound identifier to a
+     * A map matching a sound initiator to a held note sound identifier to a
      * map of pitches to active note sound instances.
      */
-    private static final Map<HeldNoteSoundKey, Map<Integer, List<HeldNoteSoundInstance>>> SOUND_INSTANCES = new HashMap<>();
+    private static final
+        // Initiator ID
+        Map<String,
+            // Sound key
+            Map<HeldNoteSoundKey,
+                // Note pitch
+                Map<Integer,
+                    // List of held sound instances
+                    List<HeldNoteSoundInstance>
+                >
+            >
+        >
+        SOUND_INSTANCES = new HashMap<>();
+
+    /**
+     * @return The initiator ID of the provided object.
+     * UUID for an entity, toString for any other,
+     */
+    public static String getInitiatorId(@NotNull Object initiator) {
+        return (initiator instanceof Entity entity)
+            ? entity.getStringUUID()
+            : initiator.toString();
+    }
+
 
     /**
      * Adds a new {@link HeldNoteSoundInstance} to the sounds map.
@@ -26,8 +51,9 @@ public abstract class HeldNoteSounds {
      * @param notePitch The note pitch of the sound instance
      * @param soundInstance The instance to insert
      */
-    public static void put(HeldNoteSoundKey key, int notePitch, HeldNoteSoundInstance soundInstance) {
+    public static void put(String initiatorId, HeldNoteSoundKey key, int notePitch, HeldNoteSoundInstance soundInstance) {
         SOUND_INSTANCES
+            .computeIfAbsent(initiatorId, (_k) -> new HashMap<>())
             .computeIfAbsent(key, (_k) -> new HashMap<>())
             .computeIfAbsent(notePitch, (_k) -> new ArrayList<>())
             .add(soundInstance);
@@ -44,23 +70,48 @@ public abstract class HeldNoteSounds {
     }
 
     /**
-     * Removes all note instances matching the provided {@code key}.
+     * Removes all note instances produced by the provided initiator.
      */
-    public static void remove(final HeldNoteSoundKey key) {
-        if (!SOUND_INSTANCES.containsKey(key))
+    public static void remove(String initiatorId) {
+        if (!SOUND_INSTANCES.containsKey(initiatorId))
             return;
 
-        SOUND_INSTANCES.get(key).values().forEach((heldSounds) -> heldSounds.forEach(HeldNoteSoundInstance::setReleased));
-        SOUND_INSTANCES.remove(key);
+        SOUND_INSTANCES.get(initiatorId).values().forEach((p2i) ->
+            p2i.values().forEach((instances) ->
+                instances.forEach(HeldNoteSoundInstance::setReleased)
+            )
+        );
+
+        SOUND_INSTANCES.remove(initiatorId);
     }
+
+    /**
+     * Removes all note instances matching the provided {@code key}.
+     */
+    public static void remove(String initiatorId, HeldNoteSoundKey key) {
+        if (!SOUND_INSTANCES.containsKey(initiatorId))
+            return;
+
+        final Map<HeldNoteSoundKey, Map<Integer, List<HeldNoteSoundInstance>>> k2p2i = SOUND_INSTANCES.get(initiatorId);
+        if (!k2p2i.containsKey(key))
+            return;
+
+        k2p2i.get(key).values().forEach((heldSounds) -> heldSounds.forEach(HeldNoteSoundInstance::setReleased));
+        k2p2i.remove(key);
+    }
+
     /**
      * Removes all note instances matching the provided {@code key} and {@code pitch}.
      */
-    public static void remove(final HeldNoteSoundKey key, int notePitch) {
-        if (!SOUND_INSTANCES.containsKey(key))
+    public static void remove(String initiatorId, HeldNoteSoundKey key, int notePitch) {
+        if (!SOUND_INSTANCES.containsKey(initiatorId))
             return;
 
-        final Map<Integer, List<HeldNoteSoundInstance>> p2i = SOUND_INSTANCES.get(key);
+        final Map<HeldNoteSoundKey, Map<Integer, List<HeldNoteSoundInstance>>> k2p2i = SOUND_INSTANCES.get(initiatorId);
+        if (!k2p2i.containsKey(key))
+            return;
+
+        final Map<Integer, List<HeldNoteSoundInstance>> p2i = k2p2i.get(key);
         if (!p2i.containsKey(notePitch))
             return;
 
@@ -69,25 +120,26 @@ public abstract class HeldNoteSounds {
 
         // No point in having a map to nothing.
         if (p2i.isEmpty())
-            SOUND_INSTANCES.remove(key);
+            k2p2i.remove(key);
     }
 
     /**
-     * Removes the specifically specified note sound.
+     * Removes the specified note sound.
      */
-    public static void remove(final HeldNoteSoundKey key, int notePitch, HeldNoteSoundInstance soundInstance) {
-        if (!SOUND_INSTANCES.containsKey(key))
+    public static void remove(String initiatorId, HeldNoteSoundKey key, int notePitch, HeldNoteSoundInstance soundInstance) {
+        if (!SOUND_INSTANCES.containsKey(initiatorId))
             return;
 
-        final Map<Integer, List<HeldNoteSoundInstance>> p2i = SOUND_INSTANCES.get(key);
+        final Map<HeldNoteSoundKey, Map<Integer, List<HeldNoteSoundInstance>>> k2p2i = SOUND_INSTANCES.get(initiatorId);
+        if (!k2p2i.containsKey(key))
+            return;
+
+        final Map<Integer, List<HeldNoteSoundInstance>> p2i = k2p2i.get(key);
         if (!p2i.containsKey(notePitch))
             return;
 
-        List<HeldNoteSoundInstance> heldSounds = p2i.get(notePitch);
-        heldSounds.remove(soundInstance);
-
-        // Don't remove even if empty;
-        // it gets removed later when needed.
+        final List<HeldNoteSoundInstance> heldSoundInstances = p2i.get(notePitch);
+        heldSoundInstances.remove(soundInstance);
     }
 
 }

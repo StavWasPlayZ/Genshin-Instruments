@@ -3,13 +3,12 @@ package com.cstav.genshinstrument.sound.held;
 import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound.Phase;
-import com.cstav.genshinstrument.sound.held.cached.HeldNoteSoundKey;
 import com.cstav.genshinstrument.sound.held.cached.HeldNoteSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -21,9 +20,10 @@ import java.util.Optional;
 public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
     public final HeldNoteSound heldSoundContainer;
     public final HeldNoteSound.Phase phase;
-    public final HeldNoteSoundKey soundKey;
 
     public final Optional<Player> initiator;
+    public final String initiatorId;
+
     /**
      * The origin of the sound. May be empty
      * for the initiator's position.
@@ -54,10 +54,10 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
             SoundInstance.createUnseededRandom()
         );
 
-        soundKey = (soundOrigin == null)
-            ? heldSoundContainer.getKey(initiator)
-            : heldSoundContainer.getKey(soundOrigin);
 
+        initiatorId = HeldNoteSounds.getInitiatorId(
+            (soundOrigin == null) ? initiator : soundOrigin
+        );
 
         this.heldSoundContainer = heldSoundContainer;
         this.phase = phase;
@@ -101,7 +101,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
     public void queueAndAddInstance() {
         Minecraft.getInstance().getSoundManager().queueTickingSound(this);
         ClientUtil.stopMusicIfClose(
-            soundOrigin.orElseGet(initiator.map(Entity::blockPosition)::get)
+            soundOrigin.orElseGet(initiator.map(LivingEntity::blockPosition)::get)
         );
         addSoundInstance();
     }
@@ -112,10 +112,10 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
      * or the block position string.
      */
     public void addSoundInstance() {
-        HeldNoteSounds.put(soundKey, notePitch, this);
+        HeldNoteSounds.put(initiatorId, heldSoundContainer.getKey(), notePitch, this);
     }
     protected void removeSoundInstance() {
-        HeldNoteSounds.remove(soundKey, notePitch, this);
+        HeldNoteSounds.remove(initiatorId, heldSoundContainer.getKey(), notePitch, this);
     }
 
     /**

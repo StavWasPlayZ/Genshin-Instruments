@@ -5,7 +5,6 @@ import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.held.cached.HeldNoteSoundKey;
 import com.cstav.genshinstrument.sound.registrar.HeldNoteSoundRegistrar;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -86,21 +85,8 @@ public record HeldNoteSound(
     }
 
 
-    public HeldNoteSoundKey getKey(final String initiatorId) {
-        return new HeldNoteSoundKey(initiatorId, baseSoundLocation, index);
-    }
-
-    /**
-     * @return The sound key by the player's UUID
-     */
-    public HeldNoteSoundKey getKey(Player initiator) {
-        return new HeldNoteSoundKey(initiator.getStringUUID(), baseSoundLocation, index);
-    }
-    /**
-     * @return The sound key by the position's toString method
-     */
-    public HeldNoteSoundKey getKey(BlockPos initiator) {
-        return new HeldNoteSoundKey(initiator.toString(), baseSoundLocation, index);
+    public HeldNoteSoundKey getKey() {
+        return new HeldNoteSoundKey(baseSoundLocation, index);
     }
 
 

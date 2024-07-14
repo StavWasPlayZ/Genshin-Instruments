@@ -28,12 +28,13 @@ public interface IHoldableNoteButton {
      * @param playAnimation Should the release animation be played?
      */
     default void releaseHeld(int notePitch, boolean targetPitch, HeldNoteSound heldSound, boolean playAnimation) {
-        final HeldNoteSoundKey soundKey = heldSound.getKey(Minecraft.getInstance().player);
+        final HeldNoteSoundKey soundKey = heldSound.getKey();
+        final String initiatorId = HeldNoteSounds.getInitiatorId(Minecraft.getInstance().player);
 
         if (targetPitch) {
-            HeldNoteSounds.remove(soundKey, notePitch);
+            HeldNoteSounds.remove(initiatorId, soundKey, notePitch);
         } else {
-            HeldNoteSounds.remove(soundKey);
+            HeldNoteSounds.remove(initiatorId, soundKey);
         }
 
         if (playAnimation) {
@@ -47,15 +48,13 @@ public interface IHoldableNoteButton {
      * @param targetPitch Should only release the provided pitch?
      */
     default void releaseHeld(int notePitch, boolean targetPitch) {
-        final HeldNoteSoundKey soundKey = getHeldNoteSound().getKey(Minecraft.getInstance().player);
-
         releaseHeld(
             notePitch,
             targetPitch,
             getHeldNoteSound(),
             // If this is the last note playing; release it.
             // If we target everyone then ofc it will be empty.
-            !targetPitch || !HeldNoteSounds.hasInstances(soundKey)
+            !targetPitch || !HeldNoteSounds.hasInstances(getHeldNoteSound().getKey())
         );
     }
     /**
