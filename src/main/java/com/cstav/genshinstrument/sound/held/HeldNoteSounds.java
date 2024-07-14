@@ -11,7 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A class storing all note sounds in the present level
+ * A class storing all note sounds in the present level.
+ * Used for later releasing them.
  */
 @OnlyIn(Dist.CLIENT)
 public abstract class HeldNoteSounds {
