@@ -4,24 +4,91 @@ import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvide
 import com.cstav.genshinstrument.networking.GIPacketHandler;
 import com.cstav.genshinstrument.networking.OpenInstrumentPacketSender;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
+import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
 import com.cstav.genshinstrument.networking.packet.instrument.s2c.NotifyInstrumentOpenPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.s2c.OpenInstrumentPacket;
+import com.cstav.genshinstrument.networking.packet.instrument.s2c.S2CNotePacket;
 import com.cstav.genshinstrument.util.CommonUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * A helper for sending Genshin Instrument packets
  */
 public class InstrumentPacketUtil {
     public static final int PLAY_DISTANCE = 24;
+
+    //#region Generic Note Sound impls
+
+    /**
+     * Sends play note packets in the specified {@link InstrumentPacketUtil#PLAY_DISTANCE}.
+     * @param initiator The player producing the sounds
+     * @param sound The sound to initiate
+     * @param soundMeta Additional metadata of the used sound
+     * @param notePacketDelegate The constructor of the sound packet to be sent
+     * @param <T> The sound object type
+     */
+    public static <T> void sendPlayerPlayNotePackets(ServerPlayer initiator, T sound, NoteSoundMetadata soundMeta,
+                                                 S2CNotePacketDelegate<T> notePacketDelegate) {
+
+        final S2CNotePacket<T> packet = notePacketDelegate.create(
+            Optional.of(initiator.getUUID()), sound, soundMeta
+        );
+
+        for (final Player listener : InstrumentPacketUtil.noteListeners(initiator.level(), soundMeta.pos()))
+            GIPacketHandler.sendToClient(packet, (ServerPlayer)listener);
+
+
+        // Trigger an instrument game event
+        // This is done so that sculk sensors can pick up the instrument's sound
+        initiator.level().gameEvent(
+            GameEvent.INSTRUMENT_PLAY, soundMeta.pos(),
+            GameEvent.Context.of(initiator)
+        );
+    }
+
+    /**
+     * Sends play note packets in the specified {@link InstrumentPacketUtil#PLAY_DISTANCE}.
+     * This method treats the sound as it was NOT produced by a player.
+     * @param level The world that the sound should initiate in
+     * @param sound The sound to initiate
+     * @param soundMeta Additional metadata of the used sound
+     * @param notePacketDelegate The constructor of the sound packet to be sent
+     * @param <T> The sound object type
+     */
+    public static <T> void sendPlayNotePackets(Level level, T sound, NoteSoundMetadata soundMeta,
+                                           S2CNotePacketDelegate<T> notePacketDelegate) {
+
+        final S2CNotePacket<T> packet = notePacketDelegate.create(
+            Optional.empty(), sound, soundMeta
+        );
+
+        for (final Player listener : InstrumentPacketUtil.noteListeners(level, soundMeta.pos()))
+            GIPacketHandler.sendToClient(packet, (ServerPlayer)listener);
+
+
+        final BlockState bs = level.getBlockState(soundMeta.pos());
+        // The sound may have been coming from a block
+        if (bs != Blocks.AIR.defaultBlockState())
+            level.gameEvent(
+                GameEvent.INSTRUMENT_PLAY, soundMeta.pos(),
+                GameEvent.Context.of(bs)
+            );
+            // idk what else
+        else
+            level.gameEvent(null, GameEvent.INSTRUMENT_PLAY, soundMeta.pos());;
+    }
 
 
     /**
@@ -32,6 +99,9 @@ public class InstrumentPacketUtil {
             new AABB(pos).inflate(PLAY_DISTANCE)
         );
     }
+
+    //#endrgion
+    /*-----------------*/
 
 
     public static void setInstrumentClosed(final Player player) {
