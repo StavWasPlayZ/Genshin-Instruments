@@ -187,7 +187,7 @@ public abstract class InstrumentOptionsScreen extends AbstractInstrumentOptionsS
         // Not visual, but no space
         final CycleButton<Boolean> stopMusic = CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(ModClientConfigs.STOP_MUSIC_ON_PLAY.get())
-            .withTooltip((value) -> Tooltip.create(Component.translatable(STOP_MUSIC_KEY+".tooltip", NoteSound.STOP_SOUND_DISTANCE)))
+            .withTooltip((value) -> Tooltip.create(Component.translatable(STOP_MUSIC_KEY+".tooltip", ClientUtil.STOP_SOUND_DISTANCE)))
             .create(0, 0,
                 getSmallButtonWidth(), getButtonHeight(),
                 Component.translatable(STOP_MUSIC_KEY), this::onMusicStopChanged

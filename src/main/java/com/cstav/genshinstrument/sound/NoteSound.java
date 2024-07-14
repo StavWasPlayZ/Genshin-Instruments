@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.sound;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
+import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
 import com.cstav.genshinstrument.sound.registrar.NoteSoundRegistrar;
@@ -35,10 +36,6 @@ public class NoteSound {
      * The range at which players with Mixed instrument sound type will start to hear Mono.
     */
     public static final double STEREO_RANGE = 5.5;
-    /**
-     * The range from which players will stop hearing Minecraft's background music on playing
-     */
-    public static final double STOP_SOUND_DISTANCE = 10;
     /**
      * The range from which players will hear instruments from their local sound output rather than the level's
      */
@@ -149,7 +146,7 @@ public class NoteSound {
      * @param meta Additional metadata of the Note Sound being played
      */
     @OnlyIn(Dist.CLIENT)
-    public void play(Optional<UUID> initiatorUUID, NoteSoundMetadata meta) {
+    public void playFromServer(Optional<UUID> initiatorUUID, NoteSoundMetadata meta) {
         final Minecraft minecraft = Minecraft.getInstance();
         final Player player = minecraft.player;
 
@@ -157,22 +154,18 @@ public class NoteSound {
         final Player initiator = initiatorUUID.map(level::getPlayerByUUID).orElse(null);
 
         final double distanceFromPlayer = meta.pos().getCenter().distanceTo(player.position());
-        
-        if (ModClientConfigs.STOP_MUSIC_ON_PLAY.get() && (distanceFromPlayer < NoteSound.STOP_SOUND_DISTANCE))
-            minecraft.getMusicManager().stopPlaying();
+        ClientUtil.stopMusicIfClose(distanceFromPlayer);
 
-
-        
         MinecraftForge.EVENT_BUS.post(initiator == null
             ? new InstrumentPlayedEvent(level, this, meta)
             : new InstrumentPlayedEvent.ByPlayer(initiator, this, meta)
         );
-        
 
+
+        // Do not play for oneself.
         if (player.equals(initiator))
             return;
 
-        
         final float mcPitch = getPitchByNoteOffset(clampPitch(meta.pitch()));
             
         if (distanceFromPlayer > LOCAL_RANGE)

@@ -1,7 +1,7 @@
 package com.cstav.genshinstrument.networking.packet.instrument.s2c;
 
 import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
-import com.cstav.genshinstrument.sound.NoteSound;
+import com.cstav.genshinstrument.sound.held.HeldNoteSound;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent.Context;
 
@@ -10,18 +10,18 @@ import java.util.UUID;
 
 /**
  * A S2C packet notifying the client to play
- * a specific {@link NoteSound}.
+ * a specific {@link HeldNoteSound}.
  */
-public class S2CNoteSoundPacket extends S2CNotePacket<NoteSound> {
+public class S2CHeldNoteSoundPacket extends S2CNotePacket<HeldNoteSound> {
     /**
-     * Constructs a new {@link S2CNoteSoundPacket}.
+     * Constructs a new {@link S2CHeldNoteSoundPacket}.
      * @param initiatorUUID The UUID of the player initiating the sound.
      *                      May be empty for a non-player trigger.
      */
-    public S2CNoteSoundPacket(Optional<UUID> initiatorUUID, NoteSound sound, NoteSoundMetadata meta) {
+    public S2CHeldNoteSoundPacket(Optional<UUID> initiatorUUID, HeldNoteSound sound, NoteSoundMetadata meta) {
         super(initiatorUUID, sound, meta);
     }
-    public S2CNoteSoundPacket(FriendlyByteBuf buf) {
+    public S2CHeldNoteSoundPacket(FriendlyByteBuf buf) {
         super(buf);
     }
 
@@ -30,8 +30,8 @@ public class S2CNoteSoundPacket extends S2CNotePacket<NoteSound> {
         sound.writeToNetwork(buf);
     }
     @Override
-    protected NoteSound readSound(FriendlyByteBuf buf) {
-        return NoteSound.readFromNetwork(buf);
+    protected HeldNoteSound readSound(FriendlyByteBuf buf) {
+        return HeldNoteSound.readFromNetwork(buf);
     }
 
     @Override

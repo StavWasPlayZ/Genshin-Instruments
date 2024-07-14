@@ -31,9 +31,9 @@ public interface IHoldableNoteButton {
         final HeldNoteSoundKey soundKey = heldSound.getKey(Minecraft.getInstance().player);
 
         if (targetPitch) {
-            HeldNoteSounds.release(soundKey, notePitch);
+            HeldNoteSounds.remove(soundKey, notePitch);
         } else {
-            HeldNoteSounds.release(soundKey);
+            HeldNoteSounds.remove(soundKey);
         }
 
         if (playAnimation) {
@@ -68,11 +68,10 @@ public interface IHoldableNoteButton {
 
 
     default void playLocalHeldSound(final NoteSound sound, final int pitch) {
-        // The requested note sound SHOULD be in here,
-        // provided the note button kept its original sounds as
-        // the attack phase.
-        final HeldNoteSound heldNoteSound = toHeldSound(sound);
-        heldNoteSound.startPlaying(pitch, asNoteBtn().instrumentScreen.volume(), Minecraft.getInstance().player);
+        toHeldSound(sound).startPlaying(
+            pitch, asNoteBtn().instrumentScreen.volume(),
+            Minecraft.getInstance().player
+        );
     }
 
 
@@ -81,6 +80,8 @@ public interface IHoldableNoteButton {
      * of the provided held sound array.
      */
     default HeldNoteSound toHeldSound(NoteSound noteSound) {
+        // Requested notes sound SHOULD be in heldNoteSounds array
+        // as a form of attack phase sounds.
         return Arrays.stream(heldInstrumentScreen().getHeldNoteSounds())
             .filter((heldSound) -> heldSound.attack().equals(noteSound))
             .findFirst().orElseThrow();

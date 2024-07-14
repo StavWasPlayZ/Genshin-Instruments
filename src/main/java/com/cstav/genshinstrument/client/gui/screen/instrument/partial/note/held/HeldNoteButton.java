@@ -4,6 +4,8 @@ import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.NoteLabelSupplier;
+import com.cstav.genshinstrument.networking.GIPacketHandler;
+import com.cstav.genshinstrument.networking.packet.instrument.c2s.C2SHeldNoteSoundPacket;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound;
 import net.minecraftforge.api.distmarker.Dist;
@@ -58,6 +60,10 @@ public abstract class HeldNoteButton extends NoteButton implements IHoldableNote
     protected void playLocalSound(final NoteSound sound, final int pitch) {
         isHeld = true;
         playLocalHeldSound(sound, pitch);
+    }
+    @Override
+    protected void sendNotePlayPacket(NoteSound sound, int pitch) {
+        GIPacketHandler.sendToServer(new C2SHeldNoteSoundPacket(this, toHeldSound(sound), pitch));
     }
 
     @Override

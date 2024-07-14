@@ -4,6 +4,8 @@ import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.GridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.HeldNoteButtonRenderer;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.IHoldableNoteButton;
+import com.cstav.genshinstrument.networking.GIPacketHandler;
+import com.cstav.genshinstrument.networking.packet.instrument.c2s.C2SHeldNoteSoundPacket;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound;
 
@@ -63,6 +65,10 @@ public class HeldGridNoteButton extends NoteGridButton implements IHoldableNoteB
     protected void playLocalSound(final NoteSound sound, final int pitch) {
         isHeld = true;
         playLocalHeldSound(sound, pitch);
+    }
+    @Override
+    protected void sendNotePlayPacket(NoteSound sound, int pitch) {
+        GIPacketHandler.sendToServer(new C2SHeldNoteSoundPacket(this, toHeldSound(sound), pitch));
     }
 
     @Override
