@@ -4,8 +4,7 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.IHeldInstr
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound;
-import com.cstav.genshinstrument.sound.held.cached.HeldNoteSoundKey;
-import com.cstav.genshinstrument.sound.held.cached.HeldNoteSounds;
+import com.cstav.genshinstrument.sound.held.HeldNoteSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -28,13 +27,12 @@ public interface IHoldableNoteButton {
      * @param playAnimation Should the release animation be played?
      */
     default void releaseHeld(int notePitch, boolean targetPitch, HeldNoteSound heldSound, boolean playAnimation) {
-        final HeldNoteSoundKey soundKey = heldSound.getKey();
         final String initiatorId = HeldNoteSounds.getInitiatorId(Minecraft.getInstance().player);
 
         if (targetPitch) {
-            HeldNoteSounds.remove(initiatorId, soundKey, notePitch);
+            HeldNoteSounds.remove(initiatorId, heldSound, notePitch);
         } else {
-            HeldNoteSounds.remove(initiatorId, soundKey);
+            HeldNoteSounds.remove(initiatorId, heldSound);
         }
 
         if (playAnimation) {
@@ -54,7 +52,7 @@ public interface IHoldableNoteButton {
             getHeldNoteSound(),
             // If this is the last note playing; release it.
             // If we target everyone then ofc it will be empty.
-            !targetPitch || !HeldNoteSounds.hasInstances(getHeldNoteSound().getKey())
+            !targetPitch || !HeldNoteSounds.hasInstances(getHeldNoteSound())
         );
     }
     /**

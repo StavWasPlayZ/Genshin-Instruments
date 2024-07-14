@@ -3,7 +3,6 @@ package com.cstav.genshinstrument.sound.held;
 import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound.Phase;
-import com.cstav.genshinstrument.sound.held.cached.HeldNoteSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
@@ -112,10 +111,10 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
      * or the block position string.
      */
     public void addSoundInstance() {
-        HeldNoteSounds.put(initiatorId, heldSoundContainer.getKey(), notePitch, this);
+        HeldNoteSounds.put(initiatorId, heldSoundContainer, notePitch, this);
     }
     protected void removeSoundInstance() {
-        HeldNoteSounds.remove(initiatorId, heldSoundContainer.getKey(), notePitch, this);
+        HeldNoteSounds.remove(initiatorId, heldSoundContainer, notePitch, this);
     }
 
     /**

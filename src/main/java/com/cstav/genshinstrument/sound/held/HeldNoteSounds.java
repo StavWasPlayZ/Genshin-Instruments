@@ -1,6 +1,5 @@
-package com.cstav.genshinstrument.sound.held.cached;
+package com.cstav.genshinstrument.sound.held;
 
-import com.cstav.genshinstrument.sound.held.HeldNoteSoundInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -24,7 +23,7 @@ public abstract class HeldNoteSounds {
         // Initiator ID
         Map<String,
             // Sound key
-            Map<HeldNoteSoundKey,
+            Map<HeldNoteSound,
                 // Note pitch
                 Map<Integer,
                     // List of held sound instances
@@ -51,7 +50,7 @@ public abstract class HeldNoteSounds {
      * @param notePitch The note pitch of the sound instance
      * @param soundInstance The instance to insert
      */
-    public static void put(String initiatorId, HeldNoteSoundKey key, int notePitch, HeldNoteSoundInstance soundInstance) {
+    public static void put(String initiatorId, HeldNoteSound key, int notePitch, HeldNoteSoundInstance soundInstance) {
         SOUND_INSTANCES
             .computeIfAbsent(initiatorId, (_k) -> new HashMap<>())
             .computeIfAbsent(key, (_k) -> new HashMap<>())
@@ -64,7 +63,7 @@ public abstract class HeldNoteSounds {
      * @return Whether the provided key matches any entries
      * within the sounds map.
      */
-    public static boolean hasInstances(final HeldNoteSoundKey key) {
+    public static boolean hasInstances(final HeldNoteSound key) {
         // Should always be empty when map is empty
         return SOUND_INSTANCES.containsKey(key);
     }
@@ -88,11 +87,11 @@ public abstract class HeldNoteSounds {
     /**
      * Removes all note instances matching the provided {@code key}.
      */
-    public static void remove(String initiatorId, HeldNoteSoundKey key) {
+    public static void remove(String initiatorId, HeldNoteSound key) {
         if (!SOUND_INSTANCES.containsKey(initiatorId))
             return;
 
-        final Map<HeldNoteSoundKey, Map<Integer, List<HeldNoteSoundInstance>>> k2p2i = SOUND_INSTANCES.get(initiatorId);
+        final Map<HeldNoteSound, Map<Integer, List<HeldNoteSoundInstance>>> k2p2i = SOUND_INSTANCES.get(initiatorId);
         if (!k2p2i.containsKey(key))
             return;
 
@@ -103,11 +102,11 @@ public abstract class HeldNoteSounds {
     /**
      * Removes all note instances matching the provided {@code key} and {@code pitch}.
      */
-    public static void remove(String initiatorId, HeldNoteSoundKey key, int notePitch) {
+    public static void remove(String initiatorId, HeldNoteSound key, int notePitch) {
         if (!SOUND_INSTANCES.containsKey(initiatorId))
             return;
 
-        final Map<HeldNoteSoundKey, Map<Integer, List<HeldNoteSoundInstance>>> k2p2i = SOUND_INSTANCES.get(initiatorId);
+        final Map<HeldNoteSound, Map<Integer, List<HeldNoteSoundInstance>>> k2p2i = SOUND_INSTANCES.get(initiatorId);
         if (!k2p2i.containsKey(key))
             return;
 
@@ -126,11 +125,11 @@ public abstract class HeldNoteSounds {
     /**
      * Removes the specified note sound.
      */
-    public static void remove(String initiatorId, HeldNoteSoundKey key, int notePitch, HeldNoteSoundInstance soundInstance) {
+    public static void remove(String initiatorId, HeldNoteSound key, int notePitch, HeldNoteSoundInstance soundInstance) {
         if (!SOUND_INSTANCES.containsKey(initiatorId))
             return;
 
-        final Map<HeldNoteSoundKey, Map<Integer, List<HeldNoteSoundInstance>>> k2p2i = SOUND_INSTANCES.get(initiatorId);
+        final Map<HeldNoteSound, Map<Integer, List<HeldNoteSoundInstance>>> k2p2i = SOUND_INSTANCES.get(initiatorId);
         if (!k2p2i.containsKey(key))
             return;
 
