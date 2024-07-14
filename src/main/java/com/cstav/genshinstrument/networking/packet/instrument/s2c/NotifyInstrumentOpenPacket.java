@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.networking.packet.instrument.s2c;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.networking.IModPacket;
+import com.cstav.genshinstrument.sound.held.HeldNoteSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -88,8 +89,12 @@ public class NotifyInstrumentOpenPacket implements IModPacket {
             else
                 InstrumentOpenProvider.setOpen(player, hand.get());
 
-        } else
+        } else {
             InstrumentOpenProvider.setClosed(player);
+            // Also remove their potential entry over at HeldNoteSounds
+            //TODO Extract as an "instrument closed" event and apply elsewhere
+            HeldNoteSounds.remove(HeldNoteSounds.getInitiatorId(player));
+        }
     }
     
 }

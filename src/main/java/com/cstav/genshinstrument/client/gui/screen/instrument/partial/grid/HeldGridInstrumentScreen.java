@@ -38,9 +38,4 @@ public abstract class HeldGridInstrumentScreen extends GridInstrumentScreen impl
         return new HeldGridNoteButton(row, column, this, getInitHeldNoteSounds());
     }
 
-    @Override
-    public void onClose() {
-        notesIterable().forEach((btn) -> ((IHoldableNoteButton)btn).releaseHeld(false));
-        super.onClose();
-    }
 }
