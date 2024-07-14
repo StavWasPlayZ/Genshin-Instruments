@@ -18,13 +18,13 @@ import java.util.Optional;
  * A C2S packet notifying the server that a
  * specific {@link NoteSound} should be played in the level
  */
-public class C2SHeldNoteSoundPacket extends C2SNotePacket<HeldNoteSound> {
+public class C2SHeldNoteSoundPacketAttack extends C2SNotePacket<HeldNoteSound> {
 
-    public C2SHeldNoteSoundPacket(HeldNoteSound sound, NoteSoundMetadata meta) {
+    public C2SHeldNoteSoundPacketAttack(HeldNoteSound sound, NoteSoundMetadata meta) {
         super(sound, meta);
     }
     @OnlyIn(Dist.CLIENT)
-    public C2SHeldNoteSoundPacket(NoteButton noteButton, HeldNoteSound sound, int pitch) {
+    public C2SHeldNoteSoundPacketAttack(NoteButton noteButton, HeldNoteSound sound, int pitch) {
         this(sound, new NoteSoundMetadata(
             Minecraft.getInstance().player.blockPosition(),
             pitch,
@@ -34,7 +34,7 @@ public class C2SHeldNoteSoundPacket extends C2SNotePacket<HeldNoteSound> {
         ));
     }
 
-    public C2SHeldNoteSoundPacket(FriendlyByteBuf buf) {
+    public C2SHeldNoteSoundPacketAttack(FriendlyByteBuf buf) {
         super(buf);
     }
 
