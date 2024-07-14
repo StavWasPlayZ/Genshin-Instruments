@@ -144,7 +144,7 @@ public class InstrumentPacketUtil {
         );
     }
 
-    //#endrgion
+    //#endregion
     /*-----------------*/
 
 
@@ -153,10 +153,10 @@ public class InstrumentPacketUtil {
         InstrumentOpenProvider.setClosed(player);
 
         // And clients
-        player.level().players().forEach((nearbyPlayer) ->
+        player.level().players().forEach((oPlayer) ->
             GIPacketHandler.sendToClient(
                 new NotifyInstrumentOpenPacket(player.getUUID()),
-                (ServerPlayer)nearbyPlayer
+                (ServerPlayer)oPlayer
             )
         );
     }

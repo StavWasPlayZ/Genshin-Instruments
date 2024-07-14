@@ -10,6 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent.LevelTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
@@ -30,7 +31,11 @@ public abstract class ServerEvents {
     }
 
     @SubscribeEvent
-    public static void onLevelLeave(final LevelEvent.Unload event) {
+    public static void onPlayerLeave(final PlayerEvent.PlayerLoggedOutEvent event) {
+        InstrumentPacketUtil.setInstrumentClosed(event.getEntity());
+    }
+    @SubscribeEvent
+    public static void onLevelUnload(final LevelEvent.Unload event) {
         HeldNoteSounds.releaseAll();
     }
 
