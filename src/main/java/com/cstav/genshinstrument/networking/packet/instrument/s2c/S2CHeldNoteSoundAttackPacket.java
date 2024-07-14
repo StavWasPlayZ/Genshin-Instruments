@@ -12,16 +12,16 @@ import java.util.UUID;
  * A S2C packet notifying the client to play
  * a specific {@link HeldNoteSound}.
  */
-public class S2CHeldNoteSoundPacket extends S2CNotePacket<HeldNoteSound> {
+public class S2CHeldNoteSoundAttackPacket extends S2CNotePacket<HeldNoteSound> {
     /**
-     * Constructs a new {@link S2CHeldNoteSoundPacket}.
+     * Constructs a new {@link S2CHeldNoteSoundAttackPacket}.
      * @param initiatorUUID The UUID of the player initiating the sound.
      *                      May be empty for a non-player trigger.
      */
-    public S2CHeldNoteSoundPacket(Optional<UUID> initiatorUUID, HeldNoteSound sound, NoteSoundMetadata meta) {
+    public S2CHeldNoteSoundAttackPacket(Optional<UUID> initiatorUUID, HeldNoteSound sound, NoteSoundMetadata meta) {
         super(initiatorUUID, sound, meta);
     }
-    public S2CHeldNoteSoundPacket(FriendlyByteBuf buf) {
+    public S2CHeldNoteSoundAttackPacket(FriendlyByteBuf buf) {
         super(buf);
     }
 

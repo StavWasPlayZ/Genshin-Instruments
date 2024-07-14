@@ -4,12 +4,12 @@ import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.networking.buttonidentifier.DrumNoteIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
-import com.cstav.genshinstrument.networking.packet.instrument.c2s.C2SHeldNoteSoundPacketAttack;
+import com.cstav.genshinstrument.networking.packet.instrument.c2s.C2SHeldNoteSoundAttackPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.c2s.C2SNoteSoundPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.c2s.CloseInstrumentPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.s2c.NotifyInstrumentOpenPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.s2c.OpenInstrumentPacket;
-import com.cstav.genshinstrument.networking.packet.instrument.s2c.S2CHeldNoteSoundPacket;
+import com.cstav.genshinstrument.networking.packet.instrument.s2c.S2CHeldNoteSoundAttackPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.s2c.S2CNoteSoundPacket;
 import com.cstav.genshinstrument.util.ServerUtil;
 import net.minecraft.resources.ResourceLocation;
@@ -28,7 +28,7 @@ public class GIPacketHandler {
     public static final List<Class<IModPacket>> ACCEPTABLE_PACKETS = List.of(new Class[] {
         C2SNoteSoundPacket.class, S2CNoteSoundPacket.class, OpenInstrumentPacket.class, CloseInstrumentPacket.class,
         NotifyInstrumentOpenPacket.class,
-        C2SHeldNoteSoundPacketAttack.class, S2CHeldNoteSoundPacket.class
+        C2SHeldNoteSoundAttackPacket.class, S2CHeldNoteSoundAttackPacket.class
     });
 
     private static int id = 0;

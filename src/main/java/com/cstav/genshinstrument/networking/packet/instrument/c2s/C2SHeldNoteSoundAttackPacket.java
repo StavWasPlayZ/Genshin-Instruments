@@ -2,7 +2,7 @@ package com.cstav.genshinstrument.networking.packet.instrument.c2s;
 
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
-import com.cstav.genshinstrument.networking.packet.instrument.s2c.S2CHeldNoteSoundPacket;
+import com.cstav.genshinstrument.networking.packet.instrument.s2c.S2CHeldNoteSoundAttackPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.util.HeldNoteSoundPacketUtil;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound;
@@ -18,13 +18,13 @@ import java.util.Optional;
  * A C2S packet notifying the server that a
  * specific {@link NoteSound} should be played in the level
  */
-public class C2SHeldNoteSoundPacketAttack extends C2SNotePacket<HeldNoteSound> {
+public class C2SHeldNoteSoundAttackPacket extends C2SNotePacket<HeldNoteSound> {
 
-    public C2SHeldNoteSoundPacketAttack(HeldNoteSound sound, NoteSoundMetadata meta) {
+    public C2SHeldNoteSoundAttackPacket(HeldNoteSound sound, NoteSoundMetadata meta) {
         super(sound, meta);
     }
     @OnlyIn(Dist.CLIENT)
-    public C2SHeldNoteSoundPacketAttack(NoteButton noteButton, HeldNoteSound sound, int pitch) {
+    public C2SHeldNoteSoundAttackPacket(NoteButton noteButton, HeldNoteSound sound, int pitch) {
         this(sound, new NoteSoundMetadata(
             Minecraft.getInstance().player.blockPosition(),
             pitch,
@@ -34,7 +34,7 @@ public class C2SHeldNoteSoundPacketAttack extends C2SNotePacket<HeldNoteSound> {
         ));
     }
 
-    public C2SHeldNoteSoundPacketAttack(FriendlyByteBuf buf) {
+    public C2SHeldNoteSoundAttackPacket(FriendlyByteBuf buf) {
         super(buf);
     }
 
@@ -48,6 +48,6 @@ public class C2SHeldNoteSoundPacketAttack extends C2SNotePacket<HeldNoteSound> {
     }
 
     protected void sendPlayNotePackets(final ServerPlayer player) {
-        HeldNoteSoundPacketUtil.sendPlayerPlayNotePackets(player, sound, meta, S2CHeldNoteSoundPacket::new);
+        HeldNoteSoundPacketUtil.sendPlayerPlayNotePackets(player, sound, meta, S2CHeldNoteSoundAttackPacket::new);
     }
 }

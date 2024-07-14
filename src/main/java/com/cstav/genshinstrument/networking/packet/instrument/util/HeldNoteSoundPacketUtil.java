@@ -1,7 +1,7 @@
 package com.cstav.genshinstrument.networking.packet.instrument.util;
 
 import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
-import com.cstav.genshinstrument.networking.packet.instrument.s2c.S2CHeldNoteSoundPacket;
+import com.cstav.genshinstrument.networking.packet.instrument.s2c.S2CHeldNoteSoundAttackPacket;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -16,7 +16,7 @@ import java.util.Optional;
 public class HeldNoteSoundPacketUtil {
 
     /**
-     * Sends {@link S2CHeldNoteSoundPacket}s in the specified {@link InstrumentPacketUtil#PLAY_DISTANCE}.
+     * Sends {@link S2CHeldNoteSoundAttackPacket}s in the specified {@link InstrumentPacketUtil#PLAY_DISTANCE}.
      * @param initiator The player producing the sounds
      * @param sound The sound to initiate
      * @param instrumentId The ID of the instrument initiating the sound
@@ -32,15 +32,15 @@ public class HeldNoteSoundPacketUtil {
                 instrumentId,
                 Optional.empty()
             ),
-            S2CHeldNoteSoundPacket::new
+            S2CHeldNoteSoundAttackPacket::new
         );
     }
     /**
-     * Sends {@link S2CHeldNoteSoundPacket}s in the specified {@link InstrumentPacketUtil#PLAY_DISTANCE}.
+     * Sends {@link S2CHeldNoteSoundAttackPacket}s in the specified {@link InstrumentPacketUtil#PLAY_DISTANCE}.
      * @param initiator The player producing the sounds
      * @param sound The sound to initiate
      * @param soundMeta Additional metadata of the used sound
-     * @param notePacketDelegate The initiator of the {@link S2CHeldNoteSoundPacket} to be sent
+     * @param notePacketDelegate The initiator of the {@link S2CHeldNoteSoundAttackPacket} to be sent
      */
     public static void sendPlayerPlayNotePackets(ServerPlayer initiator, HeldNoteSound sound, NoteSoundMetadata soundMeta,
                                                  S2CNotePacketDelegate<HeldNoteSound> notePacketDelegate) {
@@ -52,7 +52,7 @@ public class HeldNoteSoundPacketUtil {
     }
 
     /**
-     * Sends {@link S2CHeldNoteSoundPacket}s in the specified {@link InstrumentPacketUtil#PLAY_DISTANCE}.
+     * Sends {@link S2CHeldNoteSoundAttackPacket}s in the specified {@link InstrumentPacketUtil#PLAY_DISTANCE}.
      * This method treats the sound as it was NOT produced by a player.
      * @param level The world that the sound should initiate in
      * @param pos The position of the sound to initiate
@@ -64,16 +64,16 @@ public class HeldNoteSoundPacketUtil {
                                            int pitch, int volume) {
         InstrumentPacketUtil.sendPlayNotePackets(
             level, pos, sound, instrumentId, pitch, volume,
-            S2CHeldNoteSoundPacket::new
+            S2CHeldNoteSoundAttackPacket::new
         );
     }
     /**
-     * Sends {@link S2CHeldNoteSoundPacket}s in the specified {@link InstrumentPacketUtil#PLAY_DISTANCE}.
+     * Sends {@link S2CHeldNoteSoundAttackPacket}s in the specified {@link InstrumentPacketUtil#PLAY_DISTANCE}.
      * This method treats the sound as it was NOT produced by a player.
      * @param level The world that the sound should initiate in
      * @param sound The sound to initiate
      * @param soundMeta Additional metadata of the used sound
-     * @param notePacketDelegate The initiator of the {@link S2CHeldNoteSoundPacket} to be sent
+     * @param notePacketDelegate The initiator of the {@link S2CHeldNoteSoundAttackPacket} to be sent
      */
     public static void sendPlayNotePackets(Level level, HeldNoteSound sound, NoteSoundMetadata soundMeta,
                                            S2CNotePacketDelegate<HeldNoteSound> notePacketDelegate) {
