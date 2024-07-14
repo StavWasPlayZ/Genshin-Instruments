@@ -30,9 +30,9 @@ public interface IHoldableNoteButton {
         final String initiatorId = HeldNoteSounds.getInitiatorId(Minecraft.getInstance().player);
 
         if (targetPitch) {
-            HeldNoteSounds.remove(initiatorId, heldSound, notePitch);
+            HeldNoteSounds.release(initiatorId, heldSound, notePitch);
         } else {
-            HeldNoteSounds.remove(initiatorId, heldSound);
+            HeldNoteSounds.release(initiatorId, heldSound);
         }
 
         if (playAnimation) {

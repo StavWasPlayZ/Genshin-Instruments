@@ -68,10 +68,28 @@ public abstract class HeldNoteSounds {
         return SOUND_INSTANCES.containsKey(key);
     }
 
+
+    // Functions for marking held notes as released
+
     /**
-     * Removes all note instances produced by the provided initiator.
+     * Releases all sound instances
      */
-    public static void remove(String initiatorId) {
+    public static void releaseAll() {
+        SOUND_INSTANCES.values().forEach((k2p2i) ->
+            k2p2i.values().forEach((p2i) ->
+                p2i.values().forEach((instances) ->
+                    instances.forEach(HeldNoteSoundInstance::setReleased)
+                )
+            )
+        );
+
+        SOUND_INSTANCES.clear();
+    }
+
+    /**
+     * Releases all note instances produced by the provided initiator.
+     */
+    public static void release(String initiatorId) {
         if (!SOUND_INSTANCES.containsKey(initiatorId))
             return;
 
@@ -85,9 +103,9 @@ public abstract class HeldNoteSounds {
     }
 
     /**
-     * Removes all note instances matching the provided {@code key}.
+     * Releases all note instances matching the provided {@code key}.
      */
-    public static void remove(String initiatorId, HeldNoteSound key) {
+    public static void release(String initiatorId, HeldNoteSound key) {
         if (!SOUND_INSTANCES.containsKey(initiatorId))
             return;
 
@@ -95,14 +113,16 @@ public abstract class HeldNoteSounds {
         if (!k2p2i.containsKey(key))
             return;
 
-        k2p2i.get(key).values().forEach((heldSounds) -> heldSounds.forEach(HeldNoteSoundInstance::setReleased));
+        k2p2i.get(key).values().forEach((heldSounds) ->
+            heldSounds.forEach(HeldNoteSoundInstance::setReleased)
+        );
         k2p2i.remove(key);
     }
 
     /**
-     * Removes all note instances matching the provided {@code key} and {@code pitch}.
+     * Releases all note instances matching the provided {@code key} and {@code pitch}.
      */
-    public static void remove(String initiatorId, HeldNoteSound key, int notePitch) {
+    public static void release(String initiatorId, HeldNoteSound key, int notePitch) {
         if (!SOUND_INSTANCES.containsKey(initiatorId))
             return;
 
@@ -125,7 +145,7 @@ public abstract class HeldNoteSounds {
     /**
      * Removes the specified note sound.
      */
-    public static void remove(String initiatorId, HeldNoteSound key, int notePitch, HeldNoteSoundInstance soundInstance) {
+    public static void release(String initiatorId, HeldNoteSound key, int notePitch, HeldNoteSoundInstance soundInstance) {
         if (!SOUND_INSTANCES.containsKey(initiatorId))
             return;
 

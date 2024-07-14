@@ -114,7 +114,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
         HeldNoteSounds.put(initiatorId, heldSoundContainer, notePitch, this);
     }
     protected void removeSoundInstance() {
-        HeldNoteSounds.remove(initiatorId, heldSoundContainer, notePitch, this);
+        HeldNoteSounds.release(initiatorId, heldSoundContainer, notePitch, this);
     }
 
     /**

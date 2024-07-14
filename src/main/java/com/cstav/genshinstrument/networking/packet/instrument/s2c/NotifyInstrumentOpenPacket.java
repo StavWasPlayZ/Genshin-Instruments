@@ -93,7 +93,7 @@ public class NotifyInstrumentOpenPacket implements IModPacket {
             InstrumentOpenProvider.setClosed(player);
             // Also remove their potential entry over at HeldNoteSounds
             //TODO Extract as an "instrument closed" event and apply elsewhere
-            HeldNoteSounds.remove(HeldNoteSounds.getInitiatorId(player));
+            HeldNoteSounds.release(HeldNoteSounds.getInitiatorId(player));
         }
     }
     
