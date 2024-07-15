@@ -57,13 +57,14 @@ public abstract class HeldNoteSounds {
     }
 
     /**
-     * @param key The key to check
-     * @return Whether the provided key matches any entries
+     * @param sound The sound to check
+     * @return Whether the provided sound matches any entries
      * within the sounds map.
      */
-    public static boolean hasInstances(final HeldNoteSound key) {
+    public static boolean hasInstances(final HeldNoteSound sound) {
         // Should always be empty when map is empty
-        return SOUND_INSTANCES.containsKey(key);
+        return SOUND_INSTANCES.values().stream()
+            .anyMatch((k2p2i) -> k2p2i.containsKey(sound));
     }
 
 
