@@ -6,13 +6,10 @@ import com.cstav.genshinstrument.networking.packet.instrument.s2c.S2CHeldNoteSou
 import com.cstav.genshinstrument.networking.packet.instrument.util.HeldNoteSoundPacketUtil;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.util.Optional;
 
 /**
  * A C2S packet notifying the server that a
@@ -25,13 +22,7 @@ public class C2SHeldNoteSoundAttackPacket extends C2SNotePacket<HeldNoteSound> {
     }
     @OnlyIn(Dist.CLIENT)
     public C2SHeldNoteSoundAttackPacket(NoteButton noteButton, HeldNoteSound sound, int pitch) {
-        this(sound, new NoteSoundMetadata(
-            Minecraft.getInstance().player.blockPosition(),
-            pitch,
-            noteButton.instrumentScreen.volume,
-            noteButton.instrumentScreen.getInstrumentId(),
-            Optional.ofNullable(noteButton.getIdentifier())
-        ));
+        super(noteButton, sound, pitch);
     }
 
     public C2SHeldNoteSoundAttackPacket(FriendlyByteBuf buf) {
