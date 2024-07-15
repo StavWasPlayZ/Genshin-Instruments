@@ -104,34 +104,34 @@ public abstract class HeldNoteSounds {
     }
 
     /**
-     * Releases all note instances matching the provided {@code key}.
+     * Releases all note instances matching the provided {@code sound}.
      */
-    public static void release(String initiatorId, HeldNoteSound key) {
+    public static void release(String initiatorId, HeldNoteSound sound) {
         if (!SOUND_INSTANCES.containsKey(initiatorId))
             return;
 
         final Map<HeldNoteSound, Map<Integer, List<HeldNoteSoundInstance>>> k2p2i = SOUND_INSTANCES.get(initiatorId);
-        if (!k2p2i.containsKey(key))
+        if (!k2p2i.containsKey(sound))
             return;
 
-        k2p2i.get(key).values().forEach((heldSounds) ->
+        k2p2i.get(sound).values().forEach((heldSounds) ->
             heldSounds.forEach(HeldNoteSoundInstance::setReleased)
         );
-        k2p2i.remove(key);
+        k2p2i.remove(sound);
     }
 
     /**
-     * Releases all note instances matching the provided {@code key} and {@code pitch}.
+     * Releases all note instances matching the provided {@code sound} and {@code pitch}.
      */
-    public static void release(String initiatorId, HeldNoteSound key, int notePitch) {
+    public static void release(String initiatorId, HeldNoteSound sound, int notePitch) {
         if (!SOUND_INSTANCES.containsKey(initiatorId))
             return;
 
         final Map<HeldNoteSound, Map<Integer, List<HeldNoteSoundInstance>>> k2p2i = SOUND_INSTANCES.get(initiatorId);
-        if (!k2p2i.containsKey(key))
+        if (!k2p2i.containsKey(sound))
             return;
 
-        final Map<Integer, List<HeldNoteSoundInstance>> p2i = k2p2i.get(key);
+        final Map<Integer, List<HeldNoteSoundInstance>> p2i = k2p2i.get(sound);
         if (!p2i.containsKey(notePitch))
             return;
 
@@ -140,21 +140,21 @@ public abstract class HeldNoteSounds {
 
         // No point in having a map to nothing.
         if (p2i.isEmpty())
-            k2p2i.remove(key);
+            k2p2i.remove(sound);
     }
 
     /**
      * Removes the specified note sound.
      */
-    public static void release(String initiatorId, HeldNoteSound key, int notePitch, HeldNoteSoundInstance soundInstance) {
+    public static void release(String initiatorId, HeldNoteSound sound, int notePitch, HeldNoteSoundInstance soundInstance) {
         if (!SOUND_INSTANCES.containsKey(initiatorId))
             return;
 
         final Map<HeldNoteSound, Map<Integer, List<HeldNoteSoundInstance>>> k2p2i = SOUND_INSTANCES.get(initiatorId);
-        if (!k2p2i.containsKey(key))
+        if (!k2p2i.containsKey(sound))
             return;
 
-        final Map<Integer, List<HeldNoteSoundInstance>> p2i = k2p2i.get(key);
+        final Map<Integer, List<HeldNoteSoundInstance>> p2i = k2p2i.get(sound);
         if (!p2i.containsKey(notePitch))
             return;
 
