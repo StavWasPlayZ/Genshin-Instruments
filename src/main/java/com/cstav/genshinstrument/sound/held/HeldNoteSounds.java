@@ -5,10 +5,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * A class storing all note sounds in the present level.
@@ -70,96 +67,128 @@ public abstract class HeldNoteSounds {
     }
 
 
+    /**
+     * Releases the given {@link HeldNoteSoundInstance}s and adds them all to {@code toAdd}
+     * @param instances The instances to release and add
+     * @param toAdd The list to add the aforementioned instances to
+     */
+    private static void releaseNAdd(List<HeldNoteSoundInstance> instances, List<HeldNoteSoundInstance> toAdd) {
+        instances.forEach(HeldNoteSoundInstance::setReleased);
+        toAdd.addAll(instances);
+    }
+
+
     // Functions for marking held notes as released
 
     /**
      * Releases all sound instances
+     * @return The released sounds
      */
-    public static void releaseAll() {
+    public static List<HeldNoteSoundInstance> releaseAll() {
+        final List<HeldNoteSoundInstance> released = new ArrayList<>();
+
         SOUND_INSTANCES.values().forEach((k2p2i) ->
             k2p2i.values().forEach((p2i) ->
                 p2i.values().forEach((instances) ->
-                    instances.forEach(HeldNoteSoundInstance::setReleased)
+                    releaseNAdd(instances, released)
                 )
             )
         );
 
         SOUND_INSTANCES.clear();
+        return Collections.unmodifiableList(released);
     }
 
     /**
      * Releases all note instances produced by the provided initiator.
+      @return The released sounds
      */
-    public static void release(String initiatorId) {
+    public static List<HeldNoteSoundInstance> release(String initiatorId) {
         if (!SOUND_INSTANCES.containsKey(initiatorId))
-            return;
+            return List.of();
+
+        final List<HeldNoteSoundInstance> released = new ArrayList<>();
 
         SOUND_INSTANCES.get(initiatorId).values().forEach((p2i) ->
             p2i.values().forEach((instances) ->
-                instances.forEach(HeldNoteSoundInstance::setReleased)
+                releaseNAdd(instances, released)
             )
         );
 
         SOUND_INSTANCES.remove(initiatorId);
+        return Collections.unmodifiableList(released);
     }
 
     /**
      * Releases all note instances matching the provided {@code sound}.
+      @return The released sounds
      */
-    public static void release(String initiatorId, HeldNoteSound sound) {
+    public static List<HeldNoteSoundInstance> release(String initiatorId, HeldNoteSound sound) {
         if (!SOUND_INSTANCES.containsKey(initiatorId))
-            return;
+            return List.of();
 
         final Map<HeldNoteSound, Map<Integer, List<HeldNoteSoundInstance>>> k2p2i = SOUND_INSTANCES.get(initiatorId);
         if (!k2p2i.containsKey(sound))
-            return;
+            return List.of();
 
-        k2p2i.get(sound).values().forEach((heldSounds) ->
-            heldSounds.forEach(HeldNoteSoundInstance::setReleased)
+        final List<HeldNoteSoundInstance> released = new ArrayList<>();
+
+        k2p2i.get(sound).values().forEach((instances) ->
+            releaseNAdd(instances, released)
         );
         k2p2i.remove(sound);
+
+        return Collections.unmodifiableList(released);
     }
 
     /**
      * Releases all note instances matching the provided {@code sound} and {@code pitch}.
+      @return The released sounds
      */
-    public static void release(String initiatorId, HeldNoteSound sound, int notePitch) {
+    public static List<HeldNoteSoundInstance> release(String initiatorId, HeldNoteSound sound, int notePitch) {
         if (!SOUND_INSTANCES.containsKey(initiatorId))
-            return;
+            return List.of();
 
         final Map<HeldNoteSound, Map<Integer, List<HeldNoteSoundInstance>>> k2p2i = SOUND_INSTANCES.get(initiatorId);
         if (!k2p2i.containsKey(sound))
-            return;
+            return List.of();
 
         final Map<Integer, List<HeldNoteSoundInstance>> p2i = k2p2i.get(sound);
         if (!p2i.containsKey(notePitch))
-            return;
+            return List.of();
 
-        p2i.get(notePitch).forEach(HeldNoteSoundInstance::setReleased);
+        final List<HeldNoteSoundInstance> released = new ArrayList<>();
+        releaseNAdd(p2i.get(notePitch), released);
         p2i.remove(notePitch);
 
         // No point in having a map to nothing.
         if (p2i.isEmpty())
             k2p2i.remove(sound);
+
+        return Collections.unmodifiableList(released);
     }
 
     /**
      * Removes the specified note sound.
+      @return The released sounds
      */
-    public static void release(String initiatorId, HeldNoteSound sound, int notePitch, HeldNoteSoundInstance soundInstance) {
+    public static List<HeldNoteSoundInstance> release(String initiatorId, HeldNoteSound sound, int notePitch,
+                                                      HeldNoteSoundInstance soundInstance) {
         if (!SOUND_INSTANCES.containsKey(initiatorId))
-            return;
+            return List.of();
 
         final Map<HeldNoteSound, Map<Integer, List<HeldNoteSoundInstance>>> k2p2i = SOUND_INSTANCES.get(initiatorId);
         if (!k2p2i.containsKey(sound))
-            return;
+            return List.of();
 
         final Map<Integer, List<HeldNoteSoundInstance>> p2i = k2p2i.get(sound);
         if (!p2i.containsKey(notePitch))
-            return;
+            return List.of();
 
         final List<HeldNoteSoundInstance> heldSoundInstances = p2i.get(notePitch);
         heldSoundInstances.remove(soundInstance);
+
+        return List.of(soundInstance);
     }
 
 }

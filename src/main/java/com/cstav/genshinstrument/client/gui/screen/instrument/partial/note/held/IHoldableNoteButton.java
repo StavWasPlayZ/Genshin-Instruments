@@ -34,16 +34,20 @@ public interface IHoldableNoteButton {
 
         if (targetPitch) {
             HeldNoteSounds.release(initiatorId, heldSound, notePitch);
+            sendNoteHeldPacket(heldSound, notePitch, HeldSoundPhase.RELEASE);
         } else {
-            HeldNoteSounds.release(initiatorId, heldSound);
+            HeldNoteSounds.release(initiatorId, heldSound).stream()
+                .map((soundInstance) -> soundInstance.notePitch)
+                .distinct()
+                .forEach((instPitch) ->
+                    sendNoteHeldPacket(heldSound, instPitch, HeldSoundPhase.RELEASE)
+                );
         }
 
         if (playAnimation) {
             setHeld(false);
             ((HeldNoteButtonRenderer) asNoteBtn().getRenderer()).playRelease();
         }
-
-        sendNoteHeldPacket(heldSound, notePitch, HeldSoundPhase.RELEASE);
     }
     /**
      * Releases the active note

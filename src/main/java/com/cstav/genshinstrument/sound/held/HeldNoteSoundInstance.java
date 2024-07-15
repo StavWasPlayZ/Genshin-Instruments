@@ -28,9 +28,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
      * for the initiator's position.
      */
     public final Optional<BlockPos> soundOrigin;
-
-    // This is so we can cache this to the key
-    protected int notePitch;
+    public final int notePitch;
 
     /**
      * @param initiator The initiator of the sound. Empty for a non-player initiator.
