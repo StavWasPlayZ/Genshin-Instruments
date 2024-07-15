@@ -91,6 +91,11 @@ public record HeldNoteSound(
     public void playFromServer(Optional<UUID> initiatorUUID, NoteSoundMetadata meta, HeldSoundPhase phase) {
         //TODO fire held event here
 
+        // Don't play sound for ourselves
+        if (initiatorUUID.isPresent()
+            && Minecraft.getInstance().player.getUUID().equals(initiatorUUID.get())
+        ) return;
+
         switch (phase) {
             case ATTACK -> attackFromServer(initiatorUUID, meta);
             case RELEASE -> releaseFromServer(initiatorUUID, meta);
