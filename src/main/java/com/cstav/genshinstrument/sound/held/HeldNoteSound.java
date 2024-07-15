@@ -4,6 +4,7 @@ import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.registrar.HeldNoteSoundRegistrar;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -47,23 +48,35 @@ public record HeldNoteSound(
      * A held note sound instance for 3rd party trigger
      */
     @OnlyIn(Dist.CLIENT)
-    public void startPlaying(final int notePitch, final float volume, final Player initiator) {
+    public void startPlaying(int notePitch, float volume, Player initiator, BlockPos pos) {
         new HeldNoteSoundInstance(
             this, Phase.ATTACK,
             notePitch, volume,
-            initiator, null
+            initiator, pos
         ).queueAndAddInstance();
+    }
+    /**
+     * A held note sound instance for 3rd party trigger
+     */
+    @OnlyIn(Dist.CLIENT)
+    public void startPlaying(int notePitch, float volume, Player initiator) {
+        startPlaying(notePitch, volume, initiator, null);
+    }
+    /**
+     * A held note sound instance for 3rd party trigger
+     */
+    @OnlyIn(Dist.CLIENT)
+    public void startPlaying(int notePitch, float volume, BlockPos pos) {
+        startPlaying(notePitch, volume, null, pos);
     }
     /**
      * A held note sound instance for local playing
      */
     @OnlyIn(Dist.CLIENT)
-    public void startPlaying(final int notePitch, final float volume) {
-        new HeldNoteSoundInstance(
-            this, Phase.ATTACK,
-            notePitch, volume
-        ).queueAndAddInstance();
+    public void startPlaying(int notePitch, float volume) {
+        startPlaying(notePitch, volume, Minecraft.getInstance().player);
     }
+
 
     /**
      * A method for packets to use for playing this note on the client's end.
@@ -79,7 +92,7 @@ public record HeldNoteSound(
                 Minecraft.getInstance().level.getPlayerByUUID(uuid)
             ),
             // Sound is by some other thing
-            () -> startPlaying(meta.pitch(), meta.volume())
+            () -> startPlaying(meta.pitch(), meta.volume(), meta.pos())
         );
     }
 

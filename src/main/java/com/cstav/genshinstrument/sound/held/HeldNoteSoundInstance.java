@@ -92,8 +92,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
         this(
             heldSoundContainer, phase,
             notePitch, volume,
-            Minecraft.getInstance().player, null,
-            0
+            Minecraft.getInstance().player, null
         );
     }
 

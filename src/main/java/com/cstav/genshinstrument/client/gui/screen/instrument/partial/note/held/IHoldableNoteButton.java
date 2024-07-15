@@ -65,10 +65,7 @@ public interface IHoldableNoteButton {
 
 
     default void playLocalHeldSound(final NoteSound sound, final int pitch) {
-        toHeldSound(sound).startPlaying(
-            pitch, asNoteBtn().instrumentScreen.volume(),
-            Minecraft.getInstance().player
-        );
+        toHeldSound(sound).startPlaying(pitch, asNoteBtn().instrumentScreen.volume());
     }
 
 
