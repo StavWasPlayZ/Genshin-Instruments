@@ -2,8 +2,9 @@ package com.cstav.genshinstrument.networking.packet.instrument.c2s;
 
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
-import com.cstav.genshinstrument.networking.packet.instrument.s2c.S2CHeldNoteSoundAttackPacket;
+import com.cstav.genshinstrument.networking.packet.instrument.s2c.S2CHeldNoteSoundPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.util.HeldNoteSoundPacketUtil;
+import com.cstav.genshinstrument.networking.packet.instrument.util.HeldSoundPhase;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound;
 import net.minecraft.network.FriendlyByteBuf;
@@ -15,18 +16,29 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * A C2S packet notifying the server that a
  * specific {@link NoteSound} should be played in the level
  */
-public class C2SHeldNoteSoundAttackPacket extends C2SNotePacket<HeldNoteSound> {
+public class C2SHeldNoteSoundPacket extends C2SNotePacket<HeldNoteSound> {
 
-    public C2SHeldNoteSoundAttackPacket(HeldNoteSound sound, NoteSoundMetadata meta) {
+    protected final HeldSoundPhase phase;
+
+    public C2SHeldNoteSoundPacket(HeldNoteSound sound, NoteSoundMetadata meta, HeldSoundPhase phase) {
         super(sound, meta);
+        this.phase = phase;
     }
     @OnlyIn(Dist.CLIENT)
-    public C2SHeldNoteSoundAttackPacket(NoteButton noteButton, HeldNoteSound sound, int pitch) {
+    public C2SHeldNoteSoundPacket(NoteButton noteButton, HeldNoteSound sound, int pitch, HeldSoundPhase phase) {
         super(noteButton, sound, pitch);
+        this.phase = phase;
     }
 
-    public C2SHeldNoteSoundAttackPacket(FriendlyByteBuf buf) {
+    public C2SHeldNoteSoundPacket(FriendlyByteBuf buf) {
         super(buf);
+        phase = buf.readEnum(HeldSoundPhase.class);
+    }
+
+    @Override
+    public void write(FriendlyByteBuf buf) {
+        super.write(buf);
+        buf.writeEnum(phase);
     }
 
     @Override
@@ -39,6 +51,6 @@ public class C2SHeldNoteSoundAttackPacket extends C2SNotePacket<HeldNoteSound> {
     }
 
     protected void sendPlayNotePackets(final ServerPlayer player) {
-        HeldNoteSoundPacketUtil.sendPlayerPlayNotePackets(player, sound, meta, S2CHeldNoteSoundAttackPacket::new);
+        HeldNoteSoundPacketUtil.sendPlayerPlayNotePackets(player, sound, meta, S2CHeldNoteSoundPacket::new, phase);
     }
 }

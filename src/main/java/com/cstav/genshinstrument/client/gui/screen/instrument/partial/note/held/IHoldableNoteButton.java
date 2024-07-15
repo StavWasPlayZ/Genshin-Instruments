@@ -2,6 +2,9 @@ package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held
 
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.IHeldInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
+import com.cstav.genshinstrument.networking.GIPacketHandler;
+import com.cstav.genshinstrument.networking.packet.instrument.c2s.C2SHeldNoteSoundPacket;
+import com.cstav.genshinstrument.networking.packet.instrument.util.HeldSoundPhase;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSounds;
@@ -39,6 +42,8 @@ public interface IHoldableNoteButton {
             setHeld(false);
             ((HeldNoteButtonRenderer) asNoteBtn().getRenderer()).playRelease();
         }
+
+        sendNoteHeldPacket(heldSound, notePitch, HeldSoundPhase.RELEASE);
     }
     /**
      * Releases the active note
@@ -66,6 +71,17 @@ public interface IHoldableNoteButton {
 
     default void playLocalHeldSound(final NoteSound sound, final int pitch) {
         toHeldSound(sound).startPlaying(pitch, asNoteBtn().instrumentScreen.volume());
+    }
+
+    default void sendNoteHeldPacket(HeldNoteSound sound, int pitch, HeldSoundPhase phase) {
+        GIPacketHandler.sendToServer(new C2SHeldNoteSoundPacket(
+            asNoteBtn(),
+            sound, pitch,
+            phase
+        ));
+    }
+    default void sendNoteHeldPacket(NoteSound sound, int pitch, HeldSoundPhase phase) {
+        sendNoteHeldPacket(toHeldSound(sound), pitch, phase);
     }
 
 
