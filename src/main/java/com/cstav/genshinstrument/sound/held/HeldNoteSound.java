@@ -106,7 +106,7 @@ public record HeldNoteSound(
         initiatorUUID.ifPresentOrElse(
             // Sound was played by player
             (uuid) -> startPlaying(
-                meta.pitch(), meta.volume(),
+                meta.pitch(), meta.volume() / 100f,
                 Minecraft.getInstance().level.getPlayerByUUID(uuid)
             ),
             // Sound is by some other thing
