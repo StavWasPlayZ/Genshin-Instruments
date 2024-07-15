@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument.sound.held;
 
 import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
+import com.cstav.genshinstrument.networking.packet.instrument.util.HeldSoundPhase;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.registrar.HeldNoteSoundRegistrar;
 import net.minecraft.client.Minecraft;
@@ -78,13 +79,25 @@ public record HeldNoteSound(
     }
 
 
+    //#region From Server
+
     /**
      * A method for packets to use for playing this note on the client's end.
      * Will also stop the client's background music per preference.
      * @param initiatorUUID The UUID of the player who initiated the sound. Empty for when it wasn't a player.
      * @param meta Additional metadata of the Note Sound being played
      */
-    public void playFromServer(Optional<UUID> initiatorUUID, NoteSoundMetadata meta) {
+    @OnlyIn(Dist.CLIENT)
+    public void playFromServer(Optional<UUID> initiatorUUID, NoteSoundMetadata meta, HeldSoundPhase phase) {
+        //TODO fire held event here
+
+        switch (phase) {
+            case ATTACK -> attackFromServer(initiatorUUID, meta);
+            case RELEASE -> releaseFromServer(initiatorUUID, meta);
+        }
+    }
+    @OnlyIn(Dist.CLIENT)
+    private void attackFromServer(Optional<UUID> initiatorUUID, NoteSoundMetadata meta) {
         initiatorUUID.ifPresentOrElse(
             // Sound was played by player
             (uuid) -> startPlaying(
@@ -95,7 +108,18 @@ public record HeldNoteSound(
             () -> startPlaying(meta.pitch(), meta.volume(), meta.pos())
         );
     }
+    @OnlyIn(Dist.CLIENT)
+    private void releaseFromServer(Optional<UUID> initiatorUUID, NoteSoundMetadata meta) {
+        HeldNoteSounds.release(
+            HeldNoteSounds.getInitiatorId(
+                initiatorUUID.map(UUID::toString)
+                    .orElseGet(meta.pos()::toString)
+            ),
+            this, meta.pitch()
+        );
+    }
 
+    //#endregion
 
     public void writeToNetwork(final FriendlyByteBuf buf) {
         buf.writeResourceLocation(baseSoundLocation);

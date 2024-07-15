@@ -3,7 +3,6 @@ package com.cstav.genshinstrument.networking.packet.instrument.s2c;
 import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
 import com.cstav.genshinstrument.networking.packet.instrument.util.HeldSoundPhase;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound;
-import com.cstav.genshinstrument.sound.held.HeldNoteSounds;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent.Context;
 
@@ -51,18 +50,6 @@ public class S2CHeldNoteSoundPacket extends S2CNotePacket<HeldNoteSound> {
 
     @Override
     public void handle(final Context context) {
-        if (phase == HeldSoundPhase.ATTACK) {
-            sound.playFromServer(initiatorUUID, meta);
-        } else if (phase == HeldSoundPhase.RELEASE) {
-            HeldNoteSounds.release(
-                HeldNoteSounds.getInitiatorId(
-                    initiatorUUID.map(UUID::toString)
-                        .orElseGet(meta.pos()::toString)
-                ),
-                sound, meta.pitch()
-            );
-        }
-
-        //TODO fire held event here
+        sound.playFromServer(initiatorUUID, meta, phase);
     }
 }
