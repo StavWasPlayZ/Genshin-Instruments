@@ -11,6 +11,10 @@ import com.cstav.genshinstrument.sound.held.HeldNoteSound;
 public class HeldGridNoteButton extends NoteGridButton implements IHoldableNoteButton {
     private boolean isHeld = false;
     private HeldNoteSound heldNoteSound;
+    /**
+     * A counter keeping track of the number of times
+     * the attack animation has been triggered
+     */
     private int pressedCounter = 0;
 
     public HeldGridNoteButton(int row, int column, GridInstrumentScreen instrumentScreen, HeldNoteSound[] heldNoteSounds) {
@@ -58,19 +62,28 @@ public class HeldGridNoteButton extends NoteGridButton implements IHoldableNoteB
     @Override
     public void releaseHeld(int notePitch, boolean targetPitch, HeldNoteSound heldSound) {
         super.release();
-        pressedCounter = Math.max(0, pressedCounter - 1);
         IHoldableNoteButton.super.releaseHeld(notePitch, targetPitch, heldSound);
     }
 
     @Override
     protected void playLocalSound(final NoteSound sound, final int pitch) {
-        isHeld = true;
-        pressedCounter++;
         playLocalHeldSound(sound, pitch);
     }
     @Override
     protected void sendNotePlayPacket(NoteSound sound, int pitch) {
         sendNoteHeldPacket(sound, pitch, HeldSoundPhase.ATTACK);
+    }
+
+
+    @Override
+    public void playAttackAnimation(boolean isForeign) {
+        pressedCounter++;
+        IHoldableNoteButton.super.playAttackAnimation(isForeign);
+    }
+    @Override
+    public void playReleaseAnimation() {
+        pressedCounter = Math.max(0, pressedCounter - 1);
+        IHoldableNoteButton.super.playReleaseAnimation();
     }
 
 

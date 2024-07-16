@@ -106,8 +106,8 @@ public class ClientEvents {
                 final IHoldableNoteButton heldNote = (IHoldableNoteButton) note;
 
                 switch (e.phase) {
-                    case ATTACK -> heldNote.foreignAttack();
-                    case RELEASE -> heldNote.foreignRelease();
+                    case ATTACK -> heldNote.playAttackAnimation(true);
+                    case RELEASE -> heldNote.playReleaseAnimation();
                 }
             } else {
                 note.playNoteAnimation(true);

@@ -46,8 +46,7 @@ public interface IHoldableNoteButton {
                 );
         }
 
-        if (releaseAnimationPlayable())
-            playReleaseAnimation();
+        playReleaseAnimation();
     }
     /**
      * Releases the active note
@@ -66,28 +65,21 @@ public interface IHoldableNoteButton {
     }
 
 
-    private void playReleaseAnimation() {
+    default void playAttackAnimation(final boolean isForeign) {
+        setHeld(true);
+        asNoteBtn().getRenderer().playNoteAnimation(isForeign);
+    }
+    default void playReleaseAnimation() {
+        if (!releaseAnimationPlayable())
+            return;
+
         setHeld(false);
         ((HeldNoteButtonRenderer) asNoteBtn().getRenderer()).playRelease();
     }
 
 
-    /**
-     * Plays the attack animation as a foreign
-     */
-    default void foreignAttack() {
-        asNoteBtn().getRenderer().playNoteAnimation(true);
-    }
-    /**
-     * Plays the release animation (if applicable) as a foreign
-     */
-    default void foreignRelease() {
-        if (releaseAnimationPlayable())
-            playReleaseAnimation();
-    }
-
-
     default void playLocalHeldSound(final NoteSound sound, final int pitch) {
+        playAttackAnimation(false);
         toHeldSound(sound).startPlaying(pitch, asNoteBtn().instrumentScreen.volume());
     }
 
