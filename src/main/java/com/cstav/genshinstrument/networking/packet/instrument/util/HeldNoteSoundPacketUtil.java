@@ -1,5 +1,6 @@
 package com.cstav.genshinstrument.networking.packet.instrument.util;
 
+import com.cstav.genshinstrument.event.HeldNoteSoundPlayedEvent;
 import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
 import com.cstav.genshinstrument.networking.packet.instrument.s2c.S2CHeldNoteSoundPacket;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound;
@@ -7,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.util.Optional;
 
@@ -50,9 +52,9 @@ public class HeldNoteSoundPacketUtil {
                                                  HeldSoundPhase phase) {
         InstrumentPacketUtil.sendPlayerPlayNotePackets(initiator, sound, soundMeta, notePacketDelegate.toReg(phase));
 
-//        MinecraftForge.EVENT_BUS.post(
-//            new InstrumentPlayedEvent.ByPlayer(initiator, sound, soundMeta)
-//        );
+        MinecraftForge.EVENT_BUS.post(
+            new HeldNoteSoundPlayedEvent.ByPlayer(initiator, sound, soundMeta, phase)
+        );
     }
 
     /**
@@ -87,9 +89,9 @@ public class HeldNoteSoundPacketUtil {
                                            HeldSoundPhase phase) {
         InstrumentPacketUtil.sendPlayNotePackets(level, sound, soundMeta, notePacketDelegate.toReg(phase));
 
-//        MinecraftForge.EVENT_BUS.post(
-//            new InstrumentPlayedEvent(level, sound, soundMeta)
-//        );
+        MinecraftForge.EVENT_BUS.post(
+            new HeldNoteSoundPlayedEvent(level, sound, soundMeta, phase)
+        );
     }
 
 }

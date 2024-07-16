@@ -1,5 +1,6 @@
 package com.cstav.genshinstrument.sound.held;
 
+import com.cstav.genshinstrument.event.HeldNoteSoundPlayedEvent;
 import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
 import com.cstav.genshinstrument.networking.packet.instrument.util.HeldSoundPhase;
 import com.cstav.genshinstrument.sound.NoteSound;
@@ -9,8 +10,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -89,12 +92,24 @@ public record HeldNoteSound(
      */
     @OnlyIn(Dist.CLIENT)
     public void playFromServer(Optional<UUID> initiatorUUID, NoteSoundMetadata meta, HeldSoundPhase phase) {
-        //TODO fire held event here
+        final Player localPlayer = Minecraft.getInstance().player;
+        final Level level = localPlayer.level();
 
-        // Don't play sound for ourselves
-        if (initiatorUUID.isPresent()
-            && Minecraft.getInstance().player.getUUID().equals(initiatorUUID.get())
-        ) return;
+        if (initiatorUUID.isPresent()) {
+            final Player player = level.getPlayerByUUID(initiatorUUID.get());
+
+            MinecraftForge.EVENT_BUS.post(
+                new HeldNoteSoundPlayedEvent.ByPlayer(player, this, meta, phase)
+            );
+
+            // Don't play sound for ourselves
+            if (localPlayer.equals(player))
+                return;
+        }
+
+        MinecraftForge.EVENT_BUS.post(
+            new HeldNoteSoundPlayedEvent(level, this, meta, phase)
+        );
 
         switch (phase) {
             case ATTACK -> attackFromServer(initiatorUUID, meta);
