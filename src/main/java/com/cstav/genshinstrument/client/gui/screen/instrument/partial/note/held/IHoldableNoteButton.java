@@ -44,10 +44,8 @@ public interface IHoldableNoteButton {
                 );
         }
 
-        if (playAnimation) {
-            setHeld(false);
-            ((HeldNoteButtonRenderer) asNoteBtn().getRenderer()).playRelease();
-        }
+        if (playAnimation)
+            playReleaseAnimation();
     }
     /**
      * Releases the active note
@@ -59,9 +57,8 @@ public interface IHoldableNoteButton {
             notePitch,
             targetPitch,
             getHeldNoteSound(),
-            // If this is the last note playing; release it.
             // If we target everyone then ofc it will be empty.
-            !targetPitch || !HeldNoteSounds.hasInstances(getHeldNoteSound())
+            !targetPitch || shouldPlayReleaseAnimation()
         );
     }
     /**
@@ -70,6 +67,30 @@ public interface IHoldableNoteButton {
      */
     default void releaseHeld(boolean targetPitch) {
         releaseHeld(asNoteBtn().getPitch(), targetPitch);
+    }
+
+    private boolean shouldPlayReleaseAnimation() {
+        // If this is the last note playing; release it.
+        return !HeldNoteSounds.hasInstances(getHeldNoteSound());
+    }
+    private void playReleaseAnimation() {
+        setHeld(false);
+        ((HeldNoteButtonRenderer) asNoteBtn().getRenderer()).playRelease();
+    }
+
+
+    /**
+     * Plays the attack animation as a foreign
+     */
+    default void foreignAttack() {
+        asNoteBtn().getRenderer().playNoteAnimation(true);
+    }
+    /**
+     * Plays the release animation (if applicable) as a foreign
+     */
+    default void foreignRelease() {
+        if (shouldPlayReleaseAnimation())
+            playReleaseAnimation();
     }
 
 

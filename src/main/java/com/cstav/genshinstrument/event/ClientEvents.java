@@ -5,9 +5,12 @@ import com.cstav.genshinstrument.block.partial.AbstractInstrumentBlock;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.IHoldableNoteButton;
 import com.cstav.genshinstrument.client.midi.MidiController;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent.ByPlayer;
 import com.cstav.genshinstrument.sound.NoteSound;
+import com.cstav.genshinstrument.sound.held.HeldNoteSound.Phase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -56,14 +59,14 @@ public class ClientEvents {
     
     // Responsible for showing the notes other players play
     @SubscribeEvent
-    public static void onInstrumentPlayed(final InstrumentPlayedEvent<NoteSound> event) {
+    public static void onInstrumentPlayed(final InstrumentPlayedEvent<?> event) {
         if (!event.level.isClientSide)
             return;
         if (!ModClientConfigs.SHARED_INSTRUMENT.get())
             return;
 
         // If this sound was produced by a player, and that player is ourselves - omit.
-        if ((event instanceof ByPlayer) && ((ByPlayer<NoteSound>)(event)).player.equals(MINECRAFT.player))
+        if ((event instanceof ByPlayer) && ((ByPlayer<?>)(event)).player.equals(MINECRAFT.player))
             return;
 
         // Only show play notes in the local range
@@ -79,15 +82,40 @@ public class ClientEvents {
                 event.soundMeta.noteIdentifier().isEmpty()
                 || screen.getInstrumentId().equals(event.soundMeta.instrumentId())
             )
-            .ifPresent((screen) -> {
-                try {
-                    screen.getNoteButton(event.soundMeta.noteIdentifier(), event.sound, event.soundMeta.pitch())
-                        .playNoteAnimation(true);
-                } catch (Exception e) {
-                    // Button was prolly just not found
-                }
+            .ifPresent((screen) -> foreignPlay(screen, event));
+    }
+    private static void foreignPlay(final InstrumentScreen screen, InstrumentPlayedEvent<?> event) {
+        try {
+
+            final NoteSound sound;
+            if (event instanceof NoteSoundPlayedEvent e) {
+                sound = e.sound;
+            } else if (event instanceof HeldNoteSoundPlayedEvent e) {
+                sound = e.sound.getSound(Phase.ATTACK);
             }
-        );
+            else
+                return;
+
+
+            final NoteButton note = screen.getNoteButton(
+                event.soundMeta.noteIdentifier(),
+                sound, event.soundMeta.pitch()
+            );
+
+            if (event instanceof HeldNoteSoundPlayedEvent e) {
+                final IHoldableNoteButton heldNote = (IHoldableNoteButton) note;
+
+                switch (e.phase) {
+                    case ATTACK -> heldNote.foreignAttack();
+                    case RELEASE -> heldNote.foreignRelease();
+                }
+            } else {
+                note.playNoteAnimation(true);
+            }
+
+        } catch (Exception e) {
+            // Button was prolly just not found
+        }
     }
 
 
