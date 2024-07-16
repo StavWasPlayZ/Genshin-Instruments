@@ -30,6 +30,8 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
     public final Optional<BlockPos> soundOrigin;
     public final int notePitch;
 
+    private boolean released;
+
     /**
      * @param initiator The initiator of the sound. Empty for a non-player initiator.
      *                  Value must be present if {@code soundOrigin} is empty.
@@ -38,7 +40,8 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
      */
     protected HeldNoteSoundInstance(HeldNoteSound heldSoundContainer, HeldNoteSound.Phase phase,
                                     int notePitch, float volume,
-                                    @Nullable Player initiator, @Nullable BlockPos soundOrigin, int timeAlive) {
+                                    @Nullable Player initiator, @Nullable BlockPos soundOrigin,
+                                    int timeAlive, boolean released) {
         //TODO get new parameters: initiator, soundOrigin, update new constructors,
         // handle the new packets.
         super(
@@ -68,6 +71,8 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
         this.notePitch = notePitch;
         this.pitch = NoteSound.getPitchByNoteOffset(notePitch);
         attenuation = Attenuation.NONE;
+
+        this.released = released;
     }
 
     /**
@@ -80,7 +85,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
     public HeldNoteSoundInstance(HeldNoteSound heldSoundContainer, HeldNoteSound.Phase phase,
                                  int notePitch, float volume,
                                  @Nullable Player initiator, @Nullable BlockPos soundOrigin) {
-        this(heldSoundContainer, phase, notePitch, volume, initiator, soundOrigin, 0);
+        this(heldSoundContainer, phase, notePitch, volume, initiator, soundOrigin, 0, false);
     }
     /**
      * A held note sound instance for local playing
@@ -121,15 +126,14 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
         this.released = true;
     }
 
-    private boolean released = false;
     protected int timeAlive = 0, overallTimeAlive;
     @Override
     public void tick() {
         updatePlayerPos();
 
-        if (!released) {
-            handleHolding();
-        } else {
+        handleChainHolding();
+
+        if (released) {
             float fadeOutMultiplier = 1;
             float fhft = heldSoundContainer.fullHoldFadeoutTime() * 20;
 
@@ -148,10 +152,6 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
 
         timeAlive++;
         overallTimeAlive++;
-    }
-
-    protected void handleHolding() {
-        handleChainHolding();
     }
 
     protected boolean chainedHolding = false;
@@ -189,7 +189,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
         new HeldNoteSoundInstance(
             heldSoundContainer, Phase.HOLD, notePitch, volume - (decreaseVol ? heldSoundContainer.decay() : 0),
             initiator.orElse(null), soundOrigin.orElse(null),
-            overallTimeAlive
+            overallTimeAlive, released
         ).queueAndAddInstance();
     }
 
