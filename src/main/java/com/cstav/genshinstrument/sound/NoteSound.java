@@ -3,7 +3,7 @@ package com.cstav.genshinstrument.sound;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.client.util.ClientUtil;
-import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
+import com.cstav.genshinstrument.event.NoteSoundPlayedEvent;
 import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
 import com.cstav.genshinstrument.sound.registrar.NoteSoundRegistrar;
 import com.cstav.genshinstrument.util.LabelUtil;
@@ -157,8 +157,8 @@ public class NoteSound {
         ClientUtil.stopMusicIfClose(distanceFromPlayer);
 
         MinecraftForge.EVENT_BUS.post(initiator == null
-            ? new InstrumentPlayedEvent(level, this, meta)
-            : new InstrumentPlayedEvent.ByPlayer(initiator, this, meta)
+            ? new NoteSoundPlayedEvent(level, this, meta)
+            : new NoteSoundPlayedEvent.ByPlayer(initiator, this, meta)
         );
 
 

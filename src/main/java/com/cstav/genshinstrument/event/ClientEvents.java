@@ -56,14 +56,14 @@ public class ClientEvents {
     
     // Responsible for showing the notes other players play
     @SubscribeEvent
-    public static void onInstrumentPlayed(final InstrumentPlayedEvent event) {
+    public static void onInstrumentPlayed(final InstrumentPlayedEvent<NoteSound> event) {
         if (!event.level.isClientSide)
             return;
         if (!ModClientConfigs.SHARED_INSTRUMENT.get())
             return;
 
         // If this sound was produced by a player, and that player is ourselves - omit.
-        if ((event instanceof ByPlayer) && ((ByPlayer)(event)).player.equals(MINECRAFT.player))
+        if ((event instanceof ByPlayer) && ((ByPlayer<NoteSound>)(event)).player.equals(MINECRAFT.player))
             return;
 
         // Only show play notes in the local range

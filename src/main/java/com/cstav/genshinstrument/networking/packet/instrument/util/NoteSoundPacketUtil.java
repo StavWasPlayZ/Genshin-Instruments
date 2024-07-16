@@ -1,6 +1,6 @@
 package com.cstav.genshinstrument.networking.packet.instrument.util;
 
-import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
+import com.cstav.genshinstrument.event.NoteSoundPlayedEvent;
 import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
 import com.cstav.genshinstrument.networking.packet.instrument.s2c.S2CNoteSoundPacket;
 import com.cstav.genshinstrument.sound.NoteSound;
@@ -42,7 +42,7 @@ public class NoteSoundPacketUtil {
         InstrumentPacketUtil.sendPlayerPlayNotePackets(initiator, sound, soundMeta, notePacketDelegate);
 
         MinecraftForge.EVENT_BUS.post(
-            new InstrumentPlayedEvent.ByPlayer(initiator, sound, soundMeta)
+            new NoteSoundPlayedEvent.ByPlayer(initiator, sound, soundMeta)
         );
     }
 
@@ -75,7 +75,7 @@ public class NoteSoundPacketUtil {
         InstrumentPacketUtil.sendPlayNotePackets(level, sound, soundMeta, notePacketDelegate);
 
         MinecraftForge.EVENT_BUS.post(
-            new InstrumentPlayedEvent(level, sound, soundMeta)
+            new NoteSoundPlayedEvent(level, sound, soundMeta)
         );
     }
 
