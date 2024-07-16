@@ -14,6 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public abstract class HeldNoteButton extends NoteButton implements IHoldableNoteButton {
     private boolean isHeld = false;
     private HeldNoteSound heldNoteSound;
+    private int pressedCounter = 0;
 
     public HeldNoteButton(NoteSound sound, NoteLabelSupplier labelSupplier, InstrumentScreen instrumentScreen, HeldNoteSound heldNoteSound) {
         super(sound, labelSupplier, instrumentScreen);
@@ -59,6 +60,7 @@ public abstract class HeldNoteButton extends NoteButton implements IHoldableNote
     protected void playLocalSound(final NoteSound sound, final int pitch) {
         isHeld = true;
         playLocalHeldSound(sound, pitch);
+        pressedCounter++;
     }
 
     @Override
@@ -71,11 +73,17 @@ public abstract class HeldNoteButton extends NoteButton implements IHoldableNote
         releaseHeld(false);
     }
     @Override
-    public void releaseHeld(int notePitch, boolean targetPitch, HeldNoteSound heldSound, boolean playAnimation) {
+    public void releaseHeld(int notePitch, boolean targetPitch, HeldNoteSound heldSound) {
         super.release();
-        IHoldableNoteButton.super.releaseHeld(notePitch, targetPitch, heldSound, playAnimation);
+        IHoldableNoteButton.super.releaseHeld(notePitch, targetPitch, heldSound);
+        pressedCounter = Math.max(0, pressedCounter - 1);
     }
 
     @Override
     protected abstract HeldNoteButtonRenderer initNoteRenderer();
+
+    @Override
+    public boolean releaseAnimationPlayable() {
+        return pressedCounter == 0;
+    }
 }

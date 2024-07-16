@@ -16,20 +16,22 @@ import java.util.Arrays;
 
 @OnlyIn(Dist.CLIENT)
 public interface IHoldableNoteButton {
-    public boolean isHeld();
+    boolean isHeld();
     void setHeld(final boolean held);
 
-    public HeldNoteSound getHeldNoteSound();
-    public void setHeldNoteSound(final HeldNoteSound sound);
+    HeldNoteSound getHeldNoteSound();
+    void setHeldNoteSound(final HeldNoteSound sound);
+
+    boolean releaseAnimationPlayable();
+
 
     /**
      * Releases the active note
      * @param notePitch The note pitch to target
      * @param targetPitch Should only release the provided pitch?
      * @param heldSound The sound being released
-     * @param playAnimation Should the release animation be played?
      */
-    default void releaseHeld(int notePitch, boolean targetPitch, HeldNoteSound heldSound, boolean playAnimation) {
+    default void releaseHeld(int notePitch, boolean targetPitch, HeldNoteSound heldSound) {
         final String initiatorId = HeldNoteSounds.getInitiatorId(Minecraft.getInstance().player);
 
         if (targetPitch) {
@@ -44,7 +46,7 @@ public interface IHoldableNoteButton {
                 );
         }
 
-        if (playAnimation)
+        if (releaseAnimationPlayable())
             playReleaseAnimation();
     }
     /**
@@ -53,13 +55,7 @@ public interface IHoldableNoteButton {
      * @param targetPitch Should only release the provided pitch?
      */
     default void releaseHeld(int notePitch, boolean targetPitch) {
-        releaseHeld(
-            notePitch,
-            targetPitch,
-            getHeldNoteSound(),
-            // If we target everyone then ofc it will be empty.
-            !targetPitch || shouldPlayReleaseAnimation()
-        );
+        releaseHeld(notePitch, targetPitch, getHeldNoteSound());
     }
     /**
      * Releases all notes of the matching sound type
@@ -69,10 +65,7 @@ public interface IHoldableNoteButton {
         releaseHeld(asNoteBtn().getPitch(), targetPitch);
     }
 
-    private boolean shouldPlayReleaseAnimation() {
-        // If this is the last note playing; release it.
-        return !HeldNoteSounds.hasInstances(getHeldNoteSound());
-    }
+
     private void playReleaseAnimation() {
         setHeld(false);
         ((HeldNoteButtonRenderer) asNoteBtn().getRenderer()).playRelease();
@@ -89,7 +82,7 @@ public interface IHoldableNoteButton {
      * Plays the release animation (if applicable) as a foreign
      */
     default void foreignRelease() {
-        if (shouldPlayReleaseAnimation())
+        if (releaseAnimationPlayable())
             playReleaseAnimation();
     }
 

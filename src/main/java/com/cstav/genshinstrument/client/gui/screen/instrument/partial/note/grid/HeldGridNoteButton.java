@@ -11,6 +11,7 @@ import com.cstav.genshinstrument.sound.held.HeldNoteSound;
 public class HeldGridNoteButton extends NoteGridButton implements IHoldableNoteButton {
     private boolean isHeld = false;
     private HeldNoteSound heldNoteSound;
+    private int pressedCounter = 0;
 
     public HeldGridNoteButton(int row, int column, GridInstrumentScreen instrumentScreen, HeldNoteSound[] heldNoteSounds) {
         super(row, column, instrumentScreen);
@@ -55,14 +56,16 @@ public class HeldGridNoteButton extends NoteGridButton implements IHoldableNoteB
         releaseHeld(false);
     }
     @Override
-    public void releaseHeld(int notePitch, boolean targetPitch, HeldNoteSound heldSound, boolean playAnimation) {
+    public void releaseHeld(int notePitch, boolean targetPitch, HeldNoteSound heldSound) {
         super.release();
-        IHoldableNoteButton.super.releaseHeld(notePitch, targetPitch, heldSound, playAnimation);
+        pressedCounter = Math.max(0, pressedCounter - 1);
+        IHoldableNoteButton.super.releaseHeld(notePitch, targetPitch, heldSound);
     }
 
     @Override
     protected void playLocalSound(final NoteSound sound, final int pitch) {
         isHeld = true;
+        pressedCounter++;
         playLocalHeldSound(sound, pitch);
     }
     @Override
@@ -70,8 +73,14 @@ public class HeldGridNoteButton extends NoteGridButton implements IHoldableNoteB
         sendNoteHeldPacket(sound, pitch, HeldSoundPhase.ATTACK);
     }
 
+
     @Override
     protected HeldNoteButtonRenderer initNoteRenderer() {
         return new HeldNoteButtonRenderer(this, this::getTextureAtRow);
+    }
+
+    @Override
+    public boolean releaseAnimationPlayable() {
+        return pressedCounter == 0;
     }
 }
