@@ -18,8 +18,11 @@ public class ModCriteria {
     public static final InstrumentPlayedTrigger INSTRUMENT_PLAYED_TRIGGER = register(new InstrumentPlayedTrigger());
 
     @SubscribeEvent
-    public static void onInstrumentPlayed(final InstrumentPlayedEvent.ByPlayer<?> event) {
+    public static void onInstrumentPlayed(final InstrumentPlayedEvent<?> event) {
         if (event.level.isClientSide)
+            return;
+        // Only get player events
+        if (!(event instanceof InstrumentPlayedEvent.IByPlayer<?> e))
             return;
 
         final Item instrument = ForgeRegistries.ITEMS.getValue(event.soundMeta.instrumentId());
@@ -28,7 +31,7 @@ public class ModCriteria {
             return;
 
         INSTRUMENT_PLAYED_TRIGGER.trigger(
-            (ServerPlayer)event.player,
+            (ServerPlayer) e.getPlayer(),
             new ItemStack(instrument)
         );
     }

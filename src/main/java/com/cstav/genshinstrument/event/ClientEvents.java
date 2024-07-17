@@ -8,7 +8,7 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.Instrument
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.IHoldableNoteButton;
 import com.cstav.genshinstrument.client.midi.MidiController;
-import com.cstav.genshinstrument.event.InstrumentPlayedEvent.ByPlayer;
+import com.cstav.genshinstrument.event.InstrumentPlayedEvent.IByPlayer;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound.Phase;
 import com.cstav.genshinstrument.sound.held.HeldNoteSounds;
@@ -68,8 +68,10 @@ public class ClientEvents {
             return;
 
         // If this sound was produced by a player, and that player is ourselves - omit.
-        if ((event instanceof ByPlayer) && ((ByPlayer<?>)(event)).player.equals(MINECRAFT.player))
-            return;
+        if (
+            (event instanceof InstrumentPlayedEvent.IByPlayer)
+            && ((IByPlayer<?>)(event)).getPlayer().equals(MINECRAFT.player)
+        ) return;
 
         // Only show play notes in the local range
         if (!event.soundMeta.pos().closerThan(MINECRAFT.player.blockPosition(), NoteSound.LOCAL_RANGE))

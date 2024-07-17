@@ -37,51 +37,59 @@ public abstract class InstrumentPlayedEvent<T> extends Event {
         this.soundMeta = soundMeta;
     }
 
+    /**
+     * An instrument played event variant,
+     * specifically when played by the player.
+     * @param <T> The base play event
+     */
     @Cancelable
-    public static abstract class ByPlayer<T> extends InstrumentPlayedEvent<T> {
-        public final Player player;
+    public static interface IByPlayer<T extends InstrumentPlayedEvent<?>> {
+        Player getPlayer();
+        Optional<InteractionHand> getHand();
 
-        // The value below will only be supplied if initiated from an item
-        /** The hand holding the instrument played by this player */
-        public final Optional<InteractionHand> hand;
+        @SuppressWarnings("unchecked")
+        default T asPlayedEvent() {
+            return (T) this;
+        }
 
         /**
          * <p>Returns whether this event was fired by an item instrument.</p>
          * A {@code false} result does NOT indicate a block instrument.
-         * @see ByPlayer#isBlockInstrument
+         * @see IByPlayer#isBlockInstrument
          */
-        public boolean isItemInstrument() {
-            return hand.isPresent();
+        default boolean isItemInstrument() {
+            return getHand().isPresent();
         }
         /**
          * <p>Returns whether this event was fired by a block instrument.</p>
          * A {@code false} result does NOT indicate an instrument item.
-         * @see ByPlayer#isItemInstrument()
+         * @see IByPlayer#isItemInstrument()
          */
-        public boolean isBlockInstrument() {
+        default boolean isBlockInstrument() {
             return !isItemInstrument()
-                && player.level().getBlockEntity(soundMeta.pos()) instanceof InstrumentBlockEntity;
+                && getPlayer().level().getBlockEntity(asPlayedEvent().soundMeta.pos())
+                    instanceof InstrumentBlockEntity;
         }
 
         /**
          * @return Whether the played sound was not produced by an instrument
          */
-        public boolean isNotInstrument() {
+        default boolean isNotInstrument() {
             return !isBlockInstrument() && !isItemInstrument();
         }
 
+    }
 
-        public ByPlayer(Player player, T sound, NoteSoundMetadata soundMeta) {
-            super(player.level(), sound, soundMeta);
-
-            this.player = player;
-
-            if (InstrumentOpenProvider.isItem(player)) {
-                this.hand = Optional.of(InstrumentOpenProvider.getHand(player));
-            } else {
-                this.hand = Optional.empty();
-            }
+    /**
+     * Parses the required hand to be passed to the
+     * hand field for the {@link IByPlayer} variant - and returns it.
+     */
+    protected static Optional<InteractionHand> parseHand(final Player player) {
+        if (InstrumentOpenProvider.isItem(player)) {
+            return Optional.of(InstrumentOpenProvider.getHand(player));
+        } else {
+            return Optional.empty();
         }
     }
-    
+
 }
