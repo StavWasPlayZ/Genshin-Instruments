@@ -141,7 +141,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
             // Basically fade in the fade out
             if ((phase == Phase.HOLD) && (fhft != 0)) {
                 if (overallTimeAlive < fhft) {
-                    fadeOutMultiplier = 1 / (((overallTimeAlive + 1) / fhft));
+                    fadeOutMultiplier = 1 / ((overallTimeAlive + 1) / fhft);
                 }
             }
 
