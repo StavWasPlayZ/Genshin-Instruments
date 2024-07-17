@@ -81,9 +81,9 @@ public class HeldGridNoteButton extends NoteGridButton implements IHoldableNoteB
         IHoldableNoteButton.super.playAttackAnimation(isForeign);
     }
     @Override
-    public void playReleaseAnimation() {
+    public void playReleaseAnimation(boolean isForeign) {
         pressedCounter = Math.max(0, pressedCounter - 1);
-        IHoldableNoteButton.super.playReleaseAnimation();
+        IHoldableNoteButton.super.playReleaseAnimation(isForeign);
     }
 
 

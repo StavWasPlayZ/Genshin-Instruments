@@ -34,7 +34,7 @@ public class NoteButtonRenderer {
 
     // Animations
     public final NoteAnimationController noteAnimation;
-    protected boolean foreignPlaying = false;
+    public boolean foreignPlaying = false;
     protected final ArrayList<NoteRing> rings = new ArrayList<>();
 
     protected NoteAnimationController initNoteAnimation() {

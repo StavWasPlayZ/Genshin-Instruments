@@ -46,7 +46,7 @@ public interface IHoldableNoteButton {
                 );
         }
 
-        playReleaseAnimation();
+        playReleaseAnimation(false);
     }
     /**
      * Releases the active note
@@ -69,12 +69,17 @@ public interface IHoldableNoteButton {
         setHeld(true);
         asNoteBtn().getRenderer().playNoteAnimation(isForeign);
     }
-    default void playReleaseAnimation() {
+    default void playReleaseAnimation(final boolean isForeign) {
+        final HeldNoteButtonRenderer renderer = (HeldNoteButtonRenderer) asNoteBtn().getRenderer();
+        // In case pressed on top of a foreign/local player;
+        // and local/foreign player is still holding.
+        renderer.foreignPlaying = !isForeign;
+
         if (!releaseAnimationPlayable())
             return;
 
         setHeld(false);
-        ((HeldNoteButtonRenderer) asNoteBtn().getRenderer()).playRelease();
+        renderer.playRelease();
     }
 
 

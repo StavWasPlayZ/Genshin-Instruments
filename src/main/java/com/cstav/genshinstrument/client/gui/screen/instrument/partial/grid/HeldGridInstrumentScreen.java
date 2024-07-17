@@ -4,6 +4,7 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.IHeldInstr
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.grid.HeldGridNoteButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.grid.NoteGridButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.IHoldableNoteButton;
+import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound.Phase;
@@ -38,4 +39,9 @@ public abstract class HeldGridInstrumentScreen extends GridInstrumentScreen impl
         return new HeldGridNoteButton(row, column, this, getInitHeldNoteSounds());
     }
 
+
+    @Override
+    public void foreignPlay(final InstrumentPlayedEvent<?> event) {
+        foreignPlayHeld(event);
+    }
 }

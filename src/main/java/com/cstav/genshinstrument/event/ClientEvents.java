@@ -5,12 +5,9 @@ import com.cstav.genshinstrument.block.partial.AbstractInstrumentBlock;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.IHoldableNoteButton;
 import com.cstav.genshinstrument.client.midi.MidiController;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent.IByPlayer;
 import com.cstav.genshinstrument.sound.NoteSound;
-import com.cstav.genshinstrument.sound.held.HeldNoteSound.Phase;
 import com.cstav.genshinstrument.sound.held.HeldNoteSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
@@ -86,40 +83,7 @@ public class ClientEvents {
                 event.soundMeta.noteIdentifier().isEmpty()
                 || screen.getInstrumentId().equals(event.soundMeta.instrumentId())
             )
-            .ifPresent((screen) -> foreignPlay(screen, event));
-    }
-    private static void foreignPlay(final InstrumentScreen screen, InstrumentPlayedEvent<?> event) {
-        try {
-
-            final NoteSound sound;
-            if (event instanceof NoteSoundPlayedEvent e) {
-                sound = e.sound;
-            } else if (event instanceof HeldNoteSoundPlayedEvent e) {
-                sound = e.sound.getSound(Phase.ATTACK);
-            }
-            else
-                return;
-
-
-            final NoteButton note = screen.getNoteButton(
-                event.soundMeta.noteIdentifier(),
-                sound, event.soundMeta.pitch()
-            );
-
-            if (event instanceof HeldNoteSoundPlayedEvent e) {
-                final IHoldableNoteButton heldNote = (IHoldableNoteButton) note;
-
-                switch (e.phase) {
-                    case ATTACK -> heldNote.playAttackAnimation(true);
-                    case RELEASE -> heldNote.playReleaseAnimation();
-                }
-            } else {
-                note.playNoteAnimation(true);
-            }
-
-        } catch (Exception e) {
-            // Button was prolly just not found
-        }
+            .ifPresent((screen) -> screen.foreignPlay(event));
     }
 
 
