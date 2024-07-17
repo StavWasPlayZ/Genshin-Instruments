@@ -11,6 +11,7 @@ import com.cstav.genshinstrument.client.midi.MidiController;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent.ByPlayer;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound.Phase;
+import com.cstav.genshinstrument.sound.held.HeldNoteSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -21,6 +22,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.GameShuttingDownEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -116,6 +118,12 @@ public class ClientEvents {
         } catch (Exception e) {
             // Button was prolly just not found
         }
+    }
+
+
+    @SubscribeEvent
+    public static void onLevelUnload(final LevelEvent.Unload event) {
+        HeldNoteSounds.releaseAll();
     }
 
 

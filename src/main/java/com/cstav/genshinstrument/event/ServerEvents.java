@@ -4,14 +4,12 @@ import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.item.InstrumentItem;
 import com.cstav.genshinstrument.networking.packet.instrument.util.InstrumentPacketUtil;
-import com.cstav.genshinstrument.sound.held.HeldNoteSounds;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent.LevelTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -33,10 +31,6 @@ public abstract class ServerEvents {
     @SubscribeEvent
     public static void onPlayerLeave(final PlayerEvent.PlayerLoggedOutEvent event) {
         InstrumentPacketUtil.setInstrumentClosed(event.getEntity());
-    }
-    @SubscribeEvent
-    public static void onLevelUnload(final LevelEvent.Unload event) {
-        HeldNoteSounds.releaseAll();
     }
 
 
