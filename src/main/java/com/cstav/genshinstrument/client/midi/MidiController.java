@@ -32,17 +32,17 @@ public abstract class MidiController {
 
         final MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
 
-        for (int i = 0; i < infos.length; i++) {
+        for (final Info info : infos) {
             try {
 
-                final MidiDevice device = MidiSystem.getMidiDevice(infos[i]);
+                final MidiDevice device = MidiSystem.getMidiDevice(info);
                 // Only obtain devices that can transmit
                 device.getTransmitter();
 
-                DEVICES.put(infos[i], device);
+                DEVICES.put(info, device);
 
             } catch (MidiUnavailableException e) {
-                LOGGER.warn("MIDI device "+infos[i].getName().strip()+" cannot transmit MIDI; omitting!");
+                LOGGER.warn("MIDI device " + info.getName().strip() + " cannot transmit MIDI; omitting!");
             } catch (Exception e) {
                 LOGGER.error("Unexpected error occurred while trying to obtain MIDI device!", e);
             }
