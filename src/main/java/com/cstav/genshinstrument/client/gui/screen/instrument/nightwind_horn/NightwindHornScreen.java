@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.client.gui.screen.instrument.nightwind_horn.windsonglyre;
+package com.cstav.genshinstrument.client.gui.screen.instrument.nightwind_horn;
 
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;

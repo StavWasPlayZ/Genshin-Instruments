@@ -96,6 +96,7 @@ public abstract class InstrumentMidiReceiver {
         if (pressedNote != null) {
             pressedNote.unlockInput();
             PressedMIDINote pressedMidiNote = playNote(pressedNote, overflowRes, basePitch);
+
             if (pressedMidiNote != null) {
                 // Remember the note to later release it
                 pressedMidiNotes.put(midiNote, pressedMidiNote);
@@ -130,11 +131,12 @@ public abstract class InstrumentMidiReceiver {
         final PressedMIDINote prevNoteBtn = pressedMidiNotes.get(message[1]);
         NoteButton prevButton = null;
         boolean isHoldableBtn = false;
+
+        // Release the previously pressed note
         if (prevNoteBtn != null) {
             prevButton = prevNoteBtn.pressedNote();
             isHoldableBtn = prevButton instanceof IHoldableNoteButton;
 
-            // Release the previously pressed note
             if (!isHoldableBtn) {
                 prevButton.release();
             }

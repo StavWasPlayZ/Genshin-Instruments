@@ -188,6 +188,8 @@ public class InstrumentThemeLoader {
     }
 
 
+    //#region File Reading
+
     @SubscribeEvent
     public static void registerReloadEvent(final RegisterClientReloadListenersEvent event) {
         event.registerReloadListener((ResourceManagerReloadListener) InstrumentThemeLoader::reload);
@@ -201,6 +203,7 @@ public class InstrumentThemeLoader {
 
         CACHES.clear();
     }
+
     private static void updateIsGlobalThemed(final ResourceManager resourceManager) {
         isGlobalThemed = false;
         final Optional<Resource> instrumentsMeta = resourceManager.getResource(INSTRUMENTS_META_LOC);
@@ -265,6 +268,7 @@ public class InstrumentThemeLoader {
         LOGGER.info("Loaded and cached instrument style from "+styleLocation + logSuffix);
     }
 
+    //#endregion
 
 
     public ResourceLocation getResourcesRootDir() {

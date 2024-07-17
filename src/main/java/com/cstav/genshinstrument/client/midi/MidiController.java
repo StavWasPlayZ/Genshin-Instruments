@@ -36,7 +36,9 @@ public abstract class MidiController {
             try {
 
                 final MidiDevice device = MidiSystem.getMidiDevice(info);
-                // Only obtain devices that can transmit
+
+                // Only obtain devices that can transmit.
+                // This will throw for un-transmittable devices.
                 device.getTransmitter();
 
                 DEVICES.put(info, device);
