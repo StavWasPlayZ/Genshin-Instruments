@@ -10,6 +10,7 @@ import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.layouts.GridLayout.RowHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -73,20 +74,20 @@ public class NoteGrid implements Iterable<NoteGridButton> {
 
     /**
      * Constructs a linearly increasing pitch note grid for an SSTI-type instrument.
-     * @param begginingNote The note to start the linear pitch increment.
+     * @param beginningNote The note to start the linear pitch increment.
      * @param noteSkip The amount of pitch to skip over every note in the linear pitch increment.
      */
-    public NoteGrid(GridInstrumentScreen instrumentScreen, int begginingNote, int noteSkip) {
-        this(instrumentScreen, (row, column) -> begginingNote +
+    public NoteGrid(GridInstrumentScreen instrumentScreen, int beginningNote, int noteSkip) {
+        this(instrumentScreen, (row, column) -> beginningNote +
                 (noteSkip * (row + column * instrumentScreen.rows()))
         );
     }
     /**
-     * Constructs a linearly increasing pitch note grid for an SSTI-type instrument. The increement is set to 1.
-     * @param begginingNote The note to start the linear pitch increment.
+     * Constructs a linearly increasing pitch note grid for an SSTI-type instrument. The increment is set to 1.
+     * @param beginningNote The note to start the linear pitch increment.
      */
-    public NoteGrid(GridInstrumentScreen instrumentScreen, int begginingNote) {
-        this(instrumentScreen, begginingNote, 1);
+    public NoteGrid(GridInstrumentScreen instrumentScreen, int beginningNote) {
+        this(instrumentScreen, beginningNote, 1);
     }
 
     public NoteSound[] getNoteSounds() {
@@ -161,7 +162,7 @@ public class NoteGrid implements Iterable<NoteGridButton> {
     }
 
     @Override
-    public Iterator<NoteGridButton> iterator() {
+    public @NotNull Iterator<NoteGridButton> iterator() {
         // This is a basic 2x2 matrix iterator
         return new Iterator<NoteGridButton>() {
 
