@@ -34,7 +34,6 @@ public abstract class NoteButton extends AbstractButton {
 
     protected final Minecraft minecraft = Minecraft.getInstance();
 
-    //TODO this is NOT nullable, re-implement DefaultNoteButtonIdentifier
     /**
      * Returns the UI identifier of this button.
      */
