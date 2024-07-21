@@ -7,7 +7,10 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held.
 import com.cstav.genshinstrument.networking.packet.instrument.util.HeldSoundPhase;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class HeldGridNoteButton extends NoteGridButton implements IHoldableNoteButton {
     private boolean isHeld = false;
     private HeldNoteSound heldNoteSound;
