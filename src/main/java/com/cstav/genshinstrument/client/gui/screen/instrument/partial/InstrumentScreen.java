@@ -614,9 +614,8 @@ public abstract class InstrumentScreen extends Screen {
         if (minecraft.screen instanceof InstrumentScreen)
             return Optional.of((InstrumentScreen)minecraft.screen);
 
-        if (minecraft.screen instanceof AbstractInstrumentOptionsScreen instrumentOptionsScreen) {
+        if (minecraft.screen instanceof AbstractInstrumentOptionsScreen instrumentOptionsScreen)
             return instrumentOptionsScreen.instrumentScreen;
-        }
 
         return Optional.empty();
     }
