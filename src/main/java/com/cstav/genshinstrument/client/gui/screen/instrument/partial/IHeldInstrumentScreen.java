@@ -6,7 +6,10 @@ import com.cstav.genshinstrument.event.HeldNoteSoundPlayedEvent;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound.Phase;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public interface IHeldInstrumentScreen {
     HeldNoteSound[] getHeldNoteSounds();
     void setHeldNoteSounds(final HeldNoteSound[] heldNoteSounds);
