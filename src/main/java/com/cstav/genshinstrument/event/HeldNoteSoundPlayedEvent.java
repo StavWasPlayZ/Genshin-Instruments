@@ -14,6 +14,7 @@ import net.minecraftforge.eventbus.api.Cancelable;
 @Cancelable
 public class HeldNoteSoundPlayedEvent extends InstrumentPlayedEvent<HeldNoteSound> {
     public final HeldSoundPhase phase;
+
     public HeldNoteSoundPlayedEvent(Level level, HeldNoteSound sound, NoteSoundMetadata soundMeta, HeldSoundPhase phase) {
         super(level, sound, soundMeta);
         this.phase = phase;
