@@ -45,11 +45,12 @@ public class InstrumentItem extends Item {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
-        return pLevel.isClientSide ? InteractionResultHolder.pass(pPlayer.getItemInHand(pUsedHand))
+        if (pLevel.isClientSide)
+            return InteractionResultHolder.pass(pPlayer.getItemInHand(pUsedHand));
 
-            : InstrumentPacketUtil.sendOpenPacket((ServerPlayer)pPlayer, pUsedHand, onOpenRequest)
-                ? InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand))
-                : InteractionResultHolder.fail(pPlayer.getItemInHand(pUsedHand));
+        return InstrumentPacketUtil.sendOpenPacket((ServerPlayer)pPlayer, pUsedHand, onOpenRequest)
+            ? InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand))
+            : InteractionResultHolder.fail(pPlayer.getItemInHand(pUsedHand));
     }
 
     @Override
