@@ -118,7 +118,7 @@ public abstract class InstrumentOptionsScreen extends AbstractInstrumentOptionsS
 
     protected void initAudioSection(final GridLayout grid, final RowHelper rowHelper) {
         final CycleButton<InstrumentChannelType> instrumentChannel = CycleButton.<InstrumentChannelType>builder((soundType) ->
-            Component.translatable(SOUND_CHANNEL_KEY +"."+ soundType.toString().toLowerCase())
+            Component.translatable(SOUND_CHANNEL_KEY +"."+ soundType.getKey())
         )
             .withValues(InstrumentChannelType.values())
             .withInitialValue(ModClientConfigs.CHANNEL_TYPE.get())
