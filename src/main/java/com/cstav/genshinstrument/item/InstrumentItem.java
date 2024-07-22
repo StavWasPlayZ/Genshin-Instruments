@@ -13,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
@@ -45,16 +46,20 @@ public class InstrumentItem extends Item {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
-        if (pLevel.isClientSide)
-            return InteractionResultHolder.pass(pPlayer.getItemInHand(pUsedHand));
+        final ItemStack item = pPlayer.getItemInHand(pUsedHand);
 
-        return InstrumentPacketUtil.sendOpenPacket((ServerPlayer)pPlayer, pUsedHand, onOpenRequest)
-            ? InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand))
-            : InteractionResultHolder.fail(pPlayer.getItemInHand(pUsedHand));
+        if (pLevel.isClientSide)
+            return InteractionResultHolder.success(item);
+
+        if (InstrumentPacketUtil.sendOpenPacket((ServerPlayer)pPlayer, pUsedHand, onOpenRequest)) {
+            return InteractionResultHolder.success(item);
+        } else {
+            return InteractionResultHolder.fail(item);
+        }
     }
 
     @Override
-    public UseAnim getUseAnimation(ItemStack pStack) {
+    public @NotNull UseAnim getUseAnimation(ItemStack pStack) {
         return UseAnim.CUSTOM;
     }
     @Override
