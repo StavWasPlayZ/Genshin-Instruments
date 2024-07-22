@@ -1,85 +1,143 @@
 {
     "genshinstrument.keymaps": "乐器界面",
-    "genshinstrument.keymaps.transpose_up_modifier": "升调乐器",
-    "genshinstrument.keymaps.transpose_down_modifier": "降调乐器",
-    "genshinstrument.itemGroup.instruments": "提瓦特乐器",
+    "genshinstrument.keymaps.transpose_up_modifier": "音符升半音",
+    "genshinstrument.keymaps.transpose_down_modifier": "音符降半音",
+
+
+    "genshinstrument.itemGroup.instruments": "乐器",
+
     "item.genshinstrument.windsong_lyre": "风物之诗琴",
     "item.genshinstrument.floral_zither": "镜花之琴",
     "item.genshinstrument.vintage_lyre": "老旧的诗琴",
     "item.genshinstrument.glorious_drum": "荒泷·盛世豪鼓",
     "item.genshinstrument.nightwind_horn": "晚风圆号",
+
+
     "soundCategory.record": "乐器",
+
+
     "button.genshinstrument.instrumentOptions": "乐器选项",
-    "label.genshinstrument.midiOptions": "MIDI选项",
+    "label.genshinstrument.midiOptions": "MIDI 选项",
     "label.genshinstrument.zither_options": "镜花之琴选项",
     "label.genshinstrument.vintage_lyre_options": "老旧的诗琴选项",
+
     "genshinstrument.genshin_disclaimer.title": "免责声明！",
-    "genshinstrument.genshin_disclaimer.content": "Genshin Instruments是一款%s、%s的Minecraft模组，与原作原神和HoYoverse没有任何关联。\n因此，所有在游戏中使用的原神相关素材，包括声音、图像和乐器等，均是HoYoverse完整拥有。\n作为用户，在游戏中的所有操作，包括但不限于演奏和分享/发布任何可能受版权法保护的歌曲，都由您自行承担全部责任。",
+    "genshinstrument.genshin_disclaimer.content": "Genshin Instruments 是一个并非隶属于《原神》游戏或米哈游公司的 %s 的 %s Minecraft 模组。\n\n因此，本模组中的所有来自《原神》的素材（包括但不限于声音、图像、乐器），版权均为米哈游所有。\n\n作为用户，您对您在游戏中的行为负有全部责任。您在使用演奏功能时，提请您使用原创曲目或取得相关授权，以避免伤害第三方权益，或出现其他禁止或不适宜内容。",
     "genshinstrument.genshin_disclaimer.bolden1": "非官方",
-    "genshinstrument.genshin_disclaimer.bolden2": "由粉丝制作",
-    "button.genshinstrument.audioChannels": "乐器音频通道类型",
+    "genshinstrument.genshin_disclaimer.bolden2": "同人制作",
+
+
+    "button.genshinstrument.audioChannels": "乐器音频声道类型",
     "button.genshinstrument.audioChannels.mono": "单声道",
     "button.genshinstrument.audioChannels.stereo": "立体声",
-    "button.genshinstrument.audioChannels.stereo.tooltip": "注意：由于OpenAL的某些繁琐规格，所有使用立体声产生的音频将被固定在100%。\n其中包括一些乐器。",
-    "button.genshinstrument.audioChannels.mixed.tooltip": "如果乐器声音类别设置为100％，则您将在%s范围内听到立体声乐器。\n否则，您将听到单声道。",
-    "button.genshinstrument.audioChannels.mixed": "混合声道",
-    "button.genshinstrument.stop_music_on_play.tooltip": "当您或其他在%s范围内的玩家演奏乐器时，Minecraft的背景音乐将停止。",
-    "button.genshinstrument.stop_music_on_play": "演奏时停止音乐",
-    "button.genshinstrument.shared_instrument.tooltip": "在乐器屏幕上查看附近玩家演奏的音符",
-    "button.genshinstrument.shared_instrument": "共享乐器屏幕",
-    "button.genshinstrument.render_background": "显示背景图像",
-    "button.genshinstrument.accurate_notes": "准确的音符",
-    "button.genshinstrument.accurate_notes.tooltip": "开启后，以该乐器布局使用的音符符号和变音符号为基础提供准确的音高表示",
-    "button.genshinstrument.midiEnabled": "启用MIDI",
-    "button.genshinstrument.midiDevice": "MIDI设备",
-    "button.genshinstrument.fixedTouch": "固定按键音量",
-    "button.genshinstrument.fixedTouch.tooltip": "定义按键强度是否会影响乐器的音量",
+    "button.genshinstrument.audioChannels.stereo.tooltip":
+    "注意：由于 OpenAL 的一些烦人的设定，所有采用“立体声”模式输出的声音音量大小会保持在 100%，包括乐器声音。",
+    "button.genshinstrument.audioChannels.mixed.tooltip":
+    "如果“乐器”类别音量设置为 100%，您会在 %s 格范围内以立体声模式听到乐器声音。否则您会听到单声道声音。",
+    "button.genshinstrument.audioChannels.mixed": "混合",
+    "button.genshinstrument.stop_music_on_play.tooltip": "当您或其他玩家在 %s 格范围内演奏乐器，Minecraft 的背景音乐会停止播放。",
+    "button.genshinstrument.stop_music_on_play": "在演奏时停止背景音乐",
+    "button.genshinstrument.shared_instrument.tooltip": "在您的乐器界面看见附近其他玩家正在演奏的音符",
+    "button.genshinstrument.shared_instrument": "共享乐器界面",
+
+    "button.genshinstrument.render_background": "显示五线谱背景",
+    "button.genshinstrument.accurate_notes": "不显示音符的升降号",
+    "button.genshinstrument.accurate_notes.tooltip": "该选项打开后，将不会在音符标签显示升号或降号。",
+
+
+    "button.genshinstrument.midiEnabled": "MIDI 已启用",
+    "button.genshinstrument.midiDevice": "MIDI 设备",
+
+    "button.genshinstrument.fixedTouch": "固定的力度",
+    "button.genshinstrument.fixedTouch.tooltip": "该选项决定音符敲击速度是否会影响乐器的音量。",
     "button.genshinstrument.inputSensitivity": "灵敏度",
-    "button.genshinstrument.extendOctaves": "扩展八度",
-    "button.genshinstrument.extendOctaves.tooltip": "当演奏的音符超出了通常的八度音域时，会自动调整音高以匹配您的演奏。每侧最多只能扩展1个八度：高C和低C。\n怪Minecraft。",
-    "button.genshinstrument.midiOctaveShift": "八度移位",
-    "button.genshinstrument.midiChannel": "MIDI通道",
+
+    "button.genshinstrument.extendOctaves": "扩展音程",
+    "button.genshinstrument.extendOctaves.tooltip": "当演奏高于或低于通常八度范围的音符时，将自动调整音高以匹配您的演奏。每边最多只能扩展 1 个八度音程：高音 C 和低音 C。这是 Minecraft 的问题。",
+
+    "button.genshinstrument.midiOctaveShift": "八度音程移位",
+    "button.genshinstrument.midiChannel": "MIDI 通道",
     "button.genshinstrument.acceptAllChannels": "监听所有通道",
+
+
     "button.genshinstrument.dominantDrumType": "主鼓类型",
-    "button.genshinstrument.dominantDrumType.both": "两个",
-    "button.genshinstrument.dominantDrumType.both.tooltip": "MIDI键盘将在中央C处分裂，低C播放Don，高音C则是Ka",
-    "button.genshinstrument.dominantDrumType.don.tooltip": "整个键盘都播放Don",
-    "button.genshinstrument.dominantDrumType.ka.tooltip": "整个键盘都播放Ka",
-    "button.genshinstrument.normalize_vintage_lyre": "规范化老旧的诗琴",
-    "button.genshinstrument.normalize_vintage_lyre.tooltip": "规范化老旧的诗琴中的所有被降调的音符。不适用于最大音高。",
+    "button.genshinstrument.dominantDrumType.both": "两种",
+
+    "button.genshinstrument.dominantDrumType.both.tooltip": "MIDI 键盘将以中音 C 为界分为两部分，这样低音区会播放“咚”（don），高音区会播放“咔”（ka）",
+    "button.genshinstrument.dominantDrumType.don.tooltip": "整个键盘都播放“咚”（don）",
+    "button.genshinstrument.dominantDrumType.ka.tooltip": "整个键盘都播放“咔”（ka）",
+
+
+    "button.genshinstrument.normalize_vintage_lyre": "将老旧的诗琴调整为标准音",
+    "button.genshinstrument.normalize_vintage_lyre.tooltip": "将老旧的诗琴的所有音符调整为不带升降的标准音。不会应用于最高音调。",
+
+
     "button.none": "无",
+
+
+
     "button.genshinstrument.label": "音符标签类型",
-    "button.genshinstrument.pitch": "音高",
+    "button.genshinstrument.pitch": "音调",
     "button.genshinstrument.volume": "乐器音量",
+
     "button.genshinstrument.zither.soundType": "声音类型",
-    "button.genshinstrument.zither.soundType.old": "旧的",
-    "button.genshinstrument.zither.soundType.new": "新的",
-    "button.genshinstrument.label.do_re_mi": "哆 来 咪",
-    "genshinstrument.label.do": "哆",
-    "genshinstrument.label.re": "来",
-    "genshinstrument.label.mi": "咪",
-    "genshinstrument.label.fa": "发",
-    "genshinstrument.label.so": "索",
-    "genshinstrument.label.la": "拉",
-    "genshinstrument.label.ti": "西",
+    "button.genshinstrument.zither.soundType.old": "旧版",
+    "button.genshinstrument.zither.soundType.new": "新版",
+
+
+    "button.genshinstrument.label.do_re_mi": "do re mi",
+    "button.genshinstrument.label.do_re_mi.description": "按音符的唱名（do re mi）作为标签",
+
+    "genshinstrument.label.do": "do",
+    "genshinstrument.label.re": "re",
+    "genshinstrument.label.mi": "mi",
+    "genshinstrument.label.fa": "fa",
+    "genshinstrument.label.so": "so",
+    "genshinstrument.label.la": "la",
+    "genshinstrument.label.ti": "ti",
+
     "genshinstrument.label.glorious_drum.ka": "ka",
     "genshinstrument.label.glorious_drum.don": "don",
+
+
     "button.genshinstrument.label.keyboard_layout": "键盘",
-    "button.genshinstrument.label.qwerty": "键盘QWERTY",
-    "button.genshinstrument.label.fixed_abc": "固定ABC",
-    "button.genshinstrument.label.fixed_do_re_mi": "固定 哆 来 咪",
-    "button.genshinstrument.label.none": "没有标签",
-    "button.genshinstrument.label.don_ka": "Don-Ka",
-    "genshinstrument.advancements.main.root.title": "吟游诗人之旅",
-    "genshinstrument.advancements.main.root.description": "虽然酒可能不在您身边，但这些乐器将始终引领您通过自由之游戏。",
-    "genshinstrument.advancements.main.master.title": "独奏乐团",
-    "genshinstrument.advancements.main.master.description": "一次拥有所有乐器",
-    "genshinstrument.advancements.main.windsong_lyre.title": "风声响起",
+    "button.genshinstrument.label.keyboard_layout.description": "以您的本地键盘布局对应的键位作为标签",
+    "button.genshinstrument.label.qwerty": "键盘（QWERTY）",
+    "button.genshinstrument.label.qwerty.description": "以 QWERTY 键盘布局对应的键位作为标签",
+    "button.genshinstrument.label.note_name": "ABC",
+    "button.genshinstrument.label.note_name.description": "按音符的音名（ABC）作为标签",
+
+    "button.genshinstrument.label.fixed_abc": "固定 ABC",
+    "button.genshinstrument.label.fixed_abc.description": "按音符的音名（ABC）作为标签，但不受自定义移调设置影响",
+    "button.genshinstrument.label.fixed_do_re_mi": "固定 do re mi",
+    "button.genshinstrument.label.fixed_do_re_mi.description": "按音符的唱名（do re mi）作为标签，但不受自定义移调设置影响",
+
+    "button.genshinstrument.label.none": "无标签",
+    "button.genshinstrument.label.none.description": "",
+
+    "button.genshinstrument.label.don_ka": "don和ka",
+
+
+
+    "genshinstrument.advancements.main.root.title": "吟游诗人的旅程",
+    "genshinstrument.advancements.main.root.description": "即使没有佳酿相伴，在自由之游戏里的旅途中，这些乐器也将伴随着您。",
+
+    "genshinstrument.advancements.main.master.title": "一人乐队",
+    "genshinstrument.advancements.main.master.description": "在物品栏里同时持有所有乐器",
+
+    "genshinstrument.advancements.main.windsong_lyre.title": "且听风吟",
     "genshinstrument.advancements.main.windsong_lyre.description": "奏响风物之诗琴",
-    "genshinstrument.advancements.main.vintage_lyre.title": "须弥的记忆",
-    "genshinstrument.advancements.main.vintage_lyre.description": "奏响古老之诗琴",
-    "genshinstrument.advancements.main.glorious_drum.title": "绝非骗局",
+
+    "genshinstrument.advancements.main.vintage_lyre.title": "森林会记住一切",
+    "genshinstrument.advancements.main.vintage_lyre.description": "奏响老旧的诗琴",
+
+    "genshinstrument.advancements.main.glorious_drum.title": "捡到大便宜了！",
     "genshinstrument.advancements.main.glorious_drum.description": "奏响荒泷·盛世豪鼓",
+
     "genshinstrument.advancements.main.floral_zither.title": "镜花水月",
-    "genshinstrument.advancements.main.floral_zither.description": "奏响镜花之琴"
+    "genshinstrument.advancements.main.floral_zither.description": "奏响镜花之琴",
+
+    "genshinstrument.advancements.main.nightwind_horn.title": "不歇的摇滚夜之尾",
+    "genshinstrument.advancements.main.nightwind_horn.description": "奏响晚风圆号"
+
 }
