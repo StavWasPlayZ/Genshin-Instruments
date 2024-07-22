@@ -99,7 +99,7 @@ public record HeldNoteSound(
             final Player player = level.getPlayerByUUID(initiatorUUID.get());
 
             MinecraftForge.EVENT_BUS.post(
-                new HeldNoteSoundPlayedEvent.ByPlayer(player, this, meta, phase)
+                new HeldNoteSoundPlayedEvent(player, this, meta, phase)
             );
 
             // Don't play sound for ourselves

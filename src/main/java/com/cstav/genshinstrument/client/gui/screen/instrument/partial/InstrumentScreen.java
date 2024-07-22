@@ -389,8 +389,8 @@ public abstract class InstrumentScreen extends Screen {
         try {
 
             getNoteButton(
-                event.soundMeta.noteIdentifier(),
-                e.sound, event.soundMeta.pitch()
+                event.soundMeta().noteIdentifier(),
+                e.sound(), event.soundMeta().pitch()
             ).playNoteAnimation(true);
 
         } catch (Exception ignore) {

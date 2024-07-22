@@ -53,7 +53,7 @@ public class HeldNoteSoundPacketUtil {
         InstrumentPacketUtil.sendPlayerPlayNotePackets(initiator, sound, soundMeta, notePacketDelegate.toReg(phase));
 
         MinecraftForge.EVENT_BUS.post(
-            new HeldNoteSoundPlayedEvent.ByPlayer(initiator, sound, soundMeta, phase)
+            new HeldNoteSoundPlayedEvent(initiator, sound, soundMeta, phase)
         );
     }
 

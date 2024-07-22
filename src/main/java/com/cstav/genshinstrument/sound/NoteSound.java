@@ -158,7 +158,7 @@ public class NoteSound {
 
         MinecraftForge.EVENT_BUS.post(initiator == null
             ? new NoteSoundPlayedEvent(level, this, meta)
-            : new NoteSoundPlayedEvent.ByPlayer(initiator, this, meta)
+            : new NoteSoundPlayedEvent(initiator, this, meta)
         );
 
 

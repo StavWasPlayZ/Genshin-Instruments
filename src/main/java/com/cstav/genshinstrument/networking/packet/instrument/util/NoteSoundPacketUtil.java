@@ -42,7 +42,7 @@ public class NoteSoundPacketUtil {
         InstrumentPacketUtil.sendPlayerPlayNotePackets(initiator, sound, soundMeta, notePacketDelegate);
 
         MinecraftForge.EVENT_BUS.post(
-            new NoteSoundPlayedEvent.ByPlayer(initiator, sound, soundMeta)
+            new NoteSoundPlayedEvent(initiator, sound, soundMeta)
         );
     }
 

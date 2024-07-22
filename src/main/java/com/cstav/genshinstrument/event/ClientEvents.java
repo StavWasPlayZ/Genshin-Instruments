@@ -6,7 +6,6 @@ import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvide
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.midi.MidiController;
-import com.cstav.genshinstrument.event.InstrumentPlayedEvent.IByPlayer;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSounds;
 import net.minecraft.client.Minecraft;
@@ -47,10 +46,9 @@ public class ClientEvents {
 
 
         final Block block = player.level().getBlockState(InstrumentOpenProvider.getBlockPos(player)).getBlock();
-        if (!(block instanceof AbstractInstrumentBlock))
+        if (!(block instanceof AbstractInstrumentBlock instrumentBlock))
             return;
 
-        final AbstractInstrumentBlock instrumentBlock = (AbstractInstrumentBlock) block;
         final PlayerModel<AbstractClientPlayer> model = event.getRenderer().getModel();
         model.leftArmPose = model.rightArmPose = instrumentBlock.getClientBlockArmPose();
     }
@@ -59,19 +57,21 @@ public class ClientEvents {
     // Responsible for showing the notes other players play
     @SubscribeEvent
     public static void onInstrumentPlayed(final InstrumentPlayedEvent<?> event) {
-        if (!event.level.isClientSide)
+        if (!event.level().isClientSide)
             return;
         if (!ModClientConfigs.SHARED_INSTRUMENT.get())
             return;
 
         // If this sound was produced by a player, and that player is ourselves - omit.
-        if (
-            (event instanceof InstrumentPlayedEvent.IByPlayer)
-            && ((IByPlayer<?>)(event)).getPlayer().equals(MINECRAFT.player)
-        ) return;
+        if (event.playerInfo().isPresent()) {
+            final Player initiator = event.playerInfo().get().player;
+
+            if (initiator.equals(MINECRAFT.player))
+                return;
+        }
 
         // Only show play notes in the local range
-        if (!event.soundMeta.pos().closerThan(MINECRAFT.player.blockPosition(), NoteSound.LOCAL_RANGE))
+        if (!event.soundMeta().pos().closerThan(MINECRAFT.player.blockPosition(), NoteSound.LOCAL_RANGE))
             return;
 
 
@@ -80,8 +80,8 @@ public class ClientEvents {
             // If the note identifier is empty, it matters not - as the check
             // will be performed on the sound itself, which is bound to be unique for every note.
             .filter((screen) ->
-                event.soundMeta.noteIdentifier().isEmpty()
-                || screen.getInstrumentId().equals(event.soundMeta.instrumentId())
+                event.soundMeta().noteIdentifier().isEmpty()
+                || screen.getInstrumentId().equals(event.soundMeta().instrumentId())
             )
             .ifPresent((screen) -> screen.foreignPlay(event));
     }

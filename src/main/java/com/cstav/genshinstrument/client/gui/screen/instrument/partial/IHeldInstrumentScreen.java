@@ -25,9 +25,9 @@ public interface IHeldInstrumentScreen {
         try {
 
             final NoteButton note = asScreen().getNoteButton(
-                event.soundMeta.noteIdentifier(),
-                e.sound.getSound(Phase.ATTACK),
-                event.soundMeta.pitch()
+                event.soundMeta().noteIdentifier(),
+                e.sound().getSound(Phase.ATTACK),
+                event.soundMeta().pitch()
             );
 
             final IHoldableNoteButton heldNote = (IHoldableNoteButton) note;

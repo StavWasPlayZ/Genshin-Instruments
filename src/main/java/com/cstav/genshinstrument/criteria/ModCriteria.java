@@ -19,19 +19,19 @@ public class ModCriteria {
 
     @SubscribeEvent
     public static void onInstrumentPlayed(final InstrumentPlayedEvent<?> event) {
-        if (event.level.isClientSide)
+        if (event.level().isClientSide)
             return;
         // Only get player events
-        if (!(event instanceof InstrumentPlayedEvent.IByPlayer<?> e))
+        if (event.playerInfo().isEmpty())
             return;
 
-        final Item instrument = ForgeRegistries.ITEMS.getValue(event.soundMeta.instrumentId());
+        final Item instrument = ForgeRegistries.ITEMS.getValue(event.soundMeta().instrumentId());
         // Perhaps troll packets
         if (instrument == null)
             return;
 
         INSTRUMENT_PLAYED_TRIGGER.trigger(
-            (ServerPlayer) e.getPlayer(),
+            (ServerPlayer) event.playerInfo().get().player,
             new ItemStack(instrument)
         );
     }
