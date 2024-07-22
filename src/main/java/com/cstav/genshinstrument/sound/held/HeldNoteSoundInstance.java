@@ -42,8 +42,6 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
                                     int notePitch, float volume,
                                     @Nullable Player initiator, @Nullable BlockPos soundOrigin,
                                     int timeAlive, boolean released) {
-        //TODO get new parameters: initiator, soundOrigin, update new constructors,
-        // handle the new packets.
         super(
             heldSoundContainer.getSound(phase).getByPreference(
                 Minecraft.getInstance().player.position().distanceTo(
