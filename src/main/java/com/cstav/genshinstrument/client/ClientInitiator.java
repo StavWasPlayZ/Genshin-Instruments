@@ -33,7 +33,6 @@ public class ClientInitiator {
         CommonUtil.loadClasses(LOAD_ME);
     }
 
-    //TODO figure out why overrides do not work
     @SubscribeEvent
     public static void modelLoadEvent(final ModelEvent.RegisterGeometryLoaders event) {
         event.register("separate_transforms", SeparateTransformsModel.Loader.INSTANCE);
