@@ -1,7 +1,7 @@
 package com.cstav.genshinstrument.networking.packet.instrument.s2c;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
-import com.cstav.genshinstrument.event.InstrumentOpenStateEvent;
+import com.cstav.genshinstrument.event.InstrumentOpenStateChangedEvent;
 import com.cstav.genshinstrument.networking.IModPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -94,7 +94,7 @@ public class NotifyInstrumentOpenPacket implements IModPacket {
             InstrumentOpenProvider.setClosed(player);
         }
 
-        MinecraftForge.EVENT_BUS.post(new InstrumentOpenStateEvent(isOpen, player, pos, hand));
+        MinecraftForge.EVENT_BUS.post(new InstrumentOpenStateChangedEvent(isOpen, player, pos, hand));
     }
     
 }

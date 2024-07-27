@@ -14,7 +14,7 @@ import java.util.Optional;
  * screen has changed. Called on the server-side Forge event bus.
  */
 @OnlyIn(Dist.CLIENT)
-public class InstrumentOpenStateEvent extends Event {
+public class InstrumentOpenStateChangedEvent extends Event {
     public final boolean isOpen;
     public final Player player;
 
@@ -27,7 +27,7 @@ public class InstrumentOpenStateEvent extends Event {
      */
     public final Optional<InteractionHand> hand;
 
-    public InstrumentOpenStateEvent(boolean isOpen, Player player, Optional<BlockPos> pos, Optional<InteractionHand> hand) {
+    public InstrumentOpenStateChangedEvent(boolean isOpen, Player player, Optional<BlockPos> pos, Optional<InteractionHand> hand) {
         this.isOpen = isOpen;
         this.player = player;
         this.pos = pos;
