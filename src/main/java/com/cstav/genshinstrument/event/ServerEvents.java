@@ -35,7 +35,7 @@ public abstract class ServerEvents {
     }
 
     @SubscribeEvent
-    public static void onInstrumentScreenClosed(final InstrumentOpenStateChangedEvent event) {
+    public static void onInstrumentScreenOpenStateChanged(final InstrumentOpenStateChangedEvent event) {
         if (!event.isOpen) {
             // Remove their potential entry over at HeldNoteSounds
             HeldNoteSounds.release(HeldNoteSounds.getInitiatorId(event.player));
