@@ -22,7 +22,7 @@ public class ModCriteria {
         if (event.level().isClientSide)
             return;
         // Only get player events
-        if (event.playerInfo().isEmpty())
+        if (event.entityInfo().isEmpty())
             return;
 
         final Item instrument = ForgeRegistries.ITEMS.getValue(event.soundMeta().instrumentId());
@@ -31,7 +31,7 @@ public class ModCriteria {
             return;
 
         INSTRUMENT_PLAYED_TRIGGER.trigger(
-            (ServerPlayer) event.playerInfo().get().player,
+            (ServerPlayer) event.entityInfo().get().entity,
             new ItemStack(instrument)
         );
     }

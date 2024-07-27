@@ -4,6 +4,7 @@ import com.cstav.genshinstrument.block.partial.InstrumentBlockEntity;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.Cancelable;
@@ -26,7 +27,7 @@ public abstract class InstrumentPlayedEvent<T> extends Event {
      * Information about the player initiator.
      * Present if there is indeed a player initiator.
      */
-    private final Optional<ByPlayerArgs> playerInfo;
+    private final Optional<ByEntityArgs> entityInfo;
 
 
     /**
@@ -37,18 +38,18 @@ public abstract class InstrumentPlayedEvent<T> extends Event {
         this.sound = sound;
         this.soundMeta = soundMeta;
 
-        this.playerInfo = Optional.empty();
+        this.entityInfo = Optional.empty();
     }
 
     /**
-     * Constructor for creating a by-player event
+     * Constructor for creating a by-entity event
      */
-    public InstrumentPlayedEvent(Player player, T sound, NoteSoundMetadata soundMeta) {
-        this.level = player.level();
+    public InstrumentPlayedEvent(Entity entity, T sound, NoteSoundMetadata soundMeta) {
+        this.level = entity.level();
         this.sound = sound;
         this.soundMeta = soundMeta;
 
-        this.playerInfo = Optional.of(new ByPlayerArgs(player));
+        this.entityInfo = Optional.of(new ByEntityArgs(entity));
     }
 
 
@@ -61,8 +62,8 @@ public abstract class InstrumentPlayedEvent<T> extends Event {
     public Level level() {
         return level;
     }
-    public Optional<ByPlayerArgs> playerInfo() {
-        return playerInfo;
+    public Optional<ByEntityArgs> entityInfo() {
+        return entityInfo;
     }
 
     /**
@@ -78,16 +79,25 @@ public abstract class InstrumentPlayedEvent<T> extends Event {
      * An object containing information
      * about the player who initiated the event
      */
-    public class ByPlayerArgs {
-        public final Player player;
+    public class ByEntityArgs {
+        public final Entity entity;
+
+        /**
+         * The hand carrying the <b>item</b> instrument.
+         * Empty for when not played by an instrument
+         * or is not a player.
+         */
         public final Optional<InteractionHand> hand;
 
         protected final InstrumentPlayedEvent<T> baseEvent = InstrumentPlayedEvent.this;
 
-        public ByPlayerArgs(Player player) {
-            this.player = player;
+        public ByEntityArgs(Entity entity) {
+            this.entity = entity;
 
-            if (InstrumentOpenProvider.isItem(player)) {
+            if (
+                (entity instanceof Player player)
+                && (InstrumentOpenProvider.isItem(player))
+            ) {
                 hand = Optional.of(InstrumentOpenProvider.getHand(player));
             } else {
                 hand = Optional.empty();
@@ -97,7 +107,7 @@ public abstract class InstrumentPlayedEvent<T> extends Event {
         /**
          * <p>Returns whether this event was fired by an item instrument.</p>
          * A {@code false} result does NOT indicate a block instrument.
-         * @see ByPlayerArgs#isBlockInstrument
+         * @see ByEntityArgs#isBlockInstrument
          */
         public boolean isItemInstrument() {
             return hand.isPresent();
@@ -105,11 +115,11 @@ public abstract class InstrumentPlayedEvent<T> extends Event {
         /**
          * <p>Returns whether this event was fired by a block instrument.</p>
          * A {@code false} result does NOT indicate an instrument item.
-         * @see ByPlayerArgs#isItemInstrument()
+         * @see ByEntityArgs#isItemInstrument()
          */
         public boolean isBlockInstrument() {
             return !isItemInstrument()
-                && player.level().getBlockEntity(baseEvent.soundMeta.pos())
+                && entity.level().getBlockEntity(baseEvent.soundMeta.pos())
                     instanceof InstrumentBlockEntity;
         }
 

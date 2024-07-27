@@ -11,6 +11,7 @@ import com.cstav.genshinstrument.sound.held.HeldNoteSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
@@ -63,8 +64,8 @@ public class ClientEvents {
             return;
 
         // If this sound was produced by a player, and that player is ourselves - omit.
-        if (event.playerInfo().isPresent()) {
-            final Player initiator = event.playerInfo().get().player;
+        if (event.entityInfo().isPresent()) {
+            final Entity initiator = event.entityInfo().get().entity;
 
             if (initiator.equals(MINECRAFT.player))
                 return;
