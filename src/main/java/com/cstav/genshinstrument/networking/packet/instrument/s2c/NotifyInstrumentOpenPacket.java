@@ -1,13 +1,14 @@
 package com.cstav.genshinstrument.networking.packet.instrument.s2c;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
+import com.cstav.genshinstrument.event.InstrumentOpenStateEvent;
 import com.cstav.genshinstrument.networking.IModPacket;
-import com.cstav.genshinstrument.sound.held.HeldNoteSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent.Context;
 
@@ -91,10 +92,9 @@ public class NotifyInstrumentOpenPacket implements IModPacket {
 
         } else {
             InstrumentOpenProvider.setClosed(player);
-            // Also remove their potential entry over at HeldNoteSounds
-            //TODO Extract as an "instrument closed" event and apply elsewhere
-            HeldNoteSounds.release(HeldNoteSounds.getInitiatorId(player));
         }
+
+        MinecraftForge.EVENT_BUS.post(new InstrumentOpenStateEvent(isOpen, player, pos, hand));
     }
     
 }
