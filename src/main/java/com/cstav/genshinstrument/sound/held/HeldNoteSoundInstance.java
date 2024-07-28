@@ -70,7 +70,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
                 y = loc.getY();
                 z = loc.getZ();
             },
-            this::updatePlayerPos
+            this::updateInitiatorPos
         );
 
         this.volume = volume;
@@ -135,7 +135,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
     protected int timeAlive = 0, overallTimeAlive;
     @Override
     public void tick() {
-        updatePlayerPos();
+        updateInitiatorPos();
 
         handleChainHolding();
 
@@ -199,7 +199,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
         ).queueAndAddInstance();
     }
 
-    protected void updatePlayerPos() {
+    protected void updateInitiatorPos() {
         if (soundOrigin.isPresent() || initiator.isEmpty())
             return;
 
