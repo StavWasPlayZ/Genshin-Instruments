@@ -8,7 +8,6 @@ import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
@@ -21,7 +20,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
     public final HeldNoteSound.Phase phase;
 
     public final Optional<Entity> initiator;
-    public final String initiatorId;
+    public final InitiatorID initiatorId;
 
     /**
      * The origin of the sound. May be empty
@@ -53,7 +52,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
         );
 
 
-        initiatorId = HeldNoteSounds.getInitiatorId(
+        initiatorId = InitiatorID.fromObj(
             (soundOrigin == null) ? initiator : soundOrigin
         );
 
@@ -82,7 +81,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
      */
     public HeldNoteSoundInstance(HeldNoteSound heldSoundContainer, HeldNoteSound.Phase phase,
                                  int notePitch, float volume,
-                                 @Nullable Player initiator, @Nullable BlockPos soundOrigin) {
+                                 @Nullable Entity initiator, @Nullable BlockPos soundOrigin) {
         this(heldSoundContainer, phase, notePitch, volume, initiator, soundOrigin, 0, false);
     }
     /**

@@ -6,7 +6,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent.Context;
 
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * A S2C packet notifying the client to play
@@ -15,11 +14,11 @@ import java.util.UUID;
 public class S2CNoteSoundPacket extends S2CNotePacket<NoteSound> {
     /**
      * Constructs a new {@link S2CNoteSoundPacket}.
-     * @param initiatorUUID The UUID of the player initiating the sound.
+     * @param initiatorID The UUID of the player initiating the sound.
      *                      May be empty for a non-player trigger.
      */
-    public S2CNoteSoundPacket(Optional<UUID> initiatorUUID, NoteSound sound, NoteSoundMetadata meta) {
-        super(initiatorUUID, sound, meta);
+    public S2CNoteSoundPacket(Optional<Integer> initiatorID, NoteSound sound, NoteSoundMetadata meta) {
+        super(initiatorID, sound, meta);
     }
     public S2CNoteSoundPacket(FriendlyByteBuf buf) {
         super(buf);
@@ -36,6 +35,6 @@ public class S2CNoteSoundPacket extends S2CNotePacket<NoteSound> {
 
     @Override
     public void handle(final Context context) {
-        sound.playFromServer(initiatorUUID, meta);
+        sound.playFromServer(initiatorID, meta);
     }
 }

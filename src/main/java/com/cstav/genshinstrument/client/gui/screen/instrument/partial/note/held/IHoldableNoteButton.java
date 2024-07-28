@@ -8,6 +8,7 @@ import com.cstav.genshinstrument.networking.packet.instrument.util.HeldSoundPhas
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSounds;
+import com.cstav.genshinstrument.sound.held.InitiatorID;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -32,7 +33,7 @@ public interface IHoldableNoteButton {
      * @param heldSound The sound being released
      */
     default void releaseHeld(int notePitch, boolean targetPitch, HeldNoteSound heldSound) {
-        final String initiatorId = HeldNoteSounds.getInitiatorId(Minecraft.getInstance().player);
+        final InitiatorID initiatorId = InitiatorID.fromObj(Minecraft.getInstance().player);
 
         if (targetPitch) {
             HeldNoteSounds.release(initiatorId, heldSound, notePitch);

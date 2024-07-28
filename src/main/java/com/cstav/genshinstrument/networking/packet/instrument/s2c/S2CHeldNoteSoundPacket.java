@@ -7,7 +7,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent.Context;
 
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * A S2C packet notifying the client to play
@@ -19,12 +18,12 @@ public class S2CHeldNoteSoundPacket extends S2CNotePacket<HeldNoteSound> {
 
     /**
      * Constructs a new {@link S2CHeldNoteSoundPacket}.
-     * @param initiatorUUID The UUID of the player initiating the sound.
+     * @param initiatorID The UUID of the player initiating the sound.
      *                      May be empty for a non-player trigger.
      */
-    public S2CHeldNoteSoundPacket(Optional<UUID> initiatorUUID, HeldNoteSound sound, NoteSoundMetadata meta,
+    public S2CHeldNoteSoundPacket(Optional<Integer> initiatorID, HeldNoteSound sound, NoteSoundMetadata meta,
                                   HeldSoundPhase phase) {
-        super(initiatorUUID, sound, meta);
+        super(initiatorID, sound, meta);
         this.phase = phase;
     }
 
@@ -50,6 +49,6 @@ public class S2CHeldNoteSoundPacket extends S2CNotePacket<HeldNoteSound> {
 
     @Override
     public void handle(final Context context) {
-        sound.playFromServer(initiatorUUID, meta, phase);
+        sound.playFromServer(initiatorID, meta, phase);
     }
 }

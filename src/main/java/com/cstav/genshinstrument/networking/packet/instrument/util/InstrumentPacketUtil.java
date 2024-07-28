@@ -44,7 +44,7 @@ public class InstrumentPacketUtil {
                                                  S2CNotePacketDelegate<T> notePacketDelegate) {
 
         final S2CNotePacket<T> packet = notePacketDelegate.create(
-            Optional.of(initiator.getUUID()), sound, soundMeta
+            Optional.of(initiator.getId()), sound, soundMeta
         );
 
         for (final Player listener : InstrumentPacketUtil.noteListeners(initiator.level(), soundMeta.pos()))

@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
@@ -17,7 +18,6 @@ import net.minecraftforge.common.MinecraftForge;
 
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * A container for {@link NoteSound}s that act together
@@ -52,7 +52,7 @@ public record HeldNoteSound(
      * A held note sound instance for 3rd party trigger
      */
     @OnlyIn(Dist.CLIENT)
-    public void startPlaying(int notePitch, float volume, Player initiator, BlockPos pos) {
+    public void startPlaying(int notePitch, float volume, Entity initiator, BlockPos pos) {
         new HeldNoteSoundInstance(
             this, Phase.ATTACK,
             notePitch, volume,
@@ -63,7 +63,7 @@ public record HeldNoteSound(
      * A held note sound instance for 3rd party trigger
      */
     @OnlyIn(Dist.CLIENT)
-    public void startPlaying(int notePitch, float volume, Player initiator) {
+    public void startPlaying(int notePitch, float volume, Entity initiator) {
         startPlaying(notePitch, volume, initiator, null);
     }
     /**
@@ -87,23 +87,23 @@ public record HeldNoteSound(
     /**
      * A method for packets to use for playing this note on the client's end.
      * Will also stop the client's background music per preference.
-     * @param initiatorUUID The UUID of the player who initiated the sound. Empty for when it wasn't a player.
+     * @param initiatorID The UUID of the player who initiated the sound. Empty for when it wasn't a player.
      * @param meta Additional metadata of the Note Sound being played
      */
     @OnlyIn(Dist.CLIENT)
-    public void playFromServer(Optional<UUID> initiatorUUID, NoteSoundMetadata meta, HeldSoundPhase phase) {
+    public void playFromServer(Optional<Integer> initiatorID, NoteSoundMetadata meta, HeldSoundPhase phase) {
         final Player localPlayer = Minecraft.getInstance().player;
         final Level level = localPlayer.level();
 
-        if (initiatorUUID.isPresent()) {
-            final Player player = level.getPlayerByUUID(initiatorUUID.get());
+        if (initiatorID.isPresent()) {
+            final Entity initiator = level.getEntity(initiatorID.get());
 
             MinecraftForge.EVENT_BUS.post(
-                new HeldNoteSoundPlayedEvent(player, this, meta, phase)
+                new HeldNoteSoundPlayedEvent(initiator, this, meta, phase)
             );
 
             // Don't play sound for ourselves
-            if (localPlayer.equals(player))
+            if (localPlayer.equals(initiator))
                 return;
         }
 
@@ -112,28 +112,30 @@ public record HeldNoteSound(
         );
 
         switch (phase) {
-            case ATTACK -> attackFromServer(initiatorUUID, meta);
-            case RELEASE -> releaseFromServer(initiatorUUID, meta);
+            case ATTACK -> attackFromServer(initiatorID, meta);
+            case RELEASE -> releaseFromServer(initiatorID, meta);
         }
     }
     @OnlyIn(Dist.CLIENT)
-    private void attackFromServer(Optional<UUID> initiatorUUID, NoteSoundMetadata meta) {
-        initiatorUUID.ifPresentOrElse(
+    private void attackFromServer(Optional<Integer> initiatorID, NoteSoundMetadata meta) {
+        initiatorID.ifPresentOrElse(
             // Sound was played by player
-            (uuid) -> startPlaying(
+            (id) -> startPlaying(
                 meta.pitch(), meta.volume() / 100f,
-                Minecraft.getInstance().level.getPlayerByUUID(uuid)
+                Minecraft.getInstance().level.getEntity(id)
             ),
             // Sound is by some other thing
             () -> startPlaying(meta.pitch(), meta.volume(), meta.pos())
         );
     }
     @OnlyIn(Dist.CLIENT)
-    private void releaseFromServer(Optional<UUID> initiatorUUID, NoteSoundMetadata meta) {
+    private void releaseFromServer(Optional<Integer> initiatorID, NoteSoundMetadata meta) {
         HeldNoteSounds.release(
-            HeldNoteSounds.getInitiatorId(
-                initiatorUUID.map(UUID::toString)
-                    .orElseGet(meta.pos()::toString)
+            InitiatorID.fromObj(
+                initiatorID
+                    .map(Minecraft.getInstance().level::getEntity)
+                    .map((id) -> (Object) id)
+                    .orElse(meta.pos())
             ),
             this, meta.pitch()
         );

@@ -3,7 +3,7 @@ package com.cstav.genshinstrument.event;
 import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
 import com.cstav.genshinstrument.networking.packet.instrument.util.HeldSoundPhase;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.Cancelable;
 
@@ -19,8 +19,8 @@ public class HeldNoteSoundPlayedEvent extends InstrumentPlayedEvent<HeldNoteSoun
         super(level, sound, soundMeta);
         this.phase = phase;
     }
-    public HeldNoteSoundPlayedEvent(Player player, HeldNoteSound sound, NoteSoundMetadata soundMeta, HeldSoundPhase phase) {
-        super(player, sound, soundMeta);
+    public HeldNoteSoundPlayedEvent(Entity initiator, HeldNoteSound sound, NoteSoundMetadata soundMeta, HeldSoundPhase phase) {
+        super(initiator, sound, soundMeta);
         this.phase = phase;
     }
 }

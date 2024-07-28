@@ -2,7 +2,7 @@ package com.cstav.genshinstrument.event;
 
 import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
 import com.cstav.genshinstrument.sound.NoteSound;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.Cancelable;
 
@@ -16,7 +16,7 @@ public class NoteSoundPlayedEvent extends InstrumentPlayedEvent<NoteSound> {
         super(level, sound, soundMeta);
     }
 
-    public NoteSoundPlayedEvent(Player player, NoteSound sound, NoteSoundMetadata soundMeta) {
-        super(player, sound, soundMeta);
+    public NoteSoundPlayedEvent(Entity initiator, NoteSound sound, NoteSoundMetadata soundMeta) {
+        super(initiator, sound, soundMeta);
     }
 }

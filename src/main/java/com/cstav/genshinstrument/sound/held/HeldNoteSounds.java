@@ -1,9 +1,7 @@
 package com.cstav.genshinstrument.sound.held;
 
-import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -18,8 +16,7 @@ public abstract class HeldNoteSounds {
      * map of pitches to active note sound instances.
      */
     private static final
-        // Initiator ID
-        Map<String,
+        Map<InitiatorID,
             // Sound key
             Map<HeldNoteSound,
                 // Note pitch
@@ -31,16 +28,6 @@ public abstract class HeldNoteSounds {
         >
         SOUND_INSTANCES = new HashMap<>();
 
-    /**
-     * @return The initiator ID of the provided object.
-     * UUID for an entity, toString for any other,
-     */
-    public static String getInitiatorId(@NotNull Object initiator) {
-        return (initiator instanceof Entity entity)
-            ? entity.getStringUUID()
-            : initiator.toString();
-    }
-
 
     /**
      * Adds a new {@link HeldNoteSoundInstance} to the sounds map.
@@ -48,7 +35,7 @@ public abstract class HeldNoteSounds {
      * @param notePitch The note pitch of the sound instance
      * @param soundInstance The instance to insert
      */
-    public static void put(String initiatorId, HeldNoteSound key, int notePitch, HeldNoteSoundInstance soundInstance) {
+    public static void put(InitiatorID initiatorId, HeldNoteSound key, int notePitch, HeldNoteSoundInstance soundInstance) {
         SOUND_INSTANCES
             .computeIfAbsent(initiatorId, (_k) -> new HashMap<>())
             .computeIfAbsent(key, (_k) -> new HashMap<>())
@@ -104,7 +91,7 @@ public abstract class HeldNoteSounds {
      * Releases all note instances produced by the provided initiator.
       @return The released sounds
      */
-    public static List<HeldNoteSoundInstance> release(String initiatorId) {
+    public static List<HeldNoteSoundInstance> release(InitiatorID initiatorId) {
         if (!SOUND_INSTANCES.containsKey(initiatorId))
             return List.of();
 
@@ -124,7 +111,7 @@ public abstract class HeldNoteSounds {
      * Releases all note instances matching the provided {@code sound}.
       @return The released sounds
      */
-    public static List<HeldNoteSoundInstance> release(String initiatorId, HeldNoteSound sound) {
+    public static List<HeldNoteSoundInstance> release(InitiatorID initiatorId, HeldNoteSound sound) {
         if (!SOUND_INSTANCES.containsKey(initiatorId))
             return List.of();
 
@@ -146,7 +133,7 @@ public abstract class HeldNoteSounds {
      * Releases all note instances matching the provided {@code sound} and {@code pitch}.
       @return The released sounds
      */
-    public static List<HeldNoteSoundInstance> release(String initiatorId, HeldNoteSound sound, int notePitch) {
+    public static List<HeldNoteSoundInstance> release(InitiatorID initiatorId, HeldNoteSound sound, int notePitch) {
         if (!SOUND_INSTANCES.containsKey(initiatorId))
             return List.of();
 
@@ -173,7 +160,7 @@ public abstract class HeldNoteSounds {
      * Removes the specified note sound.
       @return The released sounds
      */
-    public static List<HeldNoteSoundInstance> release(String initiatorId, HeldNoteSound sound, int notePitch,
+    public static List<HeldNoteSoundInstance> release(InitiatorID initiatorId, HeldNoteSound sound, int notePitch,
                                                       HeldNoteSoundInstance soundInstance) {
         if (!SOUND_INSTANCES.containsKey(initiatorId))
             return List.of();
