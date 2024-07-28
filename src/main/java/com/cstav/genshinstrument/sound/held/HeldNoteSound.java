@@ -87,7 +87,7 @@ public record HeldNoteSound(
     /**
      * A method for packets to use for playing this note on the client's end.
      * Will also stop the client's background music per preference.
-     * @param initiatorID The UUID of the player who initiated the sound. Empty for when it wasn't a player.
+     * @param initiatorID The ID of the player who initiated the sound. Empty for when it wasn't a player.
      * @param meta Additional metadata of the Note Sound being played
      */
     @OnlyIn(Dist.CLIENT)

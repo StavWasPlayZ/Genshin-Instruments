@@ -15,8 +15,8 @@ public interface S2CHeldNotePacketDelegate {
      * Construct a new Held Play Note packet.
      * @param sound The sound to play
      * @param meta The sound metadata
-     * @param initiatorID The UUID of the player initiating the sound.
-     *                      May be empty for a non-player trigger.
+     * @param initiatorID The ID of the player initiating the sound.
+     *                    May be empty for a non-player trigger.
      * @param phase The phase for the packet to report
      */
     S2CHeldNoteSoundPacket create(Optional<Integer> initiatorID, HeldNoteSound sound, NoteSoundMetadata meta,

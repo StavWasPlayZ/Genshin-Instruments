@@ -15,8 +15,8 @@ public interface S2CNotePacketDelegate<T> {
      * Construct a new Play Note packet.
      * @param sound The sound to play
      * @param meta The sound metadata
-     * @param initiatorID The UUID of the player initiating the sound.
-     *                      May be empty for a non-player trigger.
+     * @param initiatorID The ID of the player initiating the sound.
+     *                    May be empty for a non-player trigger.
      */
     S2CNotePacket<T> create(Optional<Integer> initiatorID, T sound, NoteSoundMetadata meta);
 }

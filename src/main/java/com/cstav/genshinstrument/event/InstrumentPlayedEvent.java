@@ -24,14 +24,14 @@ public abstract class InstrumentPlayedEvent<T> extends Event {
     private final Level level;
 
     /**
-     * Information about the player initiator.
-     * Present if there is indeed a player initiator.
+     * Information about the entity initiator.
+     * Present if there is indeed an entity initiator.
      */
     private final Optional<ByEntityArgs> entityInfo;
 
 
     /**
-     * Constructor for creating a non-player event
+     * Constructor for creating a non-entity event
      */
     public InstrumentPlayedEvent(Level level, T sound, NoteSoundMetadata soundMeta) {
         this.level = level;
