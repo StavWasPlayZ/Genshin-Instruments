@@ -62,7 +62,16 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
 
         this.initiator = Optional.ofNullable(initiator);
         this.soundOrigin = Optional.ofNullable(soundOrigin);
-        updatePlayerPos();
+
+        // Update position
+        this.soundOrigin.ifPresentOrElse(
+            (loc) -> {
+                x = loc.getX();
+                y = loc.getY();
+                z = loc.getZ();
+            },
+            this::updatePlayerPos
+        );
 
         this.volume = volume;
         this.notePitch = notePitch;
