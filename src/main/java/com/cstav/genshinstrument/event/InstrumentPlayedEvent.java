@@ -31,6 +31,9 @@ public abstract class InstrumentPlayedEvent<T> extends Event {
     public boolean isByEntity() {
         return entityInfo.isPresent();
     }
+    public boolean isByPlayer() {
+        return isByEntity() && (entityInfo.get().entity instanceof Player);
+    }
 
 
     /**

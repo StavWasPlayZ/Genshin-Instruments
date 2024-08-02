@@ -3,7 +3,6 @@ package com.cstav.genshinstrument.criteria;
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -24,7 +23,7 @@ public class ModCriteria {
             return;
 
         // Only get player events
-        if (!event.isByEntity() || !(event.entityInfo().get().entity instanceof Player))
+        if (!event.isByPlayer())
             return;
 
         final Item instrument = ForgeRegistries.ITEMS.getValue(event.soundMeta().instrumentId());
