@@ -27,7 +27,10 @@ public abstract class InstrumentPlayedEvent<T> extends Event {
      * Information about the entity initiator.
      * Present if there is indeed an entity initiator.
      */
-    private final Optional<ByEntityArgs> entityInfo;
+    private final Optional<EntityInfo> entityInfo;
+    public boolean isByEntity() {
+        return entityInfo.isPresent();
+    }
 
 
     /**
@@ -49,7 +52,7 @@ public abstract class InstrumentPlayedEvent<T> extends Event {
         this.sound = sound;
         this.soundMeta = soundMeta;
 
-        this.entityInfo = Optional.of(new ByEntityArgs(entity));
+        this.entityInfo = Optional.of(new EntityInfo(entity));
     }
 
 
@@ -62,7 +65,7 @@ public abstract class InstrumentPlayedEvent<T> extends Event {
     public Level level() {
         return level;
     }
-    public Optional<ByEntityArgs> entityInfo() {
+    public Optional<EntityInfo> entityInfo() {
         return entityInfo;
     }
 
@@ -77,9 +80,9 @@ public abstract class InstrumentPlayedEvent<T> extends Event {
 
     /**
      * An object containing information
-     * about the player who initiated the event
+     * about the entity who initiated the event
      */
-    public class ByEntityArgs {
+    public class EntityInfo {
         public final Entity entity;
 
         /**
@@ -91,7 +94,7 @@ public abstract class InstrumentPlayedEvent<T> extends Event {
 
         protected final InstrumentPlayedEvent<T> baseEvent = InstrumentPlayedEvent.this;
 
-        public ByEntityArgs(Entity entity) {
+        public EntityInfo(Entity entity) {
             this.entity = entity;
 
             if (
@@ -107,7 +110,7 @@ public abstract class InstrumentPlayedEvent<T> extends Event {
         /**
          * <p>Returns whether this event was fired by an item instrument.</p>
          * A {@code false} result does NOT indicate a block instrument.
-         * @see ByEntityArgs#isBlockInstrument
+         * @see EntityInfo#isBlockInstrument
          */
         public boolean isItemInstrument() {
             return hand.isPresent();
@@ -115,7 +118,7 @@ public abstract class InstrumentPlayedEvent<T> extends Event {
         /**
          * <p>Returns whether this event was fired by a block instrument.</p>
          * A {@code false} result does NOT indicate an instrument item.
-         * @see ByEntityArgs#isItemInstrument()
+         * @see EntityInfo#isItemInstrument()
          */
         public boolean isBlockInstrument() {
             return !isItemInstrument()
