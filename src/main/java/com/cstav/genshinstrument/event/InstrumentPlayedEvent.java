@@ -119,7 +119,7 @@ public abstract class InstrumentPlayedEvent<T> extends Event {
          */
         public boolean isBlockInstrument() {
             return !isItemInstrument()
-                && entity.level().getBlockEntity(baseEvent.soundMeta.pos())
+                && level.getBlockEntity(baseEvent.soundMeta.pos())
                     instanceof InstrumentBlockEntity;
         }
 
