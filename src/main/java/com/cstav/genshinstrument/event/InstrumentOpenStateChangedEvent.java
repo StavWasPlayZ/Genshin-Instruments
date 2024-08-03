@@ -10,8 +10,7 @@ import net.minecraftforge.eventbus.api.Event;
 import java.util.Optional;
 
 /**
- * An event when the open state of an instrument
- * screen has changed. Called on the server-side Forge event bus.
+ * An event when the open state of an instrument screen has changed.
  */
 @OnlyIn(Dist.CLIENT)
 public class InstrumentOpenStateChangedEvent extends Event {

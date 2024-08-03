@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument.networking.packet.instrument.util;
 
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
+import com.cstav.genshinstrument.event.InstrumentOpenStateChangedEvent;
 import com.cstav.genshinstrument.networking.GIPacketHandler;
 import com.cstav.genshinstrument.networking.OpenInstrumentPacketSender;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
@@ -19,13 +20,15 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.common.MinecraftForge;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * A helper for sending Genshin Instrument packets
+ * A helper for sending Genshin Instrument packets.
+ * Server-side.
  */
 public class InstrumentPacketUtil {
     public static final int PLAY_DISTANCE = 24;
@@ -149,8 +152,7 @@ public class InstrumentPacketUtil {
 
 
     public static void setInstrumentClosed(final Player player) {
-        // No need to go through the hassle
-        // if it's already closed
+        // No need to go through the hassle if it's already closed
         if (!InstrumentOpenProvider.isOpen(player))
             return;
 
@@ -164,6 +166,12 @@ public class InstrumentPacketUtil {
                 (ServerPlayer)oPlayer
             )
         );
+
+        // Fire server event
+        MinecraftForge.EVENT_BUS.post(new InstrumentOpenStateChangedEvent(false, player,
+            Optional.ofNullable(InstrumentOpenProvider.getBlockPos(player)),
+            Optional.ofNullable(InstrumentOpenProvider.getHand(player))
+        ));
     }
 
 
@@ -221,6 +229,12 @@ public class InstrumentPacketUtil {
                 (ServerPlayer)otherPlayer
             )
         );
+
+        // Fire server-side event
+        MinecraftForge.EVENT_BUS.post(new InstrumentOpenStateChangedEvent(true, player,
+            (pos == null) ? Optional.empty() : Optional.of(pos),
+            (pos == null) ? Optional.of(usedHand) : Optional.empty()
+        ));
 
         // Send open packet after everyone is aware of the state
         onOpenRequest.send(player);
