@@ -273,7 +273,7 @@ public abstract class InstrumentScreen extends Screen {
     }
 
     public static ResourceLocation getInstrumentRootPath(final ResourceLocation instrumentId) {
-        return instrumentId.withPath(InstrumentScreen.getGlobalRootPath() + "instrument/" + instrumentId.getPath());
+        return instrumentId.withPath(getGlobalRootPath() + "instrument/" + instrumentId.getPath());
     }
 
     /**
@@ -289,7 +289,7 @@ public abstract class InstrumentScreen extends Screen {
      * Override this method if you want to reference another directory for resources
      */
     public ResourceLocation getSourcePath() {
-        return getInstrumentId();
+        return getThemeLoader().subjectInstrumentId;
     }
 
     public String getModId() {
@@ -304,7 +304,7 @@ public abstract class InstrumentScreen extends Screen {
      */
     public ResourceLocation getResourceFromRoot(final String path, final boolean considerGlobal) {
         return (considerGlobal && InstrumentThemeLoader.isGlobalThemed())
-            ? InstrumentThemeLoader.GLOBAL_LOC.withSuffix("/"+path)
+            ? InstrumentThemeLoader.GLOBAL_LOC.withSuffix("/" + path)
             : getSourcePath().withPath(getPath() + path);
     }
     /**
