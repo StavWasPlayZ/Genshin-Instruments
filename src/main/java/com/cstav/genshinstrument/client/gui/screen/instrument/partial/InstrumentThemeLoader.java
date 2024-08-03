@@ -99,6 +99,9 @@ public class InstrumentThemeLoader {
     public static InstrumentThemeLoader fromOther(ResourceLocation otherInstrumentId, ResourceLocation instrumentId) {
         return new InstrumentThemeLoader(InstrumentScreen.getInstrumentRootPath(otherInstrumentId), instrumentId);
     }
+    public static InstrumentThemeLoader fromOther(InstrumentThemeLoader other, ResourceLocation instrumentId) {
+        return new InstrumentThemeLoader(other.resourcesRootDir, instrumentId);
+    }
 
 
     public void addListener(final Consumer<JsonObject> themeLoader) {
