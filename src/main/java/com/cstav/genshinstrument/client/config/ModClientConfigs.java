@@ -74,7 +74,7 @@ public class ModClientConfigs {
 
         MIDI_ENABLED = configBuilder.define("midi_enabled", false);
         MIDI_DEVICE_INDEX = configBuilder.defineInRange("midi_device_index", -1, -1, Integer.MAX_VALUE);
-        MIDI_IN_SENSITIVITY = configBuilder.defineInRange("midi_in_sensitivity", .5, 0, 1);
+        MIDI_IN_SENSITIVITY = configBuilder.defineInRange("midi_in_sensitivity", .8, 0, 1);
 
         EXTEND_OCTAVES = configBuilder.comment(
             "When a note that is higher/lower than the usual octave range is played, will automatically adjust the pitch to match your playings. Can only extend up to 1 octave per side: high and low C."
