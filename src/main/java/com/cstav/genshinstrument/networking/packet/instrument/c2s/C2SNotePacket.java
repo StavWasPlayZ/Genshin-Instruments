@@ -1,11 +1,14 @@
 package com.cstav.genshinstrument.networking.packet.instrument.c2s;
 
+import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.networking.packet.INoteIdentifierSender;
 import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkDirection;
@@ -32,13 +35,23 @@ public abstract class C2SNotePacket<T> implements INoteIdentifierSender {
     @OnlyIn(Dist.CLIENT)
     public C2SNotePacket(NoteButton noteButton, T sound, int pitch) {
         this(sound, new NoteSoundMetadata(
-            Minecraft.getInstance().player.blockPosition(),
-            pitch,
-            noteButton.instrumentScreen.volume,
+            getSoundSourcePos(),
+            pitch, noteButton.instrumentScreen.volume,
             noteButton.instrumentScreen.getInstrumentId(),
             Optional.ofNullable(noteButton.getIdentifier())
         ));
     }
+
+    @OnlyIn(Dist.CLIENT)
+    private static BlockPos getSoundSourcePos() {
+        final Player player = Minecraft.getInstance().player;
+
+        return InstrumentOpenProvider.isItem(player)
+            ? player.blockPosition()
+            : InstrumentOpenProvider.getBlockPos(player)
+        ;
+    }
+
 
     public C2SNotePacket(FriendlyByteBuf buf) {
         sound = readSound(buf);

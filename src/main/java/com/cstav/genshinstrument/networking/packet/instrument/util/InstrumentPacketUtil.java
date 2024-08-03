@@ -167,10 +167,16 @@ public class InstrumentPacketUtil {
             )
         );
 
+        final boolean isItem = InstrumentOpenProvider.isItem(player);
+
         // Fire server event
         MinecraftForge.EVENT_BUS.post(new InstrumentOpenStateChangedEvent(false, player,
-            Optional.ofNullable(InstrumentOpenProvider.getBlockPos(player)),
-            Optional.ofNullable(InstrumentOpenProvider.getHand(player))
+            isItem
+                ? Optional.empty()
+                : Optional.of(InstrumentOpenProvider.getBlockPos(player)),
+            isItem
+                ? Optional.of(InstrumentOpenProvider.getHand(player))
+                : Optional.empty()
         ));
     }
 
