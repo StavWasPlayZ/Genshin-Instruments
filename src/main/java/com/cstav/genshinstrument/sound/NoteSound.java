@@ -10,6 +10,8 @@ import com.cstav.genshinstrument.util.LabelUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.client.resources.sounds.SoundInstance.Attenuation;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -133,7 +135,6 @@ public class NoteSound {
     /**
      * @return True if the instrument volume is set to 100%
      */
-    @SuppressWarnings("resource")
     private static boolean metInstrumentVolume() {
         return Minecraft.getInstance().options.getSoundSourceVolume(INSTRUMENT_SOUND_SOURCE) == 1;
     }
@@ -167,27 +168,66 @@ public class NoteSound {
             return;
 
         final float mcPitch = getPitchByNoteOffset(clampPitch(meta.pitch()));
-            
-        if (distanceFromPlayer > LOCAL_RANGE)
-            level.playLocalSound(meta.pos(),
-                getByPreference(distanceFromPlayer), INSTRUMENT_SOUND_SOURCE,
-                1, mcPitch
-            , false);
-        else
-            playLocally(mcPitch, meta.volume() / 100f);
+
+        playLocally(
+            mcPitch, meta.volume() / 100f,
+            meta.pos(),
+            distanceFromPlayer
+        );
+    }
+
+
+    /**
+     * Plays this sound locally. Treats the given {@code pitch} as a Minecraft pitch.
+     */
+    @OnlyIn(Dist.CLIENT)
+    public void playLocally(float pitch, float volume, BlockPos pos, double distFromPlayer) {
+        final Minecraft minecraft = Minecraft.getInstance();
+        final SoundEvent sound = getByPreference(distFromPlayer);
+
+        if (distFromPlayer > LOCAL_RANGE) {
+            minecraft.level.playLocalSound(
+                pos, sound,
+                INSTRUMENT_SOUND_SOURCE,
+                volume, pitch,
+                false
+            );
+        } else {
+            Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(
+                sound.getLocation(),
+                INSTRUMENT_SOUND_SOURCE,
+                volume, pitch,
+                SoundInstance.createUnseededRandom(),
+                false, 0,
+
+                Attenuation.NONE,
+                0, 0, 0,
+                true
+            ));
+        }
     }
 
     /**
      * Plays this sound locally. Treats the given {@code pitch} as a Minecraft pitch.
      */
     @OnlyIn(Dist.CLIENT)
-    public void playLocally(final float pitch, final float volume) {
-        Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(
-            getByPreference().getLocation(), INSTRUMENT_SOUND_SOURCE,
-            volume, pitch, SoundInstance.createUnseededRandom(),
-            false, 0, SoundInstance.Attenuation.NONE,
-            0, 0, 0, true
-        ));
+    public void playLocally(float pitch, float volume, BlockPos pos) {
+        playLocally(
+            pitch, volume,
+            pos,
+            Minecraft.getInstance().player.position().distanceTo(pos.getCenter())
+        );
+    }
+
+    /**
+     * <p>Plays this note locally.</p>
+     * Treats the given {@code pitch} as a note offset pitch,
+     * thus performs a conversion from note offset pitch to Minecraft pitch.
+     * @see NoteSound#getPitchByNoteOffset
+     */
+    @OnlyIn(Dist.CLIENT)
+    public void playLocally(int pitch, float volume, BlockPos pos, double distFromPlayer) {
+        playLocally(getPitchByNoteOffset(clampPitch(pitch)), volume, pos, distFromPlayer);
     }
     /**
      * <p>Plays this note locally.</p>
@@ -196,8 +236,13 @@ public class NoteSound {
      * @see NoteSound#getPitchByNoteOffset
      */
     @OnlyIn(Dist.CLIENT)
-    public void playLocally(final int pitch, final float volume) {
-        playLocally(getPitchByNoteOffset(clampPitch(pitch)), volume);
+    public void playLocally(int pitch, float volume, BlockPos pos) {
+        playLocally(
+            getPitchByNoteOffset(clampPitch(pitch)),
+            volume,
+            pos,
+            Minecraft.getInstance().player.position().distanceTo(pos.getCenter())
+        );
     }
 
 

@@ -10,11 +10,18 @@ public abstract class ChainedNoteSoundRegistrar<T, R extends ChainableNoteSoundR
         this.original = original;
     }
 
-    public R add() {
+    public R add(int times) {
         final ArrayList<T> stackedSounds = original.stackedSounds;
 
-        stackedSounds.add(createNote());
+        final T sound = createNote();
+        for (int i = 0; i < times; i++) {
+            stackedSounds.add(sound);
+        }
+
         return original;
+    }
+    public R add() {
+        return add(1);
     }
 
     protected abstract T createNote();

@@ -15,6 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -27,9 +28,14 @@ import java.util.Optional;
  */
 public record HeldNoteSound(
     ResourceLocation baseSoundLocation, int index,
-    NoteSound attack, NoteSound hold, float holdDuration,
+    NoteSound attack,
+    NoteSound hold,
+    @Nullable NoteSound release,
+
+    float holdDuration,
     float holdDelay,
-    float chainedHoldDelay, float decay,
+    float chainedHoldDelay,
+    float decay,
     float releaseFadeOut,
     float fullHoldFadeoutTime
 ) {
@@ -38,6 +44,7 @@ public record HeldNoteSound(
         return switch (phase) {
             case HOLD -> hold;
             case ATTACK -> attack;
+            case RELEASE -> release;
         };
     }
 
@@ -152,8 +159,8 @@ public record HeldNoteSound(
     }
 
 
-    public static enum Phase {
-        ATTACK, HOLD
+    public enum Phase {
+        ATTACK, HOLD, RELEASE
     }
 
 }

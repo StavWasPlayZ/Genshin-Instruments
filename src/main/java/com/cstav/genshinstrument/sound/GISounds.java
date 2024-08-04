@@ -40,16 +40,29 @@ public class GISounds {
 
     public static final HeldNoteSound[]
         NIGHTWIND_HORN = hnsr(loc("nightwind_horn"))
+            .holdBuilder(GISounds::nightwindSoundBuilder)
+            .attackBuilder(GISounds::nightwindSoundBuilder)
+
+            //NOTE Test for release sound
+//            .releaseBuilder((builder) -> builder
+//                .chain(SoundEvents.COW_DEATH.getLocation())
+//                .alreadyRegistered()
+//                .add(GridInstrumentScreen.DEF_ROWS * 2)
+//                .registerAll()
+//            )
+
             .holdDelay(.03f)
             .chainedHoldDelay(-WINDSONG_FADE_TIME * 2)
             .releaseFadeOut(WINDSONG_FADE_TIME / 10)
             .fullHoldFadeoutTime(2)
             .decays(7)
-            .buildSoundsForAll((builder) ->
-                builder.stereo().registerGrid(GridInstrumentScreen.DEF_ROWS, 2)
-            )
         .register(WINDSONG_HOLD_DURATION)
     ;
+
+
+    private static NoteSound[] nightwindSoundBuilder(final NoteSoundRegistrar builder) {
+        return builder.stereo().registerGrid(GridInstrumentScreen.DEF_ROWS, 2);
+    }
 
 
     /**

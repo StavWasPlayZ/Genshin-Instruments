@@ -8,6 +8,7 @@ import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
@@ -42,11 +43,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
                                     @Nullable Entity initiator, @Nullable BlockPos soundOrigin,
                                     int timeAlive, boolean released) {
         super(
-            heldSoundContainer.getSound(phase).getByPreference(
-                Minecraft.getInstance().player.position().distanceTo(
-                    (soundOrigin == null) ? initiator.position() : soundOrigin.getCenter()
-                )
-            ),
+            heldSoundContainer.getSound(phase).getByPreference(distFromSource(soundOrigin, initiator)),
             NoteSound.INSTRUMENT_SOUND_SOURCE,
             SoundInstance.createUnseededRandom()
         );
@@ -76,7 +73,8 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
         this.volume = volume;
         this.notePitch = notePitch;
         this.pitch = NoteSound.getPitchByNoteOffset(notePitch);
-        attenuation = Attenuation.NONE;
+
+        attenuation = (distFromSource() > NoteSound.LOCAL_RANGE) ? Attenuation.LINEAR : Attenuation.NONE;
 
         this.released = released;
     }
@@ -129,8 +127,38 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
      * Marks this held sound as being released
      */
     public void setReleased() {
+        if (released)
+            return;
+
         this.released = true;
+
+        // Play release sound, if applicable.
+        // Only a 'hold' sound type may play a release.
+        if (phase == Phase.HOLD) {
+
+            if (heldSoundContainer.release() != null) {
+                heldSoundContainer.release().playLocally(
+                    pitch, volume,
+                    new BlockPos((int) x, (int) y, (int) z)
+                );
+            }
+
+        }
     }
+    public boolean isReleased() {
+        return released;
+    }
+
+
+    protected static double distFromSource(@Nullable BlockPos soundOrigin, @Nullable Entity initiator) {
+        return Minecraft.getInstance().player.position().distanceTo(
+            (soundOrigin == null) ? initiator.position() : soundOrigin.getCenter()
+        );
+    }
+    public double distFromSource() {
+        return Minecraft.getInstance().player.position().distanceTo(new Vec3(x, y, z));
+    }
+
 
     protected int timeAlive = 0, overallTimeAlive;
     @Override

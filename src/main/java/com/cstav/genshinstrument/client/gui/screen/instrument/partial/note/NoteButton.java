@@ -1,5 +1,6 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note;
 
+import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.NoteLabelSupplier;
@@ -16,8 +17,10 @@ import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.sounds.SoundManager;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.slf4j.Logger;
@@ -89,6 +92,20 @@ public abstract class NoteButton extends AbstractButton {
     }
     public void setSound(NoteSound sound) {
         this.sound = sound;
+    }
+
+
+    /**
+     * @return The position of the sounds
+     * to be produced from this note button.
+     */
+    public BlockPos getSoundSourcePos() {
+        final Player player = Minecraft.getInstance().player;
+
+        return InstrumentOpenProvider.isItem(player)
+            ? player.blockPosition()
+            : InstrumentOpenProvider.getBlockPos(player)
+        ;
     }
 
 
@@ -215,7 +232,7 @@ public abstract class NoteButton extends AbstractButton {
     }
 
     protected void playLocalSound(final NoteSound sound, final int pitch) {
-        sound.playLocally(pitch, instrumentScreen.volume());
+        sound.playLocally(pitch, instrumentScreen.volume(), getSoundSourcePos());
     }
     protected void sendNotePlayPacket(final NoteSound sound, final int pitch) {
         GIPacketHandler.sendToServer(new C2SNoteSoundPacket(this, sound, pitch));

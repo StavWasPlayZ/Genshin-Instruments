@@ -7,6 +7,7 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.registries.DeferredRegister;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.util.HashMap;
@@ -21,6 +22,8 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
 
 
     protected NoteSound[] attack, hold;
+    @Nullable protected NoteSound[] release = null;
+
     protected float holdDelay = 0, chainedHoldDelay = 0;
     protected float decay = -1, releaseFadeOut = 0, fullHoldFadeoutTime = 0;
 
@@ -89,18 +92,26 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
     public HeldNoteSoundRegistrar buildSoundsForAll(final Function<NoteSoundRegistrar, NoteSound[]> builder) {
         return getThis()
             .attackBuilder(builder)
-            .holdBuilder(builder);
+            .holdBuilder(builder)
+            .releaseBuilder(builder);
     }
 
     public HeldNoteSoundRegistrar attackBuilder(final Function<NoteSoundRegistrar, NoteSound[]> builder) {
-        this.attack = builder.apply(nsr(baseSoundLocation.withSuffix("_attack")));
+        this.attack = applyBuilder(builder, "_attack");
         return getThis();
     }
     public HeldNoteSoundRegistrar holdBuilder(final Function<NoteSoundRegistrar, NoteSound[]> builder) {
-        this.hold = builder.apply(nsr(baseSoundLocation.withSuffix("_hold")));
+        this.hold = applyBuilder(builder, "_hold");
+        return getThis();
+    }
+    public HeldNoteSoundRegistrar releaseBuilder(final Function<NoteSoundRegistrar, NoteSound[]> builder) {
+        this.release = applyBuilder(builder, "_release");
         return getThis();
     }
 
+    protected NoteSound[] applyBuilder(Function<NoteSoundRegistrar, NoteSound[]> builder, String pathSuffix) {
+        return builder.apply(nsr(baseSoundLocation.withSuffix(pathSuffix)));
+    }
     /**
      * Shorthand for {@code new NoteSoundRegistrar(soundRegistrar, instrumentId)}
      */
@@ -113,20 +124,21 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
      * @param holdDuration The duration of the held sound in seconds
      */
     public HeldNoteSound[] register(final float holdDuration) {
-        if (!validateLengths())
-            throw new IllegalStateException(
-                "Invalid lengths of sounds provided to HeldNoteSoundRegistrar!" +
-                    "\nAll sounds must be of equal lengths."
-            );
+        assert !validateLengths() : "Invalid lengths of sounds provided to HeldNoteSoundRegistrar!"
+            + "\nAll sounds must be of equal lengths.";
 
         final HeldNoteSound[] noteSounds = new HeldNoteSound[sounds()];
 
         for (int i = 0; i < sounds(); i++) {
             noteSounds[i] = new HeldNoteSound(
                 baseSoundLocation, i,
-                attack[i], hold[i], holdDuration,
+                attack[i], hold[i],
+                (release == null) ? null : release[i],
+
+                holdDuration,
                 holdDelay,
-                chainedHoldDelay, decay,
+                chainedHoldDelay,
+                decay,
                 releaseFadeOut,
                 fullHoldFadeoutTime
             );
