@@ -103,18 +103,18 @@ public record HeldNoteSound(
     /**
      * A method for packets to use for playing this note on the client's end.
      * Will also stop the client's background music per preference.
-     * @param initiatorID The ID of the entity who initiated the sound. Empty for when it wasn't an entity.
-     * @param oInitiatorID The initiator ID of the non-player initiator.
+     * @param initiatorId The ID of the entity who initiated the sound. Empty for when it wasn't an entity.
+     * @param oInitiatorId The initiator ID of the non-player initiator.
      * @param meta Additional metadata of the Note Sound being played
      */
     @OnlyIn(Dist.CLIENT)
-    public void playFromServer(Optional<Integer> initiatorID, Optional<InitiatorID> oInitiatorID,
+    public void playFromServer(Optional<Integer> initiatorId, Optional<InitiatorID> oInitiatorId,
                                NoteSoundMetadata meta, HeldSoundPhase phase) {
         final Player localPlayer = Minecraft.getInstance().player;
         final Level level = localPlayer.level();
 
-        if (initiatorID.isPresent()) {
-            final Entity initiator = level.getEntity(initiatorID.get());
+        if (initiatorId.isPresent()) {
+            final Entity initiator = level.getEntity(initiatorId.get());
 
             MinecraftForge.EVENT_BUS.post(
                 new HeldNoteSoundPlayedEvent(initiator, this, meta, phase)
@@ -129,36 +129,36 @@ public record HeldNoteSound(
             new HeldNoteSoundPlayedEvent(level, this, meta, phase)
         );
 
+
+        final InitiatorID _initiatorID = initiatorId
+            .map(Minecraft.getInstance().level::getEntity)
+            .map(InitiatorID::fromObj)
+            .orElseGet(() -> assertIIDPresent(oInitiatorId));
+
         switch (phase) {
-            case ATTACK -> attackFromServer(initiatorID, oInitiatorID, meta);
-            case RELEASE -> releaseFromServer(initiatorID, oInitiatorID, meta);
+            case ATTACK -> attackFromServer(_initiatorID, meta);
+            case RELEASE -> releaseFromServer(_initiatorID, meta);
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private void attackFromServer(InitiatorID initiatorID, NoteSoundMetadata meta) {
+        if (initiatorID.type().equals("entity")) {
+            // Play as an entity
+            startPlaying(
+                meta.pitch(), meta.volume() / 100f,
+                Minecraft.getInstance().level.getEntity(
+                    Integer.parseInt(initiatorID.identifier())
+                )
+            );
+        } else {
+            // Play as other
+            startPlaying(meta.pitch(), meta.volume() / 100f, meta.pos(), initiatorID);
         }
     }
     @OnlyIn(Dist.CLIENT)
-    private void attackFromServer(Optional<Integer> initiatorID, Optional<InitiatorID> oInitiatorId,
-                                  NoteSoundMetadata meta) {
-        initiatorID.ifPresentOrElse(
-            // Sound was played by player
-            (id) -> startPlaying(
-                meta.pitch(), meta.volume() / 100f,
-                Minecraft.getInstance().level.getEntity(id)
-            ),
-            // Sound is by some other thing
-            () -> {
-                startPlaying(meta.pitch(), meta.volume() / 100f, meta.pos(), assertIIDPresent(oInitiatorId));
-            }
-        );
-    }
-    @OnlyIn(Dist.CLIENT)
-    private void releaseFromServer(Optional<Integer> initiatorID, Optional<InitiatorID> oInitiatorId,
-                                   NoteSoundMetadata meta) {
-        HeldNoteSounds.release(
-            initiatorID
-                .map(Minecraft.getInstance().level::getEntity)
-                .map(InitiatorID::fromObj)
-                .orElseGet(() -> assertIIDPresent(oInitiatorId)),
-            this, meta.pitch()
-        );
+    private void releaseFromServer(InitiatorID initiatorID, NoteSoundMetadata meta) {
+        HeldNoteSounds.release(initiatorID, this, meta.pitch());
     }
 
     /**
