@@ -132,7 +132,7 @@ public record HeldNoteSound(
                 Minecraft.getInstance().level.getEntity(id)
             ),
             // Sound is by some other thing
-            () -> startPlaying(meta.pitch(), meta.volume(), meta.pos())
+            () -> startPlaying(meta.pitch(), meta.volume() / 100f, meta.pos())
         );
     }
     @OnlyIn(Dist.CLIENT)
