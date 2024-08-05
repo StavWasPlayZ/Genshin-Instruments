@@ -31,7 +31,7 @@ public class NoteSoundPacketUtil {
         );
 
         MinecraftForge.EVENT_BUS.post(
-            new NoteSoundPlayedEvent(initiator.level(), sound, meta)
+            new NoteSoundPlayedEvent(initiator, sound, meta)
         );
     }
     /**

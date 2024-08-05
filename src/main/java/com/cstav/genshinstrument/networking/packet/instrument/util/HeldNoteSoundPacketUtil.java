@@ -33,7 +33,7 @@ public class HeldNoteSoundPacketUtil {
         );
 
         MinecraftForge.EVENT_BUS.post(
-            new HeldNoteSoundPlayedEvent(initiator.level(), sound, meta, phase)
+            new HeldNoteSoundPlayedEvent(initiator, sound, meta, phase)
         );
     }
     /**
