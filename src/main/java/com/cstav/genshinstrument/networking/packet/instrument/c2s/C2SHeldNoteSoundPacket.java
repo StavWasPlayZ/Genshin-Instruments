@@ -18,7 +18,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  */
 public class C2SHeldNoteSoundPacket extends C2SNotePacket<HeldNoteSound> {
 
-    protected final HeldSoundPhase phase;
+    public final HeldSoundPhase phase;
 
     public C2SHeldNoteSoundPacket(HeldNoteSound sound, NoteSoundMetadata meta, HeldSoundPhase phase) {
         super(sound, meta);

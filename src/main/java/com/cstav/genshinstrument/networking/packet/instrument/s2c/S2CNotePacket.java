@@ -15,9 +15,9 @@ import java.util.Optional;
 public abstract class S2CNotePacket<T> implements INoteIdentifierSender {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_CLIENT;
 
-    protected final Optional<Integer> initiatorID;
-    protected final T sound;
-    protected final NoteSoundMetadata meta;
+    public final Optional<Integer> initiatorID;
+    public final T sound;
+    public final NoteSoundMetadata meta;
 
     /**
      * Constructs a new {@link S2CNoteSoundPacket}.

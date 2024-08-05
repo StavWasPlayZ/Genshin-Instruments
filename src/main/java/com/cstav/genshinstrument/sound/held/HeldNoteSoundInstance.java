@@ -14,7 +14,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @OnlyIn(Dist.CLIENT)
@@ -43,6 +42,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
     protected HeldNoteSoundInstance(HeldNoteSound heldSoundContainer, HeldNoteSound.Phase phase,
                                     int notePitch, float volume,
                                     @Nullable Entity initiator, @Nullable BlockPos soundOrigin,
+                                    InitiatorID initiatorId,
                                     int timeAlive, boolean released) {
         super(
             heldSoundContainer.getSound(phase).getByPreference(distFromSourceSqr(soundOrigin, initiator)),
@@ -51,11 +51,12 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
         );
 
 
-        initiatorId = InitiatorID.fromObj(
-            (soundOrigin == null)
-                ? Objects.requireNonNull(initiator, "Either sound origin or initiator must be specified")
-                : soundOrigin
-        );
+//        initiatorId = InitiatorID.fromObj(
+//            (soundOrigin == null)
+//                ? Objects.requireNonNull(initiator, "Either sound origin or initiator must be specified")
+//                : soundOrigin
+//        );
+        this.initiatorId = initiatorId;
 
         this.heldSoundContainer = heldSoundContainer;
         this.phase = phase;
@@ -101,20 +102,11 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
      */
     public HeldNoteSoundInstance(HeldNoteSound heldSoundContainer, HeldNoteSound.Phase phase,
                                  int notePitch, float volume,
-                                 @Nullable Entity initiator, @Nullable BlockPos soundOrigin) {
-        this(heldSoundContainer, phase, notePitch, volume, initiator, soundOrigin, 0, false);
+                                 @Nullable Entity initiator, @Nullable BlockPos soundOrigin,
+                                 InitiatorID initiatorId) {
+        this(heldSoundContainer, phase, notePitch, volume, initiator, soundOrigin, initiatorId, 0, false);
     }
-    /**
-     * A held note sound instance for local playing
-     */
-    public HeldNoteSoundInstance(HeldNoteSound heldSoundContainer, HeldNoteSound.Phase phase,
-                                 int notePitch, float volume) {
-        this(
-            heldSoundContainer, phase,
-            notePitch, volume,
-            Minecraft.getInstance().player, null
-        );
-    }
+
 
     public void queueAndAddInstance() {
         Minecraft.getInstance().getSoundManager().queueTickingSound(this);
@@ -243,6 +235,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
         new HeldNoteSoundInstance(
             heldSoundContainer, Phase.HOLD, notePitch, volume - (decreaseVol ? heldSoundContainer.decay() : 0),
             initiator.orElse(null), soundOrigin.orElse(null),
+            initiatorId,
             overallTimeAlive, released
         ).queueAndAddInstance();
     }

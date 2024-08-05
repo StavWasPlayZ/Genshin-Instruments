@@ -42,8 +42,10 @@ public class InstrumentPacketUtil {
      * @param soundMeta Additional metadata of the used sound
      * @param notePacketDelegate The constructor of the sound packet to be sent
      * @param <T> The sound object type
+     *
+     * @return The sent packet
      */
-    public static <T> void sendPlayerPlayNotePackets(ServerPlayer initiator, T sound, NoteSoundMetadata soundMeta,
+    public static <T> S2CNotePacket<T> sendPlayerPlayNotePackets(ServerPlayer initiator, T sound, NoteSoundMetadata soundMeta,
                                                  S2CNotePacketDelegate<T> notePacketDelegate) {
 
         final S2CNotePacket<T> packet = notePacketDelegate.create(
@@ -60,6 +62,8 @@ public class InstrumentPacketUtil {
             GameEvent.INSTRUMENT_PLAY, soundMeta.pos(),
             GameEvent.Context.of(initiator)
         );
+
+        return packet;
     }
     /**
      * <p>Utility function to construct a {@link NoteSoundMetadata} instance for you.</p>
@@ -70,24 +74,21 @@ public class InstrumentPacketUtil {
      * @param pitch The pitch of the sound to initiate
      * @param volume The volume of the sound to initiate
      *
-     * @return The newly-created and used sound meta
+     * @return The sent packet
      */
-    public static <T> NoteSoundMetadata sendPlayerPlayNotePackets(ServerPlayer initiator,
+    public static <T> S2CNotePacket<T> sendPlayerPlayNotePackets(ServerPlayer initiator,
                                                      T sound, ResourceLocation instrumentId, int pitch, int volume,
                                                      S2CNotePacketDelegate<T> notePacketDelegate) {
-        NoteSoundMetadata meta = new NoteSoundMetadata(
-            initiator.blockPosition(),
-            pitch, volume,
-            instrumentId,
-            Optional.empty()
-        );
-
-        sendPlayerPlayNotePackets(
-            initiator, sound, meta,
+        return sendPlayerPlayNotePackets(
+            initiator, sound,
+            new NoteSoundMetadata(
+                initiator.blockPosition(),
+                pitch, volume,
+                instrumentId,
+                Optional.empty()
+            ),
             notePacketDelegate
         );
-
-        return meta;
     }
 
     /**
@@ -98,8 +99,10 @@ public class InstrumentPacketUtil {
      * @param soundMeta Additional metadata of the used sound
      * @param notePacketDelegate The constructor of the sound packet to be sent
      * @param <T> The sound object type
+     *
+     * @return The sent packet
      */
-    public static <T> void sendPlayNotePackets(Level level, T sound, NoteSoundMetadata soundMeta,
+    public static <T> S2CNotePacket<T> sendPlayNotePackets(Level level, T sound, NoteSoundMetadata soundMeta,
                                                S2CNotePacketDelegate<T> notePacketDelegate) {
 
         final S2CNotePacket<T> packet = notePacketDelegate.create(
@@ -119,7 +122,9 @@ public class InstrumentPacketUtil {
             );
             // idk what else
         else
-            level.gameEvent(null, GameEvent.INSTRUMENT_PLAY, soundMeta.pos());;
+            level.gameEvent(null, GameEvent.INSTRUMENT_PLAY, soundMeta.pos());
+
+        return packet;
     }
     /**
      * <p>Utility function to construct a {@link NoteSoundMetadata} instance for you.</p>
@@ -131,24 +136,21 @@ public class InstrumentPacketUtil {
      * @param instrumentId The ID of the instrument initiating the sound
      * @param pitch The pitch of the sound to initiate
      *
-     * @return The newly-created and used sound meta
+     * @return The sent packet
      */
-    public static <T> NoteSoundMetadata sendPlayNotePackets(Level level, BlockPos pos, T sound, ResourceLocation instrumentId,
+    public static <T> S2CNotePacket<T> sendPlayNotePackets(Level level, BlockPos pos, T sound, ResourceLocation instrumentId,
                                                int pitch, int volume,
                                                S2CNotePacketDelegate<T> notePacketDelegate) {
-        final NoteSoundMetadata meta = new NoteSoundMetadata(
-            pos,
-            pitch, volume,
-            instrumentId,
-            Optional.empty()
-        );
-
-        sendPlayNotePackets(
-            level, sound, meta,
+        return sendPlayNotePackets(
+            level, sound,
+            new NoteSoundMetadata(
+                pos,
+                pitch, volume,
+                instrumentId,
+                Optional.empty()
+            ),
             notePacketDelegate
         );
-
-        return meta;
     }
 
 

@@ -17,6 +17,24 @@ public record InitiatorID(String type, String identifier) {
     }
 
     /**
+     * @param id In the format of {@code type}:{@code identifier}
+     */
+    public InitiatorID(String id) {
+        this(decompose(id));
+    }
+    private InitiatorID(String[] decomposed) {
+        this(decomposed[0], decomposed[1]);
+    }
+
+    private static String[] decompose(final String id) {
+        final String[] result = id.split(":");
+
+        assert result.length == 2 : ("ID must be in the format of type:identifier - received " + id);
+        return result;
+    }
+
+
+    /**
      * @return The initiator ID for the provided object.
      */
     public static InitiatorID fromObj(@NotNull Object initiator) {
@@ -27,12 +45,15 @@ public record InitiatorID(String type, String identifier) {
 
 
     public static InitiatorID readFromNetwork(final FriendlyByteBuf buf) {
-        final String[] initId = buf.readUtf(MAX_UTF_LEN).split(":");
-        return new InitiatorID(initId[0], initId[1]);
+        return new InitiatorID(
+            buf.readUtf(),
+            buf.readUtf()
+        );
     }
 
     public void writeToNetwork(final FriendlyByteBuf buf) {
-        buf.writeUtf(toString());
+        buf.writeUtf(type);
+        buf.writeUtf(identifier);
     }
 
 

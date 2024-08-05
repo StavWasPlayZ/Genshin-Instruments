@@ -20,8 +20,8 @@ import java.util.Optional;
 public abstract class C2SNotePacket<T> implements INoteIdentifierSender {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_SERVER;
 
-    protected final T sound;
-    protected final NoteSoundMetadata meta;
+    public final T sound;
+    public final NoteSoundMetadata meta;
 
 
     public C2SNotePacket(T sound, NoteSoundMetadata meta) {

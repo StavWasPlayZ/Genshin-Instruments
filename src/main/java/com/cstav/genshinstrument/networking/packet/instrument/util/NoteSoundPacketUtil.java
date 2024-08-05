@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.networking.packet.instrument.util;
 
 import com.cstav.genshinstrument.event.NoteSoundPlayedEvent;
 import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
+import com.cstav.genshinstrument.networking.packet.instrument.s2c.S2CNotePacket;
 import com.cstav.genshinstrument.networking.packet.instrument.s2c.S2CNoteSoundPacket;
 import com.cstav.genshinstrument.sound.NoteSound;
 import net.minecraft.core.BlockPos;
@@ -25,13 +26,13 @@ public class NoteSoundPacketUtil {
      */
     public static void sendPlayerPlayNotePackets(ServerPlayer initiator,
                                            NoteSound sound, ResourceLocation instrumentId, int pitch, int volume) {
-        final NoteSoundMetadata meta = InstrumentPacketUtil.sendPlayerPlayNotePackets(
+        final S2CNotePacket<NoteSound> packet = InstrumentPacketUtil.sendPlayerPlayNotePackets(
             initiator, sound, instrumentId, pitch, volume,
             S2CNoteSoundPacket::new
         );
 
         MinecraftForge.EVENT_BUS.post(
-            new NoteSoundPlayedEvent(initiator, sound, meta)
+            new NoteSoundPlayedEvent(initiator, sound, packet.meta)
         );
     }
     /**
@@ -61,13 +62,13 @@ public class NoteSoundPacketUtil {
      */
     public static void sendPlayNotePackets(Level level, BlockPos pos, NoteSound sound, ResourceLocation instrumentId,
                                            int pitch, int volume) {
-        final NoteSoundMetadata meta = InstrumentPacketUtil.sendPlayNotePackets(
+        final S2CNotePacket<NoteSound> packet = InstrumentPacketUtil.sendPlayNotePackets(
             level, pos, sound, instrumentId, pitch, volume,
             S2CNoteSoundPacket::new
         );
 
         MinecraftForge.EVENT_BUS.post(
-            new NoteSoundPlayedEvent(level, sound, meta)
+            new NoteSoundPlayedEvent(level, sound, packet.meta)
         );
     }
     /**
