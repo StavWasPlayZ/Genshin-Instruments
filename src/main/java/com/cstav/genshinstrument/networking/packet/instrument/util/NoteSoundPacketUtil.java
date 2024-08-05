@@ -25,9 +25,13 @@ public class NoteSoundPacketUtil {
      */
     public static void sendPlayerPlayNotePackets(ServerPlayer initiator,
                                            NoteSound sound, ResourceLocation instrumentId, int pitch, int volume) {
-        InstrumentPacketUtil.sendPlayerPlayNotePackets(
+        final NoteSoundMetadata meta = InstrumentPacketUtil.sendPlayerPlayNotePackets(
             initiator, sound, instrumentId, pitch, volume,
             S2CNoteSoundPacket::new
+        );
+
+        MinecraftForge.EVENT_BUS.post(
+            new NoteSoundPlayedEvent(initiator.level(), sound, meta)
         );
     }
     /**
@@ -57,9 +61,13 @@ public class NoteSoundPacketUtil {
      */
     public static void sendPlayNotePackets(Level level, BlockPos pos, NoteSound sound, ResourceLocation instrumentId,
                                            int pitch, int volume) {
-        InstrumentPacketUtil.sendPlayNotePackets(
+        final NoteSoundMetadata meta = InstrumentPacketUtil.sendPlayNotePackets(
             level, pos, sound, instrumentId, pitch, volume,
             S2CNoteSoundPacket::new
+        );
+
+        MinecraftForge.EVENT_BUS.post(
+            new NoteSoundPlayedEvent(level, sound, meta)
         );
     }
     /**

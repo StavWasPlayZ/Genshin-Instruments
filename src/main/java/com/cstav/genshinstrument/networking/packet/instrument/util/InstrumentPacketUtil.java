@@ -62,25 +62,32 @@ public class InstrumentPacketUtil {
         );
     }
     /**
+     * <p>Utility function to construct a {@link NoteSoundMetadata} instance for you.</p>
      * Sends play note packets in the specified {@link InstrumentPacketUtil#PLAY_DISTANCE}.
      * @param initiator The player producing the sounds
      * @param sound The sound to initiate
      * @param instrumentId The ID of the instrument initiating the sound
      * @param pitch The pitch of the sound to initiate
      * @param volume The volume of the sound to initiate
+     *
+     * @return The newly-created and used sound meta
      */
-    public static <T> void sendPlayerPlayNotePackets(ServerPlayer initiator,
+    public static <T> NoteSoundMetadata sendPlayerPlayNotePackets(ServerPlayer initiator,
                                                      T sound, ResourceLocation instrumentId, int pitch, int volume,
                                                      S2CNotePacketDelegate<T> notePacketDelegate) {
+        NoteSoundMetadata meta = new NoteSoundMetadata(
+            initiator.blockPosition(),
+            pitch, volume,
+            instrumentId,
+            Optional.empty()
+        );
+
         sendPlayerPlayNotePackets(
-            initiator, sound, new NoteSoundMetadata(
-                initiator.blockPosition(),
-                pitch, volume,
-                instrumentId,
-                Optional.empty()
-            ),
+            initiator, sound, meta,
             notePacketDelegate
         );
+
+        return meta;
     }
 
     /**
@@ -115,6 +122,7 @@ public class InstrumentPacketUtil {
             level.gameEvent(null, GameEvent.INSTRUMENT_PLAY, soundMeta.pos());;
     }
     /**
+     * <p>Utility function to construct a {@link NoteSoundMetadata} instance for you.</p>
      * Sends play note packets in the specified {@link InstrumentPacketUtil#PLAY_DISTANCE}.
      * This method treats the sound as it was NOT produced by a player.
      * @param level The world that the sound should initiate in
@@ -122,19 +130,25 @@ public class InstrumentPacketUtil {
      * @param sound The sound to initiate
      * @param instrumentId The ID of the instrument initiating the sound
      * @param pitch The pitch of the sound to initiate
+     *
+     * @return The newly-created and used sound meta
      */
-    public static <T> void sendPlayNotePackets(Level level, BlockPos pos, T sound, ResourceLocation instrumentId,
+    public static <T> NoteSoundMetadata sendPlayNotePackets(Level level, BlockPos pos, T sound, ResourceLocation instrumentId,
                                                int pitch, int volume,
                                                S2CNotePacketDelegate<T> notePacketDelegate) {
+        final NoteSoundMetadata meta = new NoteSoundMetadata(
+            pos,
+            pitch, volume,
+            instrumentId,
+            Optional.empty()
+        );
+
         sendPlayNotePackets(
-            level, sound, new NoteSoundMetadata(
-                pos,
-                pitch, volume,
-                instrumentId,
-                Optional.empty()
-            ),
+            level, sound, meta,
             notePacketDelegate
         );
+
+        return meta;
     }
 
 

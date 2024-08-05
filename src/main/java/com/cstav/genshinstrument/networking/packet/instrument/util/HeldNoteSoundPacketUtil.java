@@ -10,8 +10,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 
-import java.util.Optional;
-
 /**
  * A helper class for dealing with {@link HeldNoteSound} packets.
  */
@@ -29,14 +27,13 @@ public class HeldNoteSoundPacketUtil {
     public static void sendPlayerPlayNotePackets(ServerPlayer initiator, HeldNoteSound sound,
                                                  ResourceLocation instrumentId, int pitch, int volume,
                                                  HeldSoundPhase phase) {
-        sendPlayerPlayNotePackets(
-            initiator, sound, new NoteSoundMetadata(
-                initiator.blockPosition(),
-                pitch, volume,
-                instrumentId,
-                Optional.empty()
-            ),
-            S2CHeldNoteSoundPacket::new, phase
+        final NoteSoundMetadata meta = InstrumentPacketUtil.sendPlayerPlayNotePackets(
+            initiator, sound, instrumentId, pitch, volume,
+            S2CHeldNotePacketDelegate.toReg(S2CHeldNoteSoundPacket::new, phase)
+        );
+
+        MinecraftForge.EVENT_BUS.post(
+            new HeldNoteSoundPlayedEvent(initiator.level(), sound, meta, phase)
         );
     }
     /**
@@ -70,9 +67,13 @@ public class HeldNoteSoundPacketUtil {
     public static void sendPlayNotePackets(Level level, BlockPos pos, HeldNoteSound sound, ResourceLocation instrumentId,
                                            int pitch, int volume,
                                            HeldSoundPhase phase) {
-        InstrumentPacketUtil.sendPlayNotePackets(
+        final NoteSoundMetadata meta = InstrumentPacketUtil.sendPlayNotePackets(
             level, pos, sound, instrumentId, pitch, volume,
             S2CHeldNotePacketDelegate.toReg(S2CHeldNoteSoundPacket::new, phase)
+        );
+
+        MinecraftForge.EVENT_BUS.post(
+            new HeldNoteSoundPlayedEvent(level, sound, meta, phase)
         );
     }
     /**

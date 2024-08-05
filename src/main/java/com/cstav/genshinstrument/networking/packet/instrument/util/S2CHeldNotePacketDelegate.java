@@ -26,7 +26,7 @@ public interface S2CHeldNotePacketDelegate {
         return toReg(this, phase);
     }
 
-    public static S2CNotePacketDelegate<HeldNoteSound> toReg(S2CHeldNotePacketDelegate del, HeldSoundPhase phase) {
+    static S2CNotePacketDelegate<HeldNoteSound> toReg(S2CHeldNotePacketDelegate del, HeldSoundPhase phase) {
         return (initiatorID, sound, meta) -> del.create(initiatorID, sound, meta, phase);
     }
 }
