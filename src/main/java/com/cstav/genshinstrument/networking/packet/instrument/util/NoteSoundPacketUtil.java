@@ -6,7 +6,6 @@ import com.cstav.genshinstrument.networking.packet.instrument.s2c.S2CNoteSoundPa
 import com.cstav.genshinstrument.sound.NoteSound;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
@@ -18,13 +17,13 @@ public class NoteSoundPacketUtil {
 
     /**
      * Sends {@link S2CNoteSoundPacket}s in the specified {@link InstrumentPacketUtil#PLAY_DISTANCE}.
-     * @param initiator The player producing the sounds
+     * @param initiator The entity producing the sounds
      * @param sound The sound to initiate
      * @param instrumentId The ID of the instrument initiating the sound
      * @param pitch The pitch of the sound to initiate
      * @param volume The volume of the sound to initiate
      */
-    public static void sendPlayerPlayNotePackets(ServerPlayer initiator,
+    public static void sendPlayerPlayNotePackets(Entity initiator,
                                            NoteSound sound, ResourceLocation instrumentId, int pitch, int volume) {
         firePlayerEvent(initiator,
             InstrumentPacketUtil.sendPlayerPlayNotePackets(
@@ -35,11 +34,11 @@ public class NoteSoundPacketUtil {
     }
     /**
      * Sends {@link S2CNoteSoundPacket}s in the specified {@link InstrumentPacketUtil#PLAY_DISTANCE}.
-     * @param initiator The player producing the sounds
+     * @param initiator The entity producing the sounds
      * @param sound The sound to initiate
      * @param soundMeta Additional metadata of the used sound
      */
-    public static void sendPlayerPlayNotePackets(ServerPlayer initiator, NoteSound sound, NoteSoundMetadata soundMeta) {
+    public static void sendPlayerPlayNotePackets(Entity initiator, NoteSound sound, NoteSoundMetadata soundMeta) {
         firePlayerEvent(initiator,
             InstrumentPacketUtil.sendPlayerPlayNotePackets(
                 initiator, sound, soundMeta, S2CNoteSoundPacket::new

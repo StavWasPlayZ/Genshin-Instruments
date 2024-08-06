@@ -13,6 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -36,7 +37,7 @@ public class InstrumentPacketUtil {
 
     /**
      * Sends play note packets in the specified {@link InstrumentPacketUtil#PLAY_DISTANCE}.
-     * @param initiator The player producing the sounds
+     * @param initiator The entity producing the sounds
      * @param sound The sound to initiate
      * @param soundMeta Additional metadata of the used sound
      * @param notePacketDelegate The constructor of the sound packet to be sent
@@ -45,7 +46,7 @@ public class InstrumentPacketUtil {
      *
      * @return The sent packet
      */
-    public static <T, P extends S2CNotePacket<T>> P sendPlayerPlayNotePackets(ServerPlayer initiator,
+    public static <T, P extends S2CNotePacket<T>> P sendPlayerPlayNotePackets(Entity initiator,
                                                                               T sound, NoteSoundMetadata soundMeta,
                                                                               S2CNotePacketDelegate<T, P> notePacketDelegate) {
         final P packet = notePacketDelegate.create(
@@ -68,7 +69,7 @@ public class InstrumentPacketUtil {
     /**
      * <p>Utility function to construct a {@link NoteSoundMetadata} instance for you.</p>
      * Sends play note packets in the specified {@link InstrumentPacketUtil#PLAY_DISTANCE}.
-     * @param initiator The player producing the sounds
+     * @param initiator The entity producing the sounds
      * @param sound The sound to initiate
      * @param instrumentId The ID of the instrument initiating the sound
      * @param pitch The pitch of the sound to initiate
@@ -77,7 +78,7 @@ public class InstrumentPacketUtil {
      *
      * @return The sent packet
      */
-    public static <T, P extends S2CNotePacket<T>> P sendPlayerPlayNotePackets(ServerPlayer initiator,
+    public static <T, P extends S2CNotePacket<T>> P sendPlayerPlayNotePackets(Entity initiator,
                                                      T sound, ResourceLocation instrumentId, int pitch, int volume,
                                                      S2CNotePacketDelegate<T, P> notePacketDelegate) {
         return sendPlayerPlayNotePackets(

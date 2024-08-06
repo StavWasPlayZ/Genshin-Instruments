@@ -7,7 +7,6 @@ import com.cstav.genshinstrument.sound.held.HeldNoteSound;
 import com.cstav.genshinstrument.sound.held.InitiatorID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
@@ -28,7 +27,7 @@ public class HeldNoteSoundPacketUtil {
      * @param volume The volume of the sound to initiate
      * @param phase The phase for the packet to report
      */
-    public static void sendPlayerPlayNotePackets(ServerPlayer initiator, HeldNoteSound sound,
+    public static void sendPlayerPlayNotePackets(Entity initiator, HeldNoteSound sound,
                                                  ResourceLocation instrumentId, int pitch, int volume,
                                                  HeldSoundPhase phase) {
         fireEntityEvent(initiator,
@@ -45,7 +44,7 @@ public class HeldNoteSoundPacketUtil {
      * @param soundMeta Additional metadata of the used sound
      * @param phase The phase for the packet to report
      */
-    public static void sendPlayerPlayNotePackets(ServerPlayer initiator, HeldNoteSound sound, NoteSoundMetadata soundMeta,
+    public static void sendPlayerPlayNotePackets(Entity initiator, HeldNoteSound sound, NoteSoundMetadata soundMeta,
                                                  HeldSoundPhase phase) {
         fireEntityEvent(initiator,
             InstrumentPacketUtil.sendPlayerPlayNotePackets(
