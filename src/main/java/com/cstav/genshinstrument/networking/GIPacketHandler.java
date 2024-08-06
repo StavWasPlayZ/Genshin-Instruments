@@ -1,9 +1,6 @@
 package com.cstav.genshinstrument.networking;
 
 import com.cstav.genshinstrument.GInstrumentMod;
-import com.cstav.genshinstrument.networking.buttonidentifier.DrumNoteIdentifier;
-import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
-import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.networking.packet.instrument.c2s.C2SHeldNoteSoundPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.c2s.C2SNoteSoundPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.c2s.CloseInstrumentPacket;
@@ -36,12 +33,6 @@ public class GIPacketHandler {
     public static void registerPackets() {
         ServerUtil.registerModPackets(INSTANCE, ACCEPTABLE_PACKETS, () -> id++);
     }
-
-
-    @SuppressWarnings("unchecked")
-    public static final List<Class<? extends NoteButtonIdentifier>> ACCEPTABLE_IDENTIFIERS = List.of(new Class[] {
-        NoteButtonIdentifier.class, NoteGridButtonIdentifier.class, DrumNoteIdentifier.class
-    });
 
 
     private static final String PROTOCOL_VERSION = "5.1";

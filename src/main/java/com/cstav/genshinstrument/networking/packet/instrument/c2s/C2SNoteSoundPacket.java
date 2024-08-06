@@ -2,7 +2,6 @@ package com.cstav.genshinstrument.networking.packet.instrument.c2s;
 
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
-import com.cstav.genshinstrument.networking.packet.instrument.s2c.S2CNoteSoundPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.util.NoteSoundPacketUtil;
 import com.cstav.genshinstrument.sound.NoteSound;
 import net.minecraft.network.FriendlyByteBuf;
@@ -38,6 +37,6 @@ public class C2SNoteSoundPacket extends C2SNotePacket<NoteSound> {
     }
 
     protected void sendPlayNotePackets(final ServerPlayer player) {
-        NoteSoundPacketUtil.sendPlayerPlayNotePackets(player, sound, meta, S2CNoteSoundPacket::new);
+        NoteSoundPacketUtil.sendPlayerPlayNotePackets(player, sound, meta);
     }
 }

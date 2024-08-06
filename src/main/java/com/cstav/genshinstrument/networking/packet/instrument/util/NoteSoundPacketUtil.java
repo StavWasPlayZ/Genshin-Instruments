@@ -40,11 +40,9 @@ public class NoteSoundPacketUtil {
      * @param initiator The player producing the sounds
      * @param sound The sound to initiate
      * @param soundMeta Additional metadata of the used sound
-     * @param notePacketDelegate The initiator of the {@link S2CNoteSoundPacket} to be sent
      */
-    public static void sendPlayerPlayNotePackets(ServerPlayer initiator, NoteSound sound, NoteSoundMetadata soundMeta,
-                                           S2CNotePacketDelegate<NoteSound> notePacketDelegate) {
-        InstrumentPacketUtil.sendPlayerPlayNotePackets(initiator, sound, soundMeta, notePacketDelegate);
+    public static void sendPlayerPlayNotePackets(ServerPlayer initiator, NoteSound sound, NoteSoundMetadata soundMeta) {
+        InstrumentPacketUtil.sendPlayerPlayNotePackets(initiator, sound, soundMeta, S2CNoteSoundPacket::new);
 
         MinecraftForge.EVENT_BUS.post(
             new NoteSoundPlayedEvent(initiator, sound, soundMeta)
@@ -77,11 +75,9 @@ public class NoteSoundPacketUtil {
      * @param level The world that the sound should initiate in
      * @param sound The sound to initiate
      * @param soundMeta Additional metadata of the used sound
-     * @param notePacketDelegate The initiator of the {@link S2CNoteSoundPacket} to be sent
      */
-    public static void sendPlayNotePackets(Level level, NoteSound sound, NoteSoundMetadata soundMeta,
-                                           S2CNotePacketDelegate<NoteSound> notePacketDelegate) {
-        InstrumentPacketUtil.sendPlayNotePackets(level, sound, soundMeta, notePacketDelegate);
+    public static void sendPlayNotePackets(Level level, NoteSound sound, NoteSoundMetadata soundMeta) {
+        InstrumentPacketUtil.sendPlayNotePackets(level, sound, soundMeta, S2CNoteSoundPacket::new);
 
         MinecraftForge.EVENT_BUS.post(
             new NoteSoundPlayedEvent(level, sound, soundMeta)

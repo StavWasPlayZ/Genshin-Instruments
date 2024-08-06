@@ -1,7 +1,7 @@
 package com.cstav.genshinstrument.networking.packet.instrument.c2s;
 
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
-import com.cstav.genshinstrument.networking.packet.INoteIdentifierSender;
+import com.cstav.genshinstrument.networking.IModPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,7 +17,7 @@ import java.util.Optional;
  * notifying that a specific note should be played in the level
  * @param <T> The sound object type
  */
-public abstract class C2SNotePacket<T> implements INoteIdentifierSender {
+public abstract class C2SNotePacket<T> implements IModPacket {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_SERVER;
 
     public final T sound;
@@ -41,7 +41,7 @@ public abstract class C2SNotePacket<T> implements INoteIdentifierSender {
 
     public C2SNotePacket(FriendlyByteBuf buf) {
         sound = readSound(buf);
-        meta = NoteSoundMetadata.read(buf, this);
+        meta = NoteSoundMetadata.read(buf);
     }
     @Override
     public void write(final FriendlyByteBuf buf) {

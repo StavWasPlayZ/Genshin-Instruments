@@ -9,8 +9,11 @@ import com.cstav.genshinstrument.sound.held.InitiatorID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
+
+import java.util.Optional;
 
 /**
  * A helper class for dealing with {@link HeldNoteSound} packets.
@@ -31,7 +34,7 @@ public class HeldNoteSoundPacketUtil {
                                                  HeldSoundPhase phase) {
         final S2CNotePacket<HeldNoteSound> packet = InstrumentPacketUtil.sendPlayerPlayNotePackets(
             initiator, sound, instrumentId, pitch, volume,
-            S2CHeldNotePacketDelegate.toReg(S2CHeldNoteSoundPacket::new, phase, initiator)
+            toReg(phase, initiator)
         );
 
         MinecraftForge.EVENT_BUS.post(
@@ -43,13 +46,11 @@ public class HeldNoteSoundPacketUtil {
      * @param initiator The player producing the sounds
      * @param sound The sound to initiate
      * @param soundMeta Additional metadata of the used sound
-     * @param notePacketDelegate The initiator of the {@link S2CHeldNoteSoundPacket} to be sent
      * @param phase The phase for the packet to report
      */
     public static void sendPlayerPlayNotePackets(ServerPlayer initiator, HeldNoteSound sound, NoteSoundMetadata soundMeta,
-                                                 S2CHeldNotePacketDelegate notePacketDelegate,
                                                  HeldSoundPhase phase) {
-        InstrumentPacketUtil.sendPlayerPlayNotePackets(initiator, sound, soundMeta, notePacketDelegate.toReg(phase, initiator));
+        InstrumentPacketUtil.sendPlayerPlayNotePackets(initiator, sound, soundMeta, toReg(phase, initiator));
 
         MinecraftForge.EVENT_BUS.post(
             new HeldNoteSoundPlayedEvent(initiator, sound, soundMeta, phase)
@@ -71,7 +72,7 @@ public class HeldNoteSoundPacketUtil {
                                            InitiatorID initiatorID) {
         final S2CNotePacket<HeldNoteSound> packet = InstrumentPacketUtil.sendPlayNotePackets(
             level, pos, sound, instrumentId, pitch, volume,
-            S2CHeldNotePacketDelegate.toReg(S2CHeldNoteSoundPacket::new, initiatorID, phase)
+            toReg(initiatorID, phase)
         );
 
         MinecraftForge.EVENT_BUS.post(
@@ -84,17 +85,32 @@ public class HeldNoteSoundPacketUtil {
      * @param level The world that the sound should initiate in
      * @param sound The sound to initiate
      * @param soundMeta Additional metadata of the used sound
-     * @param notePacketDelegate The initiator of the {@link S2CHeldNoteSoundPacket} to be sent
      * @param phase The phase for the packet to report
      */
     public static void sendPlayNotePackets(Level level, HeldNoteSound sound, NoteSoundMetadata soundMeta,
-                                           S2CHeldNotePacketDelegate notePacketDelegate,
                                            HeldSoundPhase phase,
                                            InitiatorID initiatorID) {
-        InstrumentPacketUtil.sendPlayNotePackets(level, sound, soundMeta, notePacketDelegate.toReg(initiatorID, phase));
+        InstrumentPacketUtil.sendPlayNotePackets(level, sound, soundMeta, toReg(initiatorID, phase));
 
         MinecraftForge.EVENT_BUS.post(
             new HeldNoteSoundPlayedEvent(level, sound, soundMeta, phase)
+        );
+    }
+
+
+    // Converting to the base instrument packet lambda
+
+    static S2CNotePacketDelegate<HeldNoteSound> toReg(InitiatorID oInitiatorID, HeldSoundPhase phase) {
+        return (initiatorID, sound, meta) -> new S2CHeldNoteSoundPacket(
+            initiatorID, Optional.of(oInitiatorID),
+            sound, meta, phase
+        );
+    }
+    static S2CNotePacketDelegate<HeldNoteSound> toReg(HeldSoundPhase phase, Entity initiator) {
+        return (initiatorID, sound, meta) -> new S2CHeldNoteSoundPacket(
+            initiatorID,
+            initiatorID.isPresent() ? Optional.of(InitiatorID.fromObj(initiator)) : Optional.empty(),
+            sound, meta, phase
         );
     }
 

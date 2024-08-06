@@ -1,7 +1,6 @@
 package com.cstav.genshinstrument.networking.packet.instrument;
 
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
-import com.cstav.genshinstrument.networking.packet.INoteIdentifierSender;
 import com.cstav.genshinstrument.sound.NoteSound;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -25,14 +24,14 @@ public record NoteSoundMetadata(
     ResourceLocation instrumentId,
     Optional<NoteButtonIdentifier> noteIdentifier
 ) {
-    public static NoteSoundMetadata read(final FriendlyByteBuf buf, INoteIdentifierSender noteIdentifierSender) {
+    public static NoteSoundMetadata read(final FriendlyByteBuf buf) {
         return new NoteSoundMetadata(
             buf.readBlockPos(),
 
             buf.readInt(),
             buf.readInt(),
             buf.readResourceLocation(),
-            buf.readOptional(noteIdentifierSender::readNoteIdentifierFromNetwork)
+            buf.readOptional(NoteButtonIdentifier::readFromNetwork)
         );
     }
 

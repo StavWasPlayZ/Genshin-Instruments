@@ -1,6 +1,6 @@
 package com.cstav.genshinstrument.networking.packet.instrument.s2c;
 
-import com.cstav.genshinstrument.networking.packet.INoteIdentifierSender;
+import com.cstav.genshinstrument.networking.IModPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkDirection;
@@ -12,7 +12,7 @@ import java.util.Optional;
  * a specific note.
  * @param <T> The sound object type
  */
-public abstract class S2CNotePacket<T> implements INoteIdentifierSender {
+public abstract class S2CNotePacket<T> implements IModPacket {
     public static final NetworkDirection NETWORK_DIRECTION = NetworkDirection.PLAY_TO_CLIENT;
 
     public final Optional<Integer> initiatorID;
@@ -32,7 +32,7 @@ public abstract class S2CNotePacket<T> implements INoteIdentifierSender {
     public S2CNotePacket(FriendlyByteBuf buf) {
         initiatorID = buf.readOptional(FriendlyByteBuf::readInt);
         sound = readSound(buf);
-        meta = NoteSoundMetadata.read(buf, this);
+        meta = NoteSoundMetadata.read(buf);
     }
 
     @Override

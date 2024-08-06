@@ -4,7 +4,6 @@ import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvide
 import com.cstav.genshinstrument.event.InstrumentOpenStateChangedEvent;
 import com.cstav.genshinstrument.networking.GIPacketHandler;
 import com.cstav.genshinstrument.networking.OpenInstrumentPacketSender;
-import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
 import com.cstav.genshinstrument.networking.packet.instrument.s2c.NotifyInstrumentOpenPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.s2c.OpenInstrumentPacket;
@@ -194,27 +193,6 @@ public class InstrumentPacketUtil {
                 ? Optional.of(InstrumentOpenProvider.getHand(player))
                 : Optional.empty()
         ));
-    }
-
-
-    /**
-     * Gets a {@link NoteButtonIdentifier} as described by the {@code classType} destination.
-     * Will only return a class type if it is valid and included in the {@code acceptableIdentifiers} list.
-     * @param classType The class name of the requested identifiers
-     * @param acceptableIdentifiers
-     * 
-     * @return The class of the requested identifier
-     * @throws ClassNotFoundException If the requested class was not found in the provided {@code acceptableIdentifiers} list
-     */
-    public static Class<? extends NoteButtonIdentifier> getValidNoteIdentifier(String classType,
-            List<Class<? extends NoteButtonIdentifier>> acceptableIdentifiers) throws ClassNotFoundException {
-
-        for (final Class<? extends NoteButtonIdentifier> identifier : acceptableIdentifiers) {
-            if (identifier.getName().equals(classType))
-                return identifier;
-        }
-
-        throw new ClassNotFoundException("Class type "+classType+" could not be evaluated as part of the acceptable identifiers");
     }
 
 
