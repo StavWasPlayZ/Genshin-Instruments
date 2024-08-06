@@ -14,6 +14,7 @@ import net.minecraftforge.common.MinecraftForge;
  * A helper class for dealing with {@link NoteSound} packets.
  */
 public class NoteSoundPacketUtil {
+    private static final S2CNotePacketDelegate<NoteSound, S2CNoteSoundPacket> INIT = S2CNoteSoundPacket::new;
 
     /**
      * Sends {@link S2CNoteSoundPacket}s in the specified {@link InstrumentPacketUtil#PLAY_DISTANCE}.
@@ -27,8 +28,7 @@ public class NoteSoundPacketUtil {
                                            NoteSound sound, ResourceLocation instrumentId, int pitch, int volume) {
         firePlayerEvent(initiator,
             InstrumentPacketUtil.sendPlayerPlayNotePackets(
-                initiator, sound, instrumentId, pitch, volume,
-                S2CNoteSoundPacket::new
+                initiator, sound, instrumentId, pitch, volume, INIT
             )
         );
     }
@@ -41,7 +41,7 @@ public class NoteSoundPacketUtil {
     public static void sendPlayerPlayNotePackets(Entity initiator, NoteSound sound, NoteSoundMetadata soundMeta) {
         firePlayerEvent(initiator,
             InstrumentPacketUtil.sendPlayerPlayNotePackets(
-                initiator, sound, soundMeta, S2CNoteSoundPacket::new
+                initiator, sound, soundMeta, INIT
             )
         );
     }
@@ -59,8 +59,7 @@ public class NoteSoundPacketUtil {
                                            int pitch, int volume) {
         fireGenericEvent(level,
             InstrumentPacketUtil.sendPlayNotePackets(
-                level, pos, sound, instrumentId, pitch, volume,
-                S2CNoteSoundPacket::new
+                level, pos, sound, instrumentId, pitch, volume, INIT
             )
         );
     }
@@ -74,7 +73,7 @@ public class NoteSoundPacketUtil {
     public static void sendPlayNotePackets(Level level, NoteSound sound, NoteSoundMetadata soundMeta) {
         fireGenericEvent(level,
             InstrumentPacketUtil.sendPlayNotePackets(
-                level, sound, soundMeta, S2CNoteSoundPacket::new
+                level, sound, soundMeta, INIT
             )
         );
     }
