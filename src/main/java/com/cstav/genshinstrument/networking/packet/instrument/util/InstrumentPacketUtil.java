@@ -41,13 +41,14 @@ public class InstrumentPacketUtil {
      * @param soundMeta Additional metadata of the used sound
      * @param notePacketDelegate The constructor of the sound packet to be sent
      * @param <T> The sound object type
+     * @param <P> The packet type
      *
      * @return The sent packet
      */
-    public static <T> S2CNotePacket<T> sendPlayerPlayNotePackets(ServerPlayer initiator, T sound, NoteSoundMetadata soundMeta,
-                                                 S2CNotePacketDelegate<T> notePacketDelegate) {
-
-        final S2CNotePacket<T> packet = notePacketDelegate.create(
+    public static <T, P extends S2CNotePacket<T>> P sendPlayerPlayNotePackets(ServerPlayer initiator,
+                                                                              T sound, NoteSoundMetadata soundMeta,
+                                                                              S2CNotePacketDelegate<T, P> notePacketDelegate) {
+        final P packet = notePacketDelegate.create(
             Optional.of(initiator.getId()), sound, soundMeta
         );
 
@@ -72,12 +73,13 @@ public class InstrumentPacketUtil {
      * @param instrumentId The ID of the instrument initiating the sound
      * @param pitch The pitch of the sound to initiate
      * @param volume The volume of the sound to initiate
+     * @param <P> The packet type
      *
      * @return The sent packet
      */
-    public static <T> S2CNotePacket<T> sendPlayerPlayNotePackets(ServerPlayer initiator,
+    public static <T, P extends S2CNotePacket<T>> P sendPlayerPlayNotePackets(ServerPlayer initiator,
                                                      T sound, ResourceLocation instrumentId, int pitch, int volume,
-                                                     S2CNotePacketDelegate<T> notePacketDelegate) {
+                                                     S2CNotePacketDelegate<T, P> notePacketDelegate) {
         return sendPlayerPlayNotePackets(
             initiator, sound,
             new NoteSoundMetadata(
@@ -98,13 +100,14 @@ public class InstrumentPacketUtil {
      * @param soundMeta Additional metadata of the used sound
      * @param notePacketDelegate The constructor of the sound packet to be sent
      * @param <T> The sound object type
+     * @param <P> The packet type
      *
      * @return The sent packet
      */
-    public static <T> S2CNotePacket<T> sendPlayNotePackets(Level level, T sound, NoteSoundMetadata soundMeta,
-                                               S2CNotePacketDelegate<T> notePacketDelegate) {
+    public static <T, P extends S2CNotePacket<T>> P sendPlayNotePackets(Level level, T sound, NoteSoundMetadata soundMeta,
+                                               S2CNotePacketDelegate<T, P> notePacketDelegate) {
 
-        final S2CNotePacket<T> packet = notePacketDelegate.create(
+        final P packet = notePacketDelegate.create(
             Optional.empty(), sound, soundMeta
         );
 
@@ -134,12 +137,14 @@ public class InstrumentPacketUtil {
      * @param sound The sound to initiate
      * @param instrumentId The ID of the instrument initiating the sound
      * @param pitch The pitch of the sound to initiate
+     * @param <T> The sound object type
+     * @param <P> The packet type
      *
      * @return The sent packet
      */
-    public static <T> S2CNotePacket<T> sendPlayNotePackets(Level level, BlockPos pos, T sound, ResourceLocation instrumentId,
+    public static <T, P extends S2CNotePacket<T>> P sendPlayNotePackets(Level level, BlockPos pos, T sound, ResourceLocation instrumentId,
                                                int pitch, int volume,
-                                               S2CNotePacketDelegate<T> notePacketDelegate) {
+                                               S2CNotePacketDelegate<T, P> notePacketDelegate) {
         return sendPlayNotePackets(
             level, sound,
             new NoteSoundMetadata(

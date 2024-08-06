@@ -1,8 +1,11 @@
 package com.cstav.genshinstrument.sound.held;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
 
 /**
  * A tuple holding an initiator type and identifier.
@@ -35,12 +38,39 @@ public record InitiatorID(String type, String identifier) {
 
 
     /**
+     * @param initiatorId The entity initiator's ID
+     * @param oInitiatorId The custom initiator ID
+     * @return The custom initiator ID if possible, otherwise
+     * the entity's.
+     */
+    public static InitiatorID getEither(final Optional<Integer> initiatorId, final Optional<InitiatorID> oInitiatorId) {
+        return oInitiatorId.orElseGet(() -> assertIIDPresent(
+            initiatorId
+                .map(Minecraft.getInstance().level::getEntity)
+                .map(InitiatorID::fromEntity)
+        ));
+    }
+
+    /**
+     * Asserts that the initiator ID provided is present, and returns it.
+     * Throws an {@link AssertionError} otherwise.
+     */
+    private static InitiatorID assertIIDPresent(Optional<InitiatorID> initiatorID) {
+        assert initiatorID.isPresent() : "Must either have an entity initiator or an initiator ID!";
+        return initiatorID.get();
+    }
+
+
+    /**
      * @return The initiator ID for the provided object.
      */
     public static InitiatorID fromObj(@NotNull Object initiator) {
         return (initiator instanceof Entity entity)
-            ? new InitiatorID("entity", String.valueOf(entity.getId()))
+            ? fromEntity(entity)
             : new InitiatorID("other", initiator.toString());
+    }
+    public static InitiatorID fromEntity(@NotNull Entity entity) {
+        return new InitiatorID("entity", String.valueOf(entity.getId()));
     }
 
 

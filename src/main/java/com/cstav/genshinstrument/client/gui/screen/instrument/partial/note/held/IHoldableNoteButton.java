@@ -34,7 +34,7 @@ public interface IHoldableNoteButton {
      * @param heldSound The sound being released
      */
     default void releaseHeld(int notePitch, boolean targetPitch, HeldNoteSound heldSound) {
-        final InitiatorID initiatorId = InitiatorID.fromObj(Minecraft.getInstance().player);
+        final InitiatorID initiatorId = InitiatorID.fromEntity(Minecraft.getInstance().player);
 
         if (targetPitch) {
             HeldNoteSounds.release(initiatorId, heldSound, notePitch);

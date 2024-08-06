@@ -81,7 +81,7 @@ public record HeldNoteSound(
      */
     @OnlyIn(Dist.CLIENT)
     public void startPlaying(int notePitch, float volume, Entity initiator, ResourceLocation instrumentId) {
-        startPlaying(notePitch, volume, initiator, InitiatorID.fromObj(initiator), instrumentId);
+        startPlaying(notePitch, volume, initiator, InitiatorID.fromEntity(initiator), instrumentId);
     }
     /**
      * A held note sound instance for 3rd party trigger
@@ -115,11 +115,13 @@ public record HeldNoteSound(
         final Player localPlayer = Minecraft.getInstance().player;
         final Level level = localPlayer.level();
 
+        final InitiatorID _initiatorID = InitiatorID.getEither(initiatorId, oInitiatorId);
+
         if (initiatorId.isPresent()) {
             final Entity initiator = level.getEntity(initiatorId.get());
 
             MinecraftForge.EVENT_BUS.post(
-                new HeldNoteSoundPlayedEvent(initiator, this, meta, phase)
+                new HeldNoteSoundPlayedEvent(initiator, this, meta, phase, _initiatorID)
             );
 
             // Don't play sound for ourselves
@@ -128,14 +130,9 @@ public record HeldNoteSound(
         }
 
         MinecraftForge.EVENT_BUS.post(
-            new HeldNoteSoundPlayedEvent(level, this, meta, phase)
+            new HeldNoteSoundPlayedEvent(level, this, meta, phase, _initiatorID)
         );
 
-
-        final InitiatorID _initiatorID = initiatorId
-            .map(Minecraft.getInstance().level::getEntity)
-            .map(InitiatorID::fromObj)
-            .orElseGet(() -> assertIIDPresent(oInitiatorId));
 
         switch (phase) {
             case ATTACK -> attackFromServer(_initiatorID, meta);
@@ -166,15 +163,6 @@ public record HeldNoteSound(
     @OnlyIn(Dist.CLIENT)
     private void releaseFromServer(InitiatorID initiatorID, NoteSoundMetadata meta) {
         HeldNoteSounds.release(initiatorID, this, meta.pitch());
-    }
-
-    /**
-     * Asserts that the initiator ID provided is present, and returns it.
-     * Throws an {@link AssertionError} otherwise.
-     */
-    private static InitiatorID assertIIDPresent(Optional<InitiatorID> initiatorID) {
-        assert initiatorID.isPresent() : "Must either have an entity initiator or an initiator ID!";
-        return initiatorID.get();
     }
 
     //#endregion

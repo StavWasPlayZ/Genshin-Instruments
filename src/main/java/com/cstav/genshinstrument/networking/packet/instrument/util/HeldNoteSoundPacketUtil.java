@@ -3,7 +3,6 @@ package com.cstav.genshinstrument.networking.packet.instrument.util;
 import com.cstav.genshinstrument.event.HeldNoteSoundPlayedEvent;
 import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
 import com.cstav.genshinstrument.networking.packet.instrument.s2c.S2CHeldNoteSoundPacket;
-import com.cstav.genshinstrument.networking.packet.instrument.s2c.S2CNotePacket;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound;
 import com.cstav.genshinstrument.sound.held.InitiatorID;
 import net.minecraft.core.BlockPos;
@@ -32,13 +31,11 @@ public class HeldNoteSoundPacketUtil {
     public static void sendPlayerPlayNotePackets(ServerPlayer initiator, HeldNoteSound sound,
                                                  ResourceLocation instrumentId, int pitch, int volume,
                                                  HeldSoundPhase phase) {
-        final S2CNotePacket<HeldNoteSound> packet = InstrumentPacketUtil.sendPlayerPlayNotePackets(
-            initiator, sound, instrumentId, pitch, volume,
-            toReg(phase, initiator)
-        );
-
-        MinecraftForge.EVENT_BUS.post(
-            new HeldNoteSoundPlayedEvent(initiator, sound, packet.meta, phase)
+        fireEntityEvent(initiator,
+            InstrumentPacketUtil.sendPlayerPlayNotePackets(
+                initiator, sound, instrumentId, pitch, volume,
+                toReg(phase, initiator)
+            )
         );
     }
     /**
@@ -50,10 +47,10 @@ public class HeldNoteSoundPacketUtil {
      */
     public static void sendPlayerPlayNotePackets(ServerPlayer initiator, HeldNoteSound sound, NoteSoundMetadata soundMeta,
                                                  HeldSoundPhase phase) {
-        InstrumentPacketUtil.sendPlayerPlayNotePackets(initiator, sound, soundMeta, toReg(phase, initiator));
-
-        MinecraftForge.EVENT_BUS.post(
-            new HeldNoteSoundPlayedEvent(initiator, sound, soundMeta, phase)
+        fireEntityEvent(initiator,
+            InstrumentPacketUtil.sendPlayerPlayNotePackets(
+                initiator, sound, soundMeta, toReg(phase, initiator)
+            )
         );
     }
 
@@ -70,13 +67,11 @@ public class HeldNoteSoundPacketUtil {
     public static void sendPlayNotePackets(Level level, BlockPos pos, HeldNoteSound sound, ResourceLocation instrumentId,
                                            int pitch, int volume, HeldSoundPhase phase,
                                            InitiatorID initiatorID) {
-        final S2CNotePacket<HeldNoteSound> packet = InstrumentPacketUtil.sendPlayNotePackets(
-            level, pos, sound, instrumentId, pitch, volume,
-            toReg(initiatorID, phase)
-        );
-
-        MinecraftForge.EVENT_BUS.post(
-            new HeldNoteSoundPlayedEvent(level, sound, packet.meta, phase)
+        fireGenericEvent(level,
+            InstrumentPacketUtil.sendPlayNotePackets(
+                level, pos, sound, instrumentId, pitch, volume,
+                toReg(initiatorID, phase)
+            )
         );
     }
     /**
@@ -90,26 +85,48 @@ public class HeldNoteSoundPacketUtil {
     public static void sendPlayNotePackets(Level level, HeldNoteSound sound, NoteSoundMetadata soundMeta,
                                            HeldSoundPhase phase,
                                            InitiatorID initiatorID) {
-        InstrumentPacketUtil.sendPlayNotePackets(level, sound, soundMeta, toReg(initiatorID, phase));
+        fireGenericEvent(level,
+            InstrumentPacketUtil.sendPlayNotePackets(
+                level, sound, soundMeta, toReg(initiatorID, phase)
+            )
+        );
+    }
 
+
+    private static void fireEntityEvent(Entity initiator, S2CHeldNoteSoundPacket packet) {
         MinecraftForge.EVENT_BUS.post(
-            new HeldNoteSoundPlayedEvent(level, sound, soundMeta, phase)
+            new HeldNoteSoundPlayedEvent(
+                initiator,
+                packet.sound, packet.meta,
+                packet.phase,
+                InitiatorID.fromEntity(initiator)
+            )
+        );
+    }
+    private static void fireGenericEvent(Level level, S2CHeldNoteSoundPacket packet) {
+        MinecraftForge.EVENT_BUS.post(
+            new HeldNoteSoundPlayedEvent(
+                level,
+                packet.sound, packet.meta,
+                packet.phase,
+                InitiatorID.getEither(packet.initiatorID, packet.oInitiatorID)
+            )
         );
     }
 
 
     // Converting to the base instrument packet lambda
 
-    static S2CNotePacketDelegate<HeldNoteSound> toReg(InitiatorID oInitiatorID, HeldSoundPhase phase) {
+    private static S2CNotePacketDelegate<HeldNoteSound, S2CHeldNoteSoundPacket> toReg(InitiatorID oInitiatorID, HeldSoundPhase phase) {
         return (initiatorID, sound, meta) -> new S2CHeldNoteSoundPacket(
             initiatorID, Optional.of(oInitiatorID),
             sound, meta, phase
         );
     }
-    static S2CNotePacketDelegate<HeldNoteSound> toReg(HeldSoundPhase phase, Entity initiator) {
+    private static S2CNotePacketDelegate<HeldNoteSound, S2CHeldNoteSoundPacket> toReg(HeldSoundPhase phase, Entity initiator) {
         return (initiatorID, sound, meta) -> new S2CHeldNoteSoundPacket(
             initiatorID,
-            initiatorID.isPresent() ? Optional.of(InitiatorID.fromObj(initiator)) : Optional.empty(),
+            initiatorID.isPresent() ? Optional.of(InitiatorID.fromEntity(initiator)) : Optional.empty(),
             sound, meta, phase
         );
     }

@@ -42,7 +42,7 @@ public abstract class ServerEvents {
 
         if (!event.isOpen) {
             // Remove their potential entry over at HeldNoteSounds
-            HeldNoteSounds.release(InitiatorID.fromObj(event.player));
+            HeldNoteSounds.release(InitiatorID.fromEntity(event.player));
         }
     }
 

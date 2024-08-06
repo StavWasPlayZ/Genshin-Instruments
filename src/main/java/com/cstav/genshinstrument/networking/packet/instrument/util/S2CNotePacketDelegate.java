@@ -10,7 +10,7 @@ import java.util.Optional;
  * @param <T> The sound object type
  */
 @FunctionalInterface
-public interface S2CNotePacketDelegate<T> {
+public interface S2CNotePacketDelegate<T, P extends S2CNotePacket<T>> {
     /**
      * Construct a new Play Note packet.
      * @param sound The sound to play
@@ -18,5 +18,5 @@ public interface S2CNotePacketDelegate<T> {
      * @param initiatorID The ID of the player initiating the sound.
      *                    May be empty for a non-player trigger.
      */
-    S2CNotePacket<T> create(Optional<Integer> initiatorID, T sound, NoteSoundMetadata meta);
+    P create(Optional<Integer> initiatorID, T sound, NoteSoundMetadata meta);
 }
