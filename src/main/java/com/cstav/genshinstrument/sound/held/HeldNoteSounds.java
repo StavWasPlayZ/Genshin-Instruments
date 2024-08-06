@@ -1,9 +1,12 @@
 package com.cstav.genshinstrument.sound.held;
 
+import com.cstav.genshinstrument.util.MultTuple;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * A class storing all note sounds in the present level.
@@ -52,6 +55,24 @@ public abstract class HeldNoteSounds {
         // Should always be empty when map is empty
         return SOUND_INSTANCES.values().stream()
             .anyMatch((k2p2i) -> k2p2i.containsKey(sound));
+    }
+
+
+    /**
+     * A uniqueness of a sound instance is defined by its
+     * sound type, instrument ID and note pitch.
+     * @return A collection of all unique sound instances in the
+     * provided list.
+     */
+    public static Collection<HeldNoteSoundInstance> getUnique(final List<HeldNoteSoundInstance> sounds) {
+        return sounds.stream()
+            .collect(Collectors.toMap(
+                // Get unique by the following params:
+                (sound) -> new MultTuple(sound.heldSoundContainer, sound.instrumentId, sound.notePitch),
+                Function.identity(),
+                (curr, repl) -> curr
+            ))
+            .values();
     }
 
 

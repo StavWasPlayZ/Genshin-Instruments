@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
@@ -20,6 +21,8 @@ import java.util.Optional;
 public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
     public final HeldNoteSound heldSoundContainer;
     public final HeldNoteSound.Phase phase;
+
+    public final ResourceLocation instrumentId;
 
     public final Optional<Entity> initiator;
     public final InitiatorID initiatorId;
@@ -42,7 +45,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
     protected HeldNoteSoundInstance(HeldNoteSound heldSoundContainer, HeldNoteSound.Phase phase,
                                     int notePitch, float volume,
                                     @Nullable Entity initiator, @Nullable BlockPos soundOrigin,
-                                    InitiatorID initiatorId,
+                                    InitiatorID initiatorId, ResourceLocation instrumentId,
                                     int timeAlive, boolean released) {
         super(
             heldSoundContainer.getSound(phase).getByPreference(distFromSourceSqr(soundOrigin, initiator)),
@@ -50,13 +53,8 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
             SoundInstance.createUnseededRandom()
         );
 
-
-//        initiatorId = InitiatorID.fromObj(
-//            (soundOrigin == null)
-//                ? Objects.requireNonNull(initiator, "Either sound origin or initiator must be specified")
-//                : soundOrigin
-//        );
         this.initiatorId = initiatorId;
+        this.instrumentId = instrumentId;
 
         this.heldSoundContainer = heldSoundContainer;
         this.phase = phase;
@@ -103,8 +101,13 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
     public HeldNoteSoundInstance(HeldNoteSound heldSoundContainer, HeldNoteSound.Phase phase,
                                  int notePitch, float volume,
                                  @Nullable Entity initiator, @Nullable BlockPos soundOrigin,
-                                 InitiatorID initiatorId) {
-        this(heldSoundContainer, phase, notePitch, volume, initiator, soundOrigin, initiatorId, 0, false);
+                                 InitiatorID initiatorId, ResourceLocation instrumentId) {
+        this(
+            heldSoundContainer,
+            phase, notePitch, volume,
+            initiator, soundOrigin, initiatorId, instrumentId,
+            0, false
+        );
     }
 
 
@@ -235,7 +238,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
         new HeldNoteSoundInstance(
             heldSoundContainer, Phase.HOLD, notePitch, volume - (decreaseVol ? heldSoundContainer.decay() : 0),
             initiator.orElse(null), soundOrigin.orElse(null),
-            initiatorId,
+            initiatorId, instrumentId,
             overallTimeAlive, released
         ).queueAndAddInstance();
     }

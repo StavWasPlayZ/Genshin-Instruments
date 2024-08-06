@@ -34,7 +34,10 @@ public abstract class NoteButtonIdentifier {
 
     @Override
     public boolean equals(Object other) {
-        return (other instanceof NoteButtonIdentifier _other) && matches(_other);
+        return (this == other) || (
+            (other instanceof NoteButtonIdentifier _other)
+            && matches(_other)
+        );
     }
 
     /**

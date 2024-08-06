@@ -293,7 +293,10 @@ public abstract class NoteButton extends AbstractButton {
      */
     @Override
     public boolean equals(Object obj) {
-        return (obj instanceof NoteButton btn) && getIdentifier().matches(btn);
+        return (this == obj) || (
+            (obj instanceof NoteButton btn)
+            && getIdentifier().matches(btn)
+        );
     }
 
 }

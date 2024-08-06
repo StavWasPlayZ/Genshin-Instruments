@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.held;
 
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.IHeldInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.networking.GIPacketHandler;
 import com.cstav.genshinstrument.networking.packet.instrument.c2s.C2SHeldNoteSoundPacket;
@@ -86,7 +87,9 @@ public interface IHoldableNoteButton {
 
     default void playLocalHeldSound(final NoteSound sound, final int pitch) {
         playAttackAnimation(false);
-        toHeldSound(sound).startPlaying(pitch, asNoteBtn().instrumentScreen.volume());
+
+        final InstrumentScreen screen = asNoteBtn().instrumentScreen;
+        toHeldSound(sound).startPlaying(pitch, screen.volume(), screen.getInstrumentId());
     }
 
     default void sendNoteHeldPacket(HeldNoteSound sound, int pitch, HeldSoundPhase phase) {

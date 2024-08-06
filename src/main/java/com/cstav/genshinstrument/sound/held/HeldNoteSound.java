@@ -60,41 +60,43 @@ public record HeldNoteSound(
      */
     @OnlyIn(Dist.CLIENT)
     public void startPlaying(int notePitch, float volume, Entity initiator, BlockPos pos,
-                             InitiatorID initiatorId) {
+                             InitiatorID initiatorId, ResourceLocation instrumentId) {
         new HeldNoteSoundInstance(
             this, Phase.ATTACK,
             notePitch, volume,
             initiator, pos,
-            initiatorId
+            initiatorId, instrumentId
         ).queueAndAddInstance();
     }
     /**
      * A held note sound instance for 3rd party trigger
      */
     @OnlyIn(Dist.CLIENT)
-    public void startPlaying(int notePitch, float volume, Entity initiator, InitiatorID initiatorId) {
-        startPlaying(notePitch, volume, initiator, null, initiatorId);
+    public void startPlaying(int notePitch, float volume, Entity initiator,
+                             InitiatorID initiatorId, ResourceLocation instrumentId) {
+        startPlaying(notePitch, volume, initiator, null, initiatorId, instrumentId);
     }
     /**
      * A held note sound instance for 3rd party trigger
      */
     @OnlyIn(Dist.CLIENT)
-    public void startPlaying(int notePitch, float volume, Entity initiator) {
-        startPlaying(notePitch, volume, initiator, InitiatorID.fromObj(initiator));
+    public void startPlaying(int notePitch, float volume, Entity initiator, ResourceLocation instrumentId) {
+        startPlaying(notePitch, volume, initiator, InitiatorID.fromObj(initiator), instrumentId);
     }
     /**
      * A held note sound instance for 3rd party trigger
      */
     @OnlyIn(Dist.CLIENT)
-    public void startPlaying(int notePitch, float volume, BlockPos pos, InitiatorID initiatorId) {
-        startPlaying(notePitch, volume, null, pos, initiatorId);
+    public void startPlaying(int notePitch, float volume, BlockPos pos,
+                             InitiatorID initiatorId, ResourceLocation instrumentId) {
+        startPlaying(notePitch, volume, null, pos, initiatorId, instrumentId);
     }
     /**
      * A held note sound instance for local playing
      */
     @OnlyIn(Dist.CLIENT)
-    public void startPlaying(int notePitch, float volume) {
-        startPlaying(notePitch, volume, Minecraft.getInstance().player);
+    public void startPlaying(int notePitch, float volume, ResourceLocation instrumentId) {
+        startPlaying(notePitch, volume, Minecraft.getInstance().player, instrumentId);
     }
 
 
@@ -149,11 +151,16 @@ public record HeldNoteSound(
                 meta.pitch(), meta.volume() / 100f,
                 Minecraft.getInstance().level.getEntity(
                     Integer.parseInt(initiatorID.identifier())
-                )
+                ),
+                meta.instrumentId()
             );
         } else {
             // Play as other
-            startPlaying(meta.pitch(), meta.volume() / 100f, meta.pos(), initiatorID);
+            startPlaying(
+                meta.pitch(), meta.volume() / 100f,
+                meta.pos(),
+                initiatorID, meta.instrumentId()
+            );
         }
     }
     @OnlyIn(Dist.CLIENT)
