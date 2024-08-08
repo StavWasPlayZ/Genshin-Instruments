@@ -3,8 +3,6 @@ package com.cstav.genshinstrument.event;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.eventbus.api.Event;
 
 import java.util.Optional;
@@ -12,7 +10,6 @@ import java.util.Optional;
 /**
  * An event when the open state of an instrument screen has changed.
  */
-@OnlyIn(Dist.CLIENT)
 public class InstrumentOpenStateChangedEvent extends Event {
     public final boolean isOpen;
     public final Player player;
