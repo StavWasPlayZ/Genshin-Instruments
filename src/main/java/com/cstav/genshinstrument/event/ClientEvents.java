@@ -103,7 +103,7 @@ public class ClientEvents {
             return false;
 
         // If this sound was produced by a player, and that player is ourselves - omit.
-        if (event.isByEntity()) {
+        if (event.isByPlayer()) {
             final Entity initiator = event.entityInfo().get().entity;
 
             if (initiator.equals(MINECRAFT.player))
