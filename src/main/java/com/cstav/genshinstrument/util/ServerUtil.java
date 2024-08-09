@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.util;
 
 import com.cstav.genshinstrument.networking.IModPacket;
 import com.mojang.logging.LogUtils;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent.Context;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -30,7 +31,7 @@ public class ServerUtil {
                 continue;
             }
 
-            final Constructor<IModPacket> packetConstructor = CommonUtil.getExpectedParamlessConstructor(packetType);
+            final Constructor<IModPacket> packetConstructor = CommonUtil.getExpectedConstructor(packetType, FriendlyByteBuf.class);
 
             sc.registerMessage(
                 id.get(), packetType, IModPacket::write,

@@ -42,19 +42,20 @@ public abstract class CommonUtil {
 
 
     /**
-     * Retrieves a parameterless constructor from the provided {@code clazz}.
+     * Retrieves a constructor from the provided {@code clazz}.
      * Failure will result in a {@link RuntimeException}.
      * @param clazz The class to reflect the constructor from
+     * @param paramTypes The parameter types the function should accept
      * @return The parameterless constructor of the provided class
      * @param <T> The class type
      */
-    public static <T> Constructor<T> getExpectedParamlessConstructor(final Class<T> clazz) {
+    public static <T> Constructor<T> getExpectedConstructor(final Class<T> clazz, Class<?>... paramTypes) {
         try {
-            return clazz.getDeclaredConstructor();
+            return clazz.getDeclaredConstructor(paramTypes);
         } catch (NoSuchMethodException e) {
-            throw new RuntimeException("Could not find a param-less constructor " + clazz.getName(), e);
+            throw new RuntimeException("Could not find a matching constructor for " + clazz.getName(), e);
         } catch (Exception e) {
-            throw new RuntimeException("Error getting param-less constructor for " + clazz.getName(), e);
+            throw new RuntimeException("Error getting constructor for " + clazz.getName(), e);
         }
     }
 
