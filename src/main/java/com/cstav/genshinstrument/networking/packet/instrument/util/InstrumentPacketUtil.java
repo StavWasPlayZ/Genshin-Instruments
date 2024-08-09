@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.MinecraftForge;
-import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.util.List;
 import java.util.Optional;
@@ -247,11 +246,7 @@ public class InstrumentPacketUtil {
         return true;
     }
 
-    /**
-     * @apiNote This method should only be used by the internal Genshin Instruments mod!
-     */
-    @Internal
-    public static void sendInternalOpenPacket(ServerPlayer player, String instrumentType) {
-        GIPacketHandler.sendToClient(new OpenInstrumentPacket(instrumentType), player);
+    public static void sendOpenPacket(ServerPlayer player, ResourceLocation instrumentID) {
+        GIPacketHandler.sendToClient(new OpenInstrumentPacket(instrumentID), player);
     }
 }
