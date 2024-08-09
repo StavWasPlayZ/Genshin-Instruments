@@ -44,4 +44,11 @@ public abstract class HeldGridInstrumentScreen extends GridInstrumentScreen impl
     public void foreignPlay(final InstrumentPlayedEvent<?> event) {
         foreignPlayHeld(event);
     }
+
+
+    @Override
+    public void onClose(final boolean notify) {
+        closeHeldScreen();
+        super.onClose(notify);
+    }
 }

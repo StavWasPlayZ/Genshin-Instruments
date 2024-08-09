@@ -4,8 +4,6 @@ import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.item.InstrumentItem;
 import com.cstav.genshinstrument.networking.packet.instrument.util.InstrumentPacketUtil;
-import com.cstav.genshinstrument.sound.held.HeldNoteSounds;
-import com.cstav.genshinstrument.sound.held.InitiatorID;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -33,17 +31,6 @@ public abstract class ServerEvents {
     @SubscribeEvent
     public static void onPlayerLeave(final PlayerEvent.PlayerLoggedOutEvent event) {
         InstrumentPacketUtil.setInstrumentClosed(event.getEntity());
-    }
-
-    @SubscribeEvent
-    public static void onInstrumentScreenOpenStateChanged(final InstrumentOpenStateChangedEvent event) {
-        if (event.player.level().isClientSide)
-            return;
-
-        if (!event.isOpen) {
-            // Remove their potential entry over at HeldNoteSounds
-            HeldNoteSounds.release(InitiatorID.fromEntity(event.player));
-        }
     }
 
 
