@@ -78,7 +78,6 @@ public class NotifyInstrumentOpenPacket implements IModPacket {
     }
 
 
-    @SuppressWarnings("resource")
     @Override
     public void handle(final Context context) {
         final Player player = Minecraft.getInstance().level.getPlayerByUUID(playerUUID);
@@ -87,7 +86,7 @@ public class NotifyInstrumentOpenPacket implements IModPacket {
 
             if (pos.isPresent()) // is block instrument
                 InstrumentOpenProvider.setOpen(player, pos.get());
-            else
+            else // is item instrument
                 InstrumentOpenProvider.setOpen(player, hand.get());
 
         } else {
