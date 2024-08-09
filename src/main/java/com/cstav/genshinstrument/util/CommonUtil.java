@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
+import java.lang.reflect.Constructor;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
@@ -37,6 +38,24 @@ public abstract class CommonUtil {
             dir.getNamespace(),
             dir.getPath() + "/" + path
         );
+    }
+
+
+    /**
+     * Retrieves a parameterless constructor from the provided {@code clazz}.
+     * Failure will result in a {@link RuntimeException}.
+     * @param clazz The class to reflect the constructor from
+     * @return The parameterless constructor of the provided class
+     * @param <T> The class type
+     */
+    public static <T> Constructor<T> getExpectedParamlessConstructor(final Class<T> clazz) {
+        try {
+            return clazz.getDeclaredConstructor();
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("Could not find a param-less constructor " + clazz.getName(), e);
+        } catch (Exception e) {
+            throw new RuntimeException("Error getting param-less constructor for " + clazz.getName(), e);
+        }
     }
 
 

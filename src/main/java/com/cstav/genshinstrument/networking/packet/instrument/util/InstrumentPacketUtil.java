@@ -218,9 +218,9 @@ public class InstrumentPacketUtil {
     private static boolean sendOpenPacket(ServerPlayer player, InteractionHand usedHand, OpenInstrumentPacketSender onOpenRequest,
             BlockPos pos) {
 
+        // Update the capability for clients
         NotifyInstrumentOpenPacket instrumentOpenPacket;
 
-        // Update the capability on the server
         if (pos == null) {
             InstrumentOpenProvider.setOpen(player, usedHand);
             instrumentOpenPacket = new NotifyInstrumentOpenPacket(player.getUUID(), usedHand);
