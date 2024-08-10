@@ -46,17 +46,16 @@ public class GridInstrumentMidiReceiver extends InstrumentMidiReceiver {
 
         transposeMidi(shouldSharpen, shouldFlatten);
 
+        // A sharpened/flattened note is still the same note - just pitched up/down.
+        // Thus, go backwards/forwards to stay on the same note.
 
-        final int playedNote = note + (shouldFlatten ? 1 : shouldSharpen ? -1 : 0);
+        int playedNote = note + (shouldFlatten ? 1 : shouldSharpen ? -1 : 0);
 
-        final int currNote = ((playedNote + (higherThan3 ? 1 : 0)) / 2)
+        playedNote = ((playedNote + (higherThan3 ? 1 : 0)) / 2)
             // 12th note should go to the next column
             + playedNote / (12 + key);
 
-        return instrumentScreen.getNoteButton(
-            currNote % instrumentScreen.rows(),
-            currNote / instrumentScreen.rows()
-        );
+        return instrumentScreen.getNoteButtonByMIDINote(playedNote);
     }
 
 }

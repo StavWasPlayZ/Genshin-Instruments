@@ -110,6 +110,17 @@ public abstract class GridInstrumentScreen extends InstrumentScreen {
         return noteGrid.getNoteButton(row, column);
     }
 
+    /**
+     * Retrieves the MIDI note that corresponds with
+     * note button at position {@code note}.
+     * Starts from bottom-left corner (0, 0).
+     * @param note The MIDI note to fetch
+     * @return The corresponding note button
+     */
+    public NoteButton getNoteButtonByMIDINote(final int note) {
+        return getNoteButton(note % rows(), note / rows());
+    }
+
 
     /**
      * Creates a note for a singular sound type (SSTI) instrument
