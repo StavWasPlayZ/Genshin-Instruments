@@ -5,7 +5,7 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.Instrument
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.HeldGridInstrumentScreen;
 import com.cstav.genshinstrument.sound.GISounds;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound;
-import net.minecraft.client.gui.GuiGraphics;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -31,14 +31,14 @@ public class NightwindHornScreen extends HeldGridInstrumentScreen {
     }
 
     @Override
-    protected void renderInstrumentBackground(final GuiGraphics gui) {
-        final int clefX = grid.getX() - getNoteSize() + 8;
+    protected void renderInstrumentBackground(final PoseStack stack) {
+        final int clefX = grid.x - getNoteSize() + 8;
 
-        renderClef(gui, 0, clefX, "treble");
-        renderClef(gui, 1, clefX, "bass");
+        renderClef(stack, 0, clefX, "treble");
+        renderClef(stack, 1, clefX, "bass");
 
         for (int i = 0; i < columns(); i++)
-            renderStaff(gui, i);
+            renderStaff(stack, i);
     }
 
 

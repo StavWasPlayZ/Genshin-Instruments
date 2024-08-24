@@ -216,7 +216,7 @@ public abstract class InstrumentOptionsScreen extends AbstractInstrumentOptionsS
             final CycleButton<INoteLabel> labelType = CycleButton.<INoteLabel>builder((label) -> Component.translatable(label.getKey()))
                 .withValues(labels)
                 .withInitialValue(currLabel)
-                .withTooltip((value) -> Tooltip.create(Component.translatable(value.getKey()+".description")))
+                .withTooltip(tooltip((value) -> Component.translatable(value.getKey()+".description")))
                 .create(0, 0,
                     getBigButtonWidth(), getButtonHeight(),
                     Component.translatable("button.genshinstrument.label"), this::onLabelChanged

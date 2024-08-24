@@ -1,21 +1,14 @@
 package com.cstav.genshinstrument.client.util;
 
-import java.awt.Color;
-import java.awt.Point;
-
-import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
+import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.systems.RenderSystem;
-
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.layouts.FrameLayout;
-import net.minecraft.client.gui.layouts.GridLayout;
-import net.minecraft.client.gui.layouts.Layout;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -53,7 +46,7 @@ public class ClientUtil {
      * @return Whether the music stopped
      */
     public static boolean stopMusicIfClose(final BlockPos pos) {
-        return stopMusicIfClose(pos.getCenter().distanceToSqr(Minecraft.getInstance().player.position()));
+        return stopMusicIfClose(pos.distToCenterSqr(Minecraft.getInstance().player.position()));
     }
 
 

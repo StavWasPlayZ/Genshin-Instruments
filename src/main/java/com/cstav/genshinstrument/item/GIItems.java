@@ -2,7 +2,6 @@ package com.cstav.genshinstrument.item;
 
 import com.cstav.genshinstrument.GInstrumentMod;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;

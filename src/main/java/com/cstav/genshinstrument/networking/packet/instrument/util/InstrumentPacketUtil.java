@@ -52,13 +52,13 @@ public class InstrumentPacketUtil {
             Optional.of(initiator.getId()), sound, soundMeta
         );
 
-        for (final Player listener : InstrumentPacketUtil.noteListeners(initiator.level(), soundMeta.pos()))
+        for (final Player listener : InstrumentPacketUtil.noteListeners(initiator.getLevel(), soundMeta.pos()))
             GIPacketHandler.sendToClient(packet, (ServerPlayer)listener);
 
 
         // Trigger an instrument game event
         // This is done so that sculk sensors can pick up the instrument's sound
-        initiator.level().gameEvent(
+        initiator.getLevel().gameEvent(
             GameEvent.INSTRUMENT_PLAY, soundMeta.pos(),
             GameEvent.Context.of(initiator)
         );
@@ -180,7 +180,7 @@ public class InstrumentPacketUtil {
         InstrumentOpenProvider.setClosed(player);
 
         // And clients
-        player.level().players().forEach((oPlayer) ->
+        player.getLevel().players().forEach((oPlayer) ->
             GIPacketHandler.sendToClient(
                 new NotifyInstrumentOpenPacket(player.getUUID()),
                 (ServerPlayer)oPlayer
@@ -227,7 +227,7 @@ public class InstrumentPacketUtil {
             instrumentOpenPacket = new NotifyInstrumentOpenPacket(player.getUUID(), pos);
         }
 
-        player.level().players().forEach((otherPlayer) ->
+        player.getLevel().players().forEach((otherPlayer) ->
             GIPacketHandler.sendToClient(
                 instrumentOpenPacket,
                 (ServerPlayer)otherPlayer

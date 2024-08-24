@@ -18,6 +18,8 @@ import org.slf4j.Logger;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * The base class for all instrument options screens.

@@ -3,6 +3,7 @@ package com.cstav.genshinstrument.sound.registrar;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound;
 import com.cstav.genshinstrument.sound.registrar.impl.AbstractNoteSoundRegistrar;
+import com.cstav.genshinstrument.util.CommonUtil;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -110,7 +111,7 @@ public class HeldNoteSoundRegistrar extends AbstractNoteSoundRegistrar<HeldNoteS
     }
 
     protected NoteSound[] applyBuilder(Function<NoteSoundRegistrar, NoteSound[]> builder, String pathSuffix) {
-        return builder.apply(nsr(baseSoundLocation.withSuffix(pathSuffix)));
+        return builder.apply(nsr(CommonUtil.withSuffix(baseSoundLocation, pathSuffix)));
     }
     /**
      * Shorthand for {@code new NoteSoundRegistrar(soundRegistrar, instrumentId)}

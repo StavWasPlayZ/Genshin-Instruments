@@ -2,10 +2,12 @@ package com.cstav.genshinstrument.util;
 
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.google.common.collect.Lists;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 import java.lang.reflect.Constructor;
 import java.math.BigDecimal;
@@ -63,6 +65,15 @@ public abstract class CommonUtil {
         } catch (Exception e) {
             throw new RuntimeException("Error getting constructor for " + clazz.getName(), e);
         }
+    }
+
+
+    public static Vec3 getCenter(final BlockPos pos) {
+        return new Vec3(
+            (double)pos.getX() + 0.5,
+            (double)pos.getY() + 0.5,
+            (double)pos.getZ() + 0.5
+        );
     }
 
 
