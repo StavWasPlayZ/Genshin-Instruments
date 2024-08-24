@@ -198,6 +198,7 @@ public abstract class NoteButton extends AbstractButton {
     }
 
     public boolean isLocked() {
+        // This comment exists for a merge to register
         return locked;
     }
 
