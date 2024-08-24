@@ -1,0 +1,28 @@
+{
+	"loader":"genshinstrument:separate_transforms",
+	"gui_light": "front",
+
+	"base": {
+		"parent": "genshinstrument:item/nightwind_horn_idle"
+	},
+	"perspectives": {
+		"gui": {
+			"parent": "genshinstrument:item/nightwind_horn_item"
+		},
+		"ground": {
+			"parent": "genshinstrument:item/nightwind_horn_item"
+		},
+		"fixed": {
+			"parent": "genshinstrument:item/nightwind_horn_item"
+		}
+	},
+
+	"overrides": [
+		{
+			"predicate": {
+				"genshinstrument:instrument_open": 1
+			},
+			"model": "genshinstrument:item/nightwind_horn_played"
+		}
+	]
+}

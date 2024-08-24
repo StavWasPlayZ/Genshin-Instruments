@@ -3,13 +3,13 @@ package com.cstav.genshinstrument.event;
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.item.InstrumentItem;
-import com.cstav.genshinstrument.util.ServerUtil;
-
+import com.cstav.genshinstrument.networking.packet.instrument.util.InstrumentPacketUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent.LevelTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -24,9 +24,15 @@ public abstract class ServerEvents {
         if ((event.phase != Phase.END) && (event.side == LogicalSide.SERVER))
             event.level.players().forEach((player) -> {
                 if (shouldAbruptlyClose(player))
-                    ServerUtil.setInstrumentClosed(player);
+                    InstrumentPacketUtil.setInstrumentClosed(player);
             });
     }
+
+    @SubscribeEvent
+    public static void onPlayerLeave(final PlayerEvent.PlayerLoggedOutEvent event) {
+        InstrumentPacketUtil.setInstrumentClosed(event.getEntity());
+    }
+
 
     private static boolean shouldAbruptlyClose(final Player player) {
         if (!InstrumentOpenProvider.isOpen(player))

@@ -25,7 +25,8 @@
                     {"items": ["genshinstrument:windsong_lyre"]},
                     {"items": ["genshinstrument:vintage_lyre"]},
                     {"items": ["genshinstrument:floral_zither"]},
-                    {"items": ["genshinstrument:glorious_drum"]}
+                    {"items": ["genshinstrument:glorious_drum"]},
+                    {"items": ["genshinstrument:nightwind_horn"]}
                 ]
             }
         }

@@ -2,41 +2,42 @@ package com.cstav.genshinstrument.sound;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
-import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
-import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
-import com.cstav.genshinstrument.util.CommonUtil;
+import com.cstav.genshinstrument.client.util.ClientUtil;
+import com.cstav.genshinstrument.event.NoteSoundPlayedEvent;
+import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
+import com.cstav.genshinstrument.sound.registrar.NoteSoundRegistrar;
 import com.cstav.genshinstrument.util.LabelUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.client.resources.sounds.SoundInstance.Attenuation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * A class holding sound information for an instrument's note
  */
 public class NoteSound {
+    public static final SoundSource INSTRUMENT_SOUND_SOURCE = SoundSource.RECORDS;
+
     /**
      * The range at which players with Mixed instrument sound type will start to hear Mono.
     */
     public static final double STEREO_RANGE = 5.5;
-    /**
-     * The range from which players will stop hearing Minecraft's background music on playing
-     */
-    public static final double STOP_SOUND_DISTANCE = 10;
     /**
      * The range from which players will hear instruments from their local sound output rather than the level's
      */
@@ -52,13 +53,15 @@ public class NoteSound {
     public final int index;
     public final ResourceLocation baseSoundLocation;
 
-    SoundEvent mono;
-    SoundEvent stereo;
+    public SoundEvent mono;
+    public SoundEvent stereo;
 
     /**
      * Constructor for assigning mono & stereo lazily
+     * @apiNote Please use {@link NoteSoundRegistrar}!
      */
-    NoteSound(int index, ResourceLocation baseSoundLocation) {
+    @Internal
+    public NoteSound(int index, ResourceLocation baseSoundLocation) {
         this.index = index;
         this.baseSoundLocation = baseSoundLocation;
     }
@@ -101,18 +104,18 @@ public class NoteSound {
     /**
      * Determines which sound type should play based on this player's distance from the instrument player.
      * <p>This method is fired from the server.</p>
-     * @param distanceFromPlayer The distance between this player and the position of the note's sound
+     * @param playDistSqr The distance between this player and the position of the note's sound squared
      * @return Either the Mono or Stereo sound, based on the client's preference.
      */
     @OnlyIn(Dist.CLIENT)
-    public SoundEvent getByPreference(final double distanceFromPlayer) {
+    public SoundEvent getByPreference(final double playDistSqr) {
         if (!hasStereo())
             return mono;
         
         final InstrumentChannelType preference = ModClientConfigs.CHANNEL_TYPE.get();
 
         return switch(preference) {
-            case MIXED -> (metInstrumentVolume() && (distanceFromPlayer <= STEREO_RANGE)) ? getStereo() : mono;
+            case MIXED -> (metInstrumentVolume() && (playDistSqr <= Mth.square(STEREO_RANGE))) ? getStereo() : mono;
 
             case STEREO -> getStereo();
             case MONO -> mono;
@@ -120,95 +123,111 @@ public class NoteSound {
     }
     /**
      * Returns the literal preference of the client. Defaults to Stereo.
-     * <p>This method is fired from the client.</p>
+     * <p>This method is usually fired from the client.</p>
+     * <p>Shorthand for {@code getByPreference(0)}</p>
      * @return Either the Mono or Stereo sound, based on the client's preference
      */
     @OnlyIn(Dist.CLIENT)
     public SoundEvent getByPreference() {
-        if (!hasStereo())
-            return mono;
-        
-        final InstrumentChannelType preference = ModClientConfigs.CHANNEL_TYPE.get();
-
-        return switch (preference) {
-            case MIXED -> metInstrumentVolume() ? getStereo() : mono;
-
-            case STEREO -> getStereo();
-            case MONO -> mono;
-        };
+        return getByPreference(0);
     }
 
     /**
      * @return True if the instrument volume is set to 100%
      */
-    @SuppressWarnings("resource")
     private static boolean metInstrumentVolume() {
-        return Minecraft.getInstance().options.getSoundSourceVolume(SoundSource.RECORDS) == 1;
+        return Minecraft.getInstance().options.getSoundSourceVolume(INSTRUMENT_SOUND_SOURCE) == 1;
     }
 
 
     /**
      * A method for packets to use for playing this note on the client's end.
      * Will also stop the client's background music per preference.
-     * @param playerUUID The UUID of the player who initiated the sound. Empty for when it wasn't a player.
-     * @param playPos The position at which the sound was fired from. Null for the player's.
+     * @param initiatorId The ID of the player who initiated the sound. Empty for when it wasn't a player.
+     * @param meta Additional metadata of the Note Sound being played
      */
     @OnlyIn(Dist.CLIENT)
-    public void play(int pitch, int volume, Optional<UUID> playerUUID,
-            ResourceLocation instrumentId, Optional<NoteButtonIdentifier> buttonIdentifier, Optional<BlockPos> playPos) {
+    public void playFromServer(Optional<Integer> initiatorId, NoteSoundMetadata meta) {
         final Minecraft minecraft = Minecraft.getInstance();
         final Player player = minecraft.player;
 
         final Level level = minecraft.level;
-        final Player initiator = playerUUID.map(level::getPlayerByUUID).orElse(null);
+        final Entity initiator = initiatorId.map(level::getEntity).orElse(null);
 
-        final BlockPos pos = CommonUtil.getPlayeredPosition(initiator, playPos);
-        
+        final double playDistSqr = meta.pos().getCenter().distanceToSqr(player.position());
+        ClientUtil.stopMusicIfClose(playDistSqr);
 
-        final double distanceFromPlayer = Math.sqrt(pos.distToCenterSqr(player.position()));
-        
-        if (ModClientConfigs.STOP_MUSIC_ON_PLAY.get() && (distanceFromPlayer < NoteSound.STOP_SOUND_DISTANCE))
-            minecraft.getMusicManager().stopPlaying();
-
-
-        
         MinecraftForge.EVENT_BUS.post(initiator == null
-            ? new InstrumentPlayedEvent(
-                this, pitch, volume, level, pos, instrumentId, buttonIdentifier.orElse(null)
-            )
-            : new InstrumentPlayedEvent.ByPlayer(
-                this, pitch, volume, initiator, pos,
-                instrumentId, buttonIdentifier.orElse(null)
-            )
+            ? new NoteSoundPlayedEvent(level, this, meta)
+            : new NoteSoundPlayedEvent(initiator, this, meta)
         );
-        
 
+
+        // Do not play for oneself.
         if (player.equals(initiator))
             return;
 
-        
-        final float mcPitch = getPitchByNoteOffset(clampPitch(pitch));
-            
-        if (distanceFromPlayer > LOCAL_RANGE)
-            level.playLocalSound(pos,
-                getByPreference(distanceFromPlayer), SoundSource.RECORDS,
-                1, mcPitch
-            , false);
-        else
-            playLocally(mcPitch, volume / 100f);
+        final float mcPitch = getPitchByNoteOffset(clampPitch(meta.pitch()));
+
+        playLocally(
+            mcPitch, meta.volume() / 100f,
+            meta.pos(),
+            playDistSqr
+        );
+    }
+
+
+    /**
+     * Plays this sound locally. Treats the given {@code pitch} as a Minecraft pitch.
+     */
+    @OnlyIn(Dist.CLIENT)
+    public void playLocally(float pitch, float volume, BlockPos pos, double playDistSqr) {
+        final Minecraft minecraft = Minecraft.getInstance();
+        final SoundEvent sound = getByPreference(playDistSqr);
+
+        if (playDistSqr > Mth.square(LOCAL_RANGE)) {
+            minecraft.level.playLocalSound(
+                pos, sound,
+                INSTRUMENT_SOUND_SOURCE,
+                volume, pitch,
+                false
+            );
+        } else {
+            Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(
+                sound.getLocation(),
+                INSTRUMENT_SOUND_SOURCE,
+                volume, pitch,
+                SoundInstance.createUnseededRandom(),
+                false, 0,
+
+                Attenuation.NONE,
+                0, 0, 0,
+                true
+            ));
+        }
     }
 
     /**
      * Plays this sound locally. Treats the given {@code pitch} as a Minecraft pitch.
      */
     @OnlyIn(Dist.CLIENT)
-    public void playLocally(final float pitch, final float volume) {
-        Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(
-            getByPreference().getLocation(), SoundSource.RECORDS,
-            volume, pitch, SoundInstance.createUnseededRandom(),
-            false, 0, SoundInstance.Attenuation.NONE,
-            0, 0, 0, true
-        ));
+    public void playLocally(float pitch, float volume, BlockPos pos) {
+        playLocally(
+            pitch, volume,
+            pos,
+            Minecraft.getInstance().player.position().distanceToSqr(pos.getCenter())
+        );
+    }
+
+    /**
+     * <p>Plays this note locally.</p>
+     * Treats the given {@code pitch} as a note offset pitch,
+     * thus performs a conversion from note offset pitch to Minecraft pitch.
+     * @see NoteSound#getPitchByNoteOffset
+     */
+    @OnlyIn(Dist.CLIENT)
+    public void playLocally(int pitch, float volume, BlockPos pos, double playDistSqr) {
+        playLocally(getPitchByNoteOffset(clampPitch(pitch)), volume, pos, playDistSqr);
     }
     /**
      * <p>Plays this note locally.</p>
@@ -217,8 +236,13 @@ public class NoteSound {
      * @see NoteSound#getPitchByNoteOffset
      */
     @OnlyIn(Dist.CLIENT)
-    public void playLocally(final int pitch, final float volume) {
-        playLocally(getPitchByNoteOffset(clampPitch(pitch)), volume);
+    public void playLocally(int pitch, float volume, BlockPos pos) {
+        playLocally(
+            getPitchByNoteOffset(clampPitch(pitch)),
+            volume,
+            pos,
+            Minecraft.getInstance().player.position().distanceToSqr(pos.getCenter())
+        );
     }
 
 
@@ -252,6 +276,9 @@ public class NoteSound {
 
     @Override
     public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+
         if (!(obj instanceof NoteSound other))
             return false;
 

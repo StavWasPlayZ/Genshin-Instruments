@@ -5,14 +5,17 @@ import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvide
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.GenshinConsentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.AbstractInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.InstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.widget.IconToggleButton;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.client.midi.InstrumentMidiReceiver;
+import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
+import com.cstav.genshinstrument.event.NoteSoundPlayedEvent;
 import com.cstav.genshinstrument.networking.GIPacketHandler;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
-import com.cstav.genshinstrument.networking.packet.instrument.CloseInstrumentPacket;
+import com.cstav.genshinstrument.networking.packet.instrument.c2s.CloseInstrumentPacket;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.platform.InputConstants.Type;
@@ -63,6 +66,11 @@ public abstract class InstrumentScreen extends Screen {
     public int getPitch() {
         return pitch;
     }
+
+    /**
+     * Sets the pitch of all notes in this instrument
+     * @param pitch The new pitch to apply
+     */
     public void setPitch(int pitch) {
         this.pitch = NoteSound.clampPitch(pitch);
         notesIterable().forEach((note) -> note.setPitch(this.pitch));
@@ -114,6 +122,20 @@ public abstract class InstrumentScreen extends Screen {
 
         if (noteIterator.hasNext() || (i < sounds.length))
             LogUtils.getLogger().warn("Not all sounds were set for instrument "+getInstrumentId()+"!");
+    }
+
+    private NoteLabelSupplier noteLabelSupplier;
+    /**
+     * Updates all buttons in this instrument to use
+     * the specified label supplier
+     * @param supplier The new supplier to use
+     */
+    public void setLabelSupplier(final NoteLabelSupplier supplier) {
+        noteLabelSupplier = supplier;
+        notesIterable().forEach((note) -> note.setLabelSupplier(supplier));
+    }
+    public NoteLabelSupplier getNoteLabelSupplier() {
+        return noteLabelSupplier;
     }
 
 
@@ -182,7 +204,6 @@ public abstract class InstrumentScreen extends Screen {
             return getNoteButton(noteSound, pitch);
         else
             return getNoteButton(noteIdentifier.get());
-
     }
 
     /**
@@ -252,7 +273,7 @@ public abstract class InstrumentScreen extends Screen {
     }
 
     public static ResourceLocation getInstrumentRootPath(final ResourceLocation instrumentId) {
-        return instrumentId.withPath(InstrumentScreen.getGlobalRootPath() + "instrument/" + instrumentId.getPath());
+        return instrumentId.withPath(getGlobalRootPath() + "instrument/" + instrumentId.getPath());
     }
 
     /**
@@ -268,7 +289,7 @@ public abstract class InstrumentScreen extends Screen {
      * Override this method if you want to reference another directory for resources
      */
     public ResourceLocation getSourcePath() {
-        return getInstrumentId();
+        return getThemeLoader().subjectInstrumentId;
     }
 
     public String getModId() {
@@ -283,7 +304,7 @@ public abstract class InstrumentScreen extends Screen {
      */
     public ResourceLocation getResourceFromRoot(final String path, final boolean considerGlobal) {
         return (considerGlobal && InstrumentThemeLoader.isGlobalThemed())
-            ? InstrumentThemeLoader.GLOBAL_LOC.withSuffix("/"+path)
+            ? InstrumentThemeLoader.GLOBAL_LOC.withSuffix("/" + path)
             : getSourcePath().withPath(getPath() + path);
     }
     /**
@@ -310,8 +331,14 @@ public abstract class InstrumentScreen extends Screen {
         resetPitch();
         optionsScreen.init(minecraft, width, height);
 
+        boolean wasEnabled = false;
+        // Could be not null on screen refresh event
+        if (visibilityButton != null)
+            wasEnabled = visibilityButton.enabled();
+
         visibilityButton = initVisibilityButton();
         addRenderableWidget(visibilityButton);
+        visibilityButton.setEnabled(wasEnabled);
 
         if (isGenshinInstrument() && !ModClientConfigs.ACCEPTED_GENSHIN_CONSENT.get())
             minecraft.setScreen(new GenshinConsentScreen(this));
@@ -350,12 +377,38 @@ public abstract class InstrumentScreen extends Screen {
     }
 
 
+    /**
+     * Play a note button as a foreign
+     * player. "Shared instrument screen".
+     * @param event The event referring to this function
+     */
+    public void foreignPlay(final InstrumentPlayedEvent<?> event) {
+        if (!(event instanceof NoteSoundPlayedEvent e))
+            return;
+
+        try {
+
+            getNoteButton(
+                event.soundMeta().noteIdentifier(),
+                e.sound(), event.soundMeta().pitch()
+            ).playNoteAnimation(true);
+
+        } catch (Exception ignore) {
+            // Button was prolly just not found
+        }
+    }
+
+
+    /**
+     * @return True whether this instrument's GUI
+     * is to be rendered
+     */
     public boolean instrumentRenders() {
         return !visibilityButton.enabled();
     }
     protected void onInstrumentRenderStateChanged(final boolean isVisible) {
         if (!isVisible) {
-            notesIterable().forEach((note) -> note.getRenderer().ResetAnimations());
+            notesIterable().forEach((note) -> note.getRenderer().resetAnimations());
         }
 
         renderables.forEach((renderable) -> {
@@ -400,11 +453,19 @@ public abstract class InstrumentScreen extends Screen {
         if (checkTransposeDown(pKeyCode, pScanCode))
             return true;
 
+        // Release a focused note (in case pressed Enter)
+        if (isFocused() && (getFocused() instanceof NoteButton btn))
+            btn.release();
+
+        // Filter non-instrument keys
+        if (!isKeyConsumed(pKeyCode, pScanCode))
+            return false;
+
         unlockFocused();
 
         final NoteButton note = getNoteByKey(pKeyCode);
         if (note != null)
-            note.locked = false;
+            note.release();
 
         return super.keyReleased(pKeyCode, pScanCode, pModifiers);
     }
@@ -491,8 +552,10 @@ public abstract class InstrumentScreen extends Screen {
      * Unlocks any focused {@link NoteButton}s
      */
     private void unlockFocused() {
-        if ((getFocused() != null) && (getFocused() instanceof NoteButton))
-            ((NoteButton)getFocused()).locked = false;
+        if ((getFocused() != null) && (getFocused() instanceof NoteButton)) {
+            ((NoteButton)getFocused()).release();
+            setFocused(null);
+        }
     }
 
 
@@ -514,8 +577,11 @@ public abstract class InstrumentScreen extends Screen {
     }
 
 
+    /**
+     * @apiNote Please override {@link InstrumentScreen#onClose(boolean)} instead.
+     */
     @Override
-    public void onClose() {
+    public final void onClose() {
         onClose(true);
     }
     public void onClose(final boolean notify) {
@@ -551,10 +617,8 @@ public abstract class InstrumentScreen extends Screen {
         if (minecraft.screen instanceof InstrumentScreen)
             return Optional.of((InstrumentScreen)minecraft.screen);
 
-        if (minecraft.screen instanceof AbstractInstrumentOptionsScreen instrumentOptionsScreen) {
-            if (instrumentOptionsScreen.isOverlay)
-                return Optional.of(instrumentOptionsScreen.instrumentScreen);
-        }
+        if (minecraft.screen instanceof AbstractInstrumentOptionsScreen instrumentOptionsScreen)
+            return instrumentOptionsScreen.instrumentScreen;
 
         return Optional.empty();
     }

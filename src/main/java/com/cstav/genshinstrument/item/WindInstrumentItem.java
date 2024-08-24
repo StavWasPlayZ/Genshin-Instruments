@@ -28,11 +28,13 @@ public class WindInstrumentItem extends InstrumentItem {
 
             @Override
             public @Nullable HumanoidModel.ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
-            return (entityLiving instanceof Player player)
+            return (
+                (entityLiving instanceof Player player)
                 ? (InstrumentOpenProvider.isOpen(player) && InstrumentOpenProvider.isItem(player))
-                ? ModArmPose.PLAYING_WIND_INSTRUMENT
+                    ? ModArmPose.PLAYING_WIND_INSTRUMENT
+                    : null
                 : null
-                : null;
+            );
             }
 
         });

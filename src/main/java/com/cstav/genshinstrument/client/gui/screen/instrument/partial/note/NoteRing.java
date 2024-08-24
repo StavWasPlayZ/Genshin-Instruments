@@ -1,15 +1,14 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note;
 
-import java.awt.Point;
-
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.animation.RingAnimationController;
 import com.cstav.genshinstrument.client.util.ClientUtil;
-
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.awt.*;
 
 @OnlyIn(Dist.CLIENT)
 public class NoteRing {
@@ -20,12 +19,14 @@ public class NoteRing {
     public final NoteButton note;
     public int size;
     public float alpha;
+    protected boolean isForeign;
 
     public NoteRing(final NoteButton note, final boolean isForeign) {
         this.note = note;
-        ringAnimation = new RingAnimationController(.3f, 40, this);
-
-        // Immediately play
+        this.isForeign = isForeign;
+        ringAnimation = new RingAnimationController(.3, 40, this);
+    }
+    public void playAnim() {
         if (isForeign)
             ringAnimation.play(-.4f);
         else
