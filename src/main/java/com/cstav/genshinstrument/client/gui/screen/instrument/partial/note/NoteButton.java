@@ -197,6 +197,11 @@ public abstract class NoteButton extends AbstractButton {
         unlockInput();
     }
 
+    public boolean isLocked() {
+        // This comment exists for a merge to register
+        return locked;
+    }
+
     protected void lockInput() {
         locked = true;
     }
