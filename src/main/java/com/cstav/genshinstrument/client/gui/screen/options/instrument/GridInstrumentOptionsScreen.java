@@ -3,12 +3,12 @@ package com.cstav.genshinstrument.client.gui.screen.options.instrument;
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.GridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget;
 import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget.RowHelper;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.InstrumentOptionsScreen;
-
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
@@ -52,8 +52,10 @@ public class GridInstrumentOptionsScreen extends InstrumentOptionsScreen {
 
     @Override
     public boolean isPitchSliderEnabled() {
-        return (instrumentScreen == null) ||
-            !((GridInstrumentScreen)instrumentScreen).isSSTI();
+        return !instrumentScreen
+            .map((screen) -> (GridInstrumentScreen) screen)
+            .map(GridInstrumentScreen::isSSTI)
+            .orElse(false);
     }
 
 

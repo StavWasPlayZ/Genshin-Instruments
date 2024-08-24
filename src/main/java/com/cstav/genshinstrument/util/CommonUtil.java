@@ -1,23 +1,21 @@
 package com.cstav.genshinstrument.util;
 
 import com.cstav.genshinstrument.GInstrumentMod;
-import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.google.common.collect.Lists;
-import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
+import java.lang.reflect.Constructor;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
-import java.util.Optional;
 
 public abstract class CommonUtil {
     
     /**
-     * @return What the default level shouldve returned, but without any conditions
+     * @return What the default level should've returned, but without any conditions
      */
     public static List<Player> getPlayersInArea(final Level level, final AABB area) {
         final List<Player> list = Lists.newArrayList();
@@ -27,19 +25,6 @@ public abstract class CommonUtil {
                 list.add(player);
 
         return list;
-    }
-
-    /**
-     * Converts the given {@code netPos} to the played position;
-     * when said optional is empty, provides either the player's position
-     * (if hand-held instrument) or the block's position (block instrument).
-     * @param netPos The play position as provided by the network
-     */
-    public static BlockPos getPlayeredPosition(Player player, Optional<BlockPos> netPos) {
-        return netPos.orElseGet(() -> !InstrumentOpenProvider.isItem(player)
-            ? InstrumentOpenProvider.getBlockPos(player)
-            : player.blockPosition()
-        );
     }
     
     
@@ -61,6 +46,25 @@ public abstract class CommonUtil {
     public static ResourceLocation withPath(final ResourceLocation resource, final String path) {
         return new ResourceLocation(resource.getNamespace(), path);
     }
+
+    /**
+     * Retrieves a constructor from the provided {@code clazz}.
+     * Failure will result in a {@link RuntimeException}.
+     * @param clazz The class to reflect the constructor from
+     * @param paramTypes The parameter types the function should accept
+     * @return The parameterless constructor of the provided class
+     * @param <T> The class type
+     */
+    public static <T> Constructor<T> getExpectedConstructor(final Class<T> clazz, Class<?>... paramTypes) {
+        try {
+            return clazz.getDeclaredConstructor(paramTypes);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("Could not find a matching constructor for " + clazz.getName(), e);
+        } catch (Exception e) {
+            throw new RuntimeException("Error getting constructor for " + clazz.getName(), e);
+        }
+    }
+
 
     /**
      * Provides a similar behaviour to Python's indexing,

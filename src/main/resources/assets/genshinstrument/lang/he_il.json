@@ -10,6 +10,7 @@
     "item.genshinstrument.floral_zither": "הציטר הפרחי",
     "item.genshinstrument.vintage_lyre": "נבל הבציר",
     "item.genshinstrument.glorious_drum": "התוף הגדול והמפואר של ארטאקי",
+    "item.genshinstrument.nightwind_horn": "צופר רוח הלילות",
 
 
     "genshinstrument.genshin_disclaimer.content": "מוד כלי הנגינה של גנשין הינו %s ו%s, כלפי שום קשר עם Genshin Impact או HoYoverse.\n\nלכן, כל נכס הנעשה בו שימוש בתוסף, כגון צלילים, תמונות, כלי נגינה וכו' שייכים במלואן ל- HoYoverse.\n\nכמשתמש, עליך מוטלת האחריות המלאה על מעשיך במשחק זה, הכולל ניגון ושיתוף של כל שיר/פיסת מוזיקה המוגן תחת זכויות יוצרים ועוד.",
@@ -74,7 +75,7 @@
     "label.genshinstrument.midiOptions": "אפשרויות MIDI",
 
 
-    "button.genshinstrument.label": "תגיות תווים",
+    "button.genshinstrument.label": "תגיות התווים",
     "button.genshinstrument.pitch": "גובה צליל",
     "button.genshinstrument.volume": "ווליום כלי הנגינה",
 
@@ -84,7 +85,7 @@
 
 
     "button.genshinstrument.label.do_re_mi": "דו רה מי",
-    "button.genshinstrument.label.note_name": "שם תו",
+    "button.genshinstrument.label.do_re_mi.description": "תגיות התווים יהיו מסוג הסימון המוזיקלי \"דו רה מי\"",
 
     "genshinstrument.label.do": "דו",
     "genshinstrument.label.re": "רה",
@@ -94,9 +95,18 @@
     "genshinstrument.label.la": "לה",
     "genshinstrument.label.ti": "טי",
 
+    "button.genshinstrument.label.note_name.description": "תגיות התווים יהיו מסוג הסימון המוזיקלי \"ABC\"",
 
     "button.genshinstrument.label.keyboard_layout": "מקלדת",
+    "button.genshinstrument.label.keyboard_layout.description": "תגיות התווים יתאימו לפריסת המקלדת הנוכחית",
     "button.genshinstrument.label.qwerty": "מקלדת (QWERTY)",
+    "button.genshinstrument.label.qwerty.description": "תגיות התווים יתאימו לפריסת המקלדת QWERTY",
+
+    "button.genshinstrument.label.fixed_do_re_mi": "דו רה מי קבוע",
+    "button.genshinstrument.label.fixed_do_re_mi.description": "תגיות \"דו רו מי\" אשר אינם מושפעות בידי שינוי גובה הצליל",
+    "button.genshinstrument.label.fixed_abc": "ABC קבוע",
+    "button.genshinstrument.label.fixed_abc.description": "תגיות \"ABC\" אשר אינם מושפעות בידי שינוי גובה הצליל",
+
     "button.genshinstrument.label.none": "ללא תגית",
 
 
@@ -117,6 +127,9 @@
     "genshinstrument.advancements.main.glorious_drum.description": "נגן בטוף של ארטאקי",
 
     "genshinstrument.advancements.main.floral_zither.title": "נגן בסתר",
-    "genshinstrument.advancements.main.floral_zither.description": "נגן בציטר הפרחי"
+    "genshinstrument.advancements.main.floral_zither.description": "נגן בציטר הפרחי",
+
+    "genshinstrument.advancements.main.nightwind_horn.title": "הסימפוניה האחרונה",
+    "genshinstrument.advancements.main.nightwind_horn.description": "נגן בצופר רוח הלילות"
 
 }

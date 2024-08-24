@@ -2,7 +2,7 @@ package com.cstav.genshinstrument.client.gui.screen.instrument.vintagelyre;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteNotation;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.NoteGridButton;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.grid.NoteGridButton;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -19,7 +19,7 @@ public class VintageNoteButton extends NoteGridButton {
     }
 
     
-    private boolean isDefaultFlat() {
+    public boolean isDefaultFlat() {
         return (row == 6) || (row == 2) ||
             ((column == 0) && ((row == 1) || (row == 5)));
     }
@@ -32,17 +32,21 @@ public class VintageNoteButton extends NoteGridButton {
     }
 
 
-    @Override
-    public int getPitch() {
-        final int pitch = super.getPitch();
+    /**
+     * @return Whether this note should be sharpened
+     * for a Vintage normalization
+     */
+    public boolean shouldSharpen() {
         if (!gridInstrument().shouldSoundNormalize())
-            return pitch;
+            return false;
 
         // Only normalize the Genshin flattened notes
-        if (!isDefaultFlat())
-            return pitch;
-
-        return pitch + 1;
+        return isDefaultFlat();
     }
-    
+
+    @Override
+    public int getPitch() {
+        return super.getPitch() + (shouldSharpen() ? 1 : 0);
+    }
+
 }

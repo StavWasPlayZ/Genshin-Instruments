@@ -4,19 +4,57 @@ import java.awt.Color;
 import java.awt.Point;
 
 import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget;
+import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.layouts.FrameLayout;
+import net.minecraft.client.gui.layouts.GridLayout;
+import net.minecraft.client.gui.layouts.Layout;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Lazy;
 
+import java.awt.*;
+
 @OnlyIn(Dist.CLIENT)
 public class ClientUtil {
     public static final int GRID_HORZ_PADDING = 4, GRID_VERT_PADDING = 2;
+    /**
+     * The range from which players will stop hearing Minecraft's background music on playing
+     */
+    public static final double STOP_SOUND_DISTANCE = 10;
+
+
+    /**
+     * Stops Minecraft's music if the client desires it and
+     * {@code playDistSqr} < {@link ClientUtil#STOP_SOUND_DISTANCE}^2
+     * @param playDistSqr The distance of the played sound from the player
+     * @return Whether the music stopped
+     */
+    public static boolean stopMusicIfClose(final double playDistSqr) {
+        if (ModClientConfigs.STOP_MUSIC_ON_PLAY.get() && (playDistSqr < Mth.square(STOP_SOUND_DISTANCE))) {
+            Minecraft.getInstance().getMusicManager().stopPlaying();
+            return true;
+        }
+
+        return false;
+    }
+    /**
+     * Stops Minecraft's music if the client desires it and
+     * the player's distance is lesser than the provided position.
+     * @param pos The position to check the distance from
+     * @return Whether the music stopped
+     */
+    public static boolean stopMusicIfClose(final BlockPos pos) {
+        return stopMusicIfClose(pos.getCenter().distanceToSqr(Minecraft.getInstance().player.position()));
+    }
 
 
     public static final Lazy<Boolean> ON_QWERTY = Lazy.of(() -> {

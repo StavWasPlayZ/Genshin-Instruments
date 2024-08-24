@@ -2,8 +2,9 @@ package com.cstav.genshinstrument.item;
 
 import com.cstav.genshinstrument.GICreativeModeTabs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
-import com.cstav.genshinstrument.item.clientExtensions.ClientInstrumentItem;
+import com.cstav.genshinstrument.item.clientExtensions.InstrumentItemClientExt;
 import com.cstav.genshinstrument.networking.OpenInstrumentPacketSender;
+import com.cstav.genshinstrument.networking.packet.instrument.util.InstrumentPacketUtil;
 import com.cstav.genshinstrument.util.ServerUtil;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -14,6 +15,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Consumer;
 
 import java.util.function.Consumer;
 
@@ -47,20 +51,25 @@ public class InstrumentItem extends Item {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
-        return pLevel.isClientSide ? InteractionResultHolder.pass(pPlayer.getItemInHand(pUsedHand))
+        final ItemStack item = pPlayer.getItemInHand(pUsedHand);
 
-            : ServerUtil.sendOpenPacket((ServerPlayer)pPlayer, pUsedHand, onOpenRequest)
-                ? InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand))
-                : InteractionResultHolder.fail(pPlayer.getItemInHand(pUsedHand));
+        if (pLevel.isClientSide)
+            return InteractionResultHolder.success(item);
+
+        if (InstrumentPacketUtil.sendOpenPacket((ServerPlayer)pPlayer, pUsedHand, onOpenRequest)) {
+            return InteractionResultHolder.success(item);
+        } else {
+            return InteractionResultHolder.fail(item);
+        }
     }
 
     @Override
-    public UseAnim getUseAnimation(ItemStack pStack) {
+    public @NotNull UseAnim getUseAnimation(ItemStack pStack) {
         return UseAnim.CUSTOM;
     }
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        consumer.accept(new ClientInstrumentItem());
+        consumer.accept(new InstrumentItemClientExt());
     }
     
 }

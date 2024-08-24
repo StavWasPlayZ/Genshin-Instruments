@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+
+    "key": {
+        "#": {
+            "item": "minecraft:light_blue_dye"
+        },
+        "X": {
+            "item": "minecraft:gold_ingot"
+        }
+    },
+
+    "pattern": [
+        " X ",
+        "X#X",
+        "XX "
+    ],
+
+    "result": {
+        "item": "genshinstrument:nightwind_horn"
+    }
+}

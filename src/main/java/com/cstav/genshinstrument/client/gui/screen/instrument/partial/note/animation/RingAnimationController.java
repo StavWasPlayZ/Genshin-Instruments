@@ -2,21 +2,20 @@ package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.anim
 
 import com.cstav.genshinstrument.client.AnimationController;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteRing;
-
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class RingAnimationController extends AnimationController {
+    public static final float INIT_ALPHA = -.08f;
 
     protected final double initSize;
-    protected final float initAlpha = -.08f;
     protected final NoteRing ring;
     
-    protected final float ringSizeMultiplier;
+    protected final double ringSizeMultiplier;
 
-    public RingAnimationController(float duration, final float ringSizeMultiplier, final NoteRing ring) {
-        super(duration, 1.1f);
+    public RingAnimationController(double duration, double ringSizeMultiplier, final NoteRing ring) {
+        super(duration, 1.1);
         this.ringSizeMultiplier = ringSizeMultiplier;
         this.ring = ring;
 
@@ -27,13 +26,13 @@ public class RingAnimationController extends AnimationController {
     private double dSize;
 
     @Override
-    protected void animFrame(final float targetTime, final float deltaValue) {
+    protected void animFrame(final double targetTime, final double deltaValue) {
         ring.size = (int)(dSize += deltaValue * ringSizeMultiplier);
 
         if (getAnimTime() < targetTime / 1.75f)
-            ring.alpha += deltaValue * 1.5f;
+            ring.alpha += (float)(deltaValue * 1.5f);
         else
-            ring.alpha -= deltaValue;
+            ring.alpha -= (float)(deltaValue);
     }
 
 
@@ -42,7 +41,7 @@ public class RingAnimationController extends AnimationController {
         super.resetAnimVars();
 
         ring.size = (int)(dSize = initSize);
-        ring.alpha = initAlpha;
+        ring.alpha = INIT_ALPHA;
     }
 
     public void play(final float initAlpha) {

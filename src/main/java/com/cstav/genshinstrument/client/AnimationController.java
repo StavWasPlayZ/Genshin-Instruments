@@ -13,16 +13,20 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 public abstract class AnimationController {
     protected final Minecraft minecraft = Minecraft.getInstance();
 
-    private int animTime;
+    /**
+     * The time the animation ran for.
+     * Generally advised to not be modified.
+     */
+    protected int animTime;
     private boolean isPlaying;
 
-    public final float initDuration, initTargetValue;
-    protected float duration, targetValue;
+    public final double initDuration, initTargetValue;
+    protected double duration, targetValue;
 
     /**
      * @param duration The duration of the animation in seconds
      */
-    public AnimationController(final float duration, final float targetValue) {
+    public AnimationController(final double duration, final double targetValue) {
         this.duration = initDuration = duration;
         this.targetValue = initTargetValue = targetValue;
     }
@@ -37,7 +41,7 @@ public abstract class AnimationController {
             return;
 
         final int fps = getFps();
-        final float targetTime = fps * duration;
+        final double targetTime = fps * duration;
             
         if (animTime++ >= targetTime) {
             stop();
@@ -57,8 +61,8 @@ public abstract class AnimationController {
             return 90;
         }
     }
-    
-    protected abstract void animFrame(final float targetTime, final float deltaValue);
+
+    protected abstract void animFrame(final double targetTime, final double deltaValue);
 
 
     public void stop() {
@@ -70,7 +74,7 @@ public abstract class AnimationController {
         resetAnimVars();
         isPlaying = true;
     }
-    public void play(final float duration, final float targetValue) {
+    public void play(final double duration, final float targetValue) {
         this.duration = duration;
         this.targetValue = targetValue;
     }
