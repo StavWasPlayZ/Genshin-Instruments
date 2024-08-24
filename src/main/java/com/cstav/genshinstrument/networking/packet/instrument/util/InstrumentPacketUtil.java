@@ -217,7 +217,6 @@ public class InstrumentPacketUtil {
     private static boolean sendOpenPacket(ServerPlayer player, InteractionHand usedHand, OpenInstrumentPacketSender onOpenRequest,
             BlockPos pos) {
 
-        // Update the capability for clients
         NotifyInstrumentOpenPacket instrumentOpenPacket;
 
         if (pos == null) {
