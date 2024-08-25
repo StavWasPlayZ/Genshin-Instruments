@@ -38,7 +38,7 @@ public class ModCapabilities {
 
     @SubscribeEvent
     public static void onPlayerJoin(final PlayerEvent.PlayerLoggedInEvent event) {
-        final Level level = event.getEntity().level();
+        final Level level = event.getEntity().getLevel();
         if (level.isClientSide)
             return;
 

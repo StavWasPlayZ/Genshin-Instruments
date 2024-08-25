@@ -9,7 +9,6 @@ import com.cstav.genshinstrument.sound.registrar.NoteSoundRegistrar;
 import com.cstav.genshinstrument.util.LabelUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
-import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance.Attenuation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -23,8 +22,8 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.ApiStatus.Internal;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -154,7 +153,7 @@ public class NoteSound {
         final Level level = minecraft.level;
         final Entity initiator = initiatorId.map(level::getEntity).orElse(null);
 
-        final double playDistSqr = meta.pos().getCenter().distanceToSqr(player.position());
+        final double playDistSqr = meta.pos().distToCenterSqr(player.position());
         ClientUtil.stopMusicIfClose(playDistSqr);
 
         MinecraftForge.EVENT_BUS.post(initiator == null
@@ -197,7 +196,6 @@ public class NoteSound {
                 sound.getLocation(),
                 INSTRUMENT_SOUND_SOURCE,
                 volume, pitch,
-                SoundInstance.createUnseededRandom(),
                 false, 0,
 
                 Attenuation.NONE,
@@ -215,7 +213,7 @@ public class NoteSound {
         playLocally(
             pitch, volume,
             pos,
-            Minecraft.getInstance().player.position().distanceToSqr(pos.getCenter())
+            pos.distToCenterSqr(Minecraft.getInstance().player.position())
         );
     }
 
@@ -241,7 +239,7 @@ public class NoteSound {
             getPitchByNoteOffset(clampPitch(pitch)),
             volume,
             pos,
-            Minecraft.getInstance().player.position().distanceToSqr(pos.getCenter())
+            pos.distToCenterSqr(Minecraft.getInstance().player.position())
         );
     }
 

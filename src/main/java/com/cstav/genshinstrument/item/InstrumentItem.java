@@ -4,7 +4,6 @@ import com.cstav.genshinstrument.GICreativeModeTabs;
 import com.cstav.genshinstrument.client.ModArmPose;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.event.PosePlayerArmEvent;
-import com.cstav.genshinstrument.item.clientExtensions.InstrumentItemClientExt;
 import com.cstav.genshinstrument.networking.OpenInstrumentPacketSender;
 import com.cstav.genshinstrument.networking.packet.instrument.util.InstrumentPacketUtil;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,9 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.function.Consumer;
 
 /**
  * An item responsible for opening an {@link InstrumentScreen}.

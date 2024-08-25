@@ -6,7 +6,7 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteB
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteRing;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.animation.HeldNoteAnimationController;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.animation.NoteAnimationController;
-import net.minecraft.client.gui.GuiGraphics;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -27,7 +27,7 @@ public class HeldNoteButtonRenderer extends NoteButtonRenderer {
 
     private float ringTimeAlive = 0;
     @Override
-    public void render(GuiGraphics gui, int mouseX, int mouseY, float partialTick, InstrumentThemeLoader themeLoader) {
+    public void render(PoseStack stack, int mouseX, int mouseY, float partialTick, InstrumentThemeLoader themeLoader) {
         if (getHeldBtn().isHeld()) {
             ringTimeAlive += partialTick;
             if (ringTimeAlive > RING_ADDITION_INTERVAL) {
@@ -38,7 +38,7 @@ public class HeldNoteButtonRenderer extends NoteButtonRenderer {
             ringTimeAlive = 0;
         }
 
-        super.render(gui, mouseX, mouseY, partialTick, themeLoader);
+        super.render(stack, mouseX, mouseY, partialTick, themeLoader);
     }
     public void playNoteAnimation(final boolean isForeign) {
         foreignPlaying = isForeign;

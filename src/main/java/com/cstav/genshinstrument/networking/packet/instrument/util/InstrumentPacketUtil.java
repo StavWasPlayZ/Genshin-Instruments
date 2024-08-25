@@ -16,9 +16,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -52,16 +49,18 @@ public class InstrumentPacketUtil {
             Optional.of(initiator.getId()), sound, soundMeta
         );
 
-        for (final Player listener : InstrumentPacketUtil.noteListeners(initiator.level(), soundMeta.pos()))
+        for (final Player listener : InstrumentPacketUtil.noteListeners(initiator.getLevel(), soundMeta.pos()))
             GIPacketHandler.sendToClient(packet, (ServerPlayer)listener);
+
 
 
         // Trigger an instrument game event
         // This is done so that sculk sensors can pick up the instrument's sound
-        initiator.level().gameEvent(
-            GameEvent.INSTRUMENT_PLAY, soundMeta.pos(),
-            GameEvent.Context.of(initiator)
-        );
+        //1.19+ only
+//        initiator.getLevel().gameEvent(
+//            GameEvent.INSTRUMENT_PLAY, soundMeta.pos(),
+//            GameEvent.Context.of(initiator)
+//        );
 
         return packet;
     }
@@ -115,16 +114,17 @@ public class InstrumentPacketUtil {
             GIPacketHandler.sendToClient(packet, (ServerPlayer)listener);
 
 
-        final BlockState bs = level.getBlockState(soundMeta.pos());
+//        final BlockState bs = level.getBlockState(soundMeta.pos());
         // The sound may have been coming from a block
-        if (bs != Blocks.AIR.defaultBlockState())
-            level.gameEvent(
-                GameEvent.INSTRUMENT_PLAY, soundMeta.pos(),
-                GameEvent.Context.of(bs)
-            );
-            // idk what else
-        else
-            level.gameEvent(null, GameEvent.INSTRUMENT_PLAY, soundMeta.pos());
+        //1.19+ only
+//        if (bs != Blocks.AIR.defaultBlockState())
+//            level.gameEvent(
+//                GameEvent.INSTRUMENT_PLAY, soundMeta.pos(),
+//                GameEvent.Context.of(bs)
+//            );
+//            // idk what else
+//        else
+//            level.gameEvent(null, GameEvent.INSTRUMENT_PLAY, soundMeta.pos());
 
         return packet;
     }
@@ -180,7 +180,7 @@ public class InstrumentPacketUtil {
         InstrumentOpenProvider.setClosed(player);
 
         // And clients
-        player.level().players().forEach((oPlayer) ->
+        player.getLevel().players().forEach((oPlayer) ->
             GIPacketHandler.sendToClient(
                 new NotifyInstrumentOpenPacket(player.getUUID()),
                 (ServerPlayer)oPlayer
@@ -227,7 +227,7 @@ public class InstrumentPacketUtil {
             instrumentOpenPacket = new NotifyInstrumentOpenPacket(player.getUUID(), pos);
         }
 
-        player.level().players().forEach((otherPlayer) ->
+        player.getLevel().players().forEach((otherPlayer) ->
             GIPacketHandler.sendToClient(
                 instrumentOpenPacket,
                 (ServerPlayer)otherPlayer

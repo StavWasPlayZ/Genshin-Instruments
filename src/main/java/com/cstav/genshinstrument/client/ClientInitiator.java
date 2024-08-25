@@ -12,8 +12,9 @@ import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.item.clientExtensions.ModItemPredicates;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.client.model.SeparateTransformsModel;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.client.model.SeparatePerspectiveModel;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -35,7 +36,6 @@ public class ClientInitiator {
 
     @SubscribeEvent
     public static void initClient(final FMLClientSetupEvent event) {
-        ModArmPose.load();
         ModItemPredicates.register();
 
         InstrumentKeyMappings.registerKeybinds();
@@ -44,8 +44,11 @@ public class ClientInitiator {
     }
 
     @SubscribeEvent
-    public static void modelLoadEvent(final ModelEvent.RegisterGeometryLoaders event) {
-        event.register("separate_transforms", SeparateTransformsModel.Loader.INSTANCE);
+    public static void onModelRegister(final ModelRegistryEvent event) {
+        ModelLoaderRegistry.registerLoader(
+            new ResourceLocation(GInstrumentMod.MODID, "separate_transforms"),
+            SeparatePerspectiveModel.Loader.INSTANCE
+        );
     }
 
 }

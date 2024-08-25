@@ -1,5 +1,6 @@
 package com.cstav.genshinstrument.event;
 
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
@@ -11,12 +12,14 @@ import net.minecraftforge.eventbus.api.Event;
 @OnlyIn(Dist.CLIENT)
 public class PosePlayerArmEvent extends Event {
 
+    public final HumanoidModel<Player> model;
     public final Player player;
     public final HandType hand;
     public final ModelPart arm;
 
-    public PosePlayerArmEvent(final Player player, final HandType hand, final ModelPart arm) {
+    public PosePlayerArmEvent(Player player, HumanoidModel<Player> model, HandType hand, ModelPart arm) {
         this.player = player;
+        this.model = model;
         this.hand = hand;
         this.arm = arm;
     }

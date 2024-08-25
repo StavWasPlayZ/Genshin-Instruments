@@ -461,7 +461,20 @@ public abstract class InstrumentScreen extends Screen {
         if (checkTransposeDown(pKeyCode, pScanCode))
             return true;
 
-        unlockFocused(pKeyCode);
+        // Release all notes in case pressed Enter.
+        // There's no way (in 1.19.2-) to reliably detect a focused key,
+        // except for caching it which idc enough to do atm.
+        if (pKeyCode == 257 && pScanCode == 36) {
+            unlockFocused();
+        } else {
+            // Filter non-instrument keys
+            if (!isKeyConsumed(pKeyCode, pScanCode))
+                return false;
+
+            final NoteButton note = getNoteByKey(pKeyCode);
+            if (note != null)
+                note.release();
+        }
 
         final NoteButton note = getNoteByKey(pKeyCode);
         if (note != null)
@@ -550,26 +563,14 @@ public abstract class InstrumentScreen extends Screen {
     }
 
     /**
-     * Unlocks any focused {@link NoteButton}s
+     * Unlocks <s>any focused</s> all {@link NoteButton}s
+     * (1.19.2 and below behaviour only)Unlocks any focused {@link NoteButton}s
      */
     private void unlockFocused() {
-        for (final NoteButton note : notesIterable())
-            if (note.locked) {
-                note.locked = false;
-                return;
-            }
-    }
-    /**
-     * Unlocks the specified {@link NoteButton} that matches the given key.
-     * If it is not present, will perform {@link InstrumentScreen#unlockFocused} instead.
-     */
-    private void unlockFocused(final int keyCode) {
-        final NoteButton note = getNoteByKey(keyCode);
-
-        if (note == null)
-            unlockFocused();
-        else
-            note.locked = false;
+        for (final NoteButton note : notesIterable()) {
+            if (note.isLocked())
+                note.release();
+        }
     }
 
 

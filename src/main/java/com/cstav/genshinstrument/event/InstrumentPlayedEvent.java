@@ -51,7 +51,7 @@ public abstract class InstrumentPlayedEvent<T> extends Event {
      * Constructor for creating a by-entity event
      */
     public InstrumentPlayedEvent(Entity entity, T sound, NoteSoundMetadata soundMeta) {
-        this.level = entity.level();
+        this.level = entity.getLevel();
         this.sound = sound;
         this.soundMeta = soundMeta;
 

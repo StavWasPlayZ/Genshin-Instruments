@@ -4,11 +4,8 @@ import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvide
 import com.cstav.genshinstrument.client.ModArmPose;
 import com.cstav.genshinstrument.event.PosePlayerArmEvent;
 import com.cstav.genshinstrument.networking.GIPacketHandler;
-import com.cstav.genshinstrument.networking.packet.instrument.NotifyInstrumentOpenPacket;
-import com.cstav.genshinstrument.util.ServerUtil;
 import com.cstav.genshinstrument.networking.packet.instrument.s2c.NotifyInstrumentOpenPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.util.InstrumentPacketUtil;
-import net.minecraft.client.model.HumanoidModel.ArmPose;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;

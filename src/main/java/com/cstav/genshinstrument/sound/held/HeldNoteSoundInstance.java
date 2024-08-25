@@ -3,9 +3,9 @@ package com.cstav.genshinstrument.sound.held;
 import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSound.Phase;
+import com.cstav.genshinstrument.util.CommonUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
-import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -49,8 +49,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
                                     int timeAlive, boolean released) {
         super(
             heldSoundContainer.getSound(phase).getByPreference(distFromSourceSqr(soundOrigin, initiator)),
-            NoteSound.INSTRUMENT_SOUND_SOURCE,
-            SoundInstance.createUnseededRandom()
+            NoteSound.INSTRUMENT_SOUND_SOURCE
         );
 
         this.initiatorId = initiatorId;
@@ -168,7 +167,7 @@ public class HeldNoteSoundInstance extends AbstractTickableSoundInstance {
     }
 
     protected static Vec3 getSourcePos(@Nullable BlockPos soundOrigin, @Nullable Entity initiator) {
-        return (soundOrigin == null) ? initiator.position() : soundOrigin.getCenter();
+        return (soundOrigin == null) ? initiator.position() : CommonUtil.getCenter(soundOrigin);
     }
     protected Vec3 getSourcePos() {
         return getSourcePos(soundOrigin.orElse(null), initiator.orElse(null));

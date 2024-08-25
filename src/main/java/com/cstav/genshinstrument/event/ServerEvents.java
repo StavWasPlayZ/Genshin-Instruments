@@ -8,8 +8,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.TickEvent.WorldTickEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -30,7 +30,7 @@ public abstract class ServerEvents {
 
     @SubscribeEvent
     public static void onPlayerLeave(final PlayerEvent.PlayerLoggedOutEvent event) {
-        InstrumentPacketUtil.setInstrumentClosed(event.getEntity());
+        InstrumentPacketUtil.setInstrumentClosed((Player) event.getEntity());
     }
 
 

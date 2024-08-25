@@ -113,7 +113,7 @@ public record HeldNoteSound(
     public void playFromServer(Optional<Integer> initiatorId, Optional<InitiatorID> oInitiatorId,
                                NoteSoundMetadata meta, HeldSoundPhase phase) {
         final Player localPlayer = Minecraft.getInstance().player;
-        final Level level = localPlayer.level();
+        final Level level = localPlayer.getLevel();
 
         final InitiatorID _initiatorID = InitiatorID.getEither(initiatorId, oInitiatorId);
 

@@ -7,13 +7,11 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.IHeldInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.midi.MidiController;
-import com.cstav.genshinstrument.networking.packet.instrument.util.HeldSoundPhase;
 import com.cstav.genshinstrument.item.ItemPoseModifier;
+import com.cstav.genshinstrument.networking.packet.instrument.util.HeldSoundPhase;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSounds;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.PlayerModel;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -21,7 +19,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
-import net.minecraftforge.event.level.LevelEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -43,8 +41,11 @@ public class ClientEvents {
 
     // Behaviour copied from Fabric:
     private static void poseForBlockInstrument(PosePlayerArmEvent event, Player player) {
-        final Block block = player.level.getBlockState(InstrumentOpenProvider.getBlockPos(player)).getBlock();
+        final Block block = player.getLevel().getBlockState(InstrumentOpenProvider.getBlockPos(player)).getBlock();
         if (!(block instanceof AbstractInstrumentBlock blockInstrument))
+            return;
+
+        if (!InstrumentOpenProvider.isOpen(event.player) || InstrumentOpenProvider.isItem(event.player))
             return;
 
         blockInstrument.onPosePlayerArm(event);
@@ -55,6 +56,9 @@ public class ClientEvents {
             return;
 
         if (!(instrumentItem.getItem() instanceof ItemPoseModifier item))
+            return;
+
+        if (!InstrumentOpenProvider.isOpen(event.player) || !InstrumentOpenProvider.isItem(event.player))
             return;
 
         item.onPosePlayerArm(event);
@@ -146,7 +150,7 @@ public class ClientEvents {
 
 
     @SubscribeEvent
-    public static void onLevelUnload(final LevelEvent.Unload event) {
+    public static void onLevelUnload(final WorldEvent.Unload event) {
         HeldNoteSounds.releaseAll();
     }
 
