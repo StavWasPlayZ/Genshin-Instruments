@@ -4,10 +4,9 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.ZitherSoundType;
 import com.cstav.genshinstrument.client.gui.screen.instrument.floralzither.FloralZitherScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.GridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.SoundTypeOptionsScreen;
 import com.cstav.genshinstrument.client.util.TogglablePedalSound;
-
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -43,7 +42,7 @@ public class FloralZitherOptionsScreen extends SoundTypeOptionsScreen<ZitherSoun
 
     @Override
     public TogglablePedalSound<ZitherSoundType> midiPedalListener() {
-        return new TogglablePedalSound<ZitherSoundType>(ZitherSoundType.NEW, ZitherSoundType.OLD);
+        return new TogglablePedalSound<>(ZitherSoundType.NEW, ZitherSoundType.OLD);
     }
 
 

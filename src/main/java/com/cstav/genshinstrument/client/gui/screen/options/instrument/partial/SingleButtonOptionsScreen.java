@@ -1,6 +1,6 @@
 package com.cstav.genshinstrument.client.gui.screen.options.instrument.partial;
 
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.GridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.GridInstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.gui.widget.copied.GridWidget;
 import com.cstav.genshinstrument.client.gui.widget.copied.SpacerWidget;

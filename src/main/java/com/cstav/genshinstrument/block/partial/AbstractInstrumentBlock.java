@@ -6,6 +6,9 @@ import com.cstav.genshinstrument.event.PosePlayerArmEvent;
 import com.cstav.genshinstrument.networking.GIPacketHandler;
 import com.cstav.genshinstrument.networking.packet.instrument.NotifyInstrumentOpenPacket;
 import com.cstav.genshinstrument.util.ServerUtil;
+import com.cstav.genshinstrument.networking.packet.instrument.s2c.NotifyInstrumentOpenPacket;
+import com.cstav.genshinstrument.networking.packet.instrument.util.InstrumentPacketUtil;
+import net.minecraft.client.model.HumanoidModel.ArmPose;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -48,14 +51,13 @@ public abstract class AbstractInstrumentBlock extends BaseEntityBlock {
         if (!(be instanceof InstrumentBlockEntity))
             return InteractionResult.FAIL;
 
-        if (ServerUtil.sendOpenPacket((ServerPlayer)pPlayer, this::onInstrumentOpen, pPos)) {
+        if (InstrumentPacketUtil.sendOpenPacket((ServerPlayer)pPlayer, this::onInstrumentOpen, pPos)) {
             ((InstrumentBlockEntity)be).users.add(pPlayer.getUUID());
             return InteractionResult.SUCCESS;
         }
 
         return InteractionResult.FAIL;
     }
-    
 
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {

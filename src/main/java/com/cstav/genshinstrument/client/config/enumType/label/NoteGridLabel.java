@@ -1,14 +1,15 @@
 package com.cstav.genshinstrument.client.config.enumType.label;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.GridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.grid.NoteGridButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.NoteLabelSupplier;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.NoteGridButton;
 import com.cstav.genshinstrument.util.LabelUtil;
 
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 
 /**
  * An enum holding all labels for {@code NoteGridButton}.
@@ -30,12 +31,23 @@ public enum NoteGridLabel implements INoteLabel {
         LabelUtil.toDoReMi(note.getFormattedNoteName())
     ),
 
-    ABC((note) -> new TranslatableComponent(
-        String.valueOf(LabelUtil.ABC[(ng(note).row + ng(note).column * gs(note).rows()) % 7])
+    FIXED_ABC((note) -> new TranslatableComponent(
+        String.valueOf(LabelUtil.ABC[noteGridIndex(note) % 7])
+    )),
+    FIXED_DO_RE_MI((note) -> new TranslatableComponent(
+        String.valueOf(LabelUtil.DO_RE_MI[noteGridIndex(note) % 7])
     )),
 
     NONE(NoteLabelSupplier.EMPTY);
-    
+
+
+    /**
+     * @return The note button's grid index
+     */
+    private static int noteGridIndex(final NoteButton note) {
+        return ng(note).row + ng(note).column * gs(note).rows();
+    }
+
 
     private final NoteLabelSupplier labelSupplier;
     private NoteGridLabel(final NoteLabelSupplier labelSupplier) {

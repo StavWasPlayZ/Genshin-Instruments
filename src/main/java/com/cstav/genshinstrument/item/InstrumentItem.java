@@ -4,8 +4,9 @@ import com.cstav.genshinstrument.GICreativeModeTabs;
 import com.cstav.genshinstrument.client.ModArmPose;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.event.PosePlayerArmEvent;
+import com.cstav.genshinstrument.item.clientExtensions.InstrumentItemClientExt;
 import com.cstav.genshinstrument.networking.OpenInstrumentPacketSender;
-import com.cstav.genshinstrument.util.ServerUtil;
+import com.cstav.genshinstrument.networking.packet.instrument.util.InstrumentPacketUtil;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -15,6 +16,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Consumer;
 
 /**
  * An item responsible for opening an {@link InstrumentScreen}.
@@ -46,11 +50,16 @@ public class InstrumentItem extends Item implements ItemPoseModifier {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
-        return pLevel.isClientSide ? InteractionResultHolder.pass(pPlayer.getItemInHand(pUsedHand))
+        final ItemStack item = pPlayer.getItemInHand(pUsedHand);
 
-            : ServerUtil.sendOpenPacket((ServerPlayer)pPlayer, pUsedHand, onOpenRequest)
-                ? InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand))
-                : InteractionResultHolder.fail(pPlayer.getItemInHand(pUsedHand));
+        if (pLevel.isClientSide)
+            return InteractionResultHolder.success(item);
+
+        if (InstrumentPacketUtil.sendOpenPacket((ServerPlayer)pPlayer, pUsedHand, onOpenRequest)) {
+            return InteractionResultHolder.success(item);
+        } else {
+            return InteractionResultHolder.fail(item);
+        }
     }
 
 

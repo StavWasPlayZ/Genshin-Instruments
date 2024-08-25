@@ -1,6 +1,6 @@
 package com.cstav.genshinstrument.criteria;
 
-import com.cstav.genshinstrument.networking.packet.instrument.InstrumentPacket;
+import com.cstav.genshinstrument.networking.packet.instrument.c2s.C2SNoteSoundPacket;
 import com.google.gson.JsonObject;
 
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
@@ -9,6 +9,7 @@ import net.minecraft.advancements.critereon.EntityPredicate.Composite;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
+import net.minecraft.advancements.critereon.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -17,7 +18,7 @@ import net.minecraft.world.item.ItemStack;
  * <p>The class holding the genshinstrument_instrument_played trigger.</p>
  * 
  * <p>
- * It is triggered in {@link InstrumentPacket} such that every sound
+ * It is triggered in {@link C2SNoteSoundPacket} such that every sound
  * produced by an instrument will trigger this criteria.
  * It will pass the played instrument from within the {@code instrument} JSON item object.
  * </p>

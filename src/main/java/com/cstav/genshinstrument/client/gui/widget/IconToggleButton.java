@@ -31,6 +31,16 @@ public class IconToggleButton extends Button {
         return enabled;
     }
 
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+    /**
+     * Toggles the value of {@link IconToggleButton#enabled}
+     */
+    public void toggle() {
+        setEnabled(!enabled);
+    }
+
     @Override
     public void renderButton(PoseStack stack, int pMouseX, int pMouseY, float pPartialTick) {
         super.renderButton(stack, pMouseX, pMouseY, pPartialTick);
@@ -49,7 +59,7 @@ public class IconToggleButton extends Button {
 
     @Override
     public void onPress() {
-        enabled = !enabled;
+        toggle();
         super.onPress();
     }
 }
