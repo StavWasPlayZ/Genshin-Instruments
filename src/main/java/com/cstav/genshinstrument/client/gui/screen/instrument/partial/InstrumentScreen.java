@@ -587,6 +587,8 @@ public abstract class InstrumentScreen extends Screen {
     }
 
 
+    private boolean closed = false;
+
     /**
      * @apiNote Please override {@link InstrumentScreen#onClose(boolean)} instead.
      */
@@ -595,21 +597,30 @@ public abstract class InstrumentScreen extends Screen {
         onClose(true);
     }
     public void onClose(final boolean notify) {
-        if (notify)
-            notifyClosed();
+        if (!closed) {
+            if (notify)
+                notifyClosed();
 
-        if (isOptionsScreenActive)
-            optionsScreen.onClose();
+            if (isOptionsScreenActive)
+                optionsScreen.onClose();
+
+            closed = true;
+        }
 
         super.onClose();
     }
 
     @Override
     public void removed() {
-        notifyClosed();
+        // For when the screen was forcibly replaced
+        if (!closed) {
+            notifyClosed();
 
-        if (isOptionsScreenActive)
-            optionsScreen.saveOptions();
+            if (isOptionsScreenActive)
+                optionsScreen.saveOptions();
+
+            closed = true;
+        }
 
         super.removed();
     }
