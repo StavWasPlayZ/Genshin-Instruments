@@ -21,11 +21,12 @@ public abstract class ServerEvents {
     
     @SubscribeEvent
     public static void onServerTick(final LevelTickEvent event) {
-        if ((event.phase != Phase.END) && (event.side == LogicalSide.SERVER))
-            event.level.players().forEach((player) -> {
+        if ((event.phase != Phase.END) && (event.side == LogicalSide.SERVER)) {
+            event.level.getServer().getPlayerList().getPlayers().forEach((player) -> {
                 if (shouldAbruptlyClose(player))
                     InstrumentPacketUtil.setInstrumentClosed(player);
             });
+        }
     }
 
     @SubscribeEvent
