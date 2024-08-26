@@ -21,11 +21,12 @@ public abstract class ServerEvents {
 
     @SubscribeEvent
     public static void onServerTick(final WorldTickEvent event) {
-        if ((event.phase != Phase.END) && (event.side == LogicalSide.SERVER))
-            event.world.players().forEach((player) -> {
+        if ((event.phase != Phase.END) && (event.side == LogicalSide.SERVER)) {
+            event.world.getServer().getPlayerList().getPlayers().forEach((player) -> {
                 if (shouldAbruptlyClose(player))
                     InstrumentPacketUtil.setInstrumentClosed(player);
             });
+        }
     }
 
     @SubscribeEvent

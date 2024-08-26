@@ -42,7 +42,7 @@ public class ModCapabilities {
         if (level.isClientSide)
             return;
 
-        level.players().forEach((player) -> {
+        level.getServer().getPlayerList().getPlayers().forEach((player) -> {
             if (player.equals(event.getEntity()))
                 return;
 
