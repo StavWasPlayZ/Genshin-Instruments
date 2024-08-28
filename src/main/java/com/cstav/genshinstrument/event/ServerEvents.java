@@ -25,7 +25,7 @@ public abstract class ServerEvents {
         if ((event.phase != Phase.END) && (event.side == LogicalSide.SERVER)) {
             event.world.players().forEach((player) -> {
                 if (shouldAbruptlyClose(player))
-                    InstrumentPacketUtil.setInstrumentClosed(player);
+                    InstrumentPacketUtil.setInstrumentClosed((ServerPlayer) player);
             });
         }
     }
