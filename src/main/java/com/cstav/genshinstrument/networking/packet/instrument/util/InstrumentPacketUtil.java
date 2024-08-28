@@ -180,10 +180,10 @@ public class InstrumentPacketUtil {
         InstrumentOpenProvider.setClosed(player);
 
         // And clients
-        player.level().players().forEach((oPlayer) ->
+        player.getLevel().players().forEach((oPlayer) ->
             GIPacketHandler.sendToClient(
                 new NotifyInstrumentOpenPacket(player.getUUID()),
-                (ServerPlayer) oPlayer
+                oPlayer
             )
         );
 
@@ -227,10 +227,10 @@ public class InstrumentPacketUtil {
             instrumentOpenPacket = new NotifyInstrumentOpenPacket(player.getUUID(), pos);
         }
 
-        player.level().players().forEach((otherPlayer) ->
+        player.getLevel().players().forEach((otherPlayer) ->
             GIPacketHandler.sendToClient(
                 instrumentOpenPacket,
-                (ServerPlayer) otherPlayer
+                otherPlayer
             )
         );
 
