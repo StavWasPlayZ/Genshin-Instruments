@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent.PlayerChangedDimensionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -33,22 +34,28 @@ public class ModCapabilities {
 
 
     // Sync the open state of players to a new player
-
     @SubscribeEvent
     public static void onPlayerJoin(final PlayerEvent.PlayerLoggedInEvent event) {
-        final Level level = event.getEntity().level();
-        if (level.isClientSide)
-            return;
+        notifyOpenStateToPlayers((ServerPlayer) event.getEntity());
+    }
 
-        level.getServer().getPlayerList().getPlayers().forEach((player) -> {
-            if (player.equals(event.getEntity()))
+    // And on dimension traversal
+    @SubscribeEvent
+    public static void onDimensionChangedEvent(final PlayerChangedDimensionEvent event) {
+        notifyOpenStateToPlayers((ServerPlayer) event.getEntity());
+    }
+
+    private static void notifyOpenStateToPlayers(final ServerPlayer target) {
+        final Level level = target.level();
+
+        level.players().forEach((player) -> {
+            if (player.equals(target))
                 return;
 
             if (InstrumentOpenProvider.isOpen(player))
-                notifyOpenStateToPlayer(player, (ServerPlayer) event.getEntity());
+                notifyOpenStateToPlayer(player, target);
         });
     }
-
     private static void notifyOpenStateToPlayer(final Player player, final ServerPlayer target) {
         final NotifyInstrumentOpenPacket packet;
 
