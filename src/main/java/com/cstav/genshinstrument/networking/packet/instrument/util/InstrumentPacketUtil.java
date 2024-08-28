@@ -171,7 +171,7 @@ public class InstrumentPacketUtil {
     /*-----------------*/
 
 
-    public static void setInstrumentClosed(final Player player) {
+    public static void setInstrumentClosed(final ServerPlayer player) {
         // No need to go through the hassle if it's already closed
         if (!InstrumentOpenProvider.isOpen(player))
             return;

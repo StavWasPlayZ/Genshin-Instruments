@@ -4,6 +4,7 @@ import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.item.InstrumentItem;
 import com.cstav.genshinstrument.networking.packet.instrument.util.InstrumentPacketUtil;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -24,14 +25,14 @@ public abstract class ServerEvents {
         if ((event.phase != Phase.END) && (event.side == LogicalSide.SERVER)) {
             event.level.players().forEach((player) -> {
                 if (shouldAbruptlyClose(player))
-                    InstrumentPacketUtil.setInstrumentClosed(player);
+                    InstrumentPacketUtil.setInstrumentClosed((ServerPlayer) player);
             });
         }
     }
 
     @SubscribeEvent
     public static void onPlayerLeave(final PlayerEvent.PlayerLoggedOutEvent event) {
-        InstrumentPacketUtil.setInstrumentClosed(event.getEntity());
+        InstrumentPacketUtil.setInstrumentClosed((ServerPlayer) event.getEntity());
     }
 
 
