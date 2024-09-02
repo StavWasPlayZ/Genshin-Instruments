@@ -15,8 +15,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import static net.minecraft.advancements.CriteriaTriggers.register;
-
 //NOTE: There to make it load on setup too
 @EventBusSubscriber(bus = Bus.FORGE, modid = GInstrumentMod.MODID)
 public class ModCriteria {
@@ -42,7 +40,7 @@ public class ModCriteria {
         if (instrument == null)
             return;
 
-        INSTRUMENT_PLAYED_TRIGGER.trigger(
+        INSTRUMENT_PLAYED_TRIGGER.get().trigger(
             (ServerPlayer) event.entityInfo().get().entity,
             new ItemStack(instrument)
         );

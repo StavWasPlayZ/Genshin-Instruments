@@ -3,7 +3,7 @@ package com.cstav.genshinstrument.networking.packet.instrument.s2c;
 import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
 import com.cstav.genshinstrument.sound.NoteSound;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent.Context;
+import net.minecraftforge.event.network.CustomPayloadEvent.Context;
 
 import java.util.Optional;
 

@@ -5,7 +5,7 @@ import com.cstav.genshinstrument.networking.packet.instrument.util.HeldSoundPhas
 import com.cstav.genshinstrument.sound.held.HeldNoteSound;
 import com.cstav.genshinstrument.sound.held.InitiatorID;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent.Context;
+import net.minecraftforge.event.network.CustomPayloadEvent.Context;
 
 import java.util.Optional;
 

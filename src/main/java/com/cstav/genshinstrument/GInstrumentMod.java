@@ -1,12 +1,6 @@
 package com.cstav.genshinstrument;
 
-import com.cstav.genshinstrument.client.ModArmPose;
 import com.cstav.genshinstrument.criteria.ModCriteria;
-import com.cstav.genshinstrument.item.ModItems;
-import com.cstav.genshinstrument.item.clientExtensions.ModItemPredicates;
-import com.cstav.genshinstrument.networking.ModPacketHandler;
-import com.cstav.genshinstrument.sound.ModSounds;
-import net.minecraftforge.common.MinecraftForge;
 import com.cstav.genshinstrument.item.GIItems;
 import com.cstav.genshinstrument.networking.GIPacketHandler;
 import com.cstav.genshinstrument.networking.buttonidentifier.DrumNoteIdentifier;
