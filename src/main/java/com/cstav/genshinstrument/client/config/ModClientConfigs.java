@@ -7,16 +7,12 @@ import com.cstav.genshinstrument.client.config.enumType.label.DrumNoteLabel;
 import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
 import com.cstav.genshinstrument.client.gui.screen.instrument.drum.DominantDrumType;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.midi.MidiOptionsScreen;
+import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.sound.NoteSound;
-
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
-import net.minecraftforge.common.ForgeConfigSpec.Builder;
-import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
-import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
-import net.minecraftforge.common.ForgeConfigSpec.IntValue;
+import net.minecraftforge.common.ForgeConfigSpec.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -30,7 +26,7 @@ public class ModClientConfigs {
     public static final ForgeConfigSpec CONFIGS;
 
     public static final IntValue PITCH, MIDI_DEVICE_INDEX, OCTAVE_SHIFT, MIDI_CHANNEL;
-    public static final DoubleValue VOLUME;
+    public static final DoubleValue VOLUME, MIDI_IN_SENSITIVITY;
 
     public static final EnumValue<NoteGridLabel> GRID_LABEL_TYPE;
     public static final EnumValue<InstrumentChannelType> CHANNEL_TYPE;
@@ -59,7 +55,7 @@ public class ModClientConfigs {
         CHANNEL_TYPE = configBuilder.defineEnum("channel_type", InstrumentChannelType.MIXED);
 
         STOP_MUSIC_ON_PLAY = configBuilder.comment(
-            "Stops all background music when you or someone else within "+NoteSound.STOP_SOUND_DISTANCE+" blocks of range plays an instrument"
+            "Stops all background music when you or someone else within "+ ClientUtil.STOP_SOUND_DISTANCE+" blocks of range plays an instrument"
         ).define("stop_music_on_play", true);
         SHARED_INSTRUMENT = configBuilder.comment("Defines whether you will see others playing on your instrument's screen")
             .define("display_other_players", true);
@@ -78,6 +74,7 @@ public class ModClientConfigs {
 
         MIDI_ENABLED = configBuilder.define("midi_enabled", false);
         MIDI_DEVICE_INDEX = configBuilder.defineInRange("midi_device_index", -1, -1, Integer.MAX_VALUE);
+        MIDI_IN_SENSITIVITY = configBuilder.defineInRange("midi_in_sensitivity", .8, 0, 1);
 
         EXTEND_OCTAVES = configBuilder.comment(
             "When a note that is higher/lower than the usual octave range is played, will automatically adjust the pitch to match your playings. Can only extend up to 1 octave per side: high and low C."

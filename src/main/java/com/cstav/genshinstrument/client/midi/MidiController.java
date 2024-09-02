@@ -1,28 +1,19 @@
 package com.cstav.genshinstrument.client.midi;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.sound.midi.MidiDevice;
-import javax.sound.midi.MidiDevice.Info;
-import javax.sound.midi.MidiMessage;
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.MidiUnavailableException;
-import javax.sound.midi.Receiver;
-import javax.sound.midi.Transmitter;
-
-import org.slf4j.Logger;
-
+import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.event.MidiEvent;
 import com.mojang.logging.LogUtils;
-
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.LogicalSidedProvider;
 import net.minecraftforge.fml.LogicalSide;
+import org.slf4j.Logger;
+
+import javax.sound.midi.*;
+import javax.sound.midi.MidiDevice.Info;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class MidiController {
@@ -41,19 +32,21 @@ public abstract class MidiController {
 
         final MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
 
-        for (int i = 0; i < infos.length; i++) {
+        for (final Info info : infos) {
             try {
 
-                final MidiDevice device = MidiSystem.getMidiDevice(infos[i]);
-                // Only obtain devices that can transmit
+                final MidiDevice device = MidiSystem.getMidiDevice(info);
+
+                // Only obtain devices that can transmit.
+                // This will throw for un-transmittable devices.
                 device.getTransmitter();
 
-                DEVICES.put(infos[i], device);
+                DEVICES.put(info, device);
 
             } catch (MidiUnavailableException e) {
-                LOGGER.warn("MIDI device "+infos[i]+" cannot transmit any MIDI; ommitting!");
+                LOGGER.warn("MIDI device " + info.getName().strip() + " cannot transmit MIDI; omitting!");
             } catch (Exception e) {
-                LOGGER.error("Unexpected error occured while trying to obtain MIDI device!", e);
+                LOGGER.error("Unexpected error occurred while trying to obtain MIDI device!", e);
             }
         }
     }
@@ -68,19 +61,6 @@ public abstract class MidiController {
             reloadDevices();
 
         return DEVICES.isEmpty();
-    }
-
-    /**
-     * @return A list of available MIDI devices by their indexes, including -1 for None
-     */
-    public static List<Integer> getValuesForOption() {
-        final List<Integer> result = new ArrayList<>(DEVICES.size() + 1);
-        result.add(-1);
-
-        for (int i = 0; i < DEVICES.size(); i++)
-            result.add(i);
-
-        return result;
     }
 
 
@@ -103,6 +83,31 @@ public abstract class MidiController {
 
         isTransmitting = false;
     }
+
+    public static void loadByConfigs() {
+        if (!ModClientConfigs.MIDI_ENABLED.get()) {
+            unloadDevice();
+            return;
+        }
+
+        final int infoIndex = ModClientConfigs.MIDI_DEVICE_INDEX.get();
+        if (infoIndex == -1)
+            return;
+
+
+        MidiController.reloadIfEmpty();
+        if (infoIndex > (MidiController.DEVICES.size() - 1)) {
+            LogUtils.getLogger().warn("MIDI device out of range; setting device to none");
+            ModClientConfigs.MIDI_DEVICE_INDEX.set(-1);
+            return;
+        }
+
+        if (!MidiController.isLoaded(infoIndex)) {
+            MidiController.loadDevice(infoIndex);
+            MidiController.openForListen();
+        }
+    }
+
 
     public static MidiDevice getCurrDevice() {
         return currDevice;
@@ -129,9 +134,11 @@ public abstract class MidiController {
                 @Override
                 public void send(MidiMessage message, long timeStamp) {
                     // We only want this to run on the render thread, not the MIDI one
-
-                    LogicalSidedProvider.WORKQUEUE.get(LogicalSide.CLIENT)
-                        .executeBlocking(() -> MinecraftForge.EVENT_BUS.post(new MidiEvent(message, timeStamp)));
+                    LogicalSidedProvider.WORKQUEUE.get(LogicalSide.CLIENT).executeBlocking(() -> {
+                        try {
+                            MinecraftForge.EVENT_BUS.post(new MidiEvent(message, timeStamp));
+                        } catch (Exception ignored) {}
+                    });
                 }
 
                 @Override
@@ -143,7 +150,7 @@ public abstract class MidiController {
 
             isTransmitting = true;
         } catch (Exception e) {
-            LOGGER.error("Error occured while opening MIDI device for listen!\nDevice: "+infoAsString(info), e);
+            LOGGER.error("Error occurred while opening MIDI device for listen!\nDevice: "+infoAsString(info), e);
         }
 
     }
@@ -178,7 +185,7 @@ public abstract class MidiController {
     }
 
     public static String infoAsString(final Info info) {
-        return info.getName() +" - "+ info.getDescription() + " ("+info.getVendor()+")";
+        return info.getName().strip() +" - "+ info.getDescription() + " ("+info.getVendor()+")";
     }
     
 

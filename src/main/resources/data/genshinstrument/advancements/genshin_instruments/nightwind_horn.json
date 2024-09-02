@@ -1,0 +1,32 @@
+{
+    "parent": "genshinstrument:genshin_instruments/vintage_lyre",
+
+    "display": {
+        "icon": {
+            "item": "genshinstrument:nightwind_horn"
+        },
+
+        "title": {
+            "translate": "genshinstrument.advancements.main.nightwind_horn.title"
+        },
+        "description": {
+            "translate": "genshinstrument.advancements.main.nightwind_horn.description"
+        }
+    },
+
+    "criteria": {
+        "instrument_played": {
+            "trigger": "genshinstrument_instrument_played",
+
+            "conditions": {
+                "instrument": {
+                    "items": ["genshinstrument:nightwind_horn"]
+                }
+            }
+        }
+    },
+
+    "requirements": [
+        ["instrument_played"]
+    ]
+}

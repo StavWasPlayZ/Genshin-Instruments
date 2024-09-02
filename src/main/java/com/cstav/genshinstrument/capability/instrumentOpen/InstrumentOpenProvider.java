@@ -1,14 +1,9 @@
 package com.cstav.genshinstrument.capability.instrumentOpen;
 
-import java.util.function.Function;
-
-import net.minecraft.world.InteractionHand;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -16,6 +11,10 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Function;
 
 public class InstrumentOpenProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
     public static final Capability<InstrumentOpen> INSTRUMENT_OPEN = CapabilityManager.get(new CapabilityToken<>() {});
@@ -48,21 +47,21 @@ public class InstrumentOpenProvider implements ICapabilityProvider, INBTSerializ
     
 
     public static void setOpen(final Player player, final BlockPos pos) {
-        player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((instrumentOpen) ->
+        player.getCapability(INSTRUMENT_OPEN).ifPresent((instrumentOpen) ->
             instrumentOpen.setOpen(pos)
         );
     }
     public static void setOpen(Player player, InteractionHand hand) {
-        player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((instrumentOpen) ->
+        player.getCapability(INSTRUMENT_OPEN).ifPresent((instrumentOpen) ->
             instrumentOpen.setOpen(hand)
         );
     }
     public static void setClosed(Player player) {
-        player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent(InstrumentOpen::setClosed);
+        player.getCapability(INSTRUMENT_OPEN).ifPresent(InstrumentOpen::setClosed);
     }
 
     public static void setBlockPos(Player player, BlockPos blockPos) {
-        player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).ifPresent((instrumentOpen) ->
+        player.getCapability(INSTRUMENT_OPEN).ifPresent((instrumentOpen) ->
             instrumentOpen.setBlockPos(blockPos)
         );
     }
@@ -82,7 +81,7 @@ public class InstrumentOpenProvider implements ICapabilityProvider, INBTSerializ
     }
 
     private static <T> T getInstrumentOpen(Player player, Function<InstrumentOpen, T> ifExists, T elseVal) {
-        final LazyOptional<InstrumentOpen> lazyOpen = player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN);
+        final LazyOptional<InstrumentOpen> lazyOpen = player.getCapability(INSTRUMENT_OPEN);
 
         return lazyOpen.isPresent()
             ? ifExists.apply(lazyOpen.resolve().get())

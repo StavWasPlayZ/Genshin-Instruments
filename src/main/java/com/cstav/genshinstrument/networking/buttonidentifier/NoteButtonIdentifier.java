@@ -1,16 +1,12 @@
 package com.cstav.genshinstrument.networking.buttonidentifier;
 
-import java.util.List;
-import java.util.function.Function;
-
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
-import com.cstav.genshinstrument.networking.packet.INoteIdentifierSender;
-import com.cstav.genshinstrument.util.ServerUtil;
 import com.mojang.logging.LogUtils;
-
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.function.Function;
 
 /**
  * <p>
@@ -35,18 +31,16 @@ public abstract class NoteButtonIdentifier {
 
     @Override
     public boolean equals(Object other) {
-        return (other instanceof NoteButtonIdentifier _other) && matches(_other);
+        return (this == other) || (
+            (other instanceof NoteButtonIdentifier _other)
+            && matches(_other)
+        );
     }
 
-    /**
-     * @apiNote Consider implementing {@link INoteIdentifierSender}
-     * and using the {@link INoteIdentifierSender#readNoteIdentifierFromNetwork} instead.
-     */
-    public static NoteButtonIdentifier readFromNetwork(FriendlyByteBuf buf,
-            List<Class<? extends NoteButtonIdentifier>> acceptableIdentifiers) {
+    public static NoteButtonIdentifier readFromNetwork(FriendlyByteBuf buf) {
 
         try {
-            return ServerUtil.getValidNoteIdentifier(buf.readUtf(), acceptableIdentifiers)
+            return NoteButtonIdentifiers.getIdentifier(buf.readUtf())
                 .getDeclaredConstructor(FriendlyByteBuf.class).newInstance(buf);
         } catch (Exception e) {
             LogUtils.getLogger().error("Error initializing button identifier", e);

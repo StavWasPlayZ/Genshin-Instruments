@@ -1,8 +1,5 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.drum;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
@@ -12,17 +9,17 @@ import com.cstav.genshinstrument.client.gui.screen.options.instrument.DrumOption
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.InstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.midi.InstrumentMidiReceiver;
 import com.mojang.blaze3d.platform.InputConstants.Key;
-
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.layouts.LinearLayout.Orientation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
-//NOTE: There just to make it load on mod setup
-@EventBusSubscriber(Dist.CLIENT)
 public class AratakisGreatAndGloriousDrumScreen extends InstrumentScreen {
     public static final ResourceLocation INSTRUMENT_ID = new ResourceLocation(GInstrumentMod.MODID, "glorious_drum");
     public static final String[] NOTE_LAYOUT = {"D", "G"};
@@ -102,7 +99,7 @@ public class AratakisGreatAndGloriousDrumScreen extends InstrumentScreen {
         return NOTE_LAYOUT;
     }
 
-    private static final InstrumentThemeLoader THEME_LOADER = new InstrumentThemeLoader(INSTRUMENT_ID);
+    public static final InstrumentThemeLoader THEME_LOADER = new InstrumentThemeLoader(INSTRUMENT_ID);
     @Override
     public InstrumentThemeLoader getThemeLoader() {
         return THEME_LOADER;
@@ -116,7 +113,7 @@ public class AratakisGreatAndGloriousDrumScreen extends InstrumentScreen {
             private static boolean donRight = false, kaRight = false;
 
             @Override
-            protected NoteButton handleMidiPress(int note, int key) {
+            protected @Nullable NoteButton handleMidiPress(int note, int key) {
                 final boolean isKa = (ddt() == DominantDrumType.KA) || ((ddt() == DominantDrumType.BOTH) && (note >= 12));
 
                 setPitch(note - (isKa ? 19 : 2));
@@ -145,6 +142,41 @@ public class AratakisGreatAndGloriousDrumScreen extends InstrumentScreen {
             }
 
             @Override
+            protected NoteButton getLowestNote() {
+                // Get the first don
+                return notes.values().stream()
+                    .map((btn) -> ((DrumNoteButton)btn))
+                    .filter((btn) -> btn.btnType == getDrumTypeOf(DrumButtonType.DON))
+                    .findFirst().get();
+            }
+            @Override
+            protected NoteButton getHighestNote() {
+                // Get the first ka
+                return notes.values().stream()
+                    .map((btn) -> ((DrumNoteButton)btn))
+                    .filter((btn) -> btn.btnType == getDrumTypeOf(DrumButtonType.KA))
+                    .findFirst().get();
+            }
+
+            /**
+             * @param btnType The preferred button type
+             * @return The preferred button type if {@code ddt} is {@link DominantDrumType#BOTH both},
+             * or the other when forced to.
+             */
+            private DrumButtonType getDrumTypeOf(DrumButtonType btnType) {
+                DominantDrumType ddt = ddt();
+
+                return (ddt == DominantDrumType.BOTH)
+                    ? btnType
+                    : ((ddt == DominantDrumType.DON)
+                        ? DrumButtonType.DON
+                        : DrumButtonType.KA
+                    )
+                ;
+            }
+
+
+            @Override
             protected int minMidiNote() {
                 return ((ddt() == DominantDrumType.BOTH) || ddt() == DominantDrumType.DON) ? -10 : 7;
             }
@@ -160,7 +192,7 @@ public class AratakisGreatAndGloriousDrumScreen extends InstrumentScreen {
     /**
      * Shorthand for {@code ModClientConfigs.DOMINANT_DRUM_TYPE.get()}
      */
-    private final static DominantDrumType ddt() {
+    private static DominantDrumType ddt() {
         return ModClientConfigs.DOMINANT_DRUM_TYPE.get();
     }
 

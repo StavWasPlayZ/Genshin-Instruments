@@ -2,13 +2,10 @@ package com.cstav.genshinstrument.event;
 
 import com.cstav.genshinstrument.block.partial.InstrumentBlockEntity;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
-import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
-import com.cstav.genshinstrument.sound.NoteSound;
-import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
@@ -16,74 +13,120 @@ import net.minecraftforge.eventbus.api.Event;
 import java.util.Optional;
 
 /**
- * An event fired when an instrument sound has been produced.
- * This event is fired on the Forge event bus
+ * An abstract implementation of a sound played event.
+ * @param <T> The sound object type
  */
 @Cancelable
-public class InstrumentPlayedEvent extends Event {
+public abstract class InstrumentPlayedEvent<T> extends Event {
 
-    public final NoteSound sound;
-    public final int pitch, volume;
+    private final T sound;
+    private final NoteSoundMetadata soundMeta;
+    private final Level level;
 
-    public final Level level;
-    public final boolean isClientSide;
-    
-    public final ResourceLocation instrumentId;
-    public final Optional<NoteButtonIdentifier> noteIdentifier;
-    public final BlockPos playPos;
+    /**
+     * Information about the entity initiator.
+     * Present if there is indeed an entity initiator.
+     */
+    private final Optional<EntityInfo> entityInfo;
+    public boolean isByEntity() {
+        return entityInfo.isPresent();
+    }
+    public boolean isByPlayer() {
+        return isByEntity() && (entityInfo.get().entity instanceof Player);
+    }
 
+
+    /**
+     * Constructor for creating a non-entity event
+     */
+    public InstrumentPlayedEvent(Level level, T sound, NoteSoundMetadata soundMeta) {
+        this.level = level;
+        this.sound = sound;
+        this.soundMeta = soundMeta;
+
+        this.entityInfo = Optional.empty();
+    }
+
+    /**
+     * Constructor for creating a by-entity event
+     */
+    public InstrumentPlayedEvent(Entity entity, T sound, NoteSoundMetadata soundMeta) {
+        this.level = entity.level();
+        this.sound = sound;
+        this.soundMeta = soundMeta;
+
+        this.entityInfo = Optional.of(new EntityInfo(entity));
+    }
+
+
+    public T sound() {
+        return sound;
+    }
+    public NoteSoundMetadata soundMeta() {
+        return soundMeta;
+    }
+    public Level level() {
+        return level;
+    }
+    public Optional<EntityInfo> entityInfo() {
+        return entityInfo;
+    }
 
     /**
      * Convenience method to convert the volume of the note
      * into a {@code float} percentage
      */
     public float volume() {
-        return volume / 100f;
-    }
-    
-
-    public InstrumentPlayedEvent(NoteSound sound, int pitch, int volume, Level level, BlockPos pos,
-            ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, boolean isClientSide) {
-
-        this.sound = sound;
-        this.pitch = pitch;
-        this.volume = volume;
-
-        this.level = level;
-        this.playPos = pos;
-        this.isClientSide = isClientSide;
-
-        this.instrumentId = instrumentId;
-        this.noteIdentifier = Optional.ofNullable(noteIdentifier);
+        return soundMeta.volume() / 100f;
     }
 
-    @Cancelable
-    public static class ByPlayer extends InstrumentPlayedEvent {
-        public final Player player;
 
-        // The values below will only be supplied if initiated from an item
-        /** The instrument held by the player who initiated the sound */
-        public final Optional<ItemStack> itemInstrument;
-        /** The hand holding the instrument played by this player */
+    /**
+     * An object containing information
+     * about the entity who initiated the event
+     */
+    public class EntityInfo {
+        public final Entity entity;
+
+        /**
+         * The hand carrying the <b>item</b> instrument.
+         * Empty for when not played by an instrument
+         * or is not a player.
+         */
         public final Optional<InteractionHand> hand;
 
+        protected final InstrumentPlayedEvent<T> baseEvent = InstrumentPlayedEvent.this;
+
+        public EntityInfo(Entity entity) {
+            this.entity = entity;
+
+            if (
+                (entity instanceof Player player)
+                && (InstrumentOpenProvider.isItem(player))
+            ) {
+                hand = Optional.of(InstrumentOpenProvider.getHand(player));
+            } else {
+                hand = Optional.empty();
+            }
+        }
 
         /**
          * <p>Returns whether this event was fired by an item instrument.</p>
          * A {@code false} result does NOT indicate a block instrument.
-         * @see ByPlayer#isBlockInstrument
+         * @see EntityInfo#isBlockInstrument
          */
         public boolean isItemInstrument() {
-            return itemInstrument.isPresent();
+            return hand.isPresent();
         }
         /**
          * <p>Returns whether this event was fired by a block instrument.</p>
          * A {@code false} result does NOT indicate an instrument item.
-         * @see ByPlayer#isItemInstrument()
+         * @see EntityInfo#isItemInstrument()
          */
         public boolean isBlockInstrument() {
             return !isItemInstrument()
-                && player.level().getBlockEntity(playPos) instanceof InstrumentBlockEntity;
+                && level.getBlockEntity(baseEvent.soundMeta.pos())
+                    instanceof InstrumentBlockEntity;
         }
 
         /**
@@ -92,27 +135,6 @@ public class InstrumentPlayedEvent extends Event {
         public boolean isNotInstrument() {
             return !isBlockInstrument() && !isItemInstrument();
         }
-
-
-        public ByPlayer(NoteSound sound, int pitch, int volume, Player player, BlockPos pos,
-                ResourceLocation instrumentId, NoteButtonIdentifier noteIdentifier, boolean isClientSide) {
-            super(
-                sound, pitch, volume,
-                player.level(), pos,
-                instrumentId, noteIdentifier,
-                isClientSide
-            );
-
-            this.player = player;
-
-            if (InstrumentOpenProvider.isItem(player)) {
-                this.hand = Optional.of(InstrumentOpenProvider.getHand(player));
-                this.itemInstrument = Optional.of(player.getItemInHand(hand.get()));
-            } else {
-                this.hand = Optional.empty();
-                this.itemInstrument = Optional.empty();
-            }
-        }
     }
-    
+
 }

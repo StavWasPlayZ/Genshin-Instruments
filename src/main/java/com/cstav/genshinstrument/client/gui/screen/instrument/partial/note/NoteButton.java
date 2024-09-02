@@ -1,12 +1,13 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial.note;
 
+import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.NoteLabelSupplier;
 import com.cstav.genshinstrument.client.util.ClientUtil;
-import com.cstav.genshinstrument.networking.ModPacketHandler;
+import com.cstav.genshinstrument.networking.GIPacketHandler;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
-import com.cstav.genshinstrument.networking.packet.instrument.InstrumentPacket;
+import com.cstav.genshinstrument.networking.packet.instrument.c2s.C2SNoteSoundPacket;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.util.LabelUtil;
 import com.mojang.logging.LogUtils;
@@ -16,8 +17,10 @@ import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.sounds.SoundManager;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.slf4j.Logger;
@@ -30,7 +33,7 @@ import java.awt.*;
  */
 @OnlyIn(Dist.CLIENT)
 public abstract class NoteButton extends AbstractButton {
-    private static Logger LOGGER = LogUtils.getLogger();
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     protected final Minecraft minecraft = Minecraft.getInstance();
 
@@ -92,6 +95,20 @@ public abstract class NoteButton extends AbstractButton {
     }
 
 
+    /**
+     * @return The position of the sounds
+     * to be produced from this note button.
+     */
+    public BlockPos getSoundSourcePos() {
+        final Player player = Minecraft.getInstance().player;
+
+        return InstrumentOpenProvider.isItem(player)
+            ? player.blockPosition()
+            : InstrumentOpenProvider.getBlockPos(player)
+        ;
+    }
+
+
     private int initX, initY;
     /**
      * Initializes the button's initial position.
@@ -127,6 +144,13 @@ public abstract class NoteButton extends AbstractButton {
     public void setPitch(final int pitch) {
         this.pitch = NoteSound.clampPitch(pitch);
         updateNoteLabel();
+    }
+
+    /**
+     * @return The sound index of this note
+     */
+    public int soundIndex() {
+        return getSound().index;
     }
     
     // Note labeling
@@ -168,24 +192,55 @@ public abstract class NoteButton extends AbstractButton {
     }
 
 
-    public boolean locked = false;
-    public void play() {
-        if (locked)
-            return;
-        
-        sound.playLocally(getPitch(), instrumentScreen.volume());
-        sendNotePlayPacket();
-        playNoteAnimation(false);
+    private boolean locked = false;
+    public void release() {
+        unlockInput();
+    }
 
+    public boolean isLocked() {
+        // This comment exists for a merge to register
+        return locked;
+    }
+
+    protected void lockInput() {
         locked = true;
     }
+    public void unlockInput() {
+        locked = false;
+    }
+
+
+    /**
+     * Plays this note button.
+     * @return Whether the operation succeed
+     * @implNote Overriders should call {@link NoteButton#lockInput}
+     * before a true signal.
+     */
+    public boolean play(final NoteSound sound, final int pitch) {
+        if (locked)
+            return false;
+
+        playLocalSound(sound, pitch);
+        sendNotePlayPacket(sound, pitch);
+        playNoteAnimation(false);
+
+        lockInput();
+        return true;
+    }
+    public boolean play() {
+        return play(getSound(), getPitch());
+    }
+
     @Override
     public void onPress() {
         play();
     }
 
-    protected void sendNotePlayPacket() {
-        ModPacketHandler.sendToServer(new InstrumentPacket(this));
+    protected void playLocalSound(final NoteSound sound, final int pitch) {
+        sound.playLocally(pitch, instrumentScreen.volume(), getSoundSourcePos());
+    }
+    protected void sendNotePlayPacket(final NoteSound sound, final int pitch) {
+        GIPacketHandler.sendToServer(new C2SNoteSoundPacket(this, sound, pitch));
     }
 
 
@@ -243,7 +298,10 @@ public abstract class NoteButton extends AbstractButton {
      */
     @Override
     public boolean equals(Object obj) {
-        return (obj instanceof NoteButton btn) && getIdentifier().matches(btn);
+        return (this == obj) || (
+            (obj instanceof NoteButton btn)
+            && getIdentifier().matches(btn)
+        );
     }
 
 }

@@ -9,7 +9,8 @@
     "item.genshinstrument.windsong_lyre": "Windsong Lyre",
     "item.genshinstrument.floral_zither": "Floral Zither",
     "item.genshinstrument.vintage_lyre": "Vintage Lyre",
-    "item.genshinstrument.glorious_drum": "Arataki's Great And Glorious Drum",
+    "item.genshinstrument.glorious_drum": "Arataki's Great and Glorious Drum",
+    "item.genshinstrument.nightwind_horn": "Nightwind Horn",
 
 
     "soundCategory.record": "Instruments",
@@ -49,6 +50,7 @@
 
     "button.genshinstrument.fixedTouch": "Fixed Touch",
     "button.genshinstrument.fixedTouch.tooltip": "Defines whether the velocity of a note press will not affect the instrument's volume",
+    "button.genshinstrument.inputSensitivity": "Sensitivity",
 
     "button.genshinstrument.extendOctaves": "Extend Octaves",
     "button.genshinstrument.extendOctaves.tooltip": "When a note that is higher/lower than the usual octave range is played, will automatically adjust the pitch to match your playings. Can only extend up to 1 octave per side: high and low C.\nBlame Minecraft.",
@@ -83,7 +85,8 @@
     "button.genshinstrument.zither.soundType.new": "New",
 
 
-    "button.genshinstrument.label.do_re_mi": "Do Re Mi",
+    "button.genshinstrument.label.do_re_mi": "do re mi",
+    "button.genshinstrument.label.do_re_mi.description": "Labels will be of the musical notation \"do re mi.\"",
 
     "genshinstrument.label.do": "do",
     "genshinstrument.label.re": "re",
@@ -98,10 +101,19 @@
 
 
     "button.genshinstrument.label.keyboard_layout": "Keyboard",
+    "button.genshinstrument.label.keyboard_layout.description": "Labels will be of your local keyboard layout",
     "button.genshinstrument.label.qwerty": "Keyboard (QWERTY)",
-    "button.genshinstrument.label.note_name": "Note Name",
-    "button.genshinstrument.label.abc": "ABC",
+    "button.genshinstrument.label.qwerty.description": "Labels will be of the QWERTY keyboard layout",
+    "button.genshinstrument.label.note_name": "ABC",
+    "button.genshinstrument.label.note_name.description": "Labels will be of the musical notation \"ABC\"",
+
+    "button.genshinstrument.label.fixed_abc": "Fixed ABC",
+    "button.genshinstrument.label.fixed_abc.description": "ABC labels that are not affected by custom transpositions (pitch)",
+    "button.genshinstrument.label.fixed_do_re_mi": "Fixed do re mi",
+    "button.genshinstrument.label.fixed_do_re_mi.description": "do re mi labels that are not affected by custom transpositions (pitch)",
+
     "button.genshinstrument.label.none": "No Label",
+    "button.genshinstrument.label.none.description": "",
 
     "button.genshinstrument.label.don_ka": "Don-Ka",
 
@@ -111,7 +123,7 @@
     "genshinstrument.advancements.main.root.description": "Though wine may not be by your side, the instruments will always walk you through the Game of Freedom.",
 
     "genshinstrument.advancements.main.master.title": "A Band of One",
-    "genshinstrument.advancements.main.master.description": "Have all instruments in your inventory at once",
+    "genshinstrument.advancements.main.master.description": "Have all Genshin instruments in your inventory at once",
 
     "genshinstrument.advancements.main.windsong_lyre.title": "The Sound of Wind",
     "genshinstrument.advancements.main.windsong_lyre.description": "Play the Windsong Lyre",
@@ -120,9 +132,12 @@
     "genshinstrument.advancements.main.vintage_lyre.description": "Play the Vintage Lyre",
 
     "genshinstrument.advancements.main.glorious_drum.title": "Totally Not a Scam",
-    "genshinstrument.advancements.main.glorious_drum.description": "Play Arataki's Glorious Drum",
+    "genshinstrument.advancements.main.glorious_drum.description": "Play Arataki's Great and Glorious Drum",
 
     "genshinstrument.advancements.main.floral_zither.title": "Incognito Player",
-    "genshinstrument.advancements.main.floral_zither.description": "Play the Floral Zither"
+    "genshinstrument.advancements.main.floral_zither.description": "Play the Floral Zither",
+
+    "genshinstrument.advancements.main.nightwind_horn.title": "The Final Symphony",
+    "genshinstrument.advancements.main.nightwind_horn.description": "Play the Nightwind Horn"
 
 }

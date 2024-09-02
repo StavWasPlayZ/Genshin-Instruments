@@ -5,10 +5,21 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 
+/**
+ * A slider implementation that automatically
+ * clamps the desired value
+ */
 public abstract class SliderButton extends AbstractSliderButton {
 
     public final double min, max;
 
+    /**
+     * Constructs a new Slider
+     * @param pWidth The width of the slider
+     * @param value The initial value
+     * @param min The minimum input value
+     * @param max The maximum input value
+     */
     public SliderButton(int pWidth, double value, double min, double max) {
         super(0, 0,
             pWidth, 20,

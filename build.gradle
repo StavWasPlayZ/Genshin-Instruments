@@ -64,6 +64,8 @@ minecraft {
         configureEach {
             workingDirectory project.file('run')
 
+            jvmArg "-XX:+AllowEnhancedClassRedefinition"
+
             // Recommended logging data for a userdev environment
             // The markers can be added/remove as needed separated by commas.
             // "SCAN": For mods scan.
