@@ -4,6 +4,7 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.layouts.Layout;
+import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.multiplayer.WarningScreen;
 import net.minecraft.network.chat.CommonComponents;
@@ -36,38 +37,28 @@ public class GenshinConsentScreen extends WarningScreen {
         this.previousScreen = previousScreen;
     }
 
-
-//    @Override
-//    protected int getLineHeight() {
-//        return 10;
-//    }
-
     @Override
-    protected void init() {
+    protected Layout addFooterButtons() {
         final Button acknowledgeButton = Button.builder(CommonComponents.GUI_ACKNOWLEDGE, (button) -> {
             ModClientConfigs.ACCEPTED_GENSHIN_CONSENT.set(true);
             minecraft.setScreen(previousScreen);
         }).build();
 
-
-        // Make space for if the button is overlayed atop of the greeting
-        final int preferredButtonY = 100 + 140, annoyingButtonY = height - acknowledgeButton.getHeight() - 10;
-
         acknowledgeButton.setPosition(
             (width - acknowledgeButton.getWidth()) / 2,
-            Math.min(annoyingButtonY, preferredButtonY)
+            height - acknowledgeButton.getHeight() - 10
         );
 
-        this.addRenderableWidget(acknowledgeButton);
-
-        super.init();
+        LinearLayout linearlayout = LinearLayout.vertical().spacing(8);
+        linearlayout.addChild(acknowledgeButton);
+        return linearlayout;
     }
 
-//    @Override
+    //    @Override
 //    protected void renderTitle(GuiGraphics gui) {
 //        gui.drawCenteredString(font, title, width/2, 30, Color.WHITE.getRGB());
 //    }
-    
+
 
     private static Component bolden(final int index) {
         return Component.translatable("genshinstrument.genshin_disclaimer.bolden"+index).withStyle(ChatFormatting.BOLD);
@@ -86,11 +77,5 @@ public class GenshinConsentScreen extends WarningScreen {
     public void onClose() {
         super.onClose();
         previousScreen.onClose();
-    }
-
-
-    @Override
-    protected Layout addFooterButtons() {
-        return null;
     }
 }
