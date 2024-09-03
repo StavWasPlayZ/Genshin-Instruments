@@ -50,11 +50,13 @@ public class ModCapabilities {
 //            if (player.equals(target))
 //                return;
 //
-//            if (InstrumentOpenProvider.isOpen(player))
-//                notifyOpenStateToPlayer(player, target);
+//            notifyOpenStateToPlayer(player, target);
 //        });
 //    }
     public static void notifyOpenStateToPlayer(final Player player, final ServerPlayer target) {
+        if (!InstrumentOpenProvider.isOpen(player))
+            return;
+
         final NotifyInstrumentOpenPacket packet;
 
         if (InstrumentOpenProvider.isItem(player)) {
