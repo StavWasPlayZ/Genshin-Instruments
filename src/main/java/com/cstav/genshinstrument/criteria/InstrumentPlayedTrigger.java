@@ -8,7 +8,6 @@ import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Optional;
@@ -41,15 +40,15 @@ public class InstrumentPlayedTrigger extends SimpleCriterionTrigger<InstrumentPl
     public record TriggerInstance(Optional<ContextAwarePredicate> player, Optional<ItemPredicate> item) implements SimpleCriterionTrigger.SimpleInstance {
         public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create((triggerInstance) ->
             triggerInstance.group(
-                ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player")
+                EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player")
                     .forGetter(TriggerInstance::player),
-                ExtraCodecs.strictOptionalField(ItemPredicate.CODEC, "instrument")
+                ItemPredicate.CODEC.optionalFieldOf("instrument")
                     .forGetter(TriggerInstance::item)
             ).apply(triggerInstance, TriggerInstance::new)
         );
 
         public boolean matches(final ItemStack instrument) {
-            return item.isEmpty() || item.get().matches(instrument);
+            return item.isEmpty() || item.get().test(instrument);
         }
     }
 

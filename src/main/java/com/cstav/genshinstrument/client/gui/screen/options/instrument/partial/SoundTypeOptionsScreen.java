@@ -1,6 +1,5 @@
 package com.cstav.genshinstrument.client.gui.screen.options.instrument.partial;
 
-import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.config.enumType.SoundType;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.GridInstrumentScreen;
@@ -13,15 +12,11 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 /**
  * An options screen that implements a button to cycle through the instrument's sounds.
  */
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(bus = Bus.FORGE, modid = GInstrumentMod.MODID, value = Dist.CLIENT)
 public abstract class SoundTypeOptionsScreen<T extends SoundType> extends SingleButtonOptionsScreen {
 
     public SoundTypeOptionsScreen(final GridInstrumentScreen screen) {
@@ -89,7 +84,6 @@ public abstract class SoundTypeOptionsScreen<T extends SoundType> extends Single
     }
 
     @SuppressWarnings("unchecked")
-    @SubscribeEvent
     public static void onMidiReceivedEvent(final MidiEvent event) {
         final InstrumentScreen instrumentScreen = InstrumentScreen.getCurrentScreen(Minecraft.getInstance()).orElse(null);
 

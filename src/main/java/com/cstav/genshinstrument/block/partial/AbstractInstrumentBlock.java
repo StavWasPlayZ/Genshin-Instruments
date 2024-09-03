@@ -9,7 +9,6 @@ import com.cstav.genshinstrument.networking.packet.instrument.util.InstrumentPac
 import net.minecraft.client.model.HumanoidModel.ArmPose;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -20,6 +19,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.loading.FMLEnvironment;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
@@ -57,12 +57,11 @@ public abstract class AbstractInstrumentBlock extends BaseEntityBlock {
         return (ArmPose)clientBlockArmPose;
     }
 
-
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand,
-            BlockHitResult pHit) {        
+    protected @NotNull InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer,
+                                                        BlockHitResult pHitResult) {
         if (pLevel.isClientSide)
-                return InteractionResult.CONSUME;
+            return InteractionResult.CONSUME;
 
 
         final BlockEntity be = pLevel.getBlockEntity(pPos);

@@ -42,8 +42,8 @@ public class ServerUtil {
                 , e);
             }
     }
-    private static NetworkDirection getDirection(final Class<IModPacket> packetType)
+    private static NetworkDirection<? extends FriendlyByteBuf> getDirection(final Class<IModPacket> packetType)
             throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
-        return (NetworkDirection)packetType.getField("NETWORK_DIRECTION").get(null);
+        return (NetworkDirection<? extends FriendlyByteBuf>)packetType.getField("NETWORK_DIRECTION").get(null);
     }
 }

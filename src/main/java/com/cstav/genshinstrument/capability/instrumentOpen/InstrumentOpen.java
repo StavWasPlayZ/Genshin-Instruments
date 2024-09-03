@@ -84,8 +84,7 @@ public class InstrumentOpen {
         isOpen = nbt.getBoolean(OPEN_TAG);
         isItem = nbt.getBoolean(IS_ITEM_TAG);
 
-        if (nbt.contains(BLOCK_POS_TAG, Tag.TAG_COMPOUND))
-            blockPos = NbtUtils.readBlockPos(nbt.getCompound(BLOCK_POS_TAG));
+        blockPos = NbtUtils.readBlockPos(nbt, BLOCK_POS_TAG).orElse(null);
         if (nbt.contains(HAND_TAG, Tag.TAG_BYTE))
             hand = nbt.getBoolean(HAND_TAG) ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
     }

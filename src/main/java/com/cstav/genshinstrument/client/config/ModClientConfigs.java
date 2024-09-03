@@ -1,6 +1,5 @@
 package com.cstav.genshinstrument.client.config;
 
-import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.client.config.enumType.ZitherSoundType;
 import com.cstav.genshinstrument.client.config.enumType.label.DrumNoteLabel;
@@ -13,15 +12,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.*;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.fml.config.ModConfig.Type;
-import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
 
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(bus = Bus.MOD, modid = GInstrumentMod.MODID, value = Dist.CLIENT)
 public class ModClientConfigs {
     public static final ForgeConfigSpec CONFIGS;
 
@@ -98,11 +90,5 @@ public class ModClientConfigs {
 
 
         CONFIGS = configBuilder.build();
-    }
-
-
-    @SubscribeEvent
-    public static void registerConfigs(final FMLConstructModEvent event) {
-        ModLoadingContext.get().registerConfig(Type.CLIENT, CONFIGS, "instrument_configs.toml");
     }
 }

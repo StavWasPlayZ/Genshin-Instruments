@@ -8,8 +8,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.event.network.CustomPayloadEvent.Context;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.network.CustomPayloadEvent.Context;
 import net.minecraftforge.network.NetworkDirection;
 
 import java.util.Optional;
@@ -65,7 +65,7 @@ public class NotifyInstrumentOpenPacket implements IModPacket {
     public NotifyInstrumentOpenPacket(final FriendlyByteBuf buf) {
         playerUUID = buf.readUUID();
         isOpen = buf.readBoolean();
-        pos = buf.readOptional(FriendlyByteBuf::readBlockPos);
+        pos = buf.readOptional((fbb) -> fbb.readBlockPos());
         hand = buf.readOptional((fbb) -> fbb.readEnum(InteractionHand.class));
     }
     
@@ -73,7 +73,7 @@ public class NotifyInstrumentOpenPacket implements IModPacket {
     public void write(FriendlyByteBuf buf) {
         buf.writeUUID(playerUUID);
         buf.writeBoolean(isOpen);
-        buf.writeOptional(pos, FriendlyByteBuf::writeBlockPos);
+        buf.writeOptional(pos, (fbb, pos) -> fbb.writeBlockPos(pos));
         buf.writeOptional(hand, FriendlyByteBuf::writeEnum);
     }
 

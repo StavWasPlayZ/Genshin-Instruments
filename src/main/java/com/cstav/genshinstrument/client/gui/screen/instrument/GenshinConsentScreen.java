@@ -1,12 +1,9 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument;
 
-import java.awt.Color;
-
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
-
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.layouts.Layout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.multiplayer.WarningScreen;
 import net.minecraft.network.chat.CommonComponents;
@@ -40,10 +37,10 @@ public class GenshinConsentScreen extends WarningScreen {
     }
 
 
-    @Override
-    protected int getLineHeight() {
-        return 10;
-    }
+//    @Override
+//    protected int getLineHeight() {
+//        return 10;
+//    }
 
     @Override
     protected void init() {
@@ -66,10 +63,10 @@ public class GenshinConsentScreen extends WarningScreen {
         super.init();
     }
 
-    @Override
-    protected void renderTitle(GuiGraphics gui) {
-        gui.drawCenteredString(font, title, width/2, 30, Color.WHITE.getRGB());
-    }
+//    @Override
+//    protected void renderTitle(GuiGraphics gui) {
+//        gui.drawCenteredString(font, title, width/2, 30, Color.WHITE.getRGB());
+//    }
     
 
     private static Component bolden(final int index) {
@@ -93,5 +90,7 @@ public class GenshinConsentScreen extends WarningScreen {
 
 
     @Override
-    protected void initButtons(int idc) {}
+    protected Layout addFooterButtons() {
+        return null;
+    }
 }

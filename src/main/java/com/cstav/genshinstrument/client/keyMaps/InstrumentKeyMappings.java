@@ -13,13 +13,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.settings.IKeyConflictContext;
 import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import org.lwjgl.glfw.GLFW;
 
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(bus = Bus.MOD, modid = GInstrumentMod.MODID, value = Dist.CLIENT)
 public class InstrumentKeyMappings {
     public static final String CATEGORY = GInstrumentMod.MODID+".keymaps";
 
@@ -55,7 +51,6 @@ public class InstrumentKeyMappings {
     );
 
 
-    @SubscribeEvent
     public static void registerKeybinds(final RegisterKeyMappingsEvent event) {
         event.register(TRANSPOSE_UP_MODIFIER.get());
         event.register(TRANSPOSE_DOWN_MODIFIER.get());
