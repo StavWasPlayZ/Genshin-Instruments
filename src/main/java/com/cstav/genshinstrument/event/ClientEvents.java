@@ -7,12 +7,15 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.IHeldInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.midi.MidiController;
+import com.cstav.genshinstrument.networking.GIPacketHandler;
+import com.cstav.genshinstrument.networking.packet.instrument.c2s.ReqInstrumentOpenStatePacket;
 import com.cstav.genshinstrument.networking.packet.instrument.util.HeldSoundPhase;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.player.RemotePlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
@@ -21,6 +24,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.GameShuttingDownEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -129,6 +133,16 @@ public class ClientEvents {
     }
 
     //#endregion
+
+
+    @SubscribeEvent
+    public static void onEntityJoinLevel(final EntityJoinLevelEvent event) {
+        // This is a replacement to ModCapabilities' sync mechanism.
+        // Since for some reason it sends the info BEFORE players load in.
+        if (event.getEntity() instanceof RemotePlayer player) {
+            GIPacketHandler.sendToServer(new ReqInstrumentOpenStatePacket(player.getUUID()));
+        }
+    }
 
 
     @SubscribeEvent

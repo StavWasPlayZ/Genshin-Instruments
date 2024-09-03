@@ -4,6 +4,7 @@ import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.networking.packet.instrument.c2s.C2SHeldNoteSoundPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.c2s.C2SNoteSoundPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.c2s.CloseInstrumentPacket;
+import com.cstav.genshinstrument.networking.packet.instrument.c2s.ReqInstrumentOpenStatePacket;
 import com.cstav.genshinstrument.networking.packet.instrument.s2c.NotifyInstrumentOpenPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.s2c.OpenInstrumentPacket;
 import com.cstav.genshinstrument.networking.packet.instrument.s2c.S2CHeldNoteSoundPacket;
@@ -27,7 +28,8 @@ public class GIPacketHandler {
         NotifyInstrumentOpenPacket.class,
         C2SNoteSoundPacket.class, S2CNoteSoundPacket.class,
         OpenInstrumentPacket.class, CloseInstrumentPacket.class,
-        C2SHeldNoteSoundPacket.class, S2CHeldNoteSoundPacket.class
+        C2SHeldNoteSoundPacket.class, S2CHeldNoteSoundPacket.class,
+        ReqInstrumentOpenStatePacket.class
     });
 
     private static int id = 0;
