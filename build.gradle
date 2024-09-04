@@ -7,11 +7,11 @@ plugins {
     id 'org.spongepowered.mixin' version '0.7.+'
 }
 
-version = mod_version
+version = "${minecraft_version}-${mod_version}"
 group = mod_group_id
 
 base {
-    archivesName = "${mod_id}-${minecraft_version}"
+    archivesName = mod_id
 }
 
 // Mojang ships Java 21 to end users in 1.20.5+, so your mod should target Java 21.
@@ -191,6 +191,7 @@ java {
 publishing {
     publications {
         register('mavenJava', MavenPublication) {
+            artifactId = mod_id
             artifact jar
         }
     }
