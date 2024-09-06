@@ -3,7 +3,7 @@
 
     "display": {
         "icon": {
-            "item": "genshinstrument:glorious_drum"
+            "id": "genshinstrument:glorious_drum"
         },
 
         "title": {

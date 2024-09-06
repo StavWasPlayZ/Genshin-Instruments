@@ -3,7 +3,7 @@
 
     "display": {
         "icon": {
-            "item": "genshinstrument:vintage_lyre"
+            "id": "genshinstrument:vintage_lyre"
         },
 
         "title": {

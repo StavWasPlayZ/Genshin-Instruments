@@ -3,7 +3,7 @@
 
     "display": {
         "icon": {
-            "item": "genshinstrument:windsong_lyre"
+            "id": "genshinstrument:windsong_lyre"
         },
 
         "title": {

@@ -3,7 +3,7 @@
 
     "display": {
         "icon": {
-            "item": "genshinstrument:floral_zither"
+            "id": "genshinstrument:floral_zither"
         },
 
         "title": {
