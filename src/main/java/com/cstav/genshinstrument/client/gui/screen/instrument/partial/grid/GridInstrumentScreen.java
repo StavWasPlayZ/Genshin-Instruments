@@ -14,6 +14,7 @@ import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifie
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraftforge.api.distmarker.Dist;
@@ -220,6 +221,8 @@ public abstract class GridInstrumentScreen extends InstrumentScreen {
             CLEF_WIDTH, CLEF_HEIGHT,
             CLEF_WIDTH, CLEF_HEIGHT
         );
+
+        RenderSystem.disableBlend();
     }
     protected void renderStaff(final PoseStack stack, final int index) {
         ClientUtil.displaySprite(getInternalResourceFromGlob("background/staff.png"));
@@ -231,6 +234,8 @@ public abstract class GridInstrumentScreen extends InstrumentScreen {
             grid.getWidth() - 5, getNoteSize(),
             grid.getWidth() - 5, getNoteSize()
         );
+
+        RenderSystem.disableBlend();
     }
 
     /**
