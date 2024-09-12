@@ -72,9 +72,8 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
     @Override
     public void render(PoseStack stack, int pMouseX, int pMouseY, float pPartialTick) {
         renderBackground(stack);
-        
-        drawCenteredString(stack, font, title, width/2, 15, Color.WHITE.getRGB());
         super.render(stack, pMouseX, pMouseY, pPartialTick);
+        drawCenteredString(stack, font, title, width/2, 15, Color.WHITE.getRGB());
 
         renderables.forEach((renderable) -> renderTooltips(renderable, stack, pMouseX, pMouseY));
     }

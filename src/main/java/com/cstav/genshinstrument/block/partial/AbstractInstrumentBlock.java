@@ -60,9 +60,9 @@ public abstract class AbstractInstrumentBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand,
-            BlockHitResult pHit) {        
+                                 BlockHitResult pHit) {
         if (pLevel.isClientSide)
-                return InteractionResult.CONSUME;
+            return InteractionResult.CONSUME;
 
 
         final BlockEntity be = pLevel.getBlockEntity(pPos);
@@ -80,8 +80,10 @@ public abstract class AbstractInstrumentBlock extends BaseEntityBlock {
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         final BlockEntity be = pLevel.getBlockEntity(pPos);
-        if (!(be instanceof InstrumentBlockEntity))
+        if (!(be instanceof InstrumentBlockEntity)) {
+            super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
             return;
+        }
 
 
         final InstrumentBlockEntity ibe = (InstrumentBlockEntity)be;
@@ -92,6 +94,8 @@ public abstract class AbstractInstrumentBlock extends BaseEntityBlock {
                 GIPacketHandler.sendToClient(new NotifyInstrumentOpenPacket(user), (ServerPlayer)player);
             });
         }
+
+        super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
     }
 
 }

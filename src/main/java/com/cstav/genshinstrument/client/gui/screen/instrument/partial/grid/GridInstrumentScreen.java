@@ -9,11 +9,11 @@ import com.cstav.genshinstrument.client.gui.screen.options.instrument.GridInstru
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.InstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.client.midi.InstrumentMidiReceiver;
-import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.platform.InputConstants.Key;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraftforge.api.distmarker.Dist;
@@ -210,27 +210,31 @@ public abstract class GridInstrumentScreen extends InstrumentScreen {
             renderStaff(stack, i);
     }
 
-    protected void renderClef(PoseStack stack, int index, int x, String clefName) {
-        ClientUtil.displaySprite(getInternalResourceFromGlob("background/clef/"+clefName+".png"));
+    protected void renderClef(GuiGraphics gui, int index, int x, String clefName) {
+        RenderSystem.enableBlend();
 
-        blit(stack,
-            x, grid.y + NoteGrid.getPaddingVert() + getLayerAddition(index) - 5,
+        gui.blit(getInternalResourceFromGlob("background/clef/"+clefName+".png"),
+            x, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index) - 5,
             0, 0,
 
             CLEF_WIDTH, CLEF_HEIGHT,
             CLEF_WIDTH, CLEF_HEIGHT
         );
-    }
-    protected void renderStaff(final PoseStack stack, final int index) {
-        ClientUtil.displaySprite(getInternalResourceFromGlob("background/staff.png"));
 
-        blit(stack,
-            grid.x + 2, grid.y + NoteGrid.getPaddingVert() + getLayerAddition(index),
+        RenderSystem.disableBlend();
+    }
+    protected void renderStaff(final GuiGraphics gui, final int index) {
+        RenderSystem.enableBlend();
+
+        gui.blit(getInternalResourceFromGlob("background/staff.png"),
+            grid.getX() + 2, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index),
             0, 0,
             
             grid.getWidth() - 5, getNoteSize(),
             grid.getWidth() - 5, getNoteSize()
         );
+
+        RenderSystem.disableBlend();
     }
 
     /**
