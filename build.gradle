@@ -230,7 +230,6 @@ java {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-
             artifactId = mod_id
             artifact jar
         }
