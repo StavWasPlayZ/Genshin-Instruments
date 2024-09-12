@@ -24,7 +24,7 @@ public class GInstrumentMod
 {
     public static final String MODID = "genshinstrument";
     public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
-    //test
+
     public static ResourceLocation loc(final String name) {
         return ResourceLocation.fromNamespaceAndPath(MODID, name);
     }
