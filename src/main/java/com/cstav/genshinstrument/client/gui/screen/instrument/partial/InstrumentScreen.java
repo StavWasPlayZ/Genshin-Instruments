@@ -270,7 +270,7 @@ public abstract class InstrumentScreen extends Screen {
         return getSourcePath().withPath(getGlobalRootPath() + "instrument/" + path);
     }
     public static ResourceLocation getInternalResourceFromGlob(final String path) {
-        return new ResourceLocation(GInstrumentMod.MODID, getGlobalRootPath() + path);
+        return GInstrumentMod.loc(getGlobalRootPath() + path);
     }
 
     public static ResourceLocation getInstrumentRootPath(final ResourceLocation instrumentId) {
@@ -371,8 +371,8 @@ public abstract class InstrumentScreen extends Screen {
     protected IconToggleButton initVisibilityButton() {
         return new IconToggleButton(
             VISIBILITY_BUTTON_MARGIN, VISIBILITY_BUTTON_MARGIN,
-            new ResourceLocation(GInstrumentMod.MODID, VISIBILITY_SPRITE_LOC + "enabled.png"),
-            new ResourceLocation(GInstrumentMod.MODID, VISIBILITY_SPRITE_LOC + "disabled.png"),
+            GInstrumentMod.loc(VISIBILITY_SPRITE_LOC + "enabled.png"),
+            GInstrumentMod.loc(VISIBILITY_SPRITE_LOC + "disabled.png"),
             (btn) -> onInstrumentRenderStateChanged(instrumentRenders())
         );
     }

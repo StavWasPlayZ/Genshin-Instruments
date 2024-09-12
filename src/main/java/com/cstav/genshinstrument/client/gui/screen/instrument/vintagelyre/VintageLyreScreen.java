@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 @OnlyIn(Dist.CLIENT)
 public class VintageLyreScreen extends GridInstrumentScreen {
-    public static final ResourceLocation INSTRUMENT_ID = new ResourceLocation(GInstrumentMod.MODID, "vintage_lyre");
+    public static final ResourceLocation INSTRUMENT_ID = GInstrumentMod.loc("vintage_lyre");
     public static final String[] NOTE_LAYOUT = {
         "C", "Db", "Eb", "F", "G", "Ab", "Bb",
         "C", "D", "Eb", "F", "G", "A", "Bb",

@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.capability.instrumentOpen;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -34,17 +35,16 @@ public class InstrumentOpenProvider implements ICapabilityProvider, INBTSerializ
     }
 
     @Override
-    public CompoundTag serializeNBT() {
+    public CompoundTag serializeNBT(Provider registryAccess) {
         final CompoundTag nbt = new CompoundTag();
         getInstance().saveNBTData(nbt);
         return nbt;
     }
 
     @Override
-    public void deserializeNBT(final CompoundTag nbt) {
+    public void deserializeNBT(Provider registryAccess, CompoundTag nbt) {
         getInstance().loadNBTData(nbt);
     }
-    
 
     public static void setOpen(final Player player, final BlockPos pos) {
         player.getCapability(INSTRUMENT_OPEN).ifPresent((instrumentOpen) ->

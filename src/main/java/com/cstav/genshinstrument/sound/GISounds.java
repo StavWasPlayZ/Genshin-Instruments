@@ -69,7 +69,7 @@ public class GISounds {
      * Shorthand for {@code new ResourceLocation(Main.MODID, name)}
      */
     private static ResourceLocation loc(final String name) {
-        return new ResourceLocation(GInstrumentMod.MODID, name);
+        return GInstrumentMod.loc(name);
     }
     /**
      * Shorthand for {@code new NoteSoundRegistrar(soundRegistrar, instrumentId)}

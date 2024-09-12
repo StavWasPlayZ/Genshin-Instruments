@@ -21,7 +21,7 @@ import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
 public class AratakisGreatAndGloriousDrumScreen extends InstrumentScreen {
-    public static final ResourceLocation INSTRUMENT_ID = new ResourceLocation(GInstrumentMod.MODID, "glorious_drum");
+    public static final ResourceLocation INSTRUMENT_ID = GInstrumentMod.loc("glorious_drum");
     public static final String[] NOTE_LAYOUT = {"D", "G"};
 
     @Override

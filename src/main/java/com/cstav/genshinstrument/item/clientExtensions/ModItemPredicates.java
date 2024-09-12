@@ -16,7 +16,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ModItemPredicates {
 
     public static void register() {
-        ItemProperties.registerGeneric(new ResourceLocation(GInstrumentMod.MODID, "instrument_open"),
+        ItemProperties.registerGeneric(GInstrumentMod.loc("instrument_open"),
             ModItemPredicates::instrumentOpenPredicate
         );
     }

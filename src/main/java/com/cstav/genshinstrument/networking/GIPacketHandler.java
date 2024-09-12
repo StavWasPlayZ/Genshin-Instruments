@@ -46,7 +46,7 @@ public class GIPacketHandler {
     
 
     private static final SimpleChannel INSTANCE = ChannelBuilder
-        .named(new ResourceLocation(GInstrumentMod.MODID, "main"))
+        .named(GInstrumentMod.loc("main"))
         .networkProtocolVersion(protocolVersion())
         .acceptedVersions(VersionTest.exact(protocolVersion()))
     .simpleChannel();

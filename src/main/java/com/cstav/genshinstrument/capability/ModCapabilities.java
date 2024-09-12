@@ -21,7 +21,7 @@ public class ModCapabilities {
         if (event.getObject() instanceof Player player) {
 
             if (!player.getCapability(InstrumentOpenProvider.INSTRUMENT_OPEN).isPresent())
-                event.addCapability(new ResourceLocation(GInstrumentMod.MODID, "instrument_caps"), new InstrumentOpenProvider());
+                event.addCapability(GInstrumentMod.loc("instrument_caps"), new InstrumentOpenProvider());
 
             // If they previously had their instrument open, and unsuccessfully closed:
             InstrumentOpenProvider.setClosed(player);

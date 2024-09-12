@@ -55,7 +55,7 @@ public class GIItems {
     ;
 
     private static ResourceLocation loc(final String path) {
-        return new ResourceLocation(GInstrumentMod.MODID, path);
+        return GInstrumentMod.loc(path);
     }
 
 

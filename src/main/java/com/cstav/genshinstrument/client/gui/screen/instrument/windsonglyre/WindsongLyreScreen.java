@@ -11,7 +11,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class WindsongLyreScreen extends GridInstrumentScreen {
-    public static final ResourceLocation INSTRUMENT_ID = new ResourceLocation(GInstrumentMod.MODID, "windsong_lyre");
+    public static final ResourceLocation INSTRUMENT_ID = GInstrumentMod.loc("windsong_lyre");
 
     @Override
     public ResourceLocation getInstrumentId() {

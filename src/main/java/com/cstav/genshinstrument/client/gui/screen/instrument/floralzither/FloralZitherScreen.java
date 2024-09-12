@@ -12,7 +12,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class FloralZitherScreen extends GridInstrumentScreen {
-    public static final ResourceLocation INSTRUMENT_ID = new ResourceLocation(GInstrumentMod.MODID, "floral_zither");
+    public static final ResourceLocation INSTRUMENT_ID = GInstrumentMod.loc("floral_zither");
 
     @Override
     public ResourceLocation getInstrumentId() {

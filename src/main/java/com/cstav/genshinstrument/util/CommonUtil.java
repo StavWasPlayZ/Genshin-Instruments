@@ -35,7 +35,7 @@ public abstract class CommonUtil {
      * @return The resource contained in the specified directory
      */
     public static ResourceLocation getResourceFrom(final ResourceLocation dir, final String path) {
-        return new ResourceLocation(
+        return ResourceLocation.fromNamespaceAndPath(
             dir.getNamespace(),
             dir.getPath() + "/" + path
         );

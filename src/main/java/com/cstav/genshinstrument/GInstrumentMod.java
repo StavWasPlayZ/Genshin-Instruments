@@ -7,6 +7,7 @@ import com.cstav.genshinstrument.networking.buttonidentifier.DrumNoteIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifiers;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.sound.GISounds;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -23,6 +24,10 @@ public class GInstrumentMod
 {
     public static final String MODID = "genshinstrument";
     public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
+
+    public static ResourceLocation loc(final String name) {
+        return ResourceLocation.fromNamespaceAndPath(MODID, name);
+    }
 
 
     public GInstrumentMod()
