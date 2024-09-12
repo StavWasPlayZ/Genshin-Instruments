@@ -1,5 +1,5 @@
 {
-    "parent": "genshinstrument:recipe/root",
+    "parent": "genshinstrument:recipes/root",
 
     "criteria": {
         "has_main": {

@@ -1,12 +1,12 @@
 {
-    "parent": "genshinstrument:recipe/root",
+    "parent": "genshinstrument:recipes/root",
 
     "criteria": {
         "has_main": {
             "conditions": {
                 "items": [
                     {
-                        "items": ["minecraft:gold_ingot"]
+                        "items": ["minecraft:jungle_planks"]
                     }
                 ]
             },
@@ -20,7 +20,7 @@
 
     "rewards": {
         "recipes": [
-            "genshinstrument:nightwind_horn"
+            "genshinstrument:floral_zither"
         ]
     }
 }

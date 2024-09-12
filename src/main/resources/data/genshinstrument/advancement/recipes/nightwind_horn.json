@@ -1,12 +1,12 @@
 {
-    "parent": "genshinstrument:recipe/root",
+    "parent": "genshinstrument:recipes/root",
 
     "criteria": {
         "has_main": {
             "conditions": {
                 "items": [
                     {
-                        "items": ["minecraft:acacia_planks"]
+                        "items": ["minecraft:gold_ingot"]
                     }
                 ]
             },
@@ -20,7 +20,7 @@
 
     "rewards": {
         "recipes": [
-            "genshinstrument:glorious_drum"
+            "genshinstrument:nightwind_horn"
         ]
     }
 }

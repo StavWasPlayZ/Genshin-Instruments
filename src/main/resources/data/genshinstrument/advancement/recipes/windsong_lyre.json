@@ -1,12 +1,12 @@
 {
-    "parent": "genshinstrument:recipe/root",
+    "parent": "genshinstrument:recipes/root",
 
     "criteria": {
         "has_main": {
             "conditions": {
                 "items": [
                     {
-                        "items": ["minecraft:jungle_planks"]
+                        "items": ["minecraft:oak_planks"]
                     }
                 ]
             },
@@ -20,7 +20,7 @@
 
     "rewards": {
         "recipes": [
-            "genshinstrument:floral_zither"
+            "genshinstrument:windsong_lyre"
         ]
     }
 }
