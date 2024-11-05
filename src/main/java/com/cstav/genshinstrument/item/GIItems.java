@@ -1,6 +1,8 @@
 package com.cstav.genshinstrument.item;
 
 import com.cstav.genshinstrument.GInstrumentMod;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
@@ -13,6 +15,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 import static com.cstav.genshinstrument.networking.packet.instrument.util.InstrumentPacketUtil.sendOpenPacket;
 
 @EventBusSubscriber(modid = GInstrumentMod.MODID, bus = Bus.MOD)
@@ -24,38 +29,50 @@ public class GIItems {
     }
 
     public static final RegistryObject<Item>
-        WINDSONG_LYRE = ITEMS.register("windsong_lyre", () ->
+        WINDSONG_LYRE = register("windsong_lyre", (id) ->
             new InstrumentItem(
-                (player) -> sendOpenPacket(player, loc("windsong_lyre"))
+                (player) -> sendOpenPacket(player, loc("windsong_lyre")),
+                id
             )
         ),
-        VINTAGE_LYRE = ITEMS.register("vintage_lyre", () ->
+        VINTAGE_LYRE = register("vintage_lyre", (id) ->
             new InstrumentItem(
-                (player) -> sendOpenPacket(player, loc("vintage_lyre"))
-            )
-        ),
-
-        FLORAL_ZITHER = ITEMS.register("floral_zither", () ->
-            new InstrumentItem(
-                (player) -> sendOpenPacket(player, loc("floral_zither"))
+                (player) -> sendOpenPacket(player, loc("vintage_lyre")),
+                id
             )
         ),
 
-        GLORIOUS_DRUM = ITEMS.register("glorious_drum", () ->
+        FLORAL_ZITHER = register("floral_zither", (id) ->
             new InstrumentItem(
-                (player) -> sendOpenPacket(player, loc("glorious_drum"))
+                (player) -> sendOpenPacket(player, loc("floral_zither")),
+                id
             )
         ),
 
-        NIGHTWIND_HORN = ITEMS.register("nightwind_horn", () ->
+        GLORIOUS_DRUM = register("glorious_drum", (id) ->
+            new InstrumentItem(
+                (player) -> sendOpenPacket(player, loc("glorious_drum")),
+                id
+            )
+        ),
+
+        NIGHTWIND_HORN = register("nightwind_horn", (id) ->
             new NightwindHornItem(
-                (player) -> sendOpenPacket(player, loc("nightwind_horn"))
+                (player) -> sendOpenPacket(player, loc("nightwind_horn")),
+                id
             )
         )
     ;
 
     private static ResourceLocation loc(final String path) {
         return GInstrumentMod.loc(path);
+    }
+
+
+    private static RegistryObject<Item> register(final String name, final Function<ResourceKey<Item>, Item> itemSupplier) {
+        return ITEMS.register(name, () -> itemSupplier.apply(
+            ResourceKey.create(Registries.ITEM, GInstrumentMod.loc(name)))
+        );
     }
 
 
