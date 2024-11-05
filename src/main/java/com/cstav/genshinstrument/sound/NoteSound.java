@@ -194,7 +194,7 @@ public class NoteSound {
             );
         } else {
             Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(
-                sound.getLocation(),
+                sound.location(),
                 INSTRUMENT_SOUND_SOURCE,
                 volume, pitch,
                 SoundInstance.createUnseededRandom(),

@@ -6,14 +6,11 @@ import com.cstav.genshinstrument.networking.OpenInstrumentPacketSender;
 import com.cstav.genshinstrument.networking.packet.instrument.util.InstrumentPacketUtil;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
@@ -45,23 +42,22 @@ public class InstrumentItem extends Item {
     
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
-        final ItemStack item = pPlayer.getItemInHand(pUsedHand);
-
+    public InteractionResult use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         if (pLevel.isClientSide)
-            return InteractionResultHolder.success(item);
+            return InteractionResult.SUCCESS;
 
         if (InstrumentPacketUtil.sendOpenPacket((ServerPlayer)pPlayer, pUsedHand, onOpenRequest)) {
-            return InteractionResultHolder.success(item);
+            return InteractionResult.SUCCESS;
         } else {
-            return InteractionResultHolder.fail(item);
+            return InteractionResult.FAIL;
         }
     }
 
-    @Override
-    public @NotNull UseAnim getUseAnimation(ItemStack pStack) {
-        return UseAnim.CUSTOM;
-    }
+    //TODO see if working
+//    @Override
+//    public @NotNull ItemUseAnimation getUseAnimation(ItemStack pStack) {
+//        return ItemUseAnimation.NONE;
+//    }
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new InstrumentItemClientExt());

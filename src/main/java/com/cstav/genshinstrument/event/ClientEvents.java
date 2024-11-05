@@ -16,6 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.RemotePlayer;
+import net.minecraft.client.renderer.entity.state.PlayerRenderState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
@@ -44,21 +45,22 @@ public class ClientEvents {
 
 
     // Handle block instrument arm pose
-    @SubscribeEvent
-    public static void prePlayerRenderEvent(final RenderPlayerEvent.Pre event) {
-        final Player player = event.getEntity();
-
-        if (!(InstrumentOpenProvider.isOpen(player) && !InstrumentOpenProvider.isItem(player)))
-            return;
-
-
-        final Block block = player.level().getBlockState(InstrumentOpenProvider.getBlockPos(player)).getBlock();
-        if (!(block instanceof AbstractInstrumentBlock instrumentBlock))
-            return;
-
-        final PlayerModel<AbstractClientPlayer> model = event.getRenderer().getModel();
-        model.leftArmPose = model.rightArmPose = instrumentBlock.getClientBlockArmPose();
-    }
+//    @SubscribeEvent
+//    public static void prePlayerRenderEvent(final RenderPlayerEvent.Pre event) {
+//        //FIXME where player????
+////        final Player player = event.
+//
+//        if (!(InstrumentOpenProvider.isOpen(player) && !InstrumentOpenProvider.isItem(player)))
+//            return;
+//
+//
+//        final Block block = player.level().getBlockState(InstrumentOpenProvider.getBlockPos(player)).getBlock();
+//        if (!(block instanceof AbstractInstrumentBlock instrumentBlock))
+//            return;
+//
+//        final PlayerRenderState prs = event.getState();
+//        prs.mainHandState.pose = prs.offhandState.pose = instrumentBlock.getClientBlockArmPose();
+//    }
 
     
     //#region Shared Instrument Screen implementation

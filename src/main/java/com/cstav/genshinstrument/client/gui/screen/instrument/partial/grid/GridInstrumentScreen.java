@@ -9,6 +9,7 @@ import com.cstav.genshinstrument.client.gui.screen.options.instrument.GridInstru
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.InstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.client.midi.InstrumentMidiReceiver;
+import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteButtonIdentifier;
 import com.cstav.genshinstrument.networking.buttonidentifier.NoteGridButtonIdentifier;
 import com.cstav.genshinstrument.sound.NoteSound;
@@ -16,6 +17,7 @@ import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.layouts.AbstractLayout;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -213,7 +215,8 @@ public abstract class GridInstrumentScreen extends InstrumentScreen {
     protected void renderClef(GuiGraphics gui, int index, int x, String clefName) {
         RenderSystem.enableBlend();
 
-        gui.blit(getInternalResourceFromGlob("background/clef/"+clefName+".png"),
+        gui.blit(ClientUtil::guiRT,
+            getInternalResourceFromGlob("background/clef/"+clefName+".png"),
             x, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index) - 5,
             0, 0,
 
@@ -226,7 +229,8 @@ public abstract class GridInstrumentScreen extends InstrumentScreen {
     protected void renderStaff(final GuiGraphics gui, final int index) {
         RenderSystem.enableBlend();
 
-        gui.blit(getInternalResourceFromGlob("background/staff.png"),
+        gui.blit(ClientUtil::guiRT,
+            getInternalResourceFromGlob("background/staff.png"),
             grid.getX() + 2, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index),
             0, 0,
             

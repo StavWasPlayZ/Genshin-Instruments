@@ -8,6 +8,7 @@ import com.cstav.genshinstrument.util.CommonUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -93,7 +94,8 @@ public class NoteButtonRenderer {
             noteLocation = noteReleasedLocation;
             
         
-        gui.blit(noteLocation,
+        gui.blit(ClientUtil::guiRT,
+            noteLocation,
             noteButton.getX(), noteButton.getY(),
             0, 0,
 
@@ -111,7 +113,8 @@ public class NoteButtonRenderer {
             : themeLoader.noteReleased()
         );
 
-        gui.blit(noteTextureProvider.get(),
+        gui.blit(ClientUtil::guiRT,
+            noteTextureProvider.get(),
             noteButton.getX() + noteWidth/2, noteButton.getY() + noteHeight/2,
             0, 0,
 
@@ -182,7 +185,8 @@ public class NoteButtonRenderer {
         final int spritePartWidth = textureWidth/3 + 1;
 
 
-        gui.blit(accidentalsLocation,
+        gui.blit(ClientUtil::guiRT,
+            accidentalsLocation,
             noteButton.getX() - 9 + offsetX, noteButton.getY() - 5 + offsetY,
             spritePartWidth * index, noteButton.isPlaying() ? (textureHeight + 1)/2 : 0,
             

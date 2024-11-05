@@ -4,11 +4,14 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.nimbusds.jose.util.Resource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.layouts.FrameLayout;
 import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.layouts.Layout;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -23,6 +26,11 @@ public class ClientUtil {
      * The range from which players will stop hearing Minecraft's background music on playing
      */
     public static final double STOP_SOUND_DISTANCE = 10;
+
+
+    public static RenderType guiRT(final ResourceLocation loc) {
+        return RenderType.gui();
+    }
 
 
     /**

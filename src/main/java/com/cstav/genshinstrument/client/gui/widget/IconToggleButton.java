@@ -1,7 +1,9 @@
 package com.cstav.genshinstrument.client.gui.widget;
 
+import com.cstav.genshinstrument.client.util.ClientUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.resources.ResourceLocation;
 
@@ -48,7 +50,7 @@ public class IconToggleButton extends Button {
         super.renderWidget(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
 
         final int size = getHeight() - ICON_MARGIN;
-        pGuiGraphics.blit(
+        pGuiGraphics.blit(ClientUtil::guiRT,
             enabled ? iconEnabled : iconDisabled,
             getX() + ICON_MARGIN, getY() + ICON_MARGIN,
 
