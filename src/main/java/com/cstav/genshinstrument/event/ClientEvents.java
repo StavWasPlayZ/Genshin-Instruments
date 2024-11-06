@@ -17,7 +17,7 @@ import net.minecraft.client.player.RemotePlayer;
 import net.minecraft.client.renderer.entity.state.PlayerRenderState;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.event.GameShuttingDownEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
@@ -40,10 +40,12 @@ public class ClientEvents {
     }
 
 
-     //Handle block instrument arm pose
+    //Handle block instrument arm pose
+    //NOTE: `PlayerRenderer` is *NOT HOOKED TO ANYTHING!*
     @SubscribeEvent
-    public static void prePlayerRenderEvent(final RenderPlayerEvent.Pre event) {
-        final PlayerRenderState renderState = event.getState();
+    public static void prePlayerRenderEvent(final RenderLivingEvent.Pre<?, ?, ?> event) {
+        if (!(event.getState() instanceof PlayerRenderState renderState))
+            return;
 
         ((ICustomRenderFieldProvider)renderState)
             .genshin_Instruments$getCustomField(GIRenderStates.INSTRUMENT_BLOCK_PLAYED)
