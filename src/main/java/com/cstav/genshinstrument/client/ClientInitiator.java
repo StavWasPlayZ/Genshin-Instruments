@@ -15,8 +15,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.model.SeparateTransformsModel;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -41,10 +39,8 @@ public class ClientInitiator {
 
     @SubscribeEvent
     public static void initClient(final FMLClientSetupEvent event) {
-        final IEventBus bus = MinecraftForge.EVENT_BUS;
-
         ModArmPose.load();
-        GIRenderStates.register(bus);
+        GIRenderStates.load();
         ModItemPredicates.register();
 
         InstrumentScreenRegistry.register(INSTRUMENTS);

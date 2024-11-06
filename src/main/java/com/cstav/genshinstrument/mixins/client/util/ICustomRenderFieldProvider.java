@@ -1,7 +1,6 @@
 package com.cstav.genshinstrument.mixins.client.util;
 
 import com.cstav.genshinstrument.forgeimpl.CustomRenderStateField;
-import net.minecraft.world.entity.Entity;
 
 public interface ICustomRenderFieldProvider {
     <T> T genshin_Instruments$getCustomField(final CustomRenderStateField<T> field);
