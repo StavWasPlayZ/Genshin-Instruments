@@ -4,9 +4,11 @@ import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.block.partial.AbstractInstrumentBlock;
 import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
+import com.cstav.genshinstrument.client.gui.GIRenderStates;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.IHeldInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.midi.MidiController;
+import com.cstav.genshinstrument.mixins.client.util.ICustomRenderFieldProvider;
 import com.cstav.genshinstrument.networking.GIPacketHandler;
 import com.cstav.genshinstrument.networking.packet.instrument.c2s.ReqInstrumentOpenStatePacket;
 import com.cstav.genshinstrument.networking.packet.instrument.util.HeldSoundPhase;
@@ -44,23 +46,17 @@ public class ClientEvents {
     }
 
 
-    // Handle block instrument arm pose
-//    @SubscribeEvent
-//    public static void prePlayerRenderEvent(final RenderPlayerEvent.Pre event) {
-//        //FIXME where player????
-////        final Player player = event.
-//
-//        if (!(InstrumentOpenProvider.isOpen(player) && !InstrumentOpenProvider.isItem(player)))
-//            return;
-//
-//
-//        final Block block = player.level().getBlockState(InstrumentOpenProvider.getBlockPos(player)).getBlock();
-//        if (!(block instanceof AbstractInstrumentBlock instrumentBlock))
-//            return;
-//
-//        final PlayerRenderState prs = event.getState();
-//        prs.mainHandState.pose = prs.offhandState.pose = instrumentBlock.getClientBlockArmPose();
-//    }
+     //Handle block instrument arm pose
+    @SubscribeEvent
+    public static void prePlayerRenderEvent(final RenderPlayerEvent.Pre event) {
+        final PlayerRenderState renderState = event.getState();
+
+        ((ICustomRenderFieldProvider)renderState)
+            .genshin_Instruments$getCustomField(GIRenderStates.INSTRUMENT_BLOCK_PLAYED.get())
+            .ifPresent((pose) -> {
+                renderState.mainHandState.pose = renderState.offhandState.pose = pose;
+            });
+    }
 
     
     //#region Shared Instrument Screen implementation
