@@ -29,7 +29,7 @@ public class ClientUtil {
 
 
     public static RenderType guiRT(final ResourceLocation loc) {
-        return RenderType.gui();
+        return RenderType.guiTextured(loc);
     }
 
 

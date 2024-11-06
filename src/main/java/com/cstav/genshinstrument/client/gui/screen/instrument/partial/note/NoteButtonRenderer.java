@@ -76,6 +76,7 @@ public class NoteButtonRenderer {
 
 
         noteAnimation.update();
+        RenderSystem.disableBlend();
     }
 
     protected void renderNoteButton(final GuiGraphics gui, final InstrumentThemeLoader themeLoader) {
@@ -168,6 +169,8 @@ public class NoteButtonRenderer {
                 break;
 
         }
+
+        RenderSystem.disableBlend();
     }
     
     protected void renderAccidental(final GuiGraphics gui, int index) {
