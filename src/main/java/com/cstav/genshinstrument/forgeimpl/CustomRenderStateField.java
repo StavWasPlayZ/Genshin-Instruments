@@ -23,12 +23,12 @@ public record CustomRenderStateField<T>(
          * Supplies a value to be provided to a render state field.
          * @param entity The entity having this field attached to
          * @param state The state that the field will get attached to
-         * @param tickDelta
+         * @param packedLight
          * @return The value to be put in the state field
          */
         T get(EntityRenderer<?, ?> entityRenderer,
               Entity entity,
               EntityRenderState state,
-              float tickDelta);
+              float packedLight);
     }
 }

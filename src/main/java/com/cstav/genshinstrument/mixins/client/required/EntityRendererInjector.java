@@ -14,9 +14,9 @@ public class EntityRendererInjector<E extends Entity, S extends EntityRenderStat
 
     @SuppressWarnings("unchecked")
     @Inject(method = "extractRenderState", at = @At("TAIL"))
-    private void extractRenderStateInjector(E entity, S state, float tickDelta, CallbackInfo ci) {
+    private void extractRenderStateInjector(E entity, S state, float packedLight, CallbackInfo ci) {
         final EntityRenderer<E, S> self = (EntityRenderer<E, S>)((Object)this);
-        GICustomRenderStateFieldRegistry.initFields(self, entity, state, tickDelta);
+        GICustomRenderStateFieldRegistry.initFields(self, entity, state, packedLight);
     }
 
 }

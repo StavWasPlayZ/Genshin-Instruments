@@ -23,13 +23,13 @@ public class GICustomRenderStateFieldRegistry {
     public static <E extends Entity, S extends EntityRenderState> void initFields(EntityRenderer<E, S> entityRenderer,
                                                                                   E entity,
                                                                                   S state,
-                                                                                  float tickDelta) {
+                                                                                  float packedLight) {
         CUSTOM_RENDER_STATE_FIELDS.values().stream()
             .filter((field) -> field.entityType().isInstance(entity))
             .forEach((field) ->
                 ((ICustomRenderFieldProvider)state).genshin_Instruments$setCustomField(
                     field,
-                    field.supplier().get(entityRenderer, entity, state, tickDelta)
+                    field.supplier().get(entityRenderer, entity, state, packedLight)
                 )
             );
     }
