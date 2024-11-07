@@ -43,7 +43,7 @@ public class ClientEvents {
 
 
     //Handle block instrument arm pose
-    //NOTE: `PlayerRenderer` is *NOT HOOKED TO ANYTHING!*
+    //NOTE: `RenderPlayerEvent` is *NOT HOOKED TO ANYTHING!*
     @SubscribeEvent
     public static void onExtractedRenderState(final ExctractRenderStateEvent.Post event) {
         if (!(event.entity instanceof Player player))
