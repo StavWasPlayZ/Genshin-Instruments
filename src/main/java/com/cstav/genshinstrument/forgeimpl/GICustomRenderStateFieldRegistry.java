@@ -29,7 +29,7 @@ public class GICustomRenderStateFieldRegistry {
             .forEach((field) ->
                 ((ICustomRenderFieldProvider)state).genshin_Instruments$setCustomField(
                     field,
-                    field.supplier().get(entityRenderer, entity, state, packedLight)
+                    field.initValSupplier().get(entityRenderer, entity, state, packedLight)
                 )
             );
     }

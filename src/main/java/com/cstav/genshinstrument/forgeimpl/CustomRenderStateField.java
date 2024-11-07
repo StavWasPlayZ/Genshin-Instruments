@@ -8,14 +8,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * Represents a custom {@link EntityRenderState} field.
- * @param supplier Called on {@link EntityRenderer#extractRenderState}. Supplies the default value to be provided to this field.
+ * @param initValSupplier Called on {@link EntityRenderer#extractRenderState}. Supplies the initial value to be provided to this field.
  * @param entityType The entity type to have the field attached to
  * @param <T> The field type
  */
 @OnlyIn(Dist.CLIENT)
 public record CustomRenderStateField<T>(
     Class<? extends Entity> entityType,
-    RenderStateSupplier<T> supplier
+    RenderStateSupplier<T> initValSupplier
 ) {
     @FunctionalInterface
     public static interface RenderStateSupplier<T> {
