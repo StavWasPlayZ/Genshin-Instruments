@@ -41,6 +41,6 @@ public class GIRenderStates {
 //            return Optional.empty();
 //
 //        return Optional.ofNullable(instrumentBlock.getClientBlockArmPose());
-        return Optional.of(ModArmPose.PLAYING_BLOCK_INSTRUMENT);
+            return Optional.of(ModArmPose.PLAYING_BLOCK_INSTRUMENT);
     }
 }

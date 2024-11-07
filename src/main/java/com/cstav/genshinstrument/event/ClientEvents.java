@@ -1,23 +1,22 @@
 package com.cstav.genshinstrument.event;
 
 import com.cstav.genshinstrument.GInstrumentMod;
+import com.cstav.genshinstrument.client.ModArmPose;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
-import com.cstav.genshinstrument.client.gui.GIRenderStates;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.IHeldInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.midi.MidiController;
-import com.cstav.genshinstrument.mixins.client.util.ICustomRenderFieldProvider;
 import com.cstav.genshinstrument.networking.GIPacketHandler;
 import com.cstav.genshinstrument.networking.packet.instrument.c2s.ReqInstrumentOpenStatePacket;
 import com.cstav.genshinstrument.networking.packet.instrument.util.HeldSoundPhase;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.held.HeldNoteSounds;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.HumanoidModel.ArmPose;
 import net.minecraft.client.player.RemotePlayer;
 import net.minecraft.client.renderer.entity.state.PlayerRenderState;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.event.GameShuttingDownEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
@@ -43,15 +42,18 @@ public class ClientEvents {
     //Handle block instrument arm pose
     //NOTE: `PlayerRenderer` is *NOT HOOKED TO ANYTHING!*
     @SubscribeEvent
-    public static void prePlayerRenderEvent(final RenderLivingEvent.Pre<?, ?, ?> event) {
-        if (!(event.getState() instanceof PlayerRenderState renderState))
+    public static void prePlayerRenderEvent(final ExctractRenderStateFieldsEvent.Post event) {
+        if (!(event.state instanceof PlayerRenderState renderState))
             return;
 
-        ((ICustomRenderFieldProvider)renderState)
-            .genshin_Instruments$getCustomField(GIRenderStates.INSTRUMENT_BLOCK_PLAYED)
-            .ifPresent((pose) -> {
-                renderState.mainHandState.pose = renderState.offhandState.pose = pose;
-            });
+        final ArmPose pose = ModArmPose.PLAYING_BLOCK_INSTRUMENT;
+        renderState.mainHandState.pose = renderState.offhandState.pose = pose;
+        renderState.mainHandState.isEmpty = renderState.offhandState.isEmpty = false;
+//        ((ICustomRenderFieldProvider)renderState)
+//            .genshin_Instruments$getCustomField(GIRenderStates.INSTRUMENT_BLOCK_PLAYED)
+//            .ifPresent((pose) -> {
+//                renderState.mainHandState.pose = renderState.offhandState.pose = pose;
+//            });
     }
 
     
