@@ -63,10 +63,10 @@ public class ClientEvents {
         renderState.mainHandState.isEmpty = renderState.offhandState.isEmpty = false;
 
         // The INSTRUMENT_BLOCK_PLAYED state was used to determine if we
-        // should pose the arm a certain way.
+        // should pose the arm a certain way. It originally used RenderLivingEvent.
         // This has the benefit that we need not know the actual entity behind
         // the state, but rather just the state itself - matching with the
-        // actual vanilla states behavior.
+        // actual vanilla behavior.
 
 //        ((ICustomRenderFieldProvider)renderState)
 //            .genshin_Instruments$getCustomField(GIRenderStates.INSTRUMENT_BLOCK_PLAYED)
