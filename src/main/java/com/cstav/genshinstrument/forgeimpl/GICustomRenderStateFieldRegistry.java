@@ -25,7 +25,9 @@ public class GICustomRenderStateFieldRegistry {
                                                                                   S state,
                                                                                   float packedLight) {
         CUSTOM_RENDER_STATE_FIELDS.values().stream()
-            .filter((field) -> field.entityType().isInstance(entity))
+            .filter((field) ->
+                field.entityType().isInstance(entity) && field.renderStateType().isInstance(state)
+            )
             .forEach((field) ->
                 ((ICustomRenderFieldProvider)state).genshin_Instruments$setCustomField(
                     field,

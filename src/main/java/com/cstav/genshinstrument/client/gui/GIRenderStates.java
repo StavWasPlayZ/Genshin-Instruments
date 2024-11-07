@@ -8,6 +8,7 @@ import com.cstav.genshinstrument.forgeimpl.GICustomRenderStateFieldRegistry;
 import net.minecraft.client.model.HumanoidModel.ArmPose;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
@@ -29,6 +30,7 @@ public class GIRenderStates {
         GInstrumentMod.loc("instrument_block_played"),
         new CustomRenderStateField<>(
             Player.class,
+            HumanoidRenderState.class,
             GIRenderStates::extractInstrumentBlockPlayingState
         )
     );
