@@ -5,7 +5,6 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.Instrument
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.animation.RingAnimationController;
 import com.cstav.genshinstrument.client.util.ClientUtil;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -44,7 +43,7 @@ public class NoteRing {
         final Point ringCenter = ClientUtil.getInitCenter(note.getInitX(), note.getInitY(), note.instrumentScreen.getNoteSize(), size);
 
 
-//        ClientUtil.setShaderColor(themeLoader.noteRing(), alpha);
+        ClientUtil.setShaderColor(themeLoader.noteRing(), alpha);
 
         gui.blit(ClientUtil::guiRT,
             InstrumentScreen.getInternalResourceFromGlob(RING_GLOB_FILENAME),
@@ -54,7 +53,7 @@ public class NoteRing {
             size, size
         );
 
-//        ClientUtil.resetShaderColor();
+        ClientUtil.resetShaderColor();
     }
 
     public boolean isPlaying() {
