@@ -1,7 +1,8 @@
 package com.cstav.genshinstrument.event;
 
 import com.cstav.genshinstrument.GInstrumentMod;
-import com.cstav.genshinstrument.client.ModArmPose;
+import com.cstav.genshinstrument.block.partial.AbstractInstrumentBlock;
+import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.IHeldInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
@@ -16,6 +17,8 @@ import net.minecraft.client.model.HumanoidModel.ArmPose;
 import net.minecraft.client.player.RemotePlayer;
 import net.minecraft.client.renderer.entity.state.PlayerRenderState;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.GameShuttingDownEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
@@ -42,13 +45,29 @@ public class ClientEvents {
     //Handle block instrument arm pose
     //NOTE: `PlayerRenderer` is *NOT HOOKED TO ANYTHING!*
     @SubscribeEvent
-    public static void prePlayerRenderEvent(final ExctractRenderStateFieldsEvent.Post event) {
-        if (!(event.state instanceof PlayerRenderState renderState))
+    public static void onExtractedRenderState(final ExctractRenderStateEvent.Post event) {
+        if (!(event.entity instanceof Player player))
             return;
 
-        final ArmPose pose = ModArmPose.PLAYING_BLOCK_INSTRUMENT;
+        if (!(InstrumentOpenProvider.isOpen(player) && !InstrumentOpenProvider.isItem(player)))
+            return;
+
+        final Block block = player.level().getBlockState(InstrumentOpenProvider.getBlockPos(player)).getBlock();
+        if (!(block instanceof AbstractInstrumentBlock instrumentBlock))
+            return;
+
+        final PlayerRenderState renderState = (PlayerRenderState) event.state;
+        final ArmPose pose = instrumentBlock.getClientBlockArmPose();
+
         renderState.mainHandState.pose = renderState.offhandState.pose = pose;
         renderState.mainHandState.isEmpty = renderState.offhandState.isEmpty = false;
+
+        // The INSTRUMENT_BLOCK_PLAYED state was used to determine if we
+        // should pose the arm a certain way.
+        // This has the benefit that we need not know the actual entity behind
+        // the state, but rather just the state itself - matching with the
+        // actual vanilla states behavior.
+
 //        ((ICustomRenderFieldProvider)renderState)
 //            .genshin_Instruments$getCustomField(GIRenderStates.INSTRUMENT_BLOCK_PLAYED)
 //            .ifPresent((pose) -> {

@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument.mixins.client.required;
 
-import com.cstav.genshinstrument.event.ExctractRenderStateFieldsEvent;
+import com.cstav.genshinstrument.event.ExctractRenderStateEvent;
+import com.cstav.genshinstrument.forgeimpl.GICustomRenderStateFieldRegistry;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.world.entity.Entity;
@@ -30,18 +31,21 @@ public class EntityRendererInjector<E extends Entity, S extends EntityRenderStat
         method = "createRenderState(Lnet/minecraft/world/entity/Entity;F)Lnet/minecraft/client/renderer/entity/state/EntityRenderState;",
         at = @At("HEAD")
     )
-    private void extractRenderStateInjectorHead(E entity, float packedLight, CallbackInfoReturnable<S> cir) {
+    private void createRenderStateInjectorHead(E entity, float packedLight, CallbackInfoReturnable<S> cir) {
         final EntityRenderer<E, S> self = genshin_Instruments$getSelf();
-//        GICustomRenderStateFieldRegistry.initFields(self, entity, state, packedLight);
-        MinecraftForge.EVENT_BUS.post(new ExctractRenderStateFieldsEvent.Pre(self, entity, reusedState, packedLight));
+        MinecraftForge.EVENT_BUS.post(new ExctractRenderStateEvent.Pre(self, entity, reusedState, packedLight));
     }
+
     @Inject(
         method = "createRenderState(Lnet/minecraft/world/entity/Entity;F)Lnet/minecraft/client/renderer/entity/state/EntityRenderState;",
         at = @At("TAIL")
     )
-    private void extractRenderStateInjector(E entity, float packedLight, CallbackInfoReturnable<S> cir) {
+    private void createRenderStateInjectorTail(E entity, float packedLight, CallbackInfoReturnable<S> cir) {
         final EntityRenderer<E, S> self = genshin_Instruments$getSelf();
-        MinecraftForge.EVENT_BUS.post(new ExctractRenderStateFieldsEvent.Post(self, entity, reusedState, packedLight));
+
+        GICustomRenderStateFieldRegistry.initFields(self, entity, reusedState, packedLight);
+
+        MinecraftForge.EVENT_BUS.post(new ExctractRenderStateEvent.Post(self, entity, reusedState, packedLight));
     }
 
 }
