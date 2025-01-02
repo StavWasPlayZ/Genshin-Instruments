@@ -6,6 +6,7 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.drum.AratakisGreat
 import com.cstav.genshinstrument.client.gui.screen.instrument.floralzither.FloralZitherScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.nightwind_horn.NightwindHornScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.ukelele.UkuleleScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.vintagelyre.VintageLyreScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.windsonglyre.WindsongLyreScreen;
 import com.cstav.genshinstrument.item.clientExtensions.ModItemPredicates;
@@ -29,7 +30,9 @@ public class ClientInitiator {
         VintageLyreScreen.INSTRUMENT_ID, VintageLyreScreen::new,
         FloralZitherScreen.INSTRUMENT_ID, FloralZitherScreen::new,
         AratakisGreatAndGloriousDrumScreen.INSTRUMENT_ID, AratakisGreatAndGloriousDrumScreen::new,
-        NightwindHornScreen.INSTRUMENT_ID, NightwindHornScreen::new
+        NightwindHornScreen.INSTRUMENT_ID, NightwindHornScreen::new,
+
+        UkuleleScreen.INSTRUMENT_ID, UkuleleScreen::new
     );
 
     @SubscribeEvent

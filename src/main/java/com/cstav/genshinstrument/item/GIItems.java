@@ -51,6 +51,12 @@ public class GIItems {
             new NightwindHornItem(
                 (player) -> sendOpenPacket(player, loc("nightwind_horn"))
             )
+        ),
+
+        UKULELE = ITEMS.register("ukulele", () ->
+            new InstrumentItem(
+                (player) -> sendOpenPacket(player, loc("ukulele"))
+            )
         )
     ;
 
