@@ -3,6 +3,7 @@ package com.cstav.genshinstrument.client.gui.screen.instrument.ukelele;
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.GridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.grid.NoteGridButton;
 import com.cstav.genshinstrument.sound.GISounds;
 import com.cstav.genshinstrument.sound.NoteSound;
 import net.minecraft.resources.ResourceLocation;
@@ -14,7 +15,7 @@ public class UkuleleScreen extends GridInstrumentScreen {
     public static final ResourceLocation INSTRUMENT_ID = new ResourceLocation(GInstrumentMod.MODID, "ukulele");
 
     private static final String[] NOTE_LAYOUT = {
-        "C", "Dm", "Em", "F", "G", "Am", "G",
+        "C", "Dm", "Em", "F", "G", "Am", "G7",
         "C", "D", "E", "F", "G", "A", "B",
         "C", "D", "E", "F", "G", "A", "B"
     };
@@ -35,6 +36,11 @@ public class UkuleleScreen extends GridInstrumentScreen {
         return GISounds.UKULELE;
     }
 
+
+    @Override
+    public NoteGridButton createNote(int row, int column) {
+        return new UkuleleNoteButton(row, column, this);
+    }
 
     public static final InstrumentThemeLoader THEME_LOADER = new InstrumentThemeLoader(INSTRUMENT_ID);
     @Override
