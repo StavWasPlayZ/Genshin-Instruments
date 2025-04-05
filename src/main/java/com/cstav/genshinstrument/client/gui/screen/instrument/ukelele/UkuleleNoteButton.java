@@ -40,12 +40,17 @@ public class UkuleleNoteButton extends NoteGridButton {
     @Override
     public @NotNull Component getMessage() {
         //FIXME: Column potentially flipped with row (naming)!
-        if (column == 0 && NOTATIONAL_LABELS.contains(getLabelSupplier())) {
-            return Component.literal(
-                FIXED_LABELS.contains(getLabelSupplier())
-                    ? instrumentScreen.noteLayout()[row]
-                    : getNoteName()
-            );
+
+        if (column == 0) {
+            // Only change the top row if it is of a notational label type.
+            // (As defined above.)
+            if (NOTATIONAL_LABELS.contains(getLabelSupplier())) {
+                return Component.literal(
+                    FIXED_LABELS.contains(getLabelSupplier())
+                        ? instrumentScreen.noteLayout()[row]
+                        : getNoteName()
+                );
+            }
         }
 
         return super.getMessage();
