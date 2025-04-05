@@ -2,6 +2,7 @@ package com.cstav.genshinstrument.client.gui.screen.instrument.ukelele;
 
 import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.GridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButtonRenderer;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteNotation;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.grid.NoteGridButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.NoteLabelSupplier;
@@ -28,6 +29,11 @@ public class UkuleleNoteButton extends NoteGridButton {
 
     public UkuleleNoteButton(int row, int column, GridInstrumentScreen instrumentScreen) {
         super(row, column, instrumentScreen);
+    }
+
+    @Override
+    protected NoteButtonRenderer initNoteRenderer() {
+        return new UkuleleNoteButtonRenderer(this, this::getLabelTexture);
     }
 
     @Override

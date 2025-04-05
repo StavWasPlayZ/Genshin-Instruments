@@ -1,6 +1,7 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.partial;
 
 import com.cstav.genshinstrument.GInstrumentMod;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -151,10 +152,10 @@ public class InstrumentThemeLoader {
         );
         setPressStatedTheme(theme, "label",
             this::setLabelPressed, this::setLabelReleased,
-            notePressed(), Color.BLACK
+            notePressed, Color.BLACK
         );
 
-        setNoteRing(getTheme(theme, "note_ring", labelReleased()));
+        setNoteRing(getTheme(theme, "note_ring", labelReleased));
     }
     public void setPressStatedTheme(JsonObject theme, String propName,
             Consumer<Color> pressConsumer, Consumer<Color> releaseConsumer,
@@ -180,9 +181,9 @@ public class InstrumentThemeLoader {
         setNoteTheme(getTheme(theme, "note_theme", Color.BLACK));
         setLabelTheme(getTheme(theme, "label_theme", Color.BLACK));
         setPressedNoteTheme(getTheme(theme, "note_pressed_theme", DEF_PRESSED_THEME));
-        setNoteRingTheme(getTheme(theme, "note_ring_theme", getNoteTheme()));
+        setNoteRingTheme(getTheme(theme, "note_ring_theme", labelReleased));
 
-        setLabelPressed(getPressedNoteTheme());
+        setLabelPressed(notePressed);
     }
 
 
@@ -316,14 +317,14 @@ public class InstrumentThemeLoader {
 
 
 
-    public Color labelPressed() {
+    public Color labelPressed(final NoteButton noteButton) {
         return labelPressed;
     }
     public void setLabelPressed(Color labelPressed) {
         this.labelPressed = labelPressed;
     }
 
-    public Color labelReleased() {
+    public Color labelReleased(final NoteButton noteButton) {
         return labelReleased;
     }
     public void setLabelReleased(Color labelReleased) {
@@ -331,14 +332,14 @@ public class InstrumentThemeLoader {
     }
 
 
-    public Color notePressed() {
+    public Color notePressed(final NoteButton noteButton) {
         return notePressed;
     }
     public void setNotePressed(Color notePressed) {
         this.notePressed = notePressed;
     }
 
-    public Color noteReleased() {
+    public Color noteReleased(final NoteButton noteButton) {
         return noteReleased;
     }
     public void setNoteReleased(Color noteReleased) {
@@ -346,7 +347,7 @@ public class InstrumentThemeLoader {
     }
 
     
-    public Color noteRing() {
+    public Color noteRing(final NoteButton noteButton) {
         return noteRing;
     }
     public void setNoteRing(Color noteRingTheme) {
@@ -359,8 +360,8 @@ public class InstrumentThemeLoader {
     //#region TODO remove in v6.0
 
     @Deprecated(forRemoval = true)
-    public Color getNoteTheme() {
-        return getColorTheme(labelReleased);
+    public Color getNoteTheme(final NoteButton noteButton) {
+        return getColorTheme(noteButton, labelReleased);
     }
     @Deprecated(forRemoval = true)
     public void setNoteTheme(Color noteTheme) {
@@ -368,8 +369,8 @@ public class InstrumentThemeLoader {
     }
     
     @Deprecated(forRemoval = true)
-    public Color getPressedNoteTheme() {
-        return getColorTheme(notePressed);
+    public Color getPressedNoteTheme(final NoteButton noteButton) {
+        return getColorTheme(noteButton, notePressed);
     }
     @Deprecated(forRemoval = true)
     public void setPressedNoteTheme(Color pressedNoteTheme) {
@@ -377,8 +378,8 @@ public class InstrumentThemeLoader {
     }
 
     @Deprecated(forRemoval = true)
-    public Color getLabelTheme() {
-        return getColorTheme(noteReleased);
+    public Color getLabelTheme(final NoteButton noteButton) {
+        return getColorTheme(noteButton, noteReleased);
     }
     @Deprecated(forRemoval = true)
     public void setLabelTheme(Color labelTheme) {
@@ -386,8 +387,8 @@ public class InstrumentThemeLoader {
     }
 
     @Deprecated(forRemoval = true)
-    public Color getNoteRingTheme() {
-        return getColorTheme(noteRing);
+    public Color getNoteRingTheme(final NoteButton noteButton) {
+        return getColorTheme(noteButton, noteRing);
     }
     @Deprecated(forRemoval = true)
     public void setNoteRingTheme(Color noteRingTheme) {
@@ -395,7 +396,7 @@ public class InstrumentThemeLoader {
     }
 
     @Deprecated(forRemoval = true)
-    protected Color getColorTheme(final Color theme) {
+    protected Color getColorTheme(final NoteButton noteButton, final Color theme) {
         return getTheme(theme, Color.BLACK);
     }
 

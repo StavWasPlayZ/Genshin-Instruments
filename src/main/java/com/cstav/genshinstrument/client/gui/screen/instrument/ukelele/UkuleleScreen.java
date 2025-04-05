@@ -1,7 +1,6 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.ukelele;
 
 import com.cstav.genshinstrument.GInstrumentMod;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.GridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.grid.NoteGridButton;
 import com.cstav.genshinstrument.sound.GISounds;
@@ -42,9 +41,9 @@ public class UkuleleScreen extends GridInstrumentScreen {
         return new UkuleleNoteButton(row, column, this);
     }
 
-    public static final InstrumentThemeLoader THEME_LOADER = new InstrumentThemeLoader(INSTRUMENT_ID);
+    public static final UkuleleThemeLoader THEME_LOADER = new UkuleleThemeLoader(INSTRUMENT_ID);
     @Override
-    public InstrumentThemeLoader getThemeLoader() {
+    public UkuleleThemeLoader getThemeLoader() {
         return THEME_LOADER;
     }
 
