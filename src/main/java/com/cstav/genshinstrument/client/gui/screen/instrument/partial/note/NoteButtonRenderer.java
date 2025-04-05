@@ -132,20 +132,12 @@ public class NoteButtonRenderer {
         ClientUtil.resetShaderColor();
     }
 
-
-    // Labels act junky when the notes are pressed, so just cache their initial and fixed location
-    private int labelX, labelY;
-    public void setLabelX(int labelX) {
-        this.labelX = labelX;
-    }
-    public void setLabelY(int labelY) {
-        this.labelY = labelY;
-    }
-
     protected void renderLabel(final GuiGraphics gui, final InstrumentThemeLoader themeLoader) {
         gui.drawCenteredString(
             MINECRAFT.font, noteButton.getMessage(),
-            labelX, labelY,
+            noteButton.getInitX() + noteButton.getInitWidth()/2,
+            noteButton.getInitY() + noteButton.getInitHeight()/2 + 7,
+
             ((noteButton.isPlaying() && !foreignPlaying)
                 ? themeLoader.labelPressed(noteButton)
                 : themeLoader.labelReleased(noteButton)

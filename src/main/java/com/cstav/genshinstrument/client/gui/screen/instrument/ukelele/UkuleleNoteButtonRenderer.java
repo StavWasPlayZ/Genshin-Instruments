@@ -1,8 +1,9 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.ukelele;
 
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButtonRenderer;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.grid.NoteGridButton;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.function.Supplier;
@@ -22,8 +23,8 @@ public class UkuleleNoteButtonRenderer extends NoteButtonRenderer {
         topColumnNoteHoverLocation = getResourceFromRoot("note/top_hovered.png");
     }
 
-    private NoteGridButton getButton() {
-        return (NoteGridButton) noteButton;
+    private UkuleleNoteButton getButton() {
+        return (UkuleleNoteButton) noteButton;
     }
 
 
@@ -46,5 +47,35 @@ public class UkuleleNoteButtonRenderer extends NoteButtonRenderer {
         }
 
         return superLocation;
+    }
+
+
+    @Override
+    protected void renderNote(GuiGraphics gui, InstrumentThemeLoader themeLoader) {
+        if (getButton().column != 0) {
+            super.renderNote(gui, themeLoader);
+            return;
+        }
+
+        final int noteWidth = noteButton.getWidth(), noteHeight = noteButton.getHeight();
+        final int noteX = noteButton.getX(), noteY = noteButton.getY();
+
+        final float scaleMultiplier = noteButton.getWidth() / ((float)noteButton.instrumentScreen.getNoteSize()/2);
+
+        gui.pose().pushPose();
+        gui.pose().scale(scaleMultiplier, scaleMultiplier, scaleMultiplier);
+
+        gui.drawCenteredString(
+            MINECRAFT.font, getButton().getChordNameOfRow(),
+            (int)((noteX + noteWidth/2f) / scaleMultiplier),
+            (int)((noteY + noteHeight/4f + 2) / scaleMultiplier),
+
+            ((noteButton.isPlaying() && !foreignPlaying)
+                ? themeLoader.labelPressed(noteButton)
+                : themeLoader.labelReleased(noteButton)
+            ).getRGB()
+        );
+
+        gui.pose().popPose();
     }
 }
