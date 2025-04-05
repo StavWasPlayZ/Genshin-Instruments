@@ -57,6 +57,12 @@ public class GIItems {
             new InstrumentItem(
                 (player) -> sendOpenPacket(player, loc("ukulele"))
             )
+        ),
+
+        DJEM_DJEM_DRUM = ITEMS.register("djem_djem_drum", () ->
+            new InstrumentItem(
+                (player) -> sendOpenPacket(player, loc("djem_djem_drum"))
+            )
         )
     ;
 
