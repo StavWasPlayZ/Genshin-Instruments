@@ -1,11 +1,10 @@
-package com.cstav.genshinstrument.client.gui.screen.instrument.drum;
+package com.cstav.genshinstrument.client.gui.screen.instrument.gloriousdrum;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButtonRenderer;
 import com.cstav.genshinstrument.networking.buttonidentifier.DrumNoteIdentifier;
 import com.mojang.blaze3d.platform.InputConstants.Key;
-
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 

@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.client.gui.screen.instrument.drum;
+package com.cstav.genshinstrument.client.gui.screen.instrument.gloriousdrum;
 
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;

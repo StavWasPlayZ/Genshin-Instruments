@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.client.gui.screen.instrument.drum;
+package com.cstav.genshinstrument.client.gui.screen.instrument.gloriousdrum;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

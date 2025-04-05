@@ -5,7 +5,7 @@ import com.cstav.genshinstrument.client.config.enumType.InstrumentChannelType;
 import com.cstav.genshinstrument.client.config.enumType.ZitherSoundType;
 import com.cstav.genshinstrument.client.config.enumType.label.DrumNoteLabel;
 import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
-import com.cstav.genshinstrument.client.gui.screen.instrument.drum.DominantDrumType;
+import com.cstav.genshinstrument.client.gui.screen.instrument.gloriousdrum.DominantDrumType;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.midi.MidiOptionsScreen;
 import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.sound.NoteSound;
