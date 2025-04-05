@@ -71,9 +71,9 @@ public class InstrumentThemeLoader {
     private final boolean ignoreGlobal;
 
     private Color
-        labelPressed = Color.BLACK, labelReleased = Color.BLACK,
-        notePressed = Color.BLACK, noteReleased = Color.BLACK,
-        noteRing = Color.BLACK
+        rawLabelPressed = Color.BLACK, rawLabelReleased = Color.BLACK,
+        rawNotePressed = Color.BLACK, rawNoteReleased = Color.BLACK,
+        rawNoteRing = Color.BLACK
     ;
 
     private final ArrayList<Consumer<JsonObject>> listeners = new ArrayList<>();
@@ -147,15 +147,15 @@ public class InstrumentThemeLoader {
         }
 
         setPressStatedTheme(theme, "note",
-            this::setNotePressed, this::setNoteReleased,
+            this::setRawNotePressed, this::setNoteReleased,
             DEF_PRESSED_THEME, Color.BLACK
         );
         setPressStatedTheme(theme, "label",
             this::setLabelPressed, this::setLabelReleased,
-            notePressed, Color.BLACK
+            rawNotePressed, Color.BLACK
         );
 
-        setNoteRing(getTheme(theme, "note_ring", labelReleased));
+        setRawNoteRing(getTheme(theme, "note_ring", rawLabelReleased));
     }
     public void setPressStatedTheme(JsonObject theme, String propName,
             Consumer<Color> pressConsumer, Consumer<Color> releaseConsumer,
@@ -181,9 +181,9 @@ public class InstrumentThemeLoader {
         setNoteTheme(getTheme(theme, "note_theme", Color.BLACK));
         setLabelTheme(getTheme(theme, "label_theme", Color.BLACK));
         setPressedNoteTheme(getTheme(theme, "note_pressed_theme", DEF_PRESSED_THEME));
-        setNoteRingTheme(getTheme(theme, "note_ring_theme", labelReleased));
+        setNoteRingTheme(getTheme(theme, "note_ring_theme", rawLabelReleased));
 
-        setLabelPressed(notePressed);
+        setLabelPressed(rawNotePressed);
     }
 
 
@@ -316,42 +316,57 @@ public class InstrumentThemeLoader {
     }
 
 
+    public Color getRawLabelPressed() {
+        return rawLabelPressed;
+    }
+    public Color getRawLabelReleased() {
+        return rawLabelReleased;
+    }
+    public Color getRawNotePressed() {
+        return rawNotePressed;
+    }
+    public Color getRawNoteReleased() {
+        return rawNoteReleased;
+    }
+    public Color getRawNoteRing() {
+        return rawNoteRing;
+    }
 
     public Color labelPressed(final NoteButton noteButton) {
-        return labelPressed;
+        return rawLabelPressed;
     }
     public void setLabelPressed(Color labelPressed) {
-        this.labelPressed = labelPressed;
+        this.rawLabelPressed = labelPressed;
     }
 
     public Color labelReleased(final NoteButton noteButton) {
-        return labelReleased;
+        return rawLabelReleased;
     }
     public void setLabelReleased(Color labelReleased) {
-        this.labelReleased = labelReleased;
+        this.rawLabelReleased = labelReleased;
     }
 
 
     public Color notePressed(final NoteButton noteButton) {
-        return notePressed;
+        return rawNotePressed;
     }
-    public void setNotePressed(Color notePressed) {
-        this.notePressed = notePressed;
+    public void setRawNotePressed(Color rawNotePressed) {
+        this.rawNotePressed = rawNotePressed;
     }
 
     public Color noteReleased(final NoteButton noteButton) {
-        return noteReleased;
+        return rawNoteReleased;
     }
     public void setNoteReleased(Color noteReleased) {
-        this.noteReleased = noteReleased;
+        this.rawNoteReleased = noteReleased;
     }
 
     
     public Color noteRing(final NoteButton noteButton) {
-        return noteRing;
+        return rawNoteRing;
     }
-    public void setNoteRing(Color noteRingTheme) {
-        this.noteRing = noteRingTheme;
+    public void setRawNoteRing(Color noteRingTheme) {
+        this.rawNoteRing = noteRingTheme;
     }
 
 
@@ -361,38 +376,38 @@ public class InstrumentThemeLoader {
 
     @Deprecated(forRemoval = true)
     public Color getNoteTheme(final NoteButton noteButton) {
-        return getColorTheme(noteButton, labelReleased);
+        return getColorTheme(noteButton, rawLabelReleased);
     }
     @Deprecated(forRemoval = true)
     public void setNoteTheme(Color noteTheme) {
-        this.labelReleased = noteTheme;
+        this.rawLabelReleased = noteTheme;
     }
     
     @Deprecated(forRemoval = true)
     public Color getPressedNoteTheme(final NoteButton noteButton) {
-        return getColorTheme(noteButton, notePressed);
+        return getColorTheme(noteButton, rawNotePressed);
     }
     @Deprecated(forRemoval = true)
     public void setPressedNoteTheme(Color pressedNoteTheme) {
-        this.notePressed = pressedNoteTheme;
+        this.rawNotePressed = pressedNoteTheme;
     }
 
     @Deprecated(forRemoval = true)
     public Color getLabelTheme(final NoteButton noteButton) {
-        return getColorTheme(noteButton, noteReleased);
+        return getColorTheme(noteButton, rawNoteReleased);
     }
     @Deprecated(forRemoval = true)
     public void setLabelTheme(Color labelTheme) {
-        this.noteReleased = labelTheme;
+        this.rawNoteReleased = labelTheme;
     }
 
     @Deprecated(forRemoval = true)
     public Color getNoteRingTheme(final NoteButton noteButton) {
-        return getColorTheme(noteButton, noteRing);
+        return getColorTheme(noteButton, rawNoteRing);
     }
     @Deprecated(forRemoval = true)
     public void setNoteRingTheme(Color noteRingTheme) {
-        this.noteRing = noteRingTheme;
+        this.rawNoteRing = noteRingTheme;
     }
 
     @Deprecated(forRemoval = true)

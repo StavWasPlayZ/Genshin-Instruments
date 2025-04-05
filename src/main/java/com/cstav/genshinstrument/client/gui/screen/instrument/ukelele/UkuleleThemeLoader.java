@@ -22,20 +22,24 @@ public class UkuleleThemeLoader extends InstrumentThemeLoader {
     }
 
     private void loadColorTheme(final JsonObject theme) {
-        //TODO: load defaults
+        topColumnNoteReleasedColor = getRawNotePressed();
+        topColumnNotePressedColor = getRawNoteReleased();
+        topColumnLabelPressedColor = getRawLabelReleased();
+        topColumnLabelReleasedColor = getRawLabelPressed();
 
         if (!theme.has("ukulele"))
             return;
 
+
         final JsonObject ukuleleMeta = theme.getAsJsonObject("ukulele");
 
         final JsonObject noteMeta = ukuleleMeta.getAsJsonObject("note");
-        topColumnNoteReleasedColor = getTheme(noteMeta, "noteReleased", Color.BLACK);
-        topColumnNotePressedColor = getTheme(noteMeta, "notePressed", Color.BLACK);
+        topColumnNoteReleasedColor = getTheme(noteMeta, "noteReleased", topColumnNoteReleasedColor);
+        topColumnNotePressedColor = getTheme(noteMeta, "notePressed", topColumnNotePressedColor);
 
         final JsonObject labelMeta = ukuleleMeta.getAsJsonObject("label");
-        topColumnLabelReleasedColor = getTheme(labelMeta, "noteReleased", Color.BLACK);
-        topColumnLabelPressedColor = getTheme(labelMeta, "notePressed", Color.BLACK);
+        topColumnLabelReleasedColor = getTheme(labelMeta, "noteReleased", topColumnLabelReleasedColor);
+        topColumnLabelPressedColor = getTheme(labelMeta, "notePressed", topColumnLabelPressedColor);
     }
 
 
