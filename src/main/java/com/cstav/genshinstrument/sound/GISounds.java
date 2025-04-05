@@ -31,7 +31,8 @@ public class GISounds {
             .chain(loc("glorious_drum_ka")).stereo().add()
         .registerAll(),
 
-        UKULELE = nsr(loc("ukulele")).registerGrid()
+        UKULELE = nsr(loc("ukulele")).registerGrid(),
+        DJEM_DJEM_DRUM = nsr(loc("djem_djem_drum")).registerGrid(2, 4)
     ;
 
     // Metadata stuff

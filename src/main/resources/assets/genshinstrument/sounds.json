@@ -753,5 +753,38 @@
     "ukulele_note_20": {
         "category": "record",
         "sounds": ["genshinstrument:ukulele/20"]
+    },
+
+    "djem_djem_drum_note_0": {
+        "catrgory": "record",
+        "sounds": ["genshinstrument:djem_djem_drum/0"]
+    },
+    "djem_djem_drum_note_1": {
+        "category": "record",
+        "sounds": ["genshinstrument:djem_djem_drum/1"]
+    },
+    "djem_djem_drum_note_2": {
+        "category": "record",
+        "sounds": ["genshinstrument:djem_djem_drum/2"]
+    },
+    "djem_djem_drum_note_3": {
+        "category": "record",
+        "sounds": ["genshinstrument:djem_djem_drum/3"]
+    },
+    "djem_djem_drum_note_4": {
+        "category": "record",
+        "sounds": ["genshinstrument:djem_djem_drum/4"]
+    },
+    "djem_djem_drum_note_5": {
+        "category": "record",
+        "sounds": ["genshinstrument:djem_djem_drum/5"]
+    },
+    "djem_djem_drum_note_6": {
+        "category": "record",
+        "sounds": ["genshinstrument:djem_djem_drum/6"]
+    },
+    "djem_djem_drum_note_7": {
+        "category": "record",
+        "sounds": ["genshinstrument:djem_djem_drum/7"]
     }
 }
