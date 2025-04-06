@@ -155,29 +155,25 @@ public abstract class InstrumentMidiReceiver {
         final int eventType = (message[0] >> 4) << 4;
         final int midiChannel = message[0] - eventType;
 
-        switch (eventType) {
-            case -112: {
-                // press
-                if (!ModClientConfigs.ACCEPT_ALL_CHANNELS.get())
-                    return midiChannel == ModClientConfigs.MIDI_CHANNEL.get();
+        // For some reason, velocity 0 = note off??????
+        // LMFAO
+        if (eventType == -112 && message[2] != 0) {
+            // Press
+            if (!ModClientConfigs.ACCEPT_ALL_CHANNELS.get())
+                return midiChannel == ModClientConfigs.MIDI_CHANNEL.get();
 
-                return true;
-            }
+            return true;
+        }
+        if (eventType == -128 || eventType == -112) {
+            // release
+            if (isHoldableBtn) {
+                IHoldableNoteButton heldBtn = (IHoldableNoteButton)prevButton;
 
-            //TODO perhaps separate this logic
-            case -128: {
-                // release
-                if (isHoldableBtn) {
-                    IHoldableNoteButton heldBtn = (IHoldableNoteButton)prevButton;
-
-                    heldBtn.releaseHeld(
-                        prevNoteBtn.notePitch(),
-                        true,
-                        heldBtn.toHeldSound(prevNoteBtn.sound())
-                    );
-                }
-
-                break;
+                heldBtn.releaseHeld(
+                    prevNoteBtn.notePitch(),
+                    true,
+                    heldBtn.toHeldSound(prevNoteBtn.sound())
+                );
             }
         }
 
