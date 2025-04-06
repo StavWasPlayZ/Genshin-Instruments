@@ -2,9 +2,12 @@ package com.cstav.genshinstrument.client.gui.screen.instrument.ukelele;
 
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.GridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.NoteGrid;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.grid.NoteGridButton;
 import com.cstav.genshinstrument.sound.GISounds;
 import com.cstav.genshinstrument.sound.NoteSound;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -47,4 +50,28 @@ public class UkuleleScreen extends GridInstrumentScreen {
         return THEME_LOADER;
     }
 
+
+    // Render the chord "clef" atop and the rest to go down an octave.
+    @Override
+    protected void renderClef(GuiGraphics gui, int index, int x, String clefName) {
+        switch (index) {
+            case 0: renderClefChord(gui, index, x); break;
+            case 1: super.renderClef(gui, index, x, "treble"); break;
+            case 2: super.renderClef(gui, index, x, "alto"); break;
+        }
+    }
+
+    private void renderClefChord(GuiGraphics gui, int index, int x) {
+        RenderSystem.enableBlend();
+
+        gui.blit(getResourceFromRoot("background/clef/chord.png"),
+            x, grid.getY() + NoteGrid.getPaddingVert() + getLayerAddition(index) - 5,
+            0, 0,
+
+            CLEF_WIDTH, CLEF_HEIGHT,
+            CLEF_WIDTH, CLEF_HEIGHT
+        );
+
+        RenderSystem.disableBlend();
+    }
 }
