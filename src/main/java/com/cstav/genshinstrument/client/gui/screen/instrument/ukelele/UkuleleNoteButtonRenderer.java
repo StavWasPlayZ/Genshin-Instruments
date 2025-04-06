@@ -5,9 +5,12 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteB
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButtonRenderer;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.function.Supplier;
 
+@OnlyIn(Dist.CLIENT)
 public class UkuleleNoteButtonRenderer extends NoteButtonRenderer {
     protected final ResourceLocation
         topColumnNotePressedLocation,

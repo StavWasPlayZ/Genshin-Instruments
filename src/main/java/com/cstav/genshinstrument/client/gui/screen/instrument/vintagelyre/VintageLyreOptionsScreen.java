@@ -1,7 +1,6 @@
-package com.cstav.genshinstrument.client.gui.screen.options.instrument;
+package com.cstav.genshinstrument.client.gui.screen.instrument.vintagelyre;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
-import com.cstav.genshinstrument.client.gui.screen.instrument.vintagelyre.VintageLyreScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.SingleButtonOptionsScreen;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.CycleButton;

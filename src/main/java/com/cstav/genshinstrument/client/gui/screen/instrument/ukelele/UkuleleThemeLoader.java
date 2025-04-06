@@ -5,9 +5,12 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteB
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.grid.NoteGridButton;
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.awt.*;
 
+@OnlyIn(Dist.CLIENT)
 public class UkuleleThemeLoader extends InstrumentThemeLoader {
     private Color
         topColumnNoteReleasedColor = Color.BLACK,

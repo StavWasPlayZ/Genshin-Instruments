@@ -6,7 +6,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.Locale;
 
 @OnlyIn(Dist.CLIENT)
-public enum DominantDrumType {
+public enum DominantGloriousDrumType {
     DON, KA, BOTH;
 
     public static final String DDT_KEY = "button.genshinstrument.dominantDrumType";
@@ -14,7 +14,7 @@ public enum DominantDrumType {
     public String getKey() {
         return (this == BOTH)
             ? (DDT_KEY + ".both")
-            : ((this == KA) ? DrumButtonType.KA : DrumButtonType.DON).getTransKey();
+            : ((this == KA) ? GloriousDrumButtonType.KA : GloriousDrumButtonType.DON).getTransKey();
     }
 
     public String getDescKey() {

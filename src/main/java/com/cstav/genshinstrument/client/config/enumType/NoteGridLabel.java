@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.client.config.enumType.label;
+package com.cstav.genshinstrument.client.config.enumType;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.GridInstrumentScreen;

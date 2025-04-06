@@ -1,24 +1,24 @@
 package com.cstav.genshinstrument.networking.buttonidentifier;
 
-import com.cstav.genshinstrument.client.gui.screen.instrument.gloriousdrum.DrumButtonType;
-import com.cstav.genshinstrument.client.gui.screen.instrument.gloriousdrum.DrumNoteButton;
+import com.cstav.genshinstrument.client.gui.screen.instrument.gloriousdrum.GloriousDrumButtonType;
+import com.cstav.genshinstrument.client.gui.screen.instrument.gloriousdrum.GloriousDrumNoteButton;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class DrumNoteIdentifier extends NoteButtonIdentifier {
+public class GloriousDrumNoteIdentifier extends NoteButtonIdentifier {
 
-    public final DrumButtonType noteType;
+    public final GloriousDrumButtonType noteType;
     public final boolean isRight;
 
     @OnlyIn(Dist.CLIENT)
-    public DrumNoteIdentifier(final DrumNoteButton note) {
+    public GloriousDrumNoteIdentifier(final GloriousDrumNoteButton note) {
         noteType = note.btnType;
         isRight = note.isRight;
     }
 
-    public DrumNoteIdentifier(FriendlyByteBuf buf) {
-        noteType = buf.readEnum(DrumButtonType.class);
+    public GloriousDrumNoteIdentifier(FriendlyByteBuf buf) {
+        noteType = buf.readEnum(GloriousDrumButtonType.class);
         isRight = buf.readBoolean();
     }
     @Override
@@ -32,7 +32,7 @@ public class DrumNoteIdentifier extends NoteButtonIdentifier {
     public boolean matches(NoteButtonIdentifier other) {
         return MatchType.forceMatch(other, this::drumMatch);
     }
-    private boolean drumMatch(final DrumNoteIdentifier other) {
+    private boolean drumMatch(final GloriousDrumNoteIdentifier other) {
         return (noteType == other.noteType) && (isRight == other.isRight);
     }
 

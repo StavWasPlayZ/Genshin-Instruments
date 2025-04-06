@@ -1,8 +1,6 @@
-package com.cstav.genshinstrument.client.gui.screen.options.instrument;
+package com.cstav.genshinstrument.client.gui.screen.instrument.gloriousdrum;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
-import com.cstav.genshinstrument.client.config.enumType.label.DrumNoteLabel;
-import com.cstav.genshinstrument.client.gui.screen.instrument.gloriousdrum.AratakisGreatAndGloriousDrumScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.midi.DrumMidiOptionsScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.InstrumentOptionsScreen;
@@ -10,26 +8,27 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class DrumOptionsScren extends InstrumentOptionsScreen {
+public class GloriousDrumOptionsScreen extends InstrumentOptionsScreen {
 
-    public DrumOptionsScren(AratakisGreatAndGloriousDrumScreen screen) {
+    public GloriousDrumOptionsScreen(AratakisGreatAndGloriousDrumScreen screen) {
         super(screen);
     }
     
 
     @Override
     protected void saveLabel(INoteLabel newLabel) {
-        if (newLabel instanceof DrumNoteLabel)
-            ModClientConfigs.DRUM_LABEL_TYPE.set((DrumNoteLabel)newLabel);
+        if (newLabel instanceof GloriousDrumNoteLabel label) {
+            ModClientConfigs.GLORIOUS_DRUM_LABEL_TYPE.set(label);
+        }
     }
 
     @Override
     public INoteLabel[] getLabels() {
-        return DrumNoteLabel.availableVals();
+        return GloriousDrumNoteLabel.availableVals();
     }
     @Override
-    public DrumNoteLabel getCurrentLabel() {
-        return ModClientConfigs.DRUM_LABEL_TYPE.get();
+    public GloriousDrumNoteLabel getCurrentLabel() {
+        return ModClientConfigs.GLORIOUS_DRUM_LABEL_TYPE.get();
     }
 
     @Override

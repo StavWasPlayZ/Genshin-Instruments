@@ -1,8 +1,7 @@
-package com.cstav.genshinstrument.client.gui.screen.options.instrument;
+package com.cstav.genshinstrument.client.gui.screen.instrument.floralzither;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.config.enumType.ZitherSoundType;
-import com.cstav.genshinstrument.client.gui.screen.instrument.floralzither.FloralZitherScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.GridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.SoundTypeOptionsScreen;
