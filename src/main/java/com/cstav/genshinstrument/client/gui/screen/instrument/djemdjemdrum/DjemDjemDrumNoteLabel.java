@@ -1,5 +1,7 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.djemdjemdrum;
 
+import com.cstav.genshinstrument.client.config.ModClientConfigs;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.NoteLabelSupplier;
 import net.minecraftforge.api.distmarker.Dist;
@@ -8,12 +10,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public enum DjemDjemDrumNoteLabel implements INoteLabel {
 	//TODO: Add the labels
-//	KEYBOARD_LAYOUT((note) ->
-//		INoteLabel.upperComponent(dn(note).getKey().getDisplayName())
-//	),
-//	QWERTY((note) ->
-//		INoteLabel.getQwerty(dn(note).getKey())
-//	),
+	KEYBOARD_LAYOUT((note) ->
+		INoteLabel.upperComponent(ddd(note).getKey().getDisplayName())
+	),
+	QWERTY((note) ->
+		INoteLabel.getQwerty(ddd(note).getKey())
+	),
 //
 //	DON_KA((note) ->
 //		Component.translatable(dn(note).btnType.getTransKey())
@@ -34,8 +36,7 @@ public enum DjemDjemDrumNoteLabel implements INoteLabel {
     }
 
 	public static INoteLabel[] availableVals() {
-//        return INoteLabel.filterQwerty(values(), ModClientConfigs.DRUM_LABEL_TYPE.get(), QWERTY);
-		return values();
+        return INoteLabel.filterQwerty(values(), ModClientConfigs.DJEM_DJEM_DRUM_LABEL_TYPE.get(), QWERTY);
     }
 
 
@@ -45,7 +46,7 @@ public enum DjemDjemDrumNoteLabel implements INoteLabel {
 	}
 
 
-//	private static GloriousDrumNoteButton ddd(final NoteButton btn) {
-//        return (GloriousDrumNoteButton)btn;
-//    }
+	private static DjemDjemDrumNoteButton ddd(final NoteButton btn) {
+        return (DjemDjemDrumNoteButton)btn;
+    }
 }
