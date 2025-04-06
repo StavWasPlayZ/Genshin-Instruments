@@ -7,7 +7,6 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteB
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.sound.GISounds;
 import com.mojang.blaze3d.platform.InputConstants.Key;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -40,14 +39,9 @@ public class DjemDjemDrumNoteButton extends NoteButton {
 
     @Override
     protected NoteButtonRenderer initNoteRenderer() {
-//        return new NoteButtonRenderer(this, () ->
-//            instrumentScreen.getResourceFromRoot("note/label/" + switch (btnType) {
-//                case DON -> "don";
-//                case KA -> "ka_" + (isRight ? "right" : "left");
-//            }+".png", false)
-//        );
-        //TODO: djem djem renderer
-        return new NoteButtonRenderer(this, () -> new ResourceLocation("askduhgfd"));
+        return new NoteButtonRenderer(this, () ->
+            instrumentScreen.getResourceFromRoot("note/label/" + column + ".png", false)
+        );
     }
 
 
