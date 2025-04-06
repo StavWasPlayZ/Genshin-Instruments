@@ -48,15 +48,15 @@ public class DjemDjemDrumScreen extends InstrumentScreen {
     protected void init() {
         initOptionsButton(height/2 + 25);
 
-        final LinearLayout layout1 = createRow(0, 2f),
-            layout2 = createRow(1, 1.3f);
+        final LinearLayout layout1 = createRow(0),
+            layout2 = createRow(1);
 
         // Make layout magic
         layout1.arrangeElements();
         layout2.arrangeElements();
 
         layout1.setPosition((width - layout1.getWidth()) / 2, (int)(height * .8f));
-        layout2.setPosition((width - layout2.getWidth()) / 2, layout1.getY() - layout1.getHeight()/2);
+        layout2.setPosition((width - layout2.getWidth()) / 2, layout1.getY() - layout1.getHeight() - 10);
 
         layout1.arrangeElements();
         layout2.arrangeElements();
@@ -71,17 +71,34 @@ public class DjemDjemDrumScreen extends InstrumentScreen {
         super.init();
     }
 
-    private LinearLayout createRow(int row, float widthPercent) {
-        final LinearLayout layout = new LinearLayout(
+    private LinearLayout createRow(int row) {
+        final LinearLayout generalLayout = new LinearLayout(
             0, 0,
-            (int)(width/widthPercent), getNoteSize(),
+            (int)(width/2f), getNoteSize(),
             Orientation.HORIZONTAL
         );
 
-        createButton(layout, row, 0);
-        createButton(layout, row, 1);
+        final LinearLayout leftLayout = new LinearLayout(
+            0, 0,
+            -40, getNoteSize(),
+            Orientation.HORIZONTAL
+        );
 
-        return layout;
+        final LinearLayout rightLayout = new LinearLayout(
+            0, 0,
+            -40, getNoteSize(),
+            Orientation.HORIZONTAL
+        );
+
+        createButton(leftLayout, row, 1);
+        createButton(leftLayout, row, 0);
+        createButton(rightLayout, row, 3);
+        createButton(rightLayout, row, 2);
+
+        generalLayout.addChild(leftLayout);
+        generalLayout.addChild(rightLayout);
+
+        return generalLayout;
     }
     private DjemDjemDrumNoteButton createButton(LinearLayout container, int row, int column) {
         final DjemDjemDrumNoteButton btn = new DjemDjemDrumNoteButton(this, row, column);

@@ -52,7 +52,7 @@ public class DjemDjemDrumNoteButton extends NoteButton {
 
 
     public Key getKey() {
-        return InstrumentKeyMappings.GRID_INSTRUMENT_MAPPINGS[column][row];
+        return InstrumentKeyMappings.GRID_INSTRUMENT_MAPPINGS[1 - row][column];
     }
 
 
