@@ -4,6 +4,8 @@ import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.NoteLabelSupplier;
+import com.cstav.genshinstrument.util.LabelUtil;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -20,12 +22,12 @@ public enum DjemDjemDrumNoteLabel implements INoteLabel {
 //	DON_KA((note) ->
 //		Component.translatable(dn(note).btnType.getTransKey())
 //	),
-//	NOTE_NAME((note) -> Component.literal(
-//		note.getFormattedNoteName()
-//	)),
-//	DO_RE_MI((note) ->
-//        LabelUtil.toDoReMi(note.getFormattedNoteName())
-//    ),
+	NOTE_NAME((note) -> Component.literal(
+		note.getFormattedNoteName()
+	)),
+	DO_RE_MI((note) ->
+        LabelUtil.toDoReMi(note.getFormattedNoteName())
+    ),
 
     NONE(NoteLabelSupplier.EMPTY);
 
