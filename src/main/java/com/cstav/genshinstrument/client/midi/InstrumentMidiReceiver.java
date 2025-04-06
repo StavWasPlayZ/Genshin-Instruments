@@ -131,6 +131,9 @@ public abstract class InstrumentMidiReceiver {
     protected boolean canPerformMidi(final MidiEvent event) {
         final byte[] message = event.message.getMessage();
 
+        if (message.length != 3)
+            return false;
+
         final PressedMIDINote prevNoteBtn = pressedMidiNotes.get(message[1]);
         NoteButton prevButton = null;
         boolean isHoldableBtn = false;
