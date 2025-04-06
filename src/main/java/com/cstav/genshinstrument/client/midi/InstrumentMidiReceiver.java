@@ -165,7 +165,7 @@ public abstract class InstrumentMidiReceiver {
             return true;
         }
         if (eventType == -128 || eventType == -112) {
-            // release
+            // Release
             if (isHoldableBtn) {
                 IHoldableNoteButton heldBtn = (IHoldableNoteButton)prevButton;
 
