@@ -1,0 +1,41 @@
+{
+    "parent": "genshinstrument:genshin_instruments/nightwind_horn",
+
+    "display": {
+        "icon": {
+            "item": "genshinstrument:djem_djem_drum"
+        },
+
+        "title": {
+            "translate": "genshinstrument.advancements.main.people_of_the_springs.title"
+        },
+        "description": {
+            "translate": "genshinstrument.advancements.main.people_of_the_springs.description"
+        }
+    },
+
+    "criteria": {
+        "instrument_1_played": {
+            "trigger": "genshinstrument_instrument_played",
+
+            "conditions": {
+                "instrument": {
+                    "items": ["genshinstrument:ukulele"]
+                }
+            }
+        },
+        "instrument_2_played": {
+            "trigger": "genshinstrument_instrument_played",
+
+            "conditions": {
+                "instrument": {
+                    "items": ["genshinstrument:djem_djem_drum"]
+                }
+            }
+        }
+    },
+
+    "requirements": [
+        ["instrument_1_played", "instrument_2_played"]
+    ]
+}

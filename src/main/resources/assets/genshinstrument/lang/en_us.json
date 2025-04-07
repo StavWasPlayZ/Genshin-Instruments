@@ -155,6 +155,12 @@
     "genshinstrument.advancements.main.floral_zither.description": "Play the Floral Zither",
 
     "genshinstrument.advancements.main.nightwind_horn.title": "The Final Symphony",
-    "genshinstrument.advancements.main.nightwind_horn.description": "Play the Nightwind Horn"
+    "genshinstrument.advancements.main.nightwind_horn.description": "Play the Nightwind Horn",
+
+    "genshinstrument.advancements.main.people_of_the_springs.title": "Chasing Waves",
+    "genshinstrument.advancements.main.people_of_the_springs.description": "Play any of the People of the Springs' instruments",
+
+    "genshinstrument.advancements.main.master_of_the_springs.title": "Master of the Springs",
+    "genshinstrument.advancements.main.master_of_the_springs.description": "Play all of the People of the Springs' instruments"
 
 }

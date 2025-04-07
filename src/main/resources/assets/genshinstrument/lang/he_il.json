@@ -140,6 +140,12 @@
     "genshinstrument.advancements.main.floral_zither.description": "נגן בציטר הפרחי",
 
     "genshinstrument.advancements.main.nightwind_horn.title": "הסימפוניה האחרונה",
-    "genshinstrument.advancements.main.nightwind_horn.description": "נגן בצופר רוח הלילות"
+    "genshinstrument.advancements.main.nightwind_horn.description": "נגן בצופר רוח הלילות",
+
+    "genshinstrument.advancements.main.people_of_the_springs.title": "רודף הגלים",
+    "genshinstrument.advancements.main.people_of_the_springs.description": "נגן באחד מכלי הנגינה של אנשי המעיינות",
+
+    "genshinstrument.advancements.main.master_of_the_springs.title": "מומחה המעיינות",
+    "genshinstrument.advancements.main.master_of_the_springs.description": "נגן בכל כלי הנגינה של אנשי המעיינות",
 
 }
