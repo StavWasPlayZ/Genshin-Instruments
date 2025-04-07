@@ -15,27 +15,18 @@
     },
 
     "criteria": {
-        "instrument_1_played": {
+        "instrument_played": {
             "trigger": "genshinstrument_instrument_played",
 
             "conditions": {
                 "instrument": {
-                    "items": ["genshinstrument:ukulele"]
-                }
-            }
-        },
-        "instrument_2_played": {
-            "trigger": "genshinstrument_instrument_played",
-
-            "conditions": {
-                "instrument": {
-                    "items": ["genshinstrument:djem_djem_drum"]
+                    "tag": "genshinstrument:people_of_the_springs_instruments"
                 }
             }
         }
     },
 
     "requirements": [
-        ["instrument_1_played", "instrument_2_played"]
+        ["instrument_played"]
     ]
 }
