@@ -7,6 +7,7 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteB
 import com.cstav.genshinstrument.client.keyMaps.InstrumentKeyMappings;
 import com.cstav.genshinstrument.sound.GISounds;
 import com.mojang.blaze3d.platform.InputConstants.Key;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -36,6 +37,11 @@ public class DjemDjemDrumNoteButton extends NoteButton {
         return column + row * 4;
     }
 
+    @Override
+    public int getNoteOffset() {
+        return index;
+    }
+
 
     @Override
     protected NoteButtonRenderer initNoteRenderer() {
@@ -50,8 +56,14 @@ public class DjemDjemDrumNoteButton extends NoteButton {
     }
 
 
-    @Override
-    public int getNoteOffset() {
-        return index;
+    private static final char[] GENSHIN_NOTATIONS = {
+        'b', 't', 's', 'r'
+    };
+
+    public Component getGenshinNotation() {
+        return Component.translatable(
+            "genshinstrument.label.genshin_notation.djem_djem_drum." + GENSHIN_NOTATIONS[column]
+        );
     }
+
 }

@@ -18,10 +18,9 @@ public enum DjemDjemDrumNoteLabel implements INoteLabel {
 	QWERTY((note) ->
 		INoteLabel.getQwerty(ddd(note).getKey())
 	),
-//
-//	DON_KA((note) ->
-//		Component.translatable(dn(note).btnType.getTransKey())
-//	),
+	GENSHIN_NOTATION((note) ->
+		ddd(note).getGenshinNotation()
+	),
 	NOTE_NAME((note) -> Component.literal(
 		note.getFormattedNoteName()
 	)),
@@ -33,7 +32,7 @@ public enum DjemDjemDrumNoteLabel implements INoteLabel {
 
 
     private final NoteLabelSupplier labelSupplier;
-    private DjemDjemDrumNoteLabel(final NoteLabelSupplier supplier) {
+    DjemDjemDrumNoteLabel(final NoteLabelSupplier supplier) {
         labelSupplier = supplier;
     }
 

@@ -119,6 +119,14 @@
 
     "button.genshinstrument.label.don_ka": "Don-Ka",
 
+    "button.genshinstrument.label.genshin_notation": "Genshin Notation",
+    "button.genshinstrument.label.genshin_notation.description": "The note labeling, as appears in Genshin Impact.",
+
+    "genshinstrument.label.genshin_notation.djem_djem_drum.b": "B",
+    "genshinstrument.label.genshin_notation.djem_djem_drum.t": "T",
+    "genshinstrument.label.genshin_notation.djem_djem_drum.s": "S",
+    "genshinstrument.label.genshin_notation.djem_djem_drum.r": "R",
+
 
 
     "genshinstrument.advancements.main.root.title": "A Bard's Journey",
