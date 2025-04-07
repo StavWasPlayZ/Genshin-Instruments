@@ -11,7 +11,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public enum DjemDjemDrumNoteLabel implements INoteLabel {
-	//TODO: Add the labels
 	KEYBOARD_LAYOUT((note) ->
 		INoteLabel.upperComponent(ddd(note).getKey().getDisplayName())
 	),
