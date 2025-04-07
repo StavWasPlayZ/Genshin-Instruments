@@ -7,7 +7,7 @@ import com.cstav.genshinstrument.client.config.enumType.ZitherSoundType;
 import com.cstav.genshinstrument.client.gui.screen.instrument.djemdjemdrum.DjemDjemDrumNoteLabel;
 import com.cstav.genshinstrument.client.gui.screen.instrument.gloriousdrum.DominantGloriousDrumType;
 import com.cstav.genshinstrument.client.gui.screen.instrument.gloriousdrum.GloriousDrumNoteLabel;
-import com.cstav.genshinstrument.client.gui.screen.options.instrument.midi.MidiOptionsScreen;
+import com.cstav.genshinstrument.client.gui.screen.options.instrument.MidiOptionsScreen;
 import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.sound.NoteSound;
 import net.minecraftforge.api.distmarker.Dist;
@@ -24,6 +24,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
 @OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(bus = Bus.MOD, modid = GInstrumentMod.MODID, value = Dist.CLIENT)
 public class ModClientConfigs {
+    //TODO: Prefix common configs the same
+
     public static final ForgeConfigSpec CONFIGS;
 
     public static final IntValue PITCH, MIDI_DEVICE_INDEX, OCTAVE_SHIFT, MIDI_CHANNEL;
@@ -31,10 +33,14 @@ public class ModClientConfigs {
 
     public static final EnumValue<NoteGridLabel> GRID_LABEL_TYPE;
     public static final EnumValue<InstrumentChannelType> CHANNEL_TYPE;
-    public static final BooleanValue STOP_MUSIC_ON_PLAY, SHARED_INSTRUMENT,
+
+    public static final BooleanValue
+        STOP_MUSIC_ON_PLAY, SHARED_INSTRUMENT,
         RENDER_BACKGROUND, ACCEPTED_GENSHIN_CONSENT, ACCURATE_NOTES,
         MIDI_ENABLED, EXTEND_OCTAVES, FIXED_TOUCH, ACCEPT_ALL_CHANNELS,
-        NORMALIZE_VINTAGE_LYRE;
+        NORMALIZE_VINTAGE_LYRE,
+        UKULELE_EXTEND_2ND_OCTAVE
+    ;
 
     public static final EnumValue<ZitherSoundType> ZITHER_SOUND_TYPE;
     public static final EnumValue<GloriousDrumNoteLabel> GLORIOUS_DRUM_LABEL_TYPE;
@@ -66,6 +72,7 @@ public class ModClientConfigs {
         ACCURATE_NOTES = configBuilder.define("accurate_notes", true);
 
         NORMALIZE_VINTAGE_LYRE = configBuilder.define("normalize_vintage_lyre", true);
+        UKULELE_EXTEND_2ND_OCTAVE = configBuilder.define("ukulele_extend_2nd_octave", false);
 
         ACCEPTED_GENSHIN_CONSENT = configBuilder.define("accepted_genshin_consent", false);
 

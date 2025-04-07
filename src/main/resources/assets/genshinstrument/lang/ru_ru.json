@@ -47,6 +47,8 @@
     "button.genshinstrument.zither.soundType.old": "Старый",
     "button.genshinstrument.zither.soundType.new": "Новый",
 
+    "button.genshinstrument.ukulele_extend_2nd_octave" : "Расширение 2-й октавы укулеле",
+
 
     "button.genshinstrument.label.do_re_mi": "до ре ми",
     "button.genshinstrument.label.do_re_mi.description": "Наклейки будут иметь нотную запись \"до ре ми\".",

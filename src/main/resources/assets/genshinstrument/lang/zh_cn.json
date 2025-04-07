@@ -73,6 +73,8 @@
     "button.genshinstrument.normalize_vintage_lyre": "将老旧的诗琴调整为标准音",
     "button.genshinstrument.normalize_vintage_lyre.tooltip": "将老旧的诗琴的所有音符调整为不带升降的标准音。不会应用于最高音调。",
 
+    "button.genshinstrument.ukulele_extend_2nd_octave" : "扩展尤克里里的第二个八度",
+
 
     "button.none": "无",
 

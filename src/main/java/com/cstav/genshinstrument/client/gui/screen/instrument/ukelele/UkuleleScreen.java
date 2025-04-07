@@ -1,9 +1,11 @@
 package com.cstav.genshinstrument.client.gui.screen.instrument.ukelele;
 
 import com.cstav.genshinstrument.GInstrumentMod;
+import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.GridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.NoteGrid;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.grid.NoteGridButton;
+import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.InstrumentOptionsScreen;
 import com.cstav.genshinstrument.client.midi.InstrumentMidiReceiver;
 import com.cstav.genshinstrument.sound.GISounds;
 import com.cstav.genshinstrument.sound.NoteSound;
@@ -22,6 +24,8 @@ public class UkuleleScreen extends GridInstrumentScreen {
         "C", "D", "E", "F", "G", "A", "B",
         "C", "D", "E", "F", "G", "A", "B"
     };
+
+    public boolean extend2ndOctave = ModClientConfigs.UKULELE_EXTEND_2ND_OCTAVE.get();
 
     @Override
     public ResourceLocation getInstrumentId() {
@@ -45,6 +49,11 @@ public class UkuleleScreen extends GridInstrumentScreen {
         return new UkuleleNoteButton(row, column, this);
     }
 
+    @Override
+    protected InstrumentOptionsScreen initInstrumentOptionsScreen() {
+        return new UkuleleOptionsScreen(this);
+    }
+
     public static final UkuleleThemeLoader THEME_LOADER = new UkuleleThemeLoader(INSTRUMENT_ID);
     @Override
     public UkuleleThemeLoader getThemeLoader() {
@@ -60,6 +69,11 @@ public class UkuleleScreen extends GridInstrumentScreen {
     // Render the chord "clef" atop and the rest to go down an octave.
     @Override
     protected void renderClef(GuiGraphics gui, int index, int x, String clefName) {
+        if (extend2ndOctave) {
+            super.renderClef(gui, index, x, clefName);
+            return;
+        }
+
         switch (index) {
             case 0: renderClefChord(gui, index, x); break;
             case 1: super.renderClef(gui, index, x, "treble"); break;

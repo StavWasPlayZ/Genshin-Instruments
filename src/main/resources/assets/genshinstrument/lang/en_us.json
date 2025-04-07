@@ -22,6 +22,7 @@
     "label.genshinstrument.midiOptions": "MIDI Options",
     "label.genshinstrument.zither_options": "Zither Options",
     "label.genshinstrument.vintage_lyre_options": "Vintage Lyre Options",
+    "label.genshinstrument.ukulele_options": "Ukulele Options",
 
     "genshinstrument.genshin_disclaimer.title": "Disclaimer!",
     "genshinstrument.genshin_disclaimer.content": "Genshin Instruments is an %s and %s Minecraft mod that is in no way affiliated with neither Genshin Impact nor HoYoverse.\n\nThus, all Genshin-related assets used in-game, such as sounds, images, instruments etc. are of complete ownership to HoYoverse.\n\nAs the user, you have the full responsibility over your actions within the game, including (but not limited to!) playing and sharing/publishing any songs that may be protected under copyright laws.",
@@ -72,6 +73,8 @@
 
     "button.genshinstrument.normalize_vintage_lyre": "Normalize Vintage Lyre",
     "button.genshinstrument.normalize_vintage_lyre.tooltip": "Normalizes all flattened notes in the Vintage Lyre. Does not apply to the max pitch.",
+
+    "button.genshinstrument.ukulele_extend_2nd_octave" : "Extend Ukulele's 2nd Octave",
 
 
     "button.none": "None",

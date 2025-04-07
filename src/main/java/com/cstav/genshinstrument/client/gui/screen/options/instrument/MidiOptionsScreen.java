@@ -1,4 +1,4 @@
-package com.cstav.genshinstrument.client.gui.screen.options.instrument.midi;
+package com.cstav.genshinstrument.client.gui.screen.options.instrument;
 
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
