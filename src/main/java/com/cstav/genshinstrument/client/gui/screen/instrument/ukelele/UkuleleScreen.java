@@ -4,6 +4,7 @@ import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.GridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.NoteGrid;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.grid.NoteGridButton;
+import com.cstav.genshinstrument.client.midi.InstrumentMidiReceiver;
 import com.cstav.genshinstrument.sound.GISounds;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -50,6 +51,11 @@ public class UkuleleScreen extends GridInstrumentScreen {
         return THEME_LOADER;
     }
 
+
+    @Override
+    public InstrumentMidiReceiver initMidiReceiver() {
+        return new UkuleleMidiReceiver(this);
+    }
 
     // Render the chord "clef" atop and the rest to go down an octave.
     @Override
