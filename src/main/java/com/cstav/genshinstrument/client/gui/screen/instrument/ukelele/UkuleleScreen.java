@@ -42,14 +42,14 @@ public class UkuleleScreen extends GridInstrumentScreen {
     }
 
 
-    public boolean extend2ndOctave = ModClientConfigs.UKULELE_EXTEND_2ND_OCTAVE.get();
+    public Ukulele3rdOctaveType octaveType = ModClientConfigs.UKULELE_3RD_OCTAVE_TYPE.get();
 
     /**
      * @return Whether the 3rd octave is not used as the chord octave,
      * but a regular 3rd octave.
      */
     public boolean isTopRegular() {
-        return extend2ndOctave;
+        return octaveType == Ukulele3rdOctaveType.TREBLE;
     }
 
 
@@ -78,7 +78,7 @@ public class UkuleleScreen extends GridInstrumentScreen {
     // Render the chord "clef" atop and the rest to go down an octave.
     @Override
     protected void renderClef(GuiGraphics gui, int index, int x, String clefName) {
-        if (extend2ndOctave) {
+        if (isTopRegular()) {
             super.renderClef(gui, index, x, clefName);
             return;
         }

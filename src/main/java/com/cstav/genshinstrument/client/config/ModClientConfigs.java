@@ -7,6 +7,7 @@ import com.cstav.genshinstrument.client.config.enumType.ZitherSoundType;
 import com.cstav.genshinstrument.client.gui.screen.instrument.djemdjemdrum.DjemDjemDrumNoteLabel;
 import com.cstav.genshinstrument.client.gui.screen.instrument.gloriousdrum.DominantGloriousDrumType;
 import com.cstav.genshinstrument.client.gui.screen.instrument.gloriousdrum.GloriousDrumNoteLabel;
+import com.cstav.genshinstrument.client.gui.screen.instrument.ukelele.Ukulele3rdOctaveType;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.MidiOptionsScreen;
 import com.cstav.genshinstrument.client.util.ClientUtil;
 import com.cstav.genshinstrument.sound.NoteSound;
@@ -38,14 +39,14 @@ public class ModClientConfigs {
         STOP_MUSIC_ON_PLAY, SHARED_INSTRUMENT,
         RENDER_BACKGROUND, ACCEPTED_GENSHIN_CONSENT, ACCURATE_NOTES,
         MIDI_ENABLED, EXTEND_OCTAVES, FIXED_TOUCH, ACCEPT_ALL_CHANNELS,
-        NORMALIZE_VINTAGE_LYRE,
-        UKULELE_EXTEND_2ND_OCTAVE
+        NORMALIZE_VINTAGE_LYRE
     ;
 
     public static final EnumValue<ZitherSoundType> ZITHER_SOUND_TYPE;
     public static final EnumValue<GloriousDrumNoteLabel> GLORIOUS_DRUM_LABEL_TYPE;
     public static final EnumValue<DjemDjemDrumNoteLabel> DJEM_DJEM_DRUM_LABEL_TYPE;
     public static final EnumValue<DominantGloriousDrumType> DOMINANT_DRUM_TYPE;
+    public static final EnumValue<Ukulele3rdOctaveType> UKULELE_3RD_OCTAVE_TYPE;
 
 
     static {
@@ -72,7 +73,6 @@ public class ModClientConfigs {
         ACCURATE_NOTES = configBuilder.define("accurate_notes", true);
 
         NORMALIZE_VINTAGE_LYRE = configBuilder.define("normalize_vintage_lyre", true);
-        UKULELE_EXTEND_2ND_OCTAVE = configBuilder.define("ukulele_extend_2nd_octave", false);
 
         ACCEPTED_GENSHIN_CONSENT = configBuilder.define("accepted_genshin_consent", false);
 
@@ -106,6 +106,8 @@ public class ModClientConfigs {
         DOMINANT_DRUM_TYPE = configBuilder.comment(
             "Defines the MIDI split behaviour of the Arataki's Great and Glorious Drum"
         ).defineEnum("dominant_drum_type", DominantGloriousDrumType.BOTH);
+
+        UKULELE_3RD_OCTAVE_TYPE = configBuilder.defineEnum("ukulele_3rd_octave_type", Ukulele3rdOctaveType.CHORDS);
 
 
         CONFIGS = configBuilder.build();

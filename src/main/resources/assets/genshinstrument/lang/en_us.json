@@ -74,7 +74,11 @@
     "button.genshinstrument.normalize_vintage_lyre": "Normalize Vintage Lyre",
     "button.genshinstrument.normalize_vintage_lyre.tooltip": "Normalizes all flattened notes in the Vintage Lyre. Does not apply to the max pitch.",
 
-    "button.genshinstrument.ukulele_extend_2nd_octave" : "Extend Ukulele's 2nd Octave",
+    "button.genshinstrument.ukulele_3rd_octave" : "Ukulele's 3rd Octave",
+
+    "button.genshinstrument.ukulele_3rd_octave.chords" : "Chords",
+    "button.genshinstrument.ukulele_3rd_octave.treble" : "Treble",
+    "button.genshinstrument.ukulele_3rd_octave.treble.tooltip": "Because of Minecraft limitations, the more you pitch up the instrument, the more notes will be heard as B2.",
 
 
     "button.none": "None",
