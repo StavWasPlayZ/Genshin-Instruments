@@ -6,6 +6,8 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteB
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteNotation;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.grid.NoteGridButton;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.NoteLabelSupplier;
+import com.cstav.genshinstrument.sound.GISounds;
+import com.cstav.genshinstrument.sound.NoteSound;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -72,5 +74,39 @@ public class UkuleleNoteButton extends NoteGridButton {
 
     public String getChordNameOfRow() {
         return getNoteName();
+    }
+
+
+    // Extending 2nd octave:
+
+    @Override
+    public NoteSound getSound() {
+        if (!ukuleleScreen().isTopRegular() || column != 0)
+            return super.getSound();
+
+        // 13 = B2
+        return GISounds.UKULELE[13];
+    }
+
+    @Override
+    public int getPitch() {
+        if (!ukuleleScreen().isTopRegular() || column != 0)
+            return super.getPitch();
+
+        // Bump the pitch from B2 to whatever eow we are in.
+
+        // Lazily do the pitch bumping operation (I'm lazy)
+        final int pitchBump = switch (row) {
+            case 0 -> 1;
+            case 1 -> 3;
+            case 2 -> 5;
+            case 3 -> 6;
+            case 4 -> 8;
+            case 5 -> 10;
+            case 6 -> 12;
+            default -> throw new IllegalStateException("Unexpected value: " + row);
+        };
+
+        return super.getPitch() + pitchBump;
     }
 }
