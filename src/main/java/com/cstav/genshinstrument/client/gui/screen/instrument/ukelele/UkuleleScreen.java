@@ -25,8 +25,6 @@ public class UkuleleScreen extends GridInstrumentScreen {
         "C", "D", "E", "F", "G", "A", "B"
     };
 
-    public boolean extend2ndOctave = ModClientConfigs.UKULELE_EXTEND_2ND_OCTAVE.get();
-
     @Override
     public ResourceLocation getInstrumentId() {
         return INSTRUMENT_ID;
@@ -41,6 +39,17 @@ public class UkuleleScreen extends GridInstrumentScreen {
     @Override
     public NoteSound[] getInitSounds() {
         return GISounds.UKULELE;
+    }
+
+
+    public boolean extend2ndOctave = ModClientConfigs.UKULELE_EXTEND_2ND_OCTAVE.get();
+
+    /**
+     * @return Whether the 3rd octave is not used as the chord octave,
+     * but a regular 3rd octave.
+     */
+    public boolean isTopRegular() {
+        return extend2ndOctave;
     }
 
 

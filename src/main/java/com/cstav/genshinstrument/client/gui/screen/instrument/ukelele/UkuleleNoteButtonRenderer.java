@@ -26,6 +26,7 @@ public class UkuleleNoteButtonRenderer extends NoteButtonRenderer {
         topColumnNoteHoverLocation = getResourceFromRoot("note/top_hovered.png");
     }
 
+
     private UkuleleNoteButton getButton() {
         return (UkuleleNoteButton) noteButton;
     }
@@ -45,6 +46,9 @@ public class UkuleleNoteButtonRenderer extends NoteButtonRenderer {
     }
 
     private ResourceLocation getTopColumnOverride(final ResourceLocation newLocation, final ResourceLocation superLocation) {
+        if (getButton().ukuleleScreen().isTopRegular())
+            return superLocation;
+
         if (getButton().column == 0) {
             return newLocation;
         }
@@ -55,6 +59,11 @@ public class UkuleleNoteButtonRenderer extends NoteButtonRenderer {
 
     @Override
     protected void renderNote(GuiGraphics gui, InstrumentThemeLoader themeLoader) {
+        if (getButton().ukuleleScreen().isTopRegular()) {
+            super.renderNote(gui, themeLoader);
+            return;
+        }
+
         if (getButton().column != 0) {
             super.renderNote(gui, themeLoader);
             return;

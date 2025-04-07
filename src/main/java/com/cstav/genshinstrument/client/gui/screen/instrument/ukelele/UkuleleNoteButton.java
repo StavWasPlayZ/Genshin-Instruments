@@ -34,6 +34,11 @@ public class UkuleleNoteButton extends NoteGridButton {
         super(row, column, instrumentScreen);
     }
 
+    public UkuleleScreen ukuleleScreen() {
+        return (UkuleleScreen) instrumentScreen;
+    }
+
+
     @Override
     protected NoteButtonRenderer initNoteRenderer() {
         return new UkuleleNoteButtonRenderer(this, this::getLabelTexture);
@@ -41,6 +46,9 @@ public class UkuleleNoteButton extends NoteGridButton {
 
     @Override
     public NoteNotation getNotation() {
+        if (ukuleleScreen().isTopRegular())
+            return super.getNotation();
+
         if (column == 0)
             return NoteNotation.NONE;
         return super.getNotation();
@@ -48,6 +56,9 @@ public class UkuleleNoteButton extends NoteGridButton {
 
     @Override
     public @NotNull Component getMessage() {
+        if (ukuleleScreen().isTopRegular())
+            return super.getMessage();
+
         // Change the top row if it is of a notational label type.
         // (As defined above.)
         if (column == 0) {

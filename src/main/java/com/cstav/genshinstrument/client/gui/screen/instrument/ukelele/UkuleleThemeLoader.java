@@ -2,7 +2,6 @@ package com.cstav.genshinstrument.client.gui.screen.instrument.ukelele;
 
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.NoteButton;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.grid.NoteGridButton;
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -94,7 +93,12 @@ public class UkuleleThemeLoader extends InstrumentThemeLoader {
     }
 
     private Color overrideTopColumn(final NoteButton noteButton, final Color newColor, final Color superColor) {
-        if (((NoteGridButton)noteButton).column == 0) {
+        final UkuleleNoteButton unb = (UkuleleNoteButton) noteButton;
+
+        if (unb.ukuleleScreen().isTopRegular())
+            return superColor;
+
+        if (unb.column == 0) {
             return newColor;
         }
 
