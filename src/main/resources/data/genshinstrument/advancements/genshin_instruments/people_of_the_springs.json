@@ -20,7 +20,7 @@
 
             "conditions": {
                 "instrument": {
-                    "tag": "genshinstrument:people_of_the_springs_instruments"
+                    "tag": "genshinstrument:genshin/people_of_the_springs"
                 }
             }
         }
