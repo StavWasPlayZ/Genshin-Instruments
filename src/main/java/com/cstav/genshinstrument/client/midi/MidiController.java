@@ -177,6 +177,9 @@ public abstract class MidiController {
     }
 
     public static Info getInfoFromIndex(final int index) {
+        //TODO: Validate with hasNext; return null if not.
+        // Reset the MIDI devices upon null (not here).
+
         final Iterator<Info> infoIterator = DEVICES.keySet().iterator();
 
         for (int i = 0; i < index; i++)
