@@ -124,7 +124,9 @@
 
 
         "4.0": "Changes:\n- Added the Nightwind Horn!\n  - The Nightwind Horn is a sustainable instrument. You can hold it to make a loooong sound!\n- Added pitch-fixed note layout variants for ABC and do re mi\n- Many API changes\nMIDI:\n- MIDI overflows now sound *much* better more polished.\n- The default sensitivty level is now 80%\n\nFixed:\n- Game crashing for some PCs not using English as their language locale\n- Players being seen as not playing and not being heard when joining a world or dimension where a player has already entered playing mode\n- Incorrect naming of Arataki's Great and Glorious Drum\n- Some instrument option toggles' previous value being discarded on screen refresh\n- Some MIDI devices' names having weird whitespaces",
-        "4.0.2": "\nChanges:\n- Renamed author name to StavWasPlayZ\n\nFixed:\n- Background of instruments sometimes appearing at full alpha\n- Instrument block entities not getting properly removed\n- [Fabric 1.20-1.20.1] Defined version range being incorrect"
+        "4.0.2": "\nChanges:\n- Renamed author name to StavWasPlayZ\n\nFixed:\n- Background of instruments sometimes appearing at full alpha\n- Instrument block entities not getting properly removed\n- [Fabric 1.20-1.20.1] Defined version range being incorrect",
+
+        "5.0-RC1": "Changes:\n- Added 2 new instruments: Ukulele and Djem Djem Drum\n\nUkulele:\n- 3rd and upper octave used for chords\n  - Toggleable in Instrument Options (Treble mode)\n- MIDI overflow cannot surpass the 3rd octave\n\nDjem Djem Drum:\n- It makes funny sounds\n\nAdvancements:\n- Added \"Chasing Waves\": Play any of the People of the Springs' instruments\n- Added \"Master of the Springs\": Play all of the People of the Springs' instruments\n\nRecipes:\n- Arataki's Drum now uses Spruce Planks instead of Acacia Planks\n- Floral Zither recipe matches Ukulele and Guitar\n\nUI Tweaks:\n- Arataki's Drum MIDI Option screen: Dominant Drum Type now shown as a large button\n\nTags:\nAdded:\n- genshin/people_of_the_springs\n- instrument_families/brass\n- instrument_families/percussion\n- instrument_families/woodwinds\n- instrument_families/drums\n\nChanged:\n- Renamed tag genshin_instruments to genshin/instruments\n\nFixed:\nMIDI:\n- Releasing a note on some MIDI devices no longer counts as pressing one (fixes infinite sustain)\n- Fixed improper MIDI IN device validation causing game freeze"
     },
     "1.20.2": {
         "3.3.1": "Changes:\n- Bumped mod to Minecraft version 1.20.2!\n- Reworked instrument textures by GenMode!\n- Pitch slider now has character-accurate accidental symbols\n- Added instrument volume slider (for sounds produced by you - heard by all other players)\n- Sliced all GUI textures (except accidentals) (complied with 1.20.2's GUI atlases \"deprecation\")\n- The root advancement \"A Bard's Journey\" is now an announceable toast\nMIDI:\n- Supports for Touch (dynamic volumes determined by input velocity)\n  - Added the option to disable this behavior (\"Fixed Touch\")\n- MIDI pedal input is now supported by multisound instruments (such as the Zither) to toggle between 2 different sound types\n- Added option to listen to a specific/all MIDI channels\n- Octave shifting is now bound from -5 to 5 (previously -4/4)\n\nFixed:\n- QWERTY layout option showing for QWERTY users\n- Infinitely reloading resources if no instrument styler was found",
@@ -150,7 +152,7 @@
         "1.20-latest": "4.0.2",
         "1.20-recommended": "4.0.2",
 
-        "1.20.1-latest": "4.0.2",
+        "1.20.1-latest": "5.0-RC1",
         "1.20.1-recommended": "4.0.2",
 
         "1.20.2-latest": "3.4.1",
