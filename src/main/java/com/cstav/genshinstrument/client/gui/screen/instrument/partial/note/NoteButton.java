@@ -110,6 +110,7 @@ public abstract class NoteButton extends AbstractButton {
 
 
     private int initX, initY;
+    private int initWidth, initHeight;
     /**
      * Initializes the button's initial position.
      * This is done for the animations to work properly - for them to stick to the same position.
@@ -117,9 +118,8 @@ public abstract class NoteButton extends AbstractButton {
     public void initPos() {
         initX = x;
         initY = y;
-
-        noteRenderer.setLabelX(x + width/2);
-        noteRenderer.setLabelY(y + height/2 + 7);
+        initWidth = width;
+        initHeight = height;
     }
 
     public int getInitX() {
@@ -127,6 +127,12 @@ public abstract class NoteButton extends AbstractButton {
     }
     public int getInitY() {
         return initY;
+    }
+    public int getInitWidth() {
+        return initWidth;
+    }
+    public int getInitHeight() {
+        return initHeight;
     }
 
     public Point getCenter() {

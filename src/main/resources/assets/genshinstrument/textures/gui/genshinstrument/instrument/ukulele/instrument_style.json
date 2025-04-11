@@ -1,0 +1,19 @@
+{
+    "note": {
+        "released": [65, 90, 147]
+    },
+    "label": {
+        "released": [178, 202, 247]
+    },
+
+    "ukulele": {
+        "note": {
+            "released": [255, 249, 239]
+        },
+        "label": {
+            "released": [255, 249, 239]
+        }
+    },
+
+    "note_ring": [128, 161, 224]
+}

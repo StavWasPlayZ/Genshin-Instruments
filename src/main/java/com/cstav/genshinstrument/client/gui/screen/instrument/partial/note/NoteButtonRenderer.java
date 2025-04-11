@@ -31,7 +31,7 @@ public class NoteButtonRenderer {
 
     protected final ResourceLocation notePressedLocation, noteReleasedLocation, noteHoverLocation;
 
-    protected Supplier<ResourceLocation> noteTextureProvider;
+    protected Supplier<ResourceLocation> labelTextureProvider;
 
     // Animations
     public final NoteAnimationController noteAnimation;
@@ -43,9 +43,9 @@ public class NoteButtonRenderer {
     }
 
 
-    public NoteButtonRenderer(NoteButton noteButton, Supplier<ResourceLocation> noteTextureProvider) {
+    public NoteButtonRenderer(NoteButton noteButton, Supplier<ResourceLocation> labelTextureProvider) {
         this.noteButton = noteButton;
-        this.noteTextureProvider = noteTextureProvider;
+        this.labelTextureProvider = labelTextureProvider;
         this.instrumentScreen = noteButton.instrumentScreen;
 
         noteAnimation = initNoteAnimation();
@@ -59,6 +59,16 @@ public class NoteButtonRenderer {
         noteHoverLocation = getResourceFromRoot("note/hovered.png");
     }
 
+
+    protected ResourceLocation getNotePressedLocation() {
+        return notePressedLocation;
+    }
+    protected ResourceLocation getNoteReleasedLocation() {
+        return noteReleasedLocation;
+    }
+    protected ResourceLocation getNoteHoverLocation() {
+        return noteHoverLocation;
+    }
 
 
     public void render(PoseStack stack, int mouseX, int mouseY, float partialTick, InstrumentThemeLoader themeLoader) {
@@ -84,14 +94,14 @@ public class NoteButtonRenderer {
         if (noteButton.isPlaying()) {
 
             if (foreignPlaying)
-                noteLocation = noteHoverLocation;
+                noteLocation = getNoteHoverLocation();
             else
-                noteLocation = notePressedLocation;
+                noteLocation = getNotePressedLocation();
 
         } else if (noteButton.isHoveredOrFocused())
-            noteLocation = noteHoverLocation;
+            noteLocation = getNoteHoverLocation();
         else
-            noteLocation = noteReleasedLocation;
+            noteLocation = getNoteReleasedLocation();
 
 
         ClientUtil.displaySprite(noteLocation);
@@ -110,11 +120,11 @@ public class NoteButtonRenderer {
         final int noteWidth = noteButton.getWidth()/2, noteHeight = noteButton.getHeight()/2;
         
         ClientUtil.setShaderColor((noteButton.isPlaying() && !foreignPlaying)
-            ? themeLoader.notePressed()
-            : themeLoader.noteReleased()
+            ? themeLoader.notePressed(noteButton)
+            : themeLoader.noteReleased(noteButton)
         );
 
-        ClientUtil.displaySprite(noteTextureProvider.get());
+        ClientUtil.displaySprite(labelTextureProvider.get());
 
         GuiComponent.blit(stack,
             noteButton.x + noteWidth/2, noteButton.y + noteHeight/2,
@@ -140,10 +150,12 @@ public class NoteButtonRenderer {
     protected void renderLabel(final PoseStack stack, final InstrumentThemeLoader themeLoader) {
         GuiComponent.drawCenteredString(stack,
             MINECRAFT.font, noteButton.getMessage(),
-            labelX, labelY,
+            noteButton.getInitX() + noteButton.getInitWidth()/2,
+            noteButton.getInitY() + noteButton.getInitHeight()/2 + 7,
+
             ((noteButton.isPlaying() && !foreignPlaying)
-                ? themeLoader.labelPressed()
-                : themeLoader.labelReleased()
+                ? themeLoader.labelPressed(noteButton)
+                : themeLoader.labelReleased(noteButton)
             ).getRGB()
         );
     }

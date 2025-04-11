@@ -667,5 +667,124 @@
     "nightwind_horn_attack_note_13_stereo": {
         "category": "record",
         "sounds": ["genshinstrument:nightwind_horn/attack/13.stereo"]
+    },
+
+
+    "ukulele_note_0": {
+        "catrgory": "record",
+        "sounds": ["genshinstrument:ukulele/0"]
+    },
+    "ukulele_note_1": {
+        "category": "record",
+        "sounds": ["genshinstrument:ukulele/1"]
+    },
+    "ukulele_note_2": {
+        "category": "record",
+        "sounds": ["genshinstrument:ukulele/2"]
+    },
+    "ukulele_note_3": {
+        "category": "record",
+        "sounds": ["genshinstrument:ukulele/3"]
+    },
+    "ukulele_note_4": {
+        "category": "record",
+        "sounds": ["genshinstrument:ukulele/4"]
+    },
+    "ukulele_note_5": {
+        "category": "record",
+        "sounds": ["genshinstrument:ukulele/5"]
+    },
+    "ukulele_note_6": {
+        "category": "record",
+        "sounds": ["genshinstrument:ukulele/6"]
+    },
+    "ukulele_note_7": {
+        "category": "record",
+        "sounds": ["genshinstrument:ukulele/7"]
+    },
+    "ukulele_note_8": {
+        "category": "record",
+        "sounds": ["genshinstrument:ukulele/8"]
+    },
+    "ukulele_note_9": {
+        "category": "record",
+        "sounds": ["genshinstrument:ukulele/9"]
+    },
+    "ukulele_note_10": {
+        "category": "record",
+        "sounds": ["genshinstrument:ukulele/10"]
+    },
+    "ukulele_note_11": {
+        "category": "record",
+        "sounds": ["genshinstrument:ukulele/11"]
+    },
+    "ukulele_note_12": {
+        "category": "record",
+        "sounds": ["genshinstrument:ukulele/12"]
+    },
+    "ukulele_note_13": {
+        "category": "record",
+        "sounds": ["genshinstrument:ukulele/13"]
+    },
+    "ukulele_note_14": {
+        "category": "record",
+        "sounds": ["genshinstrument:ukulele/14"]
+    },
+    "ukulele_note_15": {
+        "category": "record",
+        "sounds": ["genshinstrument:ukulele/15"]
+    },
+    "ukulele_note_16": {
+        "category": "record",
+        "sounds": ["genshinstrument:ukulele/16"]
+    },
+    "ukulele_note_17": {
+        "category": "record",
+        "sounds": ["genshinstrument:ukulele/17"]
+    },
+    "ukulele_note_18": {
+        "category": "record",
+        "sounds": ["genshinstrument:ukulele/18"]
+    },
+    "ukulele_note_19": {
+        "category": "record",
+        "sounds": ["genshinstrument:ukulele/19"]
+    },
+    "ukulele_note_20": {
+        "category": "record",
+        "sounds": ["genshinstrument:ukulele/20"]
+    },
+
+    "djem_djem_drum_note_0": {
+        "catrgory": "record",
+        "sounds": ["genshinstrument:djem_djem_drum/0"]
+    },
+    "djem_djem_drum_note_1": {
+        "category": "record",
+        "sounds": ["genshinstrument:djem_djem_drum/1"]
+    },
+    "djem_djem_drum_note_2": {
+        "category": "record",
+        "sounds": ["genshinstrument:djem_djem_drum/2"]
+    },
+    "djem_djem_drum_note_3": {
+        "category": "record",
+        "sounds": ["genshinstrument:djem_djem_drum/3"]
+    },
+    "djem_djem_drum_note_4": {
+        "category": "record",
+        "sounds": ["genshinstrument:djem_djem_drum/4"]
+    },
+    "djem_djem_drum_note_5": {
+        "category": "record",
+        "sounds": ["genshinstrument:djem_djem_drum/5"]
+    },
+    "djem_djem_drum_note_6": {
+        "category": "record",
+        "sounds": ["genshinstrument:djem_djem_drum/6"]
+    },
+    "djem_djem_drum_note_7": {
+        "category": "record",
+        "sounds": ["genshinstrument:djem_djem_drum/7"]
     }
 }

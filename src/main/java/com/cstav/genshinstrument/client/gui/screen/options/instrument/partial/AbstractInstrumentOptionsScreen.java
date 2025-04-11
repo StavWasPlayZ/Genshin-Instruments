@@ -12,12 +12,14 @@ import net.minecraft.client.gui.components.TooltipAccessor;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.slf4j.Logger;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -84,6 +86,10 @@ public abstract class AbstractInstrumentOptionsScreen extends Screen {
         }
 
         if (!(widget instanceof AbstractWidget aWidget) || !(aWidget instanceof TooltipAccessor))
+            return;
+
+        final List<FormattedCharSequence> tooltip = ((TooltipAccessor)aWidget).getTooltip();
+        if (tooltip == null)
             return;
 
         if (aWidget.isHoveredOrFocused())
