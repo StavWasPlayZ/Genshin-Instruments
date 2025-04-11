@@ -35,7 +35,7 @@ public class GridInstrumentMidiReceiver extends InstrumentMidiReceiver {
 
     @Override
     protected @Nullable NoteButton handleMidiPress(int note, int key) {
-        final GridInstrumentScreen instrumentScreen = (GridInstrumentScreen)instrument;
+        final GridInstrumentScreen instrumentScreen = (GridInstrumentScreen) instrument;
 
         final int layoutNote = note % 12;
         final boolean higherThan3 = layoutNote > key + 4;

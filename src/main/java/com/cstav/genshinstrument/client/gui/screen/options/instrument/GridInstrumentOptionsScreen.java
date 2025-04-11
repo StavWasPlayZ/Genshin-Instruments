@@ -2,7 +2,7 @@ package com.cstav.genshinstrument.client.gui.screen.options.instrument;
 
 import com.cstav.genshinstrument.GInstrumentMod;
 import com.cstav.genshinstrument.client.config.ModClientConfigs;
-import com.cstav.genshinstrument.client.config.enumType.label.NoteGridLabel;
+import com.cstav.genshinstrument.client.config.enumType.NoteGridLabel;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.GridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.INoteLabel;
 import com.cstav.genshinstrument.client.gui.screen.options.instrument.partial.InstrumentOptionsScreen;

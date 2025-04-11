@@ -29,7 +29,10 @@ public class GISounds {
         GLORIOUS_DRUM = nsr(loc("glorious_drum"))
             .chain(loc("glorious_drum_don")).add()
             .chain(loc("glorious_drum_ka")).stereo().add()
-        .registerAll()
+        .registerAll(),
+
+        UKULELE = nsr(loc("ukulele")).registerGrid(),
+        DJEM_DJEM_DRUM = nsr(loc("djem_djem_drum")).registerGrid(2, 4)
     ;
 
     // Metadata stuff
@@ -43,7 +46,7 @@ public class GISounds {
             .holdBuilder(GISounds::nightwindSoundBuilder)
             .attackBuilder(GISounds::nightwindSoundBuilder)
 
-            //NOTE Test for release sound
+            // Test for release sound:
 //            .releaseBuilder((builder) -> builder
 //                .chain(SoundEvents.COW_DEATH.getLocation())
 //                .alreadyRegistered()

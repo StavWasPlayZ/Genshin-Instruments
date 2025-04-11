@@ -65,17 +65,18 @@ public class InstrumentKeyMappings {
         {90, 88, 67, 86, 66, 78, 77, 44}
     });
 
+
     // Glorious drum
-    public static final DrumKeys
-        DON = new DrumKeys(83, 75),
-        KA = new DrumKeys(65, 76)
+    public static final GloriousDrumKeys
+        DON = new GloriousDrumKeys(83, 75),
+        KA = new GloriousDrumKeys(65, 76)
     ;
 
     @OnlyIn(Dist.CLIENT)
-    public static final class DrumKeys {
+    public static final class GloriousDrumKeys {
         public final Key left, right;
 
-        private DrumKeys(final int left, final int right) {
+        private GloriousDrumKeys(final int left, final int right) {
             this.left = create(left);
             this.right = create(right);
         }

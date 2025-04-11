@@ -11,6 +11,8 @@
     "item.genshinstrument.vintage_lyre": "נבל הבציר",
     "item.genshinstrument.glorious_drum": "התוף הגדול והמפואר של ארטאקי",
     "item.genshinstrument.nightwind_horn": "צופר רוח הלילות",
+    "item.genshinstrument.ukulele": "יוקלילי",
+    "item.genshinstrument.djem_djem_drum": "תוף הג'ימג'ום",
 
 
     "genshinstrument.genshin_disclaimer.content": "מוד כלי הנגינה של גנשין הינו %s ו%s, כלפי שום קשר עם Genshin Impact או HoYoverse.\n\nלכן, כל נכס הנעשה בו שימוש בתוסף, כגון צלילים, תמונות, כלי נגינה וכו' שייכים במלואן ל- HoYoverse.\n\nכמשתמש, עליך מוטלת האחריות המלאה על מעשיך במשחק זה, הכולל ניגון ושיתוף של כל שיר/פיסת מוזיקה המוגן תחת זכויות יוצרים ועוד.",
@@ -64,6 +66,11 @@
     "button.genshinstrument.normalize_vintage_lyre": "נרמל את הנבל",
     "button.genshinstrument.normalize_vintage_lyre.tooltip": "מנרמל את כל צלילי הנבל תחת היתק במול. אינו חל על גובה הצליל המקסימלי.",
 
+    "button.genshinstrument.ukulele_3rd_octave" : "האוקטבה השלישית של היוקלילי",
+    "button.genshinstrument.ukulele_3rd_octave.chords" : "אקורדים",
+    "button.genshinstrument.ukulele_3rd_octave.treble" : "מפתח סול",
+    "button.genshinstrument.ukulele_3rd_octave.treble.tooltip": "בשל מגבלות טכניות במיינקראפט, ככל וגובה הצליל גובר, כך יותר מהתווים ישמעו כסי דיאז שני.",
+
 
     "button.none": "כלום",
 
@@ -107,6 +114,9 @@
     "button.genshinstrument.label.fixed_abc": "ABC קבוע",
     "button.genshinstrument.label.fixed_abc.description": "תגיות \"ABC\" אשר אינם מושפעות בידי שינוי גובה הצליל",
 
+    "button.genshinstrument.label.genshin_notation": "סימוני גנשין",
+    "button.genshinstrument.label.genshin_notation.description": "התווים מסומנים כמופיע בגנשין אימפקט עצמו.",
+
     "button.genshinstrument.label.none": "ללא תגית",
 
 
@@ -130,6 +140,12 @@
     "genshinstrument.advancements.main.floral_zither.description": "נגן בציטר הפרחי",
 
     "genshinstrument.advancements.main.nightwind_horn.title": "הסימפוניה האחרונה",
-    "genshinstrument.advancements.main.nightwind_horn.description": "נגן בצופר רוח הלילות"
+    "genshinstrument.advancements.main.nightwind_horn.description": "נגן בצופר רוח הלילות",
+
+    "genshinstrument.advancements.main.people_of_the_springs.title": "רודף הגלים",
+    "genshinstrument.advancements.main.people_of_the_springs.description": "נגן באחד מכלי הנגינה של אנשי המעיינות",
+
+    "genshinstrument.advancements.main.master_of_the_springs.title": "מומחה המעיינות",
+    "genshinstrument.advancements.main.master_of_the_springs.description": "נגן בכל כלי הנגינה של אנשי המעיינות",
 
 }

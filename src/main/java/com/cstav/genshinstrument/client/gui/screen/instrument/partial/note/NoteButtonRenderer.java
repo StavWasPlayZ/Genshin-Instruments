@@ -30,7 +30,7 @@ public class NoteButtonRenderer {
 
     protected final ResourceLocation notePressedLocation, noteReleasedLocation, noteHoverLocation;
 
-    protected Supplier<ResourceLocation> noteTextureProvider;
+    protected Supplier<ResourceLocation> labelTextureProvider;
 
     // Animations
     public final NoteAnimationController noteAnimation;
@@ -42,9 +42,9 @@ public class NoteButtonRenderer {
     }
 
 
-    public NoteButtonRenderer(NoteButton noteButton, Supplier<ResourceLocation> noteTextureProvider) {
+    public NoteButtonRenderer(NoteButton noteButton, Supplier<ResourceLocation> labelTextureProvider) {
         this.noteButton = noteButton;
-        this.noteTextureProvider = noteTextureProvider;
+        this.labelTextureProvider = labelTextureProvider;
         this.instrumentScreen = noteButton.instrumentScreen;
 
         noteAnimation = initNoteAnimation();
@@ -58,6 +58,16 @@ public class NoteButtonRenderer {
         noteHoverLocation = getResourceFromRoot("note/hovered.png");
     }
 
+
+    protected ResourceLocation getNotePressedLocation() {
+        return notePressedLocation;
+    }
+    protected ResourceLocation getNoteReleasedLocation() {
+        return noteReleasedLocation;
+    }
+    protected ResourceLocation getNoteHoverLocation() {
+        return noteHoverLocation;
+    }
 
 
     public void render(GuiGraphics gui, int mouseX, int mouseY, float partialTick, InstrumentThemeLoader themeLoader) {
@@ -83,14 +93,14 @@ public class NoteButtonRenderer {
         if (noteButton.isPlaying()) {
 
             if (foreignPlaying)
-                noteLocation = noteHoverLocation;
+                noteLocation = getNoteHoverLocation();
             else
-                noteLocation = notePressedLocation;
+                noteLocation = getNotePressedLocation();
 
         } else if (noteButton.isHoveredOrFocused())
-            noteLocation = noteHoverLocation;
+            noteLocation = getNoteHoverLocation();
         else
-            noteLocation = noteReleasedLocation;
+            noteLocation = getNoteReleasedLocation();
             
         
         gui.blit(noteLocation,
@@ -107,11 +117,11 @@ public class NoteButtonRenderer {
         final int noteWidth = noteButton.getWidth()/2, noteHeight = noteButton.getHeight()/2;
         
         ClientUtil.setShaderColor((noteButton.isPlaying() && !foreignPlaying)
-            ? themeLoader.notePressed()
-            : themeLoader.noteReleased()
+            ? themeLoader.notePressed(noteButton)
+            : themeLoader.noteReleased(noteButton)
         );
 
-        gui.blit(noteTextureProvider.get(),
+        gui.blit(labelTextureProvider.get(),
             noteButton.getX() + noteWidth/2, noteButton.getY() + noteHeight/2,
             0, 0,
 
@@ -122,23 +132,15 @@ public class NoteButtonRenderer {
         ClientUtil.resetShaderColor();
     }
 
-
-    // Labels act junky when the notes are pressed, so just cache their initial and fixed location
-    private int labelX, labelY;
-    public void setLabelX(int labelX) {
-        this.labelX = labelX;
-    }
-    public void setLabelY(int labelY) {
-        this.labelY = labelY;
-    }
-
     protected void renderLabel(final GuiGraphics gui, final InstrumentThemeLoader themeLoader) {
         gui.drawCenteredString(
             MINECRAFT.font, noteButton.getMessage(),
-            labelX, labelY,
+            noteButton.getInitX() + noteButton.getInitWidth()/2,
+            noteButton.getInitY() + noteButton.getInitHeight()/2 + 7,
+
             ((noteButton.isPlaying() && !foreignPlaying)
-                ? themeLoader.labelPressed()
-                : themeLoader.labelReleased()
+                ? themeLoader.labelPressed(noteButton)
+                : themeLoader.labelReleased(noteButton)
             ).getRGB()
         );
     }

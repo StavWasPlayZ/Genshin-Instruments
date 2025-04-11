@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+
+    "key": {
+        "#": {
+            "item": "minecraft:birch_planks"
+        },
+        "X": {
+            "item": "minecraft:string"
+        }
+    },
+
+    "pattern": [
+        "  #",
+        "#X ",
+        "## "
+    ],
+
+    "result": {
+        "id": "genshinstrument:ukulele"
+    }
+}
