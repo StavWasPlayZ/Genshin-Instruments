@@ -1,0 +1,27 @@
+{
+    "parent": "genshinstrument:recipes/root",
+
+    "criteria": {
+        "has_main": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": ["minecraft:birch_planks"]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+
+    "requirements": [
+        ["has_main"]
+    ],
+
+    "rewards": {
+        "recipes": [
+            "genshinstrument:ukulele",
+            "genshinstrument:djem_djem_drum"
+        ]
+    }
+}

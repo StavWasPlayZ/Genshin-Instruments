@@ -1,17 +1,15 @@
 package com.cstav.genshinstrument.util;
 
-import static java.util.Map.entry;
+import com.cstav.genshinstrument.client.config.ModClientConfigs;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.INoteLabel;
+import com.mojang.logging.LogUtils;
+import net.minecraft.network.chat.Component;
+import org.slf4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.Logger;
-
-import com.cstav.genshinstrument.client.config.ModClientConfigs;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.label.INoteLabel;
-import com.mojang.logging.LogUtils;
-
-import net.minecraft.network.chat.Component;
+import static java.util.Map.entry;
 
 public abstract class LabelUtil {
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -65,7 +63,13 @@ public abstract class LabelUtil {
         entry("A#", strArr("A#", "B", "B#", "C#", "C##", "D#", "E", "E#", "F#", "F##", "G#", "G##")),
         entry("Bb", strArr("Bb", "Cb", "C", "Db", "D", "Eb", "Fb", "F", "Gb", "G", "Ab", "A")),
         entry("B", strArr("B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#")),
-        entry("B#", strArr("B#", "C#", "C##", "D#", "D##", "E#", "F#", "F##", "G#", "G##", "A#", "A##"))
+        entry("B#", strArr("B#", "C#", "C##", "D#", "D##", "E#", "F#", "F##", "G#", "G##", "A#", "A##")),
+
+        // Ukulele-specific (chords):
+        entry("Am", strArr("Am", "A#m", "Bm", "Cm", "C#m", "Dm", "D#m", "Em", "Fm", "F#m", "Gm", "G#m")),
+        entry("Dm", strArr("Dm", "D#m", "Em", "Fm", "F#m", "Gm", "G#m", "Am", "A#m", "Bm", "Cm", "C#m")),
+        entry("Em", strArr("Em", "Fm", "F#m", "Gm", "G#m", "Am", "A#m", "Bm", "Cm", "C#m", "Dm", "D#m")),
+        entry("G7", strArr("G7", "Ab7", "A7", "Bb7", "B7", "C7", "Db7", "D7", "Eb7", "E7", "F7", "F#7"))
     );
     public static final int NOTES_PER_SCALE = NOTE_SCALES.get("C").length;
 

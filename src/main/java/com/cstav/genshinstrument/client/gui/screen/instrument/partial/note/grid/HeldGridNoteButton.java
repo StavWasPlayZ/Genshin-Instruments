@@ -92,7 +92,7 @@ public class HeldGridNoteButton extends NoteGridButton implements IHoldableNoteB
 
     @Override
     protected HeldNoteButtonRenderer initNoteRenderer() {
-        return new HeldNoteButtonRenderer(this, this::getTextureAtRow);
+        return new HeldNoteButtonRenderer(this, this::getLabelTexture);
     }
 
     @Override

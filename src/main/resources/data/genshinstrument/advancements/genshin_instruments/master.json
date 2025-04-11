@@ -26,7 +26,8 @@
                     {"items": ["genshinstrument:vintage_lyre"]},
                     {"items": ["genshinstrument:floral_zither"]},
                     {"items": ["genshinstrument:glorious_drum"]},
-                    {"items": ["genshinstrument:nightwind_horn"]}
+                    {"items": ["genshinstrument:ukulele"]},
+                    {"items": ["genshinstrument:djem_djem_drum"]}
                 ]
             }
         }

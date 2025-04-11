@@ -16,13 +16,13 @@ public class NoteRing {
 
     protected final RingAnimationController ringAnimation;
 
-    public final NoteButton note;
+    public final NoteButton noteButton;
     public int size;
     public float alpha;
     protected boolean isForeign;
 
-    public NoteRing(final NoteButton note, final boolean isForeign) {
-        this.note = note;
+    public NoteRing(final NoteButton noteButton, final boolean isForeign) {
+        this.noteButton = noteButton;
         this.isForeign = isForeign;
         ringAnimation = new RingAnimationController(.3, 40, this);
     }
@@ -40,10 +40,15 @@ public class NoteRing {
 
         ringAnimation.update();
 
-        final Point ringCenter = ClientUtil.getInitCenter(note.getInitX(), note.getInitY(), note.instrumentScreen.getNoteSize(), size);
+        final Point ringCenter = ClientUtil.getInitCenter(
+            noteButton.getInitX(),
+            noteButton.getInitY(),
+            noteButton.instrumentScreen.getNoteSize(),
+            size
+        );
 
 
-        ClientUtil.setShaderColor(themeLoader.noteRing(), alpha);
+        ClientUtil.setShaderColor(themeLoader.noteRing(noteButton), alpha);
 
         gui.blit(InstrumentScreen.getInternalResourceFromGlob(RING_GLOB_FILENAME),
             ringCenter.x, ringCenter.y,

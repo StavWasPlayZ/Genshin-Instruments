@@ -1,0 +1,32 @@
+{
+    "parent": "genshinstrument:genshin_instruments/nightwind_horn",
+
+    "display": {
+        "icon": {
+            "item": "genshinstrument:djem_djem_drum"
+        },
+
+        "title": {
+            "translate": "genshinstrument.advancements.main.people_of_the_springs.title"
+        },
+        "description": {
+            "translate": "genshinstrument.advancements.main.people_of_the_springs.description"
+        }
+    },
+
+    "criteria": {
+        "instrument_played": {
+            "trigger": "genshinstrument_instrument_played",
+
+            "conditions": {
+                "instrument": {
+                    "tag": "genshinstrument:genshin/people_of_the_springs"
+                }
+            }
+        }
+    },
+
+    "requirements": [
+        ["instrument_played"]
+    ]
+}

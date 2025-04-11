@@ -11,6 +11,8 @@
     "item.genshinstrument.vintage_lyre": "Старинная лира",
     "item.genshinstrument.glorious_drum": "Грандиозный барабан Аратаки",
     "item.genshinstrument.nightwind_horn": "Горн ночного ветра",
+    "item.genshinstrument.ukulele": "Укулеле",
+    "item.genshinstrument.djem_djem_drum": "Барабан джем-джем",
 
 
 
@@ -44,6 +46,8 @@
     "button.genshinstrument.zither.soundType": "Тип звука",
     "button.genshinstrument.zither.soundType.old": "Старый",
     "button.genshinstrument.zither.soundType.new": "Новый",
+
+    "button.genshinstrument.ukulele_extend_2nd_octave" : "Расширение 2-й октавы укулеле",
 
 
     "button.genshinstrument.label.do_re_mi": "до ре ми",
