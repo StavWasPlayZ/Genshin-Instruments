@@ -98,7 +98,9 @@
 
 
         "4.0": "Changes:\n- Added the Nightwind Horn!\n  - The Nightwind Horn is a sustainable instrument. You can hold it to make a loooong sound!\n- Added pitch-fixed note layout variants for ABC and do re mi\n- Many API changes\nMIDI:\n- MIDI overflows now sound *much* better more polished.\n- The default sensitivty level is now 80%\nFixed:\n- Game crashing for some PCs not using English as their language locale\n- Players being seen as not playing and not being heard when joining a world or dimension where a player has already entered playing mode\n- Incorrect naming of Arataki's Great and Glorious Drum\n- Some instrument option toggles' previous value being discarded on screen refresh\n- Some MIDI devices' names having weird whitespaces",
-        "4.0.2": "\nChanges:\n- Renamed author name to StavWasPlayZ\n\nFixed:\n- Background of instruments sometimes appearing at full alpha\n- Instrument block entities not getting properly removed\n- [Fabric 1.20-1.20.1] Defined version range being incorrect"
+        "4.0.2": "\nChanges:\n- Renamed author name to StavWasPlayZ\n\nFixed:\n- Background of instruments sometimes appearing at full alpha\n- Instrument block entities not getting properly removed\n- [Fabric 1.20-1.20.1] Defined version range being incorrect",
+
+        "5.0": "Changes:\n- Added 2 new instruments: Ukulele and Djem Djem Drum\n\nUkulele:\n- 3rd and upper octave used for chords\n  - Toggleable in Instrument Options (Treble mode)\n- MIDI overflow cannot surpass the 3rd octave\n\nDjem Djem Drum:\n- It makes funny sounds\n\nAdvancements:\n- Added \"Chasing Waves\": Play any of the People of the Springs' instruments\n- Added \"Master of the Springs\": Play all of the People of the Springs' instruments\n\nRecipes:\n- Arataki's Drum now uses Spruce Planks instead of Acacia Planks\n- Floral Zither recipe matches Ukulele and Guitar\n\nUI Tweaks:\n- Arataki's Drum MIDI Option screen: Dominant Drum Type now shown as a large button\n\nTags:\nAdded:\n- genshin/people_of_the_springs\n- instrument_families/brass\n- instrument_families/percussion\n- instrument_families/woodwinds\n- instrument_families/drums\n\nChanged:\n- Renamed tag genshin_instruments to genshin/instruments\n\nFixed:\nMIDI:\n- Releasing a note on some MIDI devices no longer counts as pressing one (fixes infinite sustain)\n- Fixed improper MIDI IN device validation causing game freeze"
     },
     "1.20.1": {
         "2.7.8": "- Update to 1.20.1\n- Pitch slider now has pitch names",
@@ -126,12 +128,19 @@
         "4.0": "Changes:\n- Added the Nightwind Horn!\n  - The Nightwind Horn is a sustainable instrument. You can hold it to make a loooong sound!\n- Added pitch-fixed note layout variants for ABC and do re mi\n- Many API changes\nMIDI:\n- MIDI overflows now sound *much* better more polished.\n- The default sensitivty level is now 80%\n\nFixed:\n- Game crashing for some PCs not using English as their language locale\n- Players being seen as not playing and not being heard when joining a world or dimension where a player has already entered playing mode\n- Incorrect naming of Arataki's Great and Glorious Drum\n- Some instrument option toggles' previous value being discarded on screen refresh\n- Some MIDI devices' names having weird whitespaces",
         "4.0.2": "\nChanges:\n- Renamed author name to StavWasPlayZ\n\nFixed:\n- Background of instruments sometimes appearing at full alpha\n- Instrument block entities not getting properly removed\n- [Fabric 1.20-1.20.1] Defined version range being incorrect",
 
-        "5.0-RC1": "Changes:\n- Added 2 new instruments: Ukulele and Djem Djem Drum\n\nUkulele:\n- 3rd and upper octave used for chords\n  - Toggleable in Instrument Options (Treble mode)\n- MIDI overflow cannot surpass the 3rd octave\n\nDjem Djem Drum:\n- It makes funny sounds\n\nAdvancements:\n- Added \"Chasing Waves\": Play any of the People of the Springs' instruments\n- Added \"Master of the Springs\": Play all of the People of the Springs' instruments\n\nRecipes:\n- Arataki's Drum now uses Spruce Planks instead of Acacia Planks\n- Floral Zither recipe matches Ukulele and Guitar\n\nUI Tweaks:\n- Arataki's Drum MIDI Option screen: Dominant Drum Type now shown as a large button\n\nTags:\nAdded:\n- genshin/people_of_the_springs\n- instrument_families/brass\n- instrument_families/percussion\n- instrument_families/woodwinds\n- instrument_families/drums\n\nChanged:\n- Renamed tag genshin_instruments to genshin/instruments\n\nFixed:\nMIDI:\n- Releasing a note on some MIDI devices no longer counts as pressing one (fixes infinite sustain)\n- Fixed improper MIDI IN device validation causing game freeze"
+        "5.0-RC1": "Changes:\n- Added 2 new instruments: Ukulele and Djem Djem Drum\n\nUkulele:\n- 3rd and upper octave used for chords\n  - Toggleable in Instrument Options (Treble mode)\n- MIDI overflow cannot surpass the 3rd octave\n\nDjem Djem Drum:\n- It makes funny sounds\n\nAdvancements:\n- Added \"Chasing Waves\": Play any of the People of the Springs' instruments\n- Added \"Master of the Springs\": Play all of the People of the Springs' instruments\n\nRecipes:\n- Arataki's Drum now uses Spruce Planks instead of Acacia Planks\n- Floral Zither recipe matches Ukulele and Guitar\n\nUI Tweaks:\n- Arataki's Drum MIDI Option screen: Dominant Drum Type now shown as a large button\n\nTags:\nAdded:\n- genshin/people_of_the_springs\n- instrument_families/brass\n- instrument_families/percussion\n- instrument_families/woodwinds\n- instrument_families/drums\n\nChanged:\n- Renamed tag genshin_instruments to genshin/instruments\n\nFixed:\nMIDI:\n- Releasing a note on some MIDI devices no longer counts as pressing one (fixes infinite sustain)\n- Fixed improper MIDI IN device validation causing game freeze",
+        "5.0": "Fixed \"A Band of One\" advancement not including the Ukulele and Djem Djem Drum"
     },
     "1.20.2": {
         "3.3.1": "Changes:\n- Bumped mod to Minecraft version 1.20.2!\n- Reworked instrument textures by GenMode!\n- Pitch slider now has character-accurate accidental symbols\n- Added instrument volume slider (for sounds produced by you - heard by all other players)\n- Sliced all GUI textures (except accidentals) (complied with 1.20.2's GUI atlases \"deprecation\")\n- The root advancement \"A Bard's Journey\" is now an announceable toast\nMIDI:\n- Supports for Touch (dynamic volumes determined by input velocity)\n  - Added the option to disable this behavior (\"Fixed Touch\")\n- MIDI pedal input is now supported by multisound instruments (such as the Zither) to toggle between 2 different sound types\n- Added option to listen to a specific/all MIDI channels\n- Octave shifting is now bound from -5 to 5 (previously -4/4)\n\nFixed:\n- QWERTY layout option showing for QWERTY users\n- Infinitely reloading resources if no instrument styler was found",
         "3.4": "Changes:\n- Major networking tweaks. Expect less delay in Multiplayer!\n- Added ability to normalize the Vintage Lyre - converting it to a C major key. Enabled by default.\n- Advancement background is now note-block textured\n- ABC layout has been re-introduced\n\nMIDI\n- The drum now toggles its usage from exlusively left to both left and right. It's just a visual thing, but a nice one imo\n- Minimum MIDI velocity is now 6\n\nTechnical\n- Instrument JSON styler format has been refined\n- Added model predicate \"genshinstrument:instrument_open\"\n- Fixed incorrect assignment of `isOpen` tag for instrument open capability\n- Played hand has been added to the instrument open capability\n- Added various more log messages for debugging\n\nFixed\n- Random crashes upon opening an instrument\n- Lower buttons pannel not centered\n- (API) Instruments with 8 or more rows crashing on note layout",
         "3.4.1": "Changes:\n- Added Chinese support by charmaznable & SteveNotSet\n- Added GUI visibility toggle (MoonstruckLucii suggestion)\n\nAchievements\n- Master achievement now grants 5exp\n- Root achievement now takes in any instrument, not just Genshin ones\n- Specified Master achievement to be Genshin-specific\n\nMIDI:- New slider added: Sensitivity\nAllows the player to control how sensitive dynamic touch input should be\n\nFixed:\n- Do-ReMi and Don-Ka labeling\n- Volume slider saving a way too accurate representation of volume\n- Potential resource leaks while reading Instrument styler sheets\n- Instrument buttons sometimes appearing black (Forge-only)"
+    },
+
+    "1.21.1": {
+        "4.0.2": "\nChanges:\n- Renamed author name to StavWasPlayZ\n\nFixed:\n- Background of instruments sometimes appearing at full alpha\n- Instrument block entities not getting properly removed\n- [Fabric 1.20-1.20.1] Defined version range being incorrect",
+
+        "5.0": "Changes:\n- Added 2 new instruments: Ukulele and Djem Djem Drum\n\nUkulele:\n- 3rd and upper octave used for chords\n  - Toggleable in Instrument Options (Treble mode)\n- MIDI overflow cannot surpass the 3rd octave\n\nDjem Djem Drum:\n- It makes funny sounds\n\nAdvancements:\n- Added \"Chasing Waves\": Play any of the People of the Springs' instruments\n- Added \"Master of the Springs\": Play all of the People of the Springs' instruments\n\nRecipes:\n- Arataki's Drum now uses Spruce Planks instead of Acacia Planks\n- Floral Zither recipe matches Ukulele and Guitar\n\nUI Tweaks:\n- Arataki's Drum MIDI Option screen: Dominant Drum Type now shown as a large button\n\nTags:\nAdded:\n- genshin/people_of_the_springs\n- instrument_families/brass\n- instrument_families/percussion\n- instrument_families/woodwinds\n- instrument_families/drums\n\nChanged:\n- Renamed tag genshin_instruments to genshin/instruments\n\nFixed:\nMIDI:\n- Releasing a note on some MIDI devices no longer counts as pressing one (fixes infinite sustain)\n- Fixed improper MIDI IN device validation causing game freeze"
     },
 
     
@@ -149,13 +158,17 @@
         "1.19.4-recommended": "3.4",
 
 
-        "1.20-latest": "4.0.2",
-        "1.20-recommended": "4.0.2",
+        "1.20-latest": "5.0",
+        "1.20-recommended": "5.0",
 
-        "1.20.1-latest": "5.0-RC1",
-        "1.20.1-recommended": "4.0.2",
+        "1.20.1-latest": "5.0",
+        "1.20.1-recommended": "5.0",
 
         "1.20.2-latest": "3.4.1",
-        "1.20.2-recommended": "3.4.1"
+        "1.20.2-recommended": "3.4.1",
+
+
+        "1.21.1-latest": "5.0",
+        "1.21.1-recommended": "5.0"
     }
 }
