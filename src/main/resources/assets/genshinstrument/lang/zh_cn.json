@@ -22,6 +22,7 @@
     "label.genshinstrument.midiOptions": "MIDI 选项",
     "label.genshinstrument.zither_options": "镜花之琴选项",
     "label.genshinstrument.vintage_lyre_options": "老旧的诗琴选项",
+    "label.genshinstrument.ukulele_options": "悠可琴选项",
 
     "genshinstrument.genshin_disclaimer.title": "免责声明！",
     "genshinstrument.genshin_disclaimer.content": "Genshin Instruments 是一个并非隶属于《原神》游戏或米哈游公司的 %s 的 %s Minecraft 模组。\n\n因此，本模组中的所有来自《原神》的素材（包括但不限于声音、图像、乐器），版权均为米哈游所有。\n\n作为用户，您对您在游戏中的行为负有全部责任。您在使用演奏功能时，提请您使用原创曲目或取得相关授权，以避免伤害第三方权益，或出现其他禁止或不适宜内容。",
@@ -73,6 +74,12 @@
     "button.genshinstrument.normalize_vintage_lyre": "将老旧的诗琴调整为标准音",
     "button.genshinstrument.normalize_vintage_lyre.tooltip": "将老旧的诗琴的所有音符调整为不带升降的标准音。不会应用于最高音调。",
 
+    "button.genshinstrument.ukulele_3rd_octave" : "悠可琴的第三个八度音域",
+
+    "button.genshinstrument.ukulele_3rd_octave.chords" : "和弦",
+    "button.genshinstrument.ukulele_3rd_octave.treble" : "高音",
+    "button.genshinstrument.ukulele_3rd_octave.treble.tooltip": "由于 Minecraft 的限制，你越是提高乐器的音高，听到的音符就越会接近B2。",
+
 
     "button.none": "无",
 
@@ -119,6 +126,14 @@
 
     "button.genshinstrument.label.don_ka": "don和ka",
 
+    "button.genshinstrument.label.genshin_notation": "原神音符记谱",
+    "button.genshinstrument.label.genshin_notation.description": "按《原神》中的音符标记方式显示",
+
+    "genshinstrument.label.genshin_notation.djem_djem_drum.b": "B",
+    "genshinstrument.label.genshin_notation.djem_djem_drum.t": "T",
+    "genshinstrument.label.genshin_notation.djem_djem_drum.s": "S",
+    "genshinstrument.label.genshin_notation.djem_djem_drum.r": "R",
+
 
 
     "genshinstrument.advancements.main.root.title": "吟游诗人的旅程",
@@ -140,6 +155,12 @@
     "genshinstrument.advancements.main.floral_zither.description": "奏响镜花之琴",
 
     "genshinstrument.advancements.main.nightwind_horn.title": "不歇的摇滚夜之尾",
-    "genshinstrument.advancements.main.nightwind_horn.description": "奏响晚风圆号"
+    "genshinstrument.advancements.main.nightwind_horn.description": "奏响晚风圆号",
+
+    "genshinstrument.advancements.main.people_of_the_springs.title": "追逐涟漪",
+    "genshinstrument.advancements.main.people_of_the_springs.description": "奏响任何流泉之众的乐器",
+
+    "genshinstrument.advancements.main.master_of_the_springs.title": "涌泉之主",
+    "genshinstrument.advancements.main.master_of_the_springs.description": "奏响所有流泉之众的乐器"
 
 }
