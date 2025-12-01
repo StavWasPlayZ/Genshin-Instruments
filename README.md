@@ -9,6 +9,12 @@ Genshin Instruments is a Forge, NeoForge and Fabric mod that brings in Genshin I
 For documentation of gameplay, visit [the mod's CurseForge page](https://www.curseforge.com/minecraft/mc-mods/genshin-instruments).  
 For full Mod and "in-game" API documentations, visit [the Forge version's repository wiki](https://github.com/StavWasPlayZ/Genshin-Instruments/wiki).
 
+>[!WARNING]
+> # This Mod is No Longer being Maintained.
+> I'm too burnt out and busy to do anything.
+>
+> See the CurseForge page for more info.
+
 ## Other Ports
 - [Forge port](https://github.com/StavWasPlayZ/Genshin-Instruments/)
 - [Fabric port](https://github.com/StavWasPlayZ/Genshin-Instruments-Fabric/)
